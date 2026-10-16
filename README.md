@@ -2,7 +2,7 @@
 
 Guias abertos e gratuitos para quem está começando em tecnologia e quer usar IA sem deixar de entender o que está fazendo.
 
-Ako é uma palavra maori que quer dizer ensinar e aprender ao mesmo tempo. Quem ensina também aprende, e quem aprende também ensina.
+Ako é uma filosofia maori que se refere à relação de reciprocidade entre quem ensina e quem aprende: quem ensina também aprende, e quem aprende também ensina.
 
 A Iniciativa Ako é um dos pilares da [Rizzygo](https://github.com/rizzygo), comunidade para quem quer começar em tecnologia e para quem começou há pouco.
 
