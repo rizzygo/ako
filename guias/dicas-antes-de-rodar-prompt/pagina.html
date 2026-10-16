@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Antes de rodar</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: uma coluna de leitura (~44rem), passos 1-2-3 em sequência; blocos de instrução e terminal podem ser mais largos com rolagem própria */
+:root{
+  --bg:#F5F7FB; --surface:#FFFFFF; --ink:#0B1B3A; --muted:#4A5672; --line:#DCE2EE;
+  --blue:#1F4FD8; --blue-soft:#E7EDFC; --amber:#F5A524; --amber-ink:#0B1B3A;
+  --term-bg:#0B1B3A; --term-fg:#E8ECF6; --term-dim:#9AA8C7;
+  --f-display:"Outfit","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#081429; --surface:#0F1F3D; --ink:#E8ECF6; --muted:#A9B5CF; --line:#22355C;
+  --blue:#8AA8FF; --blue-soft:#16295080; --amber:#F5A524; --amber-ink:#0B1B3A;
+  --term-bg:#030B1A; --term-fg:#E8ECF6; --term-dim:#8D9BBA; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#081429; --surface:#0F1F3D; --ink:#E8ECF6; --muted:#A9B5CF; --line:#22355C;
+  --blue:#8AA8FF; --blue-soft:#16295080; --amber:#F5A524; --amber-ink:#0B1B3A;
+  --term-bg:#030B1A; --term-fg:#E8ECF6; --term-dim:#8D9BBA; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:1.0625rem;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:2.5rem 4rem}
+.wrap{max-width:46rem;margin:0 auto;display:flex;flex-direction:column;gap:3rem}
+h1,h2,h3{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.4rem,7vw,3.6rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:1.6rem;font-weight:600}
+h3{font-size:1.1rem;font-weight:600}
+p{margin:0;max-width:65ch}
+a{color:var(--blue);text-underline-offset:3px}
+a:focus-visible,button:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:6px}
+code{font-family:var(--f-mono);font-size:.88em;background:var(--blue-soft);padding:.1em .35em;border-radius:4px}
+section{display:flex;flex-direction:column;gap:1rem}
+
+.eyebrow{font-family:var(--f-display);font-weight:600;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.eyebrow .tag{background:var(--amber);color:var(--amber-ink);padding:.15rem .55rem;border-radius:999px;letter-spacing:.06em}
+header{display:flex;flex-direction:column;gap:1rem}
+.lead{font-size:1.2rem;color:var(--muted)}
+.lead strong{color:var(--ink)}
+
+.qs{display:grid;grid-template-columns:repeat(auto-fit,minmax(12.5rem,1fr));gap:.75rem;margin-top:.5rem}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.35rem;min-width:0}
+.q .n{font-family:var(--f-mono);font-size:.8rem;color:var(--blue);font-weight:600}
+.q h3{font-size:1.15rem}
+.q p{font-size:.95rem;color:var(--muted)}
+
+.step-head{display:flex;gap:.9rem;align-items:baseline}
+.step-n{font-family:var(--f-display);font-weight:700;font-size:1rem;color:var(--amber-ink);background:var(--amber);width:2rem;height:2rem;border-radius:50%;display:inline-grid;place-items:center;flex:none;transform:translateY(-.1rem)}
+
+.prompt{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.prompt-bar{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.6rem .9rem;border-bottom:1px solid var(--line);font-family:var(--f-mono);font-size:.8rem;color:var(--muted)}
+.prompt pre{margin:0;padding:1rem 1.1rem;font-family:var(--f-mono);font-size:.88rem;line-height:1.6;white-space:pre-wrap;word-break:break-word;color:var(--ink)}
+button.copy{font-family:var(--f-display);font-weight:600;font-size:.85rem;background:var(--blue);color:#fff;border:0;border-radius:8px;padding:.4rem .8rem;cursor:pointer}
+:root[data-theme="dark"] button.copy{color:#081429}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) button.copy{color:#081429}}
+button.copy[data-done]{background:var(--amber);color:var(--amber-ink)}
+
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:30rem;font-size:.97rem}
+th,td{text-align:left;padding:.7rem 1rem;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-display);font-weight:600;font-size:.85rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+.note{font-size:.93rem;color:var(--muted)}
+
+.chat{display:flex;flex-direction:column;gap:.75rem}
+.you{align-self:flex-end;max-width:85%;background:var(--blue);color:#fff;padding:.7rem 1rem;border-radius:14px 14px 4px 14px}
+:root[data-theme="dark"] .you{color:#081429}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .you{color:#081429}}
+.term{background:var(--term-bg);color:var(--term-fg);border-radius:12px;padding:1.1rem 1.2rem;font-family:var(--f-mono);font-size:.86rem;line-height:1.7;overflow-x:auto;min-width:0}
+.term .dim{color:var(--term-dim)}
+.term .cmd{color:#FFFFFF;font-weight:600}
+.term .label{display:inline-block;background:var(--amber);color:#0B1B3A;font-weight:600;padding:0 .5rem;border-radius:4px;margin:.6rem 0 .2rem}
+.term .k{color:#F5C46B;font-weight:600}
+.term p{max-width:none}
+
+.extras{display:flex;flex-direction:column;gap:.75rem}
+.extra{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.9rem 1rem;display:grid;grid-template-columns:1fr auto;gap:.4rem 1rem;align-items:start}
+.extra h3{font-size:1rem}
+.extra pre{grid-column:1/-1;margin:0;font-family:var(--f-mono);font-size:.84rem;white-space:pre-wrap;word-break:break-word;color:var(--muted)}
+.extra button.copy{font-size:.78rem;padding:.3rem .65rem}
+
+.why{display:flex;flex-direction:column;gap:.9rem}
+.fact{border-top:1px solid var(--line);padding-top:.9rem;display:flex;flex-direction:column;gap:.25rem}
+.fact .src{font-size:.88rem;color:var(--muted)}
+
+footer{border-top:2px solid var(--ink);padding-top:1.5rem;display:flex;flex-direction:column;gap:.6rem}
+footer .sig{font-family:var(--f-display);font-weight:600;font-size:1.1rem}
+footer p{color:var(--muted)}
+footer .zy{color:var(--ink);font-weight:700}
+
+@media (max-width:480px){body{font-size:1rem}.you{max-width:100%}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow"><span class="tag">Guia de 10 minutos</span><span>Rizzygo</span></div>
+  <h1>Antes de rodar</h1>
+  <p class="lead">Configure sua IA uma vez, e toda sugestão de comando passa a vir com três respostas: <strong>o que muda</strong>, <strong>como desfazer</strong> e <strong>como saber que deu certo</strong>.</p>
+  <p>Você não precisa reescrever o prompt perfeito toda vez. Salva o padrão uma vez, e a IA aplica sempre. Funciona no ChatGPT, no Claude, no Gemini, no Copilot e em qualquer IA que aceite instruções.</p>
+</header>
+
+<section aria-labelledby="perguntas">
+  <h2 id="perguntas">As três perguntas</h2>
+  <div class="qs">
+    <div class="q"><span class="n">pergunta 1</span><h3>O que isso muda?</h3><p>Qual arquivo, qual recurso, qual permissão. E se é só leitura ou se altera algo.</p></div>
+    <div class="q"><span class="n">pergunta 2</span><h3>Como eu desfaço?</h3><p>Se não existe caminho de volta, o cuidado tem que dobrar.</p></div>
+    <div class="q"><span class="n">pergunta 3</span><h3>Como sei que deu certo?</h3><p>"Não deu erro" é diferente de "funcionou".</p></div>
+  </div>
+</section>
+
+<section aria-labelledby="passo1">
+  <div class="step-head"><span class="step-n">1</span><h2 id="passo1">Copie a instrução</h2></div>
+  <p>É este texto que ensina a IA a responder as três perguntas sozinha.</p>
+  <div class="prompt">
+    <div class="prompt-bar"><span>instrucao-antes-de-rodar.txt</span><button class="copy" type="button" data-target="p-main">Copiar</button></div>
+<pre id="p-main">Sempre que você sugerir um comando, script, código ou mudança de configuração que eu vá executar, termine a resposta com uma seção chamada "Antes de rodar", com três itens:
+
+1. O que isso muda: quais arquivos, recursos, permissões ou dados são afetados, e se é só leitura ou se altera algo.
+2. Como desfazer: o passo exato para voltar atrás. Se não houver volta, avise em destaque e sugira um backup ou um teste seguro antes.
+3. Como saber que deu certo: um comando ou sinal concreto para conferir o resultado. "Não deu erro" não conta como confirmação.
+
+Quando existir um modo de simulação (dry-run, plan, --what-if), mostre ele primeiro.
+Se faltar contexto para responder com segurança (sistema operacional, versão, se é produção ou teste), pergunte antes de sugerir.</pre>
+  </div>
+</section>
+
+<section aria-labelledby="passo2">
+  <div class="step-head"><span class="step-n">2</span><h2 id="passo2">Cole na sua IA</h2></div>
+  <p>Cada ferramenta tem um lugar para instruções que valem em todas as conversas.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Ferramenta</th><th>Onde colar</th></tr></thead>
+      <tbody>
+        <tr><td>ChatGPT</td><td>Nas instruções personalizadas, em Personalizar o ChatGPT. Ou nas instruções de um Projeto.</td></tr>
+        <tr><td>Claude</td><td>Nas preferências do seu perfil, nas configurações. Ou nas instruções de um Projeto.</td></tr>
+        <tr><td>Gemini</td><td>Crie um Gem com essa instrução e use ele para estudar e trabalhar.</td></tr>
+        <tr><td>GitHub Copilot</td><td>No arquivo <code>.github/copilot-instructions.md</code> do repositório.</td></tr>
+        <tr><td>Cursor</td><td>Nas regras do projeto, na pasta <code>.cursor/rules</code>.</td></tr>
+        <tr><td>Claude Code</td><td>No arquivo <code>CLAUDE.md</code> do projeto.</td></tr>
+        <tr><td>Qualquer outra</td><td>Cole o texto no começo da conversa. Funciona até a conversa acabar.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note">Os nomes dos menus mudam com frequência. Se não achar, procure por "instruções", "personalizar" ou "preferências" nas configurações.</p>
+</section>
+
+<section aria-labelledby="passo3">
+  <div class="step-head"><span class="step-n">3</span><h2 id="passo3">Teste com uma pergunta real</h2></div>
+  <p>Pergunte algo que você faria no dia a dia. A resposta deve chegar mais ou menos assim:</p>
+  <div class="chat">
+    <div class="you">Como libero a porta 80 no firewall do meu servidor Ubuntu?</div>
+    <div class="term" role="group" aria-label="Exemplo de resposta da IA">
+<p><span class="dim"># libera conexões HTTP na porta 80</span></p>
+<p><span class="cmd">sudo ufw allow 80/tcp</span></p>
+<p><span class="label">Antes de rodar</span></p>
+<p><span class="k">O que muda:</span> cria uma regra no firewall (UFW) que aceita conexões na porta 80 vindas de qualquer endereço. Se o UFW estiver desligado, a regra só vale depois de <span class="cmd">sudo ufw enable</span>.</p>
+<p><span class="k">Como desfazer:</span> <span class="cmd">sudo ufw delete allow 80/tcp</span></p>
+<p><span class="k">Como saber que deu certo:</span> <span class="cmd">sudo ufw status</span> deve mostrar <span class="cmd">80/tcp ALLOW</span>. De outra máquina, <span class="cmd">curl -I http://IP-do-servidor</span> deve responder.</p>
+    </div>
+  </div>
+  <p>Se a resposta veio sem a seção "Antes de rodar", confira se a instrução foi salva no lugar certo e abra uma conversa nova.</p>
+</section>
+
+<section aria-labelledby="alem">
+  <h2 id="alem">Vá além: adicione o que faz sentido para você</h2>
+  <p>Não fique só estudando prompt. Transforme o que você aprende em padrão. Cada linha abaixo pode ser colada no fim da instrução principal.</p>
+  <div class="extras">
+    <div class="extra"><h3>Quanto custa</h3><button class="copy" type="button" data-target="x1">Copiar</button>
+<pre id="x1">4. Quanto custa: se o comando cria ou altera recursos pagos na nuvem, diga o que gera cobrança e como evitar surpresa na fatura.</pre></div>
+    <div class="extra"><h3>O que fica exposto</h3><button class="copy" type="button" data-target="x2">Copiar</button>
+<pre id="x2">5. O que fica exposto: diga se algo passa a ficar acessível pela internet ou com permissão maior que o necessário.</pre></div>
+    <div class="extra"><h3>Explique cada parte</h3><button class="copy" type="button" data-target="x3">Copiar</button>
+<pre id="x3">Explique cada parte do comando em uma linha, como para quem está aprendendo.</pre></div>
+    <div class="extra"><h3>Me teste no fim</h3><button class="copy" type="button" data-target="x4">Copiar</button>
+<pre id="x4">No fim, me faça uma pergunta curta para eu confirmar que entendi o que vou rodar.</pre></div>
+    <div class="extra"><h3>Confirme meu ambiente</h3><button class="copy" type="button" data-target="x5">Copiar</button>
+<pre id="x5">Se eu não tiver dito meu sistema operacional e a versão da ferramenta, pergunte antes de responder.</pre></div>
+  </div>
+</section>
+
+<section aria-labelledby="porque" class="why">
+  <h2 id="porque">Por que isso importa</h2>
+  <div class="fact">
+    <p>Em um estudo de Stanford, quem usou assistente de IA escreveu código menos seguro e, ao mesmo tempo, acreditava mais que o código estava seguro.</p>
+    <p class="src"><a href="https://arxiv.org/abs/2211.03622">Perry et al., ACM CCS 2023</a></p>
+  </div>
+  <div class="fact">
+    <p>Desenvolvedores experientes levaram 19% mais tempo em tarefas reais usando IA, e mesmo assim achavam que tinham ficado cerca de 20% mais rápidos.</p>
+    <p class="src"><a href="https://the-decoder.com/ai-coding-can-make-developers-slower-even-if-they-feel-faster/">Estudo METR, julho de 2025</a></p>
+  </div>
+  <p>A IA ajuda, e muito. Mas entender como as coisas funcionam continua sendo com você.</p>
+</section>
+
+<footer>
+  <span class="sig">Danilo Rizzo · Rizzygo</span>
+  <p>Fez o teste? Me conta qual pergunta você adicionaria. E manda para quem está começando.</p>
+  <p class="zy">Sou Zy: domino o ofício, questiono o jeito, caminho junto.</p>
+</footer>
+
+</div>
+
+<script>
+document.querySelectorAll('button.copy').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var el = document.getElementById(btn.dataset.target);
+    var text = el.innerText;
+    function done(){ var o = btn.textContent; btn.textContent = 'Copiado'; btn.setAttribute('data-done',''); setTimeout(function(){ btn.textContent = o; btn.removeAttribute('data-done'); }, 1800); }
+    function selectIt(){ var r = document.createRange(); r.selectNodeContents(el); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selecionado, use Ctrl+C'; setTimeout(function(){ btn.textContent = 'Copiar'; }, 2500); }
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(done, selectIt); }
+      else { selectIt(); }
+    } catch(e){ selectIt(); }
+  });
+});
+</script>
+
+</html>
