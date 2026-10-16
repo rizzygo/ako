@@ -1,6 +1,6 @@
 # Dicas antes de rodar
 
-Em 10 minutos, você configura sua IA para terminar toda sugestão de comando com três respostas: o que muda, como desfazer e como saber que deu certo.
+Em cerca de 5 minutos, você configura sua IA para terminar toda sugestão de comando com três respostas: o que muda, como desfazer e como saber que deu certo. Lendo tudo e adicionando as linhas extras, são uns 10 minutos.
 
 Você salva a instrução uma vez e ela vale para as próximas conversas. Funciona no ChatGPT, no Claude, no Gemini, no GitHub Copilot e em qualquer IA que aceite instruções personalizadas.
 
@@ -12,7 +12,7 @@ Prefere com visual e botão de copiar? Abra a [versão em página](https://rizzy
 2. **Como eu desfaço?** O passo exato para voltar atrás. Quando não existe volta, o cuidado precisa ser maior.
 3. **Como sei que deu certo?** Um sinal concreto para conferir. "Não deu erro" não quer dizer que funcionou.
 
-## Passo 1: copie a instrução
+## Passo 1: copie a instrução (1 minuto)
 
 Este texto ensina a IA a responder às três perguntas sem você precisar pedir. Ele também está no arquivo [instrucao.txt](instrucao.txt).
 
@@ -27,15 +27,15 @@ Quando existir um modo de simulação (dry-run, plan, --what-if), mostre ele pri
 Se faltar contexto para responder com segurança (sistema operacional, versão, se é produção ou teste), pergunte antes de sugerir.
 ```
 
-## Passo 2: cole a instrução no lugar certo da sua IA
+## Passo 2: cole a instrução no lugar certo da sua IA (2 minutos)
 
 Cada ferramenta guarda instruções num lugar diferente. A tabela mostra onde colar.
 
 | Ferramenta | Onde colar |
 | --- | --- |
-| ChatGPT | Nas instruções personalizadas, em Personalizar o ChatGPT, ou nas instruções de um Projeto. |
-| Claude | Nas preferências do perfil, nas configurações, ou nas instruções de um Projeto. |
-| Gemini | Crie um Gem com a instrução e use esse Gem para estudar e trabalhar. |
+| ChatGPT | Em Configurações > Personalização > Instruções personalizadas ([atalho](https://chatgpt.com/#settings/Personalization)). Também dá para usar as instruções de um Projeto. |
+| Claude | Clique nas suas iniciais, no canto inferior esquerdo, abra Configurações e cole em "Instruções para o Claude". Também dá para usar as instruções de um Projeto. |
+| Gemini | Em Configurações e ajuda > Contexto pessoal > Adicionar ([atalho](https://gemini.google.com/saved-info)). Outra opção é criar um Gem com a instrução. |
 | GitHub Copilot | No arquivo `.github/copilot-instructions.md` do repositório. |
 | Cursor | Nas regras do projeto, na pasta `.cursor/rules`. |
 | Claude Code | No arquivo `CLAUDE.md` do projeto. |
@@ -43,7 +43,7 @@ Cada ferramenta guarda instruções num lugar diferente. A tabela mostra onde co
 
 Os nomes dos menus mudam com frequência. Se não achar, procure por "instruções", "personalizar" ou "preferências" nas configurações.
 
-## Passo 3: teste com uma pergunta do seu dia a dia
+## Passo 3: teste com uma pergunta do seu dia a dia (2 minutos)
 
 Abra uma conversa nova e pergunte, por exemplo:
 
@@ -64,7 +64,7 @@ sudo ufw allow 80/tcp
 
 Se a seção "Antes de rodar" não aparecer, confira se a instrução foi salva no lugar certo e abra outra conversa.
 
-## Quatro linhas extras para adaptar a instrução ao seu caso
+## Quatro linhas extras para adaptar a instrução ao seu caso (opcional, 3 minutos)
 
 Não fique só estudando prompt: transforme o que você aprende em padrão. Escolha as linhas que fazem sentido para você e cole no fim da instrução principal.
 

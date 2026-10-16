@@ -12,7 +12,7 @@ Cada guia novo entra nesta tabela.
 
 | Guia | Para que serve | Tempo |
 | --- | --- | --- |
-| [Dicas antes de rodar](guias/dicas-antes-de-rodar-prompt) ([versão em página](https://rizzygo.github.io/iniciativa-ako/guias/dicas-antes-de-rodar-prompt/pagina.html)) | Configurar sua IA para explicar o que um comando muda, como desfazer e como conferir o resultado. | 10 minutos |
+| [Dicas antes de rodar](guias/dicas-antes-de-rodar-prompt) ([versão em página](https://rizzygo.github.io/iniciativa-ako/guias/dicas-antes-de-rodar-prompt/pagina.html)) | Configurar sua IA para explicar o que um comando muda, como desfazer e como conferir o resultado. | 5 a 10 minutos |
 
 ## Três ideias por trás dos guias: base, questionamento e mão de duas vias
 

@@ -53,6 +53,7 @@ header{display:flex;flex-direction:column;gap:1rem}
 .q p{font-size:.95rem;color:var(--muted)}
 
 .step-head{display:flex;gap:.9rem;align-items:baseline}
+.step-time{margin-left:auto;font-family:var(--f-mono);font-size:.8rem;color:var(--muted);white-space:nowrap}
 .step-n{font-family:var(--f-display);font-weight:700;font-size:1rem;color:var(--amber-ink);background:var(--amber);width:2rem;height:2rem;border-radius:50%;display:inline-grid;place-items:center;flex:none;transform:translateY(-.1rem)}
 
 .prompt{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
@@ -64,7 +65,8 @@ button.copy{font-family:var(--f-display);font-weight:600;font-size:.85rem;backgr
 button.copy[data-done]{background:var(--amber);color:var(--amber-ink)}
 
 .table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
-table{border-collapse:collapse;width:100%;min-width:30rem;font-size:.97rem}
+table{border-collapse:collapse;width:100%;font-size:.97rem}
+td:first-child{white-space:nowrap;font-weight:700}
 th,td{text-align:left;padding:.7rem 1rem;border-bottom:1px solid var(--line);vertical-align:top}
 th{font-family:var(--f-display);font-weight:600;font-size:.85rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
 tr:last-child td{border-bottom:0}
@@ -103,9 +105,9 @@ footer .zy{color:var(--ink);font-weight:700}
 <div class="wrap">
 
 <header>
-  <div class="eyebrow"><span class="tag">Guia de 10 minutos</span><span>Iniciativa Ako · Rizzygo</span></div>
+  <div class="eyebrow"><span class="tag">Configuração em 5 minutos</span><span>Iniciativa Ako · Rizzygo</span></div>
   <h1>Dicas antes de rodar</h1>
-  <p class="lead">Em 10 minutos, você configura sua IA para terminar toda sugestão de comando com três respostas: <strong>o que muda</strong>, <strong>como desfazer</strong> e <strong>como saber que deu certo</strong>.</p>
+  <p class="lead">Em cerca de 5 minutos, você configura sua IA para terminar toda sugestão de comando com três respostas: <strong>o que muda</strong>, <strong>como desfazer</strong> e <strong>como saber que deu certo</strong>. Lendo tudo e adicionando as linhas extras, são uns 10 minutos.</p>
   <p>Você salva a instrução uma vez e ela vale para as próximas conversas. Funciona no ChatGPT, no Claude, no Gemini, no GitHub Copilot e em qualquer IA que aceite instruções personalizadas.</p>
 </header>
 
@@ -119,7 +121,7 @@ footer .zy{color:var(--ink);font-weight:700}
 </section>
 
 <section aria-labelledby="passo1">
-  <div class="step-head"><span class="step-n">1</span><h2 id="passo1">Copie a instrução</h2></div>
+  <div class="step-head"><span class="step-n">1</span><h2 id="passo1">Copie a instrução</h2><span class="step-time">1 min</span></div>
   <p>Este texto ensina a IA a responder às três perguntas sem você precisar pedir.</p>
   <div class="prompt">
     <div class="prompt-bar"><span>instrucao-antes-de-rodar.txt</span><button class="copy" type="button" data-target="p-main">Copiar</button></div>
@@ -135,15 +137,15 @@ Se faltar contexto para responder com segurança (sistema operacional, versão, 
 </section>
 
 <section aria-labelledby="passo2">
-  <div class="step-head"><span class="step-n">2</span><h2 id="passo2">Cole a instrução no lugar certo da sua IA</h2></div>
+  <div class="step-head"><span class="step-n">2</span><h2 id="passo2">Cole a instrução no lugar certo da sua IA</h2><span class="step-time">2 min</span></div>
   <p>Cada ferramenta guarda instruções num lugar diferente. A tabela mostra onde colar.</p>
   <div class="table-wrap">
     <table>
       <thead><tr><th>Ferramenta</th><th>Onde colar</th></tr></thead>
       <tbody>
-        <tr><td>ChatGPT</td><td>Nas instruções personalizadas, em Personalizar o ChatGPT, ou nas instruções de um Projeto.</td></tr>
-        <tr><td>Claude</td><td>Nas preferências do perfil, nas configurações, ou nas instruções de um Projeto.</td></tr>
-        <tr><td>Gemini</td><td>Crie um Gem com a instrução e use esse Gem para estudar e trabalhar.</td></tr>
+        <tr><td>ChatGPT</td><td>Em Configurações &gt; Personalização &gt; Instruções personalizadas (<a href="https://chatgpt.com/#settings/Personalization">atalho</a>). Também dá para usar as instruções de um Projeto.</td></tr>
+        <tr><td>Claude</td><td>Clique nas suas iniciais, no canto inferior esquerdo, abra Configurações e cole em "Instruções para o Claude". Também dá para usar as instruções de um Projeto.</td></tr>
+        <tr><td>Gemini</td><td>Em Configurações e ajuda &gt; Contexto pessoal &gt; Adicionar (<a href="https://gemini.google.com/saved-info">atalho</a>). Outra opção é criar um Gem com a instrução.</td></tr>
         <tr><td>GitHub Copilot</td><td>No arquivo <code>.github/copilot-instructions.md</code> do repositório.</td></tr>
         <tr><td>Cursor</td><td>Nas regras do projeto, na pasta <code>.cursor/rules</code>.</td></tr>
         <tr><td>Claude Code</td><td>No arquivo <code>CLAUDE.md</code> do projeto.</td></tr>
@@ -155,7 +157,7 @@ Se faltar contexto para responder com segurança (sistema operacional, versão, 
 </section>
 
 <section aria-labelledby="passo3">
-  <div class="step-head"><span class="step-n">3</span><h2 id="passo3">Teste com uma pergunta do seu dia a dia</h2></div>
+  <div class="step-head"><span class="step-n">3</span><h2 id="passo3">Teste com uma pergunta do seu dia a dia</h2><span class="step-time">2 min</span></div>
   <p>Abra uma conversa nova e faça uma pergunta como esta. A resposta deve vir mais ou menos assim:</p>
   <div class="chat">
     <div class="you">Como libero a porta 80 no firewall do meu servidor Ubuntu?</div>
@@ -173,6 +175,7 @@ Se faltar contexto para responder com segurança (sistema operacional, versão, 
 
 <section aria-labelledby="alem">
   <h2 id="alem">Quatro linhas extras para adaptar a instrução ao seu caso</h2>
+  <p class="note">Opcional. Leva uns 3 minutos.</p>
   <p>Não fique só estudando prompt: transforme o que você aprende em padrão. Escolha as linhas que fazem sentido para você e cole no fim da instrução principal.</p>
   <div class="extras">
     <div class="extra"><h3>Quanto custa</h3><button class="copy" type="button" data-target="x1">Copiar</button>
