@@ -28,7 +28,7 @@ Ao contribuir, você concorda que sua contribuição fica sob a mesma licença d
 
 ## Onde cada arquivo fica
 
-Cada guia tem uma pasta própria dentro de `guias/`:
+Cada guia tem uma pasta própria dentro de `guias/`, e cada skill, dentro de `skills/`:
 
 ```
 guias/
@@ -36,4 +36,8 @@ guias/
     README.md       o guia em si
     instrucao.txt   o texto pronto para colar na IA, quando houver
     pagina.html     a versão visual do guia, quando houver
+skills/
+  nome-da-skill/
+    SKILL.md        as instruções que a IA segue
+    README.md       como instalar, exemplos e ideias de melhoria
 ```

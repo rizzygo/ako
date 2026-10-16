@@ -43,6 +43,8 @@ Cada ferramenta guarda instruções num lugar diferente. A tabela mostra onde co
 
 Os nomes dos menus mudam com frequência. Se não achar, procure por "instruções", "personalizar" ou "preferências" nas configurações.
 
+Usa Claude Code, GitHub Copilot ou Cortex Code? Instale a [skill antes-de-rodar](../../skills/antes-de-rodar). Ela já traz a instrução, com perguntas de contexto e guard rails contra alucinação.
+
 ## Passo 3: teste com uma pergunta do seu dia a dia (2 minutos)
 
 Abra uma conversa nova e faça uma pergunta como uma destas. Os dois exemplos mostram que as três perguntas servem tanto para infraestrutura quanto para dados do negócio.

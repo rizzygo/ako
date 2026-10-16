@@ -6,13 +6,14 @@ Ako é uma palavra maori que quer dizer ensinar e aprender ao mesmo tempo. Quem 
 
 A Iniciativa Ako é um dos pilares da [Rizzygo](https://github.com/rizzygo), comunidade para quem quer começar em tecnologia e para quem começou há pouco.
 
-## Guias publicados
+## Guias e skills publicados
 
-Cada guia novo entra nesta tabela.
+Cada conteúdo novo entra nesta tabela.
 
-| Guia | Para que serve | Tempo |
+| Conteúdo | Para que serve | Tempo |
 | --- | --- | --- |
 | [Dicas antes de rodar](guias/dicas-antes-de-rodar-prompt) ([versão em página](https://rizzygo.github.io/iniciativa-ako/guias/dicas-antes-de-rodar-prompt/pagina.html)) | Configurar sua IA para explicar o que um comando muda, como desfazer e como conferir o resultado. | 5 a 10 minutos |
+| [Skill antes-de-rodar](skills/antes-de-rodar) | Fazer sua IA de código (Claude Code, GitHub Copilot, Cortex Code) confirmar o contexto, seguir guard rails contra alucinação e retrabalho e fechar toda mudança com "Antes de rodar". | 2 minutos para instalar |
 
 ## Três ideias por trás dos guias: base, questionamento e mão de duas vias
 
