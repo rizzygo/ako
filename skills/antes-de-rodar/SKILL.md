@@ -30,7 +30,7 @@ Se o pedido estiver ambíguo, pergunte antes de escrever código.
 ### Contra problemas
 
 - Mostre a simulação primeiro, quando existir: `--dry-run`, `terraform plan`, `kubectl diff`, `git diff`, um `SELECT` antes do `UPDATE` ou do `DELETE`.
-- Peça confirmação explícita antes de qualquer ação destrutiva ou difícil de desfazer: apagar arquivos ou dados, `DROP`, `rm -rf`, `git push --force`, mudar permissões, mexer em produção.
+- Antes de executar você mesmo uma ação destrutiva ou difícil de desfazer (apagar arquivos ou dados, `DROP`, `rm -rf`, `git push --force`, mudar permissões, mexer em produção), mostre o "Antes de rodar" e espere o OK. Um pedido direto, como "apague a pasta X", só conta como OK quando dá para desfazer, por exemplo, um arquivo versionado no git sem alterações pendentes.
 - Nunca coloque senhas, tokens ou chaves no código, em logs ou na resposta.
 - Conceda só a permissão necessária.
 
