@@ -45,7 +45,9 @@ Os nomes dos menus mudam com frequência. Se não achar, procure por "instruçõ
 
 ## Passo 3: teste com uma pergunta do seu dia a dia (2 minutos)
 
-Abra uma conversa nova e pergunte, por exemplo:
+Abra uma conversa nova e faça uma pergunta como uma destas. Os dois exemplos mostram que as três perguntas servem tanto para infraestrutura quanto para dados do negócio.
+
+### Exemplo 1: liberar uma porta no firewall do servidor
 
 > Como libero a porta 80 no firewall do meu servidor Ubuntu?
 
@@ -61,6 +63,30 @@ sudo ufw allow 80/tcp
 - **O que muda:** cria uma regra no firewall (UFW) que aceita conexões na porta 80 vindas de qualquer endereço. Se o UFW estiver desligado, a regra só passa a valer depois de `sudo ufw enable`. Antes de ligar, libere o SSH com `sudo ufw allow OpenSSH` para não perder o acesso ao servidor.
 - **Como desfazer:** `sudo ufw delete allow 80/tcp`
 - **Como saber que deu certo:** `sudo ufw status` deve mostrar `80/tcp ALLOW`. De outra máquina, `curl -I http://IP-do-servidor` deve responder, se houver um servidor web rodando.
+
+### Exemplo 2: reajustar preços no banco de dados de uma loja
+
+> Preciso aumentar em 10% o preço de todos os produtos da categoria Acessórios no banco de dados da loja. Como faço?
+
+A resposta deve vir mais ou menos assim:
+
+```sql
+-- simulação: mostra o preço atual e o novo, sem alterar nada
+SELECT nome, preco, preco * 1.10 AS preco_novo
+FROM produtos
+WHERE categoria = 'Acessórios';
+
+-- aplica o aumento
+UPDATE produtos
+SET preco = preco * 1.10
+WHERE categoria = 'Acessórios';
+```
+
+**Antes de rodar**
+
+- **O que muda:** altera o preço de todos os produtos da categoria Acessórios. Os outros produtos não mudam. Sem a linha `WHERE`, todos os preços da loja subiriam.
+- **Como desfazer:** rode o `UPDATE` dentro de uma transação, com `BEGIN;` antes. Se algo estiver errado, `ROLLBACK;` desfaz tudo. Depois do `COMMIT;`, só um backup traz os preços de volta, então salve uma cópia antes: `CREATE TABLE produtos_backup AS SELECT * FROM produtos;`. Dividir por 1,10 depois pode errar centavos por causa do arredondamento.
+- **Como saber que deu certo:** rode `SELECT COUNT(*), SUM(preco) FROM produtos WHERE categoria = 'Acessórios';` antes e depois. A quantidade de produtos deve ser a mesma, e a soma, cerca de 10% maior.
 
 Se a seção "Antes de rodar" não aparecer, confira se a instrução foi salva no lugar certo e abra outra conversa.
 

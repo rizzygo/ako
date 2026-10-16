@@ -53,6 +53,7 @@ header{display:flex;flex-direction:column;gap:1rem}
 .q p{font-size:.95rem;color:var(--muted)}
 
 .step-head{display:flex;gap:.9rem;align-items:baseline}
+.ex-label{font-size:1.05rem;margin-top:.75rem}
 .step-time{margin-left:auto;font-family:var(--f-mono);font-size:.8rem;color:var(--muted);white-space:nowrap}
 .step-n{font-family:var(--f-display);font-weight:700;font-size:1rem;color:var(--amber-ink);background:var(--amber);width:2rem;height:2rem;border-radius:50%;display:inline-grid;place-items:center;flex:none;transform:translateY(-.1rem)}
 
@@ -158,7 +159,8 @@ Se faltar contexto para responder com segurança (sistema operacional, versão, 
 
 <section aria-labelledby="passo3">
   <div class="step-head"><span class="step-n">3</span><h2 id="passo3">Teste com uma pergunta do seu dia a dia</h2><span class="step-time">2 min</span></div>
-  <p>Abra uma conversa nova e faça uma pergunta como esta. A resposta deve vir mais ou menos assim:</p>
+  <p>Abra uma conversa nova e faça uma pergunta como uma destas. Os dois exemplos mostram que as três perguntas servem tanto para infraestrutura quanto para dados do negócio.</p>
+  <h3 class="ex-label">Exemplo 1: liberar uma porta no firewall do servidor</h3>
   <div class="chat">
     <div class="you">Como libero a porta 80 no firewall do meu servidor Ubuntu?</div>
     <div class="term" role="group" aria-label="Exemplo de resposta da IA">
@@ -168,6 +170,20 @@ Se faltar contexto para responder com segurança (sistema operacional, versão, 
 <p><span class="k">O que muda:</span> cria uma regra no firewall (UFW) que aceita conexões na porta 80 vindas de qualquer endereço. Se o UFW estiver desligado, a regra só passa a valer depois de <span class="cmd">sudo ufw enable</span>. Antes de ligar, libere o SSH com <span class="cmd">sudo ufw allow OpenSSH</span> para não perder o acesso ao servidor.</p>
 <p><span class="k">Como desfazer:</span> <span class="cmd">sudo ufw delete allow 80/tcp</span></p>
 <p><span class="k">Como saber que deu certo:</span> <span class="cmd">sudo ufw status</span> deve mostrar <span class="cmd">80/tcp ALLOW</span>. De outra máquina, <span class="cmd">curl -I http://IP-do-servidor</span> deve responder, se houver um servidor web rodando.</p>
+    </div>
+  </div>
+  <h3 class="ex-label">Exemplo 2: reajustar preços no banco de dados de uma loja</h3>
+  <div class="chat">
+    <div class="you">Preciso aumentar em 10% o preço de todos os produtos da categoria Acessórios no banco de dados da loja. Como faço?</div>
+    <div class="term" role="group" aria-label="Exemplo de resposta da IA sobre reajuste de preços">
+<p><span class="dim">-- simulação: mostra o preço atual e o novo, sem alterar nada</span></p>
+<p><span class="cmd">SELECT nome, preco, preco * 1.10 AS preco_novo FROM produtos WHERE categoria = 'Acessórios';</span></p>
+<p><span class="dim">-- aplica o aumento</span></p>
+<p><span class="cmd">UPDATE produtos SET preco = preco * 1.10 WHERE categoria = 'Acessórios';</span></p>
+<p><span class="label">Antes de rodar</span></p>
+<p><span class="k">O que muda:</span> altera o preço de todos os produtos da categoria Acessórios. Os outros produtos não mudam. Sem a linha <span class="cmd">WHERE</span>, todos os preços da loja subiriam.</p>
+<p><span class="k">Como desfazer:</span> rode o <span class="cmd">UPDATE</span> dentro de uma transação, com <span class="cmd">BEGIN;</span> antes. Se algo estiver errado, <span class="cmd">ROLLBACK;</span> desfaz tudo. Depois do <span class="cmd">COMMIT;</span>, só um backup traz os preços de volta, então salve uma cópia antes: <span class="cmd">CREATE TABLE produtos_backup AS SELECT * FROM produtos;</span> Dividir por 1,10 depois pode errar centavos por causa do arredondamento.</p>
+<p><span class="k">Como saber que deu certo:</span> rode <span class="cmd">SELECT COUNT(*), SUM(preco) FROM produtos WHERE categoria = 'Acessórios';</span> antes e depois. A quantidade de produtos deve ser a mesma, e a soma, cerca de 10% maior.</p>
     </div>
   </div>
   <p>Se a seção "Antes de rodar" não aparecer, confira se a instrução foi salva no lugar certo e abra outra conversa.</p>
