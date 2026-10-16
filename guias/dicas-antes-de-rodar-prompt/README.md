@@ -1,18 +1,20 @@
-# Antes de rodar
+# Dicas antes de rodar
 
-Guia de 10 minutos da **Rizzygo** para configurar sua IA uma vez e fazer toda sugestão de comando vir com três respostas: **o que muda**, **como desfazer** e **como saber que deu certo**.
+Em 10 minutos, você configura sua IA para terminar toda sugestão de comando com três respostas: o que muda, como desfazer e como saber que deu certo.
 
-Você não precisa reescrever o prompt perfeito toda vez. Salva o padrão uma vez, e a IA aplica sempre. Funciona no ChatGPT, no Claude, no Gemini, no Copilot e em qualquer IA que aceite instruções.
+Você salva a instrução uma vez e ela vale para as próximas conversas. Funciona no ChatGPT, no Claude, no Gemini, no GitHub Copilot e em qualquer IA que aceite instruções personalizadas.
 
-## As três perguntas
+Prefere com visual e botão de copiar? Abra a [versão em página](https://rizzygo.github.io/iniciativa-ako/guias/dicas-antes-de-rodar-prompt/pagina.html).
 
-1. **O que isso muda?** Qual arquivo, qual recurso, qual permissão. E se é só leitura ou se altera algo.
-2. **Como eu desfaço?** Se não existe caminho de volta, o cuidado tem que dobrar.
-3. **Como sei que deu certo?** "Não deu erro" é diferente de "funcionou".
+## As três perguntas que a IA vai responder
 
-## Passo 1 · Copie a instrução
+1. **O que isso muda?** Quais arquivos, recursos ou permissões são afetados, e se o comando só lê ou também altera algo.
+2. **Como eu desfaço?** O passo exato para voltar atrás. Quando não existe volta, o cuidado precisa ser maior.
+3. **Como sei que deu certo?** Um sinal concreto para conferir. "Não deu erro" não quer dizer que funcionou.
 
-O texto também está no arquivo [instrucao.txt](instrucao.txt), e a versão em página está em [pagina.html](pagina.html).
+## Passo 1: copie a instrução
+
+Este texto ensina a IA a responder às três perguntas sem você precisar pedir. Ele também está no arquivo [instrucao.txt](instrucao.txt).
 
 ```text
 Sempre que você sugerir um comando, script, código ou mudança de configuração que eu vá executar, termine a resposta com uma seção chamada "Antes de rodar", com três itens:
@@ -25,25 +27,29 @@ Quando existir um modo de simulação (dry-run, plan, --what-if), mostre ele pri
 Se faltar contexto para responder com segurança (sistema operacional, versão, se é produção ou teste), pergunte antes de sugerir.
 ```
 
-## Passo 2 · Cole na sua IA
+## Passo 2: cole a instrução no lugar certo da sua IA
+
+Cada ferramenta guarda instruções num lugar diferente. A tabela mostra onde colar.
 
 | Ferramenta | Onde colar |
 | --- | --- |
-| ChatGPT | Nas instruções personalizadas, em Personalizar o ChatGPT. Ou nas instruções de um Projeto. |
-| Claude | Nas preferências do seu perfil, nas configurações. Ou nas instruções de um Projeto. |
-| Gemini | Crie um Gem com essa instrução e use ele para estudar e trabalhar. |
+| ChatGPT | Nas instruções personalizadas, em Personalizar o ChatGPT, ou nas instruções de um Projeto. |
+| Claude | Nas preferências do perfil, nas configurações, ou nas instruções de um Projeto. |
+| Gemini | Crie um Gem com a instrução e use esse Gem para estudar e trabalhar. |
 | GitHub Copilot | No arquivo `.github/copilot-instructions.md` do repositório. |
 | Cursor | Nas regras do projeto, na pasta `.cursor/rules`. |
 | Claude Code | No arquivo `CLAUDE.md` do projeto. |
-| Qualquer outra | Cole o texto no começo da conversa. Funciona até a conversa acabar. |
+| Outra IA | Cole o texto no começo da conversa. Ele vale só para aquela conversa. |
 
 Os nomes dos menus mudam com frequência. Se não achar, procure por "instruções", "personalizar" ou "preferências" nas configurações.
 
-## Passo 3 · Teste com uma pergunta real
+## Passo 3: teste com uma pergunta do seu dia a dia
+
+Abra uma conversa nova e pergunte, por exemplo:
 
 > Como libero a porta 80 no firewall do meu servidor Ubuntu?
 
-A resposta deve chegar mais ou menos assim:
+A resposta deve vir mais ou menos assim:
 
 ```bash
 # libera conexões HTTP na porta 80
@@ -52,35 +58,34 @@ sudo ufw allow 80/tcp
 
 **Antes de rodar**
 
-- **O que muda:** cria uma regra no firewall (UFW) que aceita conexões na porta 80 vindas de qualquer endereço. Se o UFW estiver desligado, a regra só vale depois de `sudo ufw enable`.
+- **O que muda:** cria uma regra no firewall (UFW) que aceita conexões na porta 80 vindas de qualquer endereço. Se o UFW estiver desligado, a regra só passa a valer depois de `sudo ufw enable`. Antes de ligar, libere o SSH com `sudo ufw allow OpenSSH` para não perder o acesso ao servidor.
 - **Como desfazer:** `sudo ufw delete allow 80/tcp`
-- **Como saber que deu certo:** `sudo ufw status` deve mostrar `80/tcp ALLOW`. De outra máquina, `curl -I http://IP-do-servidor` deve responder.
+- **Como saber que deu certo:** `sudo ufw status` deve mostrar `80/tcp ALLOW`. De outra máquina, `curl -I http://IP-do-servidor` deve responder, se houver um servidor web rodando.
 
-Se a resposta veio sem a seção "Antes de rodar", confira se a instrução foi salva no lugar certo e abra uma conversa nova.
+Se a seção "Antes de rodar" não aparecer, confira se a instrução foi salva no lugar certo e abra outra conversa.
 
-## Vá além
+## Quatro linhas extras para adaptar a instrução ao seu caso
 
-Não fique só estudando prompt. Transforme o que você aprende em padrão. Cada linha abaixo pode ser colada no fim da instrução principal.
+Não fique só estudando prompt: transforme o que você aprende em padrão. Escolha as linhas que fazem sentido para você e cole no fim da instrução principal.
 
 ```text
 4. Quanto custa: se o comando cria ou altera recursos pagos na nuvem, diga o que gera cobrança e como evitar surpresa na fatura.
 5. O que fica exposto: diga se algo passa a ficar acessível pela internet ou com permissão maior que o necessário.
 Explique cada parte do comando em uma linha, como para quem está aprendendo.
 No fim, me faça uma pergunta curta para eu confirmar que entendi o que vou rodar.
-Se eu não tiver dito meu sistema operacional e a versão da ferramenta, pergunte antes de responder.
 ```
 
-## Por que isso importa
+## Dois estudos em que quem usou IA superestimou o próprio trabalho
 
-- Em um estudo de Stanford, quem usou assistente de IA escreveu código menos seguro e, ao mesmo tempo, acreditava mais que o código estava seguro. ([Perry et al., ACM CCS 2023](https://arxiv.org/abs/2211.03622))
-- Desenvolvedores experientes levaram 19% mais tempo em tarefas reais usando IA, e mesmo assim achavam que tinham ficado cerca de 20% mais rápidos. ([Estudo METR, julho de 2025](https://the-decoder.com/ai-coding-can-make-developers-slower-even-if-they-feel-faster/))
+- Num estudo da Universidade Stanford, quem usou um assistente de IA escreveu código menos seguro e acreditava mais que o código estava seguro. ([Perry et al., ACM CCS 2023](https://arxiv.org/abs/2211.03622))
+- Num estudo do METR com ferramentas do início de 2025, desenvolvedores experientes levaram 19% mais tempo em tarefas reais usando IA. Mesmo assim, achavam que tinham ficado cerca de 20% mais rápidos. ([METR, julho de 2025](https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/))
 
-A IA ajuda, e muito. Mas entender como as coisas funcionam continua sendo com você.
+A IA ajuda muito, mas entender como as coisas funcionam continua sendo com você.
 
 ---
 
 **Danilo Rizzo · Rizzygo**
 
-Fez o teste? Abra uma issue ou me conta no LinkedIn qual pergunta você adicionaria.
+Fez o teste? Abra uma [issue](https://github.com/rizzygo/iniciativa-ako/issues) ou me conte no LinkedIn qual pergunta você adicionaria.
 
 *Sou Zy: domino o ofício, questiono o jeito, caminho junto.*

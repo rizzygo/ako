@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Antes de rodar</title>
+<title>Dicas antes de rodar</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -103,24 +103,24 @@ footer .zy{color:var(--ink);font-weight:700}
 <div class="wrap">
 
 <header>
-  <div class="eyebrow"><span class="tag">Guia de 10 minutos</span><span>Rizzygo</span></div>
-  <h1>Antes de rodar</h1>
-  <p class="lead">Configure sua IA uma vez, e toda sugestão de comando passa a vir com três respostas: <strong>o que muda</strong>, <strong>como desfazer</strong> e <strong>como saber que deu certo</strong>.</p>
-  <p>Você não precisa reescrever o prompt perfeito toda vez. Salva o padrão uma vez, e a IA aplica sempre. Funciona no ChatGPT, no Claude, no Gemini, no Copilot e em qualquer IA que aceite instruções.</p>
+  <div class="eyebrow"><span class="tag">Guia de 10 minutos</span><span>Iniciativa Ako · Rizzygo</span></div>
+  <h1>Dicas antes de rodar</h1>
+  <p class="lead">Em 10 minutos, você configura sua IA para terminar toda sugestão de comando com três respostas: <strong>o que muda</strong>, <strong>como desfazer</strong> e <strong>como saber que deu certo</strong>.</p>
+  <p>Você salva a instrução uma vez e ela vale para as próximas conversas. Funciona no ChatGPT, no Claude, no Gemini, no GitHub Copilot e em qualquer IA que aceite instruções personalizadas.</p>
 </header>
 
 <section aria-labelledby="perguntas">
-  <h2 id="perguntas">As três perguntas</h2>
+  <h2 id="perguntas">As três perguntas que a IA vai responder</h2>
   <div class="qs">
-    <div class="q"><span class="n">pergunta 1</span><h3>O que isso muda?</h3><p>Qual arquivo, qual recurso, qual permissão. E se é só leitura ou se altera algo.</p></div>
-    <div class="q"><span class="n">pergunta 2</span><h3>Como eu desfaço?</h3><p>Se não existe caminho de volta, o cuidado tem que dobrar.</p></div>
-    <div class="q"><span class="n">pergunta 3</span><h3>Como sei que deu certo?</h3><p>"Não deu erro" é diferente de "funcionou".</p></div>
+    <div class="q"><span class="n">pergunta 1</span><h3>O que isso muda?</h3><p>Quais arquivos, recursos ou permissões são afetados, e se o comando só lê ou também altera algo.</p></div>
+    <div class="q"><span class="n">pergunta 2</span><h3>Como eu desfaço?</h3><p>O passo exato para voltar atrás. Quando não existe volta, o cuidado precisa ser maior.</p></div>
+    <div class="q"><span class="n">pergunta 3</span><h3>Como sei que deu certo?</h3><p>Um sinal concreto para conferir. "Não deu erro" não quer dizer que funcionou.</p></div>
   </div>
 </section>
 
 <section aria-labelledby="passo1">
   <div class="step-head"><span class="step-n">1</span><h2 id="passo1">Copie a instrução</h2></div>
-  <p>É este texto que ensina a IA a responder as três perguntas sozinha.</p>
+  <p>Este texto ensina a IA a responder às três perguntas sem você precisar pedir.</p>
   <div class="prompt">
     <div class="prompt-bar"><span>instrucao-antes-de-rodar.txt</span><button class="copy" type="button" data-target="p-main">Copiar</button></div>
 <pre id="p-main">Sempre que você sugerir um comando, script, código ou mudança de configuração que eu vá executar, termine a resposta com uma seção chamada "Antes de rodar", com três itens:
@@ -135,19 +135,19 @@ Se faltar contexto para responder com segurança (sistema operacional, versão, 
 </section>
 
 <section aria-labelledby="passo2">
-  <div class="step-head"><span class="step-n">2</span><h2 id="passo2">Cole na sua IA</h2></div>
-  <p>Cada ferramenta tem um lugar para instruções que valem em todas as conversas.</p>
+  <div class="step-head"><span class="step-n">2</span><h2 id="passo2">Cole a instrução no lugar certo da sua IA</h2></div>
+  <p>Cada ferramenta guarda instruções num lugar diferente. A tabela mostra onde colar.</p>
   <div class="table-wrap">
     <table>
       <thead><tr><th>Ferramenta</th><th>Onde colar</th></tr></thead>
       <tbody>
-        <tr><td>ChatGPT</td><td>Nas instruções personalizadas, em Personalizar o ChatGPT. Ou nas instruções de um Projeto.</td></tr>
-        <tr><td>Claude</td><td>Nas preferências do seu perfil, nas configurações. Ou nas instruções de um Projeto.</td></tr>
-        <tr><td>Gemini</td><td>Crie um Gem com essa instrução e use ele para estudar e trabalhar.</td></tr>
+        <tr><td>ChatGPT</td><td>Nas instruções personalizadas, em Personalizar o ChatGPT, ou nas instruções de um Projeto.</td></tr>
+        <tr><td>Claude</td><td>Nas preferências do perfil, nas configurações, ou nas instruções de um Projeto.</td></tr>
+        <tr><td>Gemini</td><td>Crie um Gem com a instrução e use esse Gem para estudar e trabalhar.</td></tr>
         <tr><td>GitHub Copilot</td><td>No arquivo <code>.github/copilot-instructions.md</code> do repositório.</td></tr>
         <tr><td>Cursor</td><td>Nas regras do projeto, na pasta <code>.cursor/rules</code>.</td></tr>
         <tr><td>Claude Code</td><td>No arquivo <code>CLAUDE.md</code> do projeto.</td></tr>
-        <tr><td>Qualquer outra</td><td>Cole o texto no começo da conversa. Funciona até a conversa acabar.</td></tr>
+        <tr><td>Outra IA</td><td>Cole o texto no começo da conversa. Ele vale só para aquela conversa.</td></tr>
       </tbody>
     </table>
   </div>
@@ -155,25 +155,25 @@ Se faltar contexto para responder com segurança (sistema operacional, versão, 
 </section>
 
 <section aria-labelledby="passo3">
-  <div class="step-head"><span class="step-n">3</span><h2 id="passo3">Teste com uma pergunta real</h2></div>
-  <p>Pergunte algo que você faria no dia a dia. A resposta deve chegar mais ou menos assim:</p>
+  <div class="step-head"><span class="step-n">3</span><h2 id="passo3">Teste com uma pergunta do seu dia a dia</h2></div>
+  <p>Abra uma conversa nova e faça uma pergunta como esta. A resposta deve vir mais ou menos assim:</p>
   <div class="chat">
     <div class="you">Como libero a porta 80 no firewall do meu servidor Ubuntu?</div>
     <div class="term" role="group" aria-label="Exemplo de resposta da IA">
 <p><span class="dim"># libera conexões HTTP na porta 80</span></p>
 <p><span class="cmd">sudo ufw allow 80/tcp</span></p>
 <p><span class="label">Antes de rodar</span></p>
-<p><span class="k">O que muda:</span> cria uma regra no firewall (UFW) que aceita conexões na porta 80 vindas de qualquer endereço. Se o UFW estiver desligado, a regra só vale depois de <span class="cmd">sudo ufw enable</span>.</p>
+<p><span class="k">O que muda:</span> cria uma regra no firewall (UFW) que aceita conexões na porta 80 vindas de qualquer endereço. Se o UFW estiver desligado, a regra só passa a valer depois de <span class="cmd">sudo ufw enable</span>. Antes de ligar, libere o SSH com <span class="cmd">sudo ufw allow OpenSSH</span> para não perder o acesso ao servidor.</p>
 <p><span class="k">Como desfazer:</span> <span class="cmd">sudo ufw delete allow 80/tcp</span></p>
-<p><span class="k">Como saber que deu certo:</span> <span class="cmd">sudo ufw status</span> deve mostrar <span class="cmd">80/tcp ALLOW</span>. De outra máquina, <span class="cmd">curl -I http://IP-do-servidor</span> deve responder.</p>
+<p><span class="k">Como saber que deu certo:</span> <span class="cmd">sudo ufw status</span> deve mostrar <span class="cmd">80/tcp ALLOW</span>. De outra máquina, <span class="cmd">curl -I http://IP-do-servidor</span> deve responder, se houver um servidor web rodando.</p>
     </div>
   </div>
-  <p>Se a resposta veio sem a seção "Antes de rodar", confira se a instrução foi salva no lugar certo e abra uma conversa nova.</p>
+  <p>Se a seção "Antes de rodar" não aparecer, confira se a instrução foi salva no lugar certo e abra outra conversa.</p>
 </section>
 
 <section aria-labelledby="alem">
-  <h2 id="alem">Vá além: adicione o que faz sentido para você</h2>
-  <p>Não fique só estudando prompt. Transforme o que você aprende em padrão. Cada linha abaixo pode ser colada no fim da instrução principal.</p>
+  <h2 id="alem">Quatro linhas extras para adaptar a instrução ao seu caso</h2>
+  <p>Não fique só estudando prompt: transforme o que você aprende em padrão. Escolha as linhas que fazem sentido para você e cole no fim da instrução principal.</p>
   <div class="extras">
     <div class="extra"><h3>Quanto custa</h3><button class="copy" type="button" data-target="x1">Copiar</button>
 <pre id="x1">4. Quanto custa: se o comando cria ou altera recursos pagos na nuvem, diga o que gera cobrança e como evitar surpresa na fatura.</pre></div>
@@ -183,27 +183,26 @@ Se faltar contexto para responder com segurança (sistema operacional, versão, 
 <pre id="x3">Explique cada parte do comando em uma linha, como para quem está aprendendo.</pre></div>
     <div class="extra"><h3>Me teste no fim</h3><button class="copy" type="button" data-target="x4">Copiar</button>
 <pre id="x4">No fim, me faça uma pergunta curta para eu confirmar que entendi o que vou rodar.</pre></div>
-    <div class="extra"><h3>Confirme meu ambiente</h3><button class="copy" type="button" data-target="x5">Copiar</button>
-<pre id="x5">Se eu não tiver dito meu sistema operacional e a versão da ferramenta, pergunte antes de responder.</pre></div>
   </div>
 </section>
 
 <section aria-labelledby="porque" class="why">
-  <h2 id="porque">Por que isso importa</h2>
+  <h2 id="porque">Dois estudos em que quem usou IA superestimou o próprio trabalho</h2>
   <div class="fact">
-    <p>Em um estudo de Stanford, quem usou assistente de IA escreveu código menos seguro e, ao mesmo tempo, acreditava mais que o código estava seguro.</p>
+    <p>Num estudo da Universidade Stanford, quem usou um assistente de IA escreveu código menos seguro e acreditava mais que o código estava seguro.</p>
     <p class="src"><a href="https://arxiv.org/abs/2211.03622">Perry et al., ACM CCS 2023</a></p>
   </div>
   <div class="fact">
-    <p>Desenvolvedores experientes levaram 19% mais tempo em tarefas reais usando IA, e mesmo assim achavam que tinham ficado cerca de 20% mais rápidos.</p>
-    <p class="src"><a href="https://the-decoder.com/ai-coding-can-make-developers-slower-even-if-they-feel-faster/">Estudo METR, julho de 2025</a></p>
+    <p>Num estudo do METR com ferramentas do início de 2025, desenvolvedores experientes levaram 19% mais tempo em tarefas reais usando IA. Mesmo assim, achavam que tinham ficado cerca de 20% mais rápidos.</p>
+    <p class="src"><a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/">METR, julho de 2025</a></p>
   </div>
-  <p>A IA ajuda, e muito. Mas entender como as coisas funcionam continua sendo com você.</p>
+  <p>A IA ajuda muito, mas entender como as coisas funcionam continua sendo com você.</p>
 </section>
 
 <footer>
   <span class="sig">Danilo Rizzo · Rizzygo</span>
-  <p>Fez o teste? Me conta qual pergunta você adicionaria. E manda para quem está começando.</p>
+  <p>Fez o teste? Abra uma <a href="https://github.com/rizzygo/iniciativa-ako/issues">issue no GitHub</a> ou me conte no LinkedIn qual pergunta você adicionaria. E mande este guia para quem está começando.</p>
+  <p>Este guia é aberto e faz parte da <a href="https://github.com/rizzygo/iniciativa-ako">Iniciativa Ako</a>. Qualquer pessoa pode sugerir melhorias.</p>
   <p class="zy">Sou Zy: domino o ofício, questiono o jeito, caminho junto.</p>
 </footer>
 
@@ -223,5 +222,4 @@ document.querySelectorAll('button.copy').forEach(function(btn){
   });
 });
 </script>
-
 </html>
