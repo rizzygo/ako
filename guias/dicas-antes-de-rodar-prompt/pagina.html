@@ -155,7 +155,7 @@ Se faltar contexto para responder com segurança (sistema operacional, versão, 
     </table>
   </div>
   <p class="note">Os nomes dos menus mudam com frequência. Se não achar, procure por "instruções", "personalizar" ou "preferências" nas configurações.</p>
-  <p>Usa Claude Code, GitHub Copilot ou Cortex Code? Instale a <a href="https://github.com/rizzygo/iniciativa-ako/tree/main/skills/antes-de-rodar">skill antes-de-rodar</a>. Ela já traz a instrução, com perguntas de contexto e guard rails contra alucinação.</p>
+  <p>Usa Claude Code, GitHub Copilot ou Cortex Code? Vá direto para a <a href="#skill">skill antes-de-rodar</a>, que substitui os passos 1 e 2.</p>
 </section>
 
 <section aria-labelledby="passo3">
@@ -204,6 +204,25 @@ Se faltar contexto para responder com segurança (sistema operacional, versão, 
     <div class="extra"><h3>Me teste no fim</h3><button class="copy" type="button" data-target="x4">Copiar</button>
 <pre id="x4">No fim, me faça uma pergunta curta para eu confirmar que entendi o que vou rodar.</pre></div>
   </div>
+</section>
+
+<section aria-labelledby="skill">
+  <div class="step-head"><span class="step-n">+</span><h2 id="skill">Usa IA de código? Instale a skill antes-de-rodar</h2><span class="step-time">2 min</span></div>
+  <p>No Claude Code, no GitHub Copilot e no Cortex Code, a skill substitui os passos 1 e 2. Além das três perguntas, ela faz a IA confirmar o contexto antes de mexer no projeto, avisar quando não confirmou que um comando existe e esperar seu OK antes de qualquer ação sem volta.</p>
+  <h3 class="ex-label">1. Instale no projeto</h3>
+  <p>Rode na raiz do projeto. A pasta <code>.claude/skills</code> funciona nas três ferramentas.</p>
+  <div class="prompt">
+    <div class="prompt-bar"><span>terminal</span><button class="copy" type="button" data-target="s-install">Copiar</button></div>
+<pre id="s-install">mkdir -p .claude/skills/antes-de-rodar
+curl -fsSL https://raw.githubusercontent.com/rizzygo/iniciativa-ako/main/skills/antes-de-rodar/SKILL.md \
+  -o .claude/skills/antes-de-rodar/SKILL.md</pre>
+  </div>
+  <p class="note">Faça o commit da pasta para todo o time usar a mesma skill. Para desfazer, rode <code>rm -r .claude/skills/antes-de-rodar</code>.</p>
+  <h3 class="ex-label">2. Confira se funcionou</h3>
+  <p>Abra uma sessão nova da sua IA de código e peça, por exemplo:</p>
+  <div class="chat"><div class="you">Como apago todos os arquivos .log deste projeto?</div></div>
+  <p>Funcionou se a resposta mostra o que seria apagado antes de apagar e termina com o "Antes de rodar" em quatro itens. O quarto é novo: <strong>o que não verifiquei</strong>, onde a IA separa o que conferiu do que está supondo. No Claude Code, você também pode chamar a skill pelo nome com <code>/antes-de-rodar</code>.</p>
+  <p>A <a href="https://github.com/rizzygo/iniciativa-ako/tree/main/skills/antes-de-rodar">página da skill</a> tem a pasta certa para instalar em todos os seus projetos, três exemplos e o resultado do teste com e sem a skill.</p>
 </section>
 
 <section aria-labelledby="porque" class="why">
