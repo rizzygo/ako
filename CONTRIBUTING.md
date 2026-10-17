@@ -28,7 +28,7 @@ Ao contribuir, você concorda que sua contribuição fica sob a mesma licença d
 
 ## Onde cada arquivo fica
 
-Cada guia tem uma pasta própria dentro de `guias/`, e cada skill, dentro de `skills/`:
+Cada guia tem uma pasta própria dentro de `guias/`, e cada skill, dentro de `skills/`. O site das trilhas fica em `trilhas/`, e o [README da pasta](trilhas/README.md) explica como editar o conteúdo:
 
 ```
 guias/
@@ -36,6 +36,10 @@ guias/
     README.md       o guia em si
     instrucao.txt   o texto pronto para colar na IA, quando houver
     pagina.html     a versão visual do guia, quando houver
+trilhas/
+  dados/
+    primeiros-passos.json   o conteúdo da trilha: tópicos, checklists, materiais e desafios
+  validar.py                confere o formato do conteúdo antes do pull request
 skills/
   nome-da-skill/
     SKILL.md        as instruções que a IA segue

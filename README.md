@@ -6,12 +6,15 @@ Ako é uma filosofia maori que se refere à relação de reciprocidade entre que
 
 A Iniciativa Ako é um dos pilares da [Rizzygo](https://github.com/rizzygo), comunidade para quem quer começar em tecnologia e para quem começou há pouco.
 
-## Guias e skills publicados
+**Comece pelas [Trilhas Rizzygo](https://rizzygo.github.io/iniciativa-ako/trilhas/):** responda quatro perguntas, receba seu roteiro de estudos em TI e avance com materiais gratuitos, desafios práticos e conquistas.
+
+## Trilhas, guias e skills publicados
 
 Cada conteúdo novo entra nesta tabela.
 
 | Conteúdo | Para que serve | Tempo |
 | --- | --- | --- |
+| [Trilha Primeiros passos em TI](https://rizzygo.github.io/iniciativa-ako/trilhas/) ([conteúdo](trilhas)) | Montar seu roteiro de estudos e aprender a base que toda área usa, de como estudar até um primeiro projeto no GitHub. | 16 tópicos, no seu ritmo |
 | [Dicas antes de rodar](guias/dicas-antes-de-rodar-prompt) ([versão em página](https://rizzygo.github.io/iniciativa-ako/guias/dicas-antes-de-rodar-prompt/pagina.html)) | Configurar sua IA para explicar o que um comando muda, como desfazer e como conferir o resultado. | 5 a 10 minutos |
 | [Skill antes-de-rodar](skills/antes-de-rodar) | Fazer sua IA de código (Claude Code, GitHub Copilot, Cortex Code) confirmar o contexto, seguir guard rails contra alucinação e retrabalho e fechar toda mudança com "Antes de rodar". | 2 minutos para instalar |
 

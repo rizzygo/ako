@@ -1,0 +1,1464 @@
+{
+ "id": "primeiros-passos",
+ "titulo": "Primeiros passos em TI",
+ "versao": 1,
+ "descricao": "A base que toda área de tecnologia usa: como estudar, como o computador e a internet funcionam, lógica, código, Git, IA com responsabilidade e um primeiro projeto.",
+ "etapas": [
+  {
+   "id": "base",
+   "titulo": "Antes de tudo: aprender a aprender",
+   "conquista": "Base firme",
+   "descricao": "Como estudar, que caminhos existem e como ler o que está em inglês."
+  },
+  {
+   "id": "maquina",
+   "titulo": "Como o computador funciona",
+   "conquista": "Por dentro da máquina",
+   "descricao": "As peças, os arquivos, o terminal e o Linux, que roda na maior parte dos servidores da internet."
+  },
+  {
+   "id": "internet",
+   "titulo": "Como a internet funciona",
+   "conquista": "Conectado",
+   "descricao": "Endereços, nomes, portas e o vai e volta entre navegador e servidor."
+  },
+  {
+   "id": "codigo",
+   "titulo": "Lógica e código",
+   "conquista": "Primeiro código",
+   "descricao": "Pensar em passos, escrever os primeiros programas e guardar o histórico com Git."
+  },
+  {
+   "id": "responsa",
+   "titulo": "Responsabilidade no dia a dia",
+   "conquista": "Com responsabilidade",
+   "descricao": "IA, segurança e o jeito de trabalhar com outras pessoas."
+  },
+  {
+   "id": "pratica",
+   "titulo": "Mão na massa",
+   "conquista": "Mão na massa",
+   "descricao": "Um projeto seu, publicado, e a escolha do próximo caminho."
+  }
+ ],
+ "topicos": [
+  {
+   "id": "como-estudar",
+   "etapa": "base",
+   "titulo": "Como estudar tecnologia",
+   "horas": 3,
+   "areas": [],
+   "resumo": "Em TI, muito do que você estuda hoje muda em poucos anos. Por isso, a habilidade mais importante é saber aprender: entender o conceito, praticar e explicar com suas palavras. Estudar um pouco todo dia rende mais do que uma maratona no fim de semana.",
+   "essencial": [
+    "Estude em blocos curtos com pausa, por exemplo 25 minutos de foco e 5 de descanso.",
+    "Pratique logo depois de ler: digite o comando, quebre e conserte.",
+    "Anote com suas palavras em vez de copiar.",
+    "Travou por mais de 30 minutos? Peça ajuda contando o que já tentou."
+   ],
+   "checklist": [
+    "Defini dias e horários fixos de estudo na semana",
+    "Escolhi onde vou anotar (caderno, aplicativo ou arquivo de texto)",
+    "Fiz um bloco de 25 minutos de foco sem celular",
+    "Escrevi um resumo de três linhas de algo que aprendi hoje"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Você assistiu a um vídeo de duas horas sobre Linux no domingo e, na quarta, quase não lembra de nada. Qual mudança ajuda mais?",
+     "opcoes": [
+      "Assistir de novo em velocidade 2x no próximo domingo",
+      "Estudar 30 minutos por dia, praticando cada comando",
+      "Procurar um vídeo de quatro horas, mais completo",
+      "Esperar sobrar mais tempo livre para estudar"
+     ],
+     "correta": 1,
+     "explicacao": "Sessões curtas e frequentes, com prática logo em seguida, fixam muito mais do que uma maratona. Rever o conteúdo em dias diferentes também ajuda a memória."
+    },
+    {
+     "pergunta": "Você está travado há 40 minutos num erro. Qual pedido de ajuda tem mais chance de receber resposta?",
+     "opcoes": [
+      "\"Não funciona, alguém ajuda?\"",
+      "Um print da tela inteira, sem nenhuma explicação",
+      "\"Rodei X, esperava Y e apareceu o erro Z (mensagem colada). Já tentei A e B.\"",
+      "Um \"oi\" no privado de alguém experiente, e esperar"
+     ],
+     "correta": 2,
+     "explicacao": "Quem vai ajudar precisa saber o que você fez, o que esperava, o que aconteceu e o que já tentou. Com isso, a pessoa consegue responder sem fazer dez perguntas antes."
+    },
+    {
+     "pergunta": "Qual é o melhor sinal de que você aprendeu um conceito?",
+     "opcoes": [
+      "Você assistiu à aula inteira sem pular nada",
+      "Você copiou todas as anotações do professor",
+      "Você reconhece o termo sempre que ele aparece",
+      "Você explica com suas palavras e aplica num exemplo novo"
+     ],
+     "correta": 3,
+     "explicacao": "Reconhecer não é o mesmo que saber. Explicar e aplicar em outro contexto mostra que o conceito ficou."
+    }
+   ],
+   "pergunta_ako": "Qual assunto você acha que entendeu, mas não conseguiria explicar para alguém agora?",
+   "recursos": [
+    {
+     "titulo": "Como estudar programação de forma eficiente",
+     "fonte": "Rocketseat (blog)",
+     "url": "https://www.rocketseat.com.br/blog/artigos/post/como-estudar-programacao-eficiente",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Dicas de rotina, prática ativa, revisão espaçada, Pomodoro e projetos pequenos para fixar o que você estuda.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Como aprender a programar? Guia para iniciantes",
+     "fonte": "Rocketseat (blog)",
+     "url": "https://www.rocketseat.com.br/blog/artigos/post/aprender-a-programar-guia-completo-iniciantes",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Guia para definir objetivo, quebrar o conteúdo em partes, usar Anki e técnica de Feynman e lidar com procrastinação.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Como usar Inteligência Artificial para estudar programação com mais eficiência",
+     "fonte": "Curso em Vídeo (blog)",
+     "url": "https://www.cursoemvideo.com/blog/descubra-como-usar-inteligencia-artificial-para-estudar-programacao-com-mais-eficiencia-aprenda-a-tirar-duvidas-revisar-conteudos-criar-exercicios-e-acelerar-seu-aprendizado-com-ia-descubra-como-us",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Mostra como usar a IA como apoio para tirar dúvidas, revisar e montar exercícios, sem deixar de entender o conteúdo.",
+     "verificado_em": "2026-10-17"
+    }
+   ]
+  },
+  {
+   "id": "areas-da-ti",
+   "etapa": "base",
+   "titulo": "As áreas da TI e as carreiras",
+   "horas": 2,
+   "areas": [],
+   "resumo": "TI não é uma profissão só. Tem quem cuida de servidores e nuvem, quem escreve código, quem analisa dados, quem testa, quem protege e quem decide o que construir. Você não precisa escolher agora, mas conhecer as áreas ajuda a decidir onde aprofundar.",
+   "essencial": [
+    "Infraestrutura e cloud: mantém servidores, redes e serviços na nuvem funcionando.",
+    "Desenvolvimento: escreve o código de sites, aplicativos e sistemas.",
+    "Dados: organiza e analisa dados para responder perguntas do negócio.",
+    "Qualidade (QA): testa e encontra problemas antes do cliente.",
+    "Segurança: protege sistemas e pessoas de ataques e vazamentos.",
+    "Produto e agilidade: decide o que construir e organiza o trabalho do time.",
+    "Suporte: ajuda pessoas a resolver problemas com tecnologia, e é uma porta de entrada comum."
+   ],
+   "checklist": [
+    "Li sobre pelo menos quatro áreas",
+    "Vi um relato de dia a dia de alguém de uma área que me atrai",
+    "Anotei duas áreas que quero conhecer melhor",
+    "Abri uma vaga júnior e anotei o que ela pede"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Uma loja virtual sai do ar toda Black Friday porque os servidores não aguentam o acesso. Qual área cuida principalmente disso?",
+     "opcoes": [
+      "Infraestrutura e cloud",
+      "Produto e agilidade",
+      "Análise de dados",
+      "Design de interface"
+     ],
+     "correta": 0,
+     "explicacao": "Dimensionar servidores, escalar na nuvem e manter o sistema no ar é o trabalho de infraestrutura e cloud, junto com o time de desenvolvimento."
+    },
+    {
+     "pergunta": "A diretoria quer saber quais produtos vendem mais em cada região. Quem costuma responder?",
+     "opcoes": [
+      "Segurança",
+      "Dados",
+      "Suporte",
+      "QA"
+     ],
+     "correta": 1,
+     "explicacao": "Juntar, limpar e analisar dados para responder perguntas do negócio é o centro da área de dados."
+    },
+    {
+     "pergunta": "Antes de lançar uma nova versão do aplicativo, alguém precisa garantir que o login continua funcionando em vários celulares. Que área faz isso?",
+     "opcoes": [
+      "Infraestrutura",
+      "Produto",
+      "Qualidade (QA)",
+      "Dados"
+     ],
+     "correta": 2,
+     "explicacao": "QA planeja e executa testes, manuais ou automatizados, para achar problemas antes que cheguem ao cliente."
+    }
+   ],
+   "pergunta_ako": "Qual área te atrai, e é pelo trabalho em si ou pelo salário que você imagina?",
+   "recursos": [
+    {
+     "titulo": "O que é e como funciona a área de TI? Confira 11 áreas para atuar",
+     "fonte": "Serasa Experian (blog de carreiras)",
+     "url": "https://www.serasaexperian.com.br/carreiras/blog-carreiras/area-de-ti/",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Panorama curto de 11 áreas, como segurança, dados, desenvolvimento, QA, suporte e nuvem, com o que cada uma faz.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Trilhas de aprendizagem",
+     "fonte": "Curso em Vídeo",
+     "url": "https://www.cursoemvideo.com/trilhas/",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim, certificado pago",
+     "nota": "Sete trilhas gratuitas, como infraestrutura, programação e IA, que ajudam a ver o caminho de estudo de cada área.",
+     "verificado_em": "2026-10-17"
+    }
+   ]
+  },
+  {
+   "id": "ingles-para-ti",
+   "etapa": "base",
+   "titulo": "Inglês para ler documentação",
+   "horas": 3,
+   "areas": [],
+   "resumo": "Boa parte da documentação, das mensagens de erro e das respostas em fóruns está em inglês. Para começar, você não precisa falar fluente: precisa ler. Ler um pouco todo dia, com o tradutor como apoio, já ajuda muito.",
+   "essencial": [
+    "Aprenda as palavras que mais aparecem em erros: not found, permission denied, timeout, failed, deprecated.",
+    "Tente ler primeiro e use o tradutor para confirmar.",
+    "Leia a documentação oficial, não só tutoriais.",
+    "Monte uma lista com os termos novos que encontrar."
+   ],
+   "checklist": [
+    "Li uma página de documentação oficial em inglês até o fim",
+    "Montei minha lista com pelo menos 10 termos",
+    "Traduzi uma mensagem de erro real e entendi o que ela dizia",
+    "Deixei um aplicativo que uso todo dia em inglês por uma semana"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Ao rodar um comando, aparece \"Permission denied\". O que isso quer dizer?",
+     "opcoes": [
+      "O arquivo não existe nessa pasta",
+      "Você não tem permissão para fazer essa ação",
+      "A internet caiu no meio do comando",
+      "O comando foi digitado com erro"
+     ],
+     "correta": 1,
+     "explicacao": "Permission denied quer dizer permissão negada: o sistema entendeu o pedido, mas seu usuário não pode fazer aquilo."
+    },
+    {
+     "pergunta": "A documentação diz que uma função está \"deprecated\". O que fazer?",
+     "opcoes": [
+      "Usar à vontade, porque deprecated quer dizer que ela é a mais nova",
+      "Comprar uma licença, porque deprecated quer dizer que ela é paga",
+      "Trocar tudo hoje, porque deprecated quer dizer que ela já não funciona",
+      "Evitar em código novo, porque ela ainda funciona, mas pode ser removida"
+     ],
+     "correta": 3,
+     "explicacao": "Deprecated quer dizer obsoleta ou descontinuada: ainda funciona, mas não é mais recomendada e pode sumir numa versão futura. A documentação costuma indicar o que usar no lugar."
+    },
+    {
+     "pergunta": "Ao acessar um servidor, aparece \"Connection timed out\". Qual é a melhor primeira hipótese?",
+     "opcoes": [
+      "O servidor não respondeu: pode estar fora do ar ou bloqueado",
+      "A senha está errada e o servidor recusou o acesso",
+      "O disco do seu computador está cheio e a resposta não coube",
+      "O arquivo que você pediu é grande demais para baixar"
+     ],
+     "correta": 0,
+     "explicacao": "Timed out quer dizer que o tempo de espera acabou sem resposta. O servidor pode estar desligado, ou um firewall (um filtro que bloqueia conexões) pode estar barrando o caminho. Senha errada daria outra mensagem, porque nesse caso o servidor responde."
+    }
+   ],
+   "pergunta_ako": "Você costuma traduzir tudo de uma vez ou tenta entender primeiro? O que muda quando você tenta primeiro?",
+   "recursos": [
+    {
+     "titulo": "Curso de Inglês para Iniciantes, Módulo 01: Beginners",
+     "fonte": "Curso em Vídeo",
+     "url": "https://www.cursoemvideo.com/curso/curso-de-ingles-para-iniciantes-modulo-1-beginners-gratis-e-completo/",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim, certificado pago",
+     "nota": "24 aulas de inglês do zero, explicadas em português, incluindo vocabulário de tecnologia.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Inglês Instrumental (caderno do curso técnico em Informática)",
+     "fonte": "IFPI / Rede e-Tec Brasil (repositório ProEdu)",
+     "url": "https://proedu.rnp.br/bitstream/handle/123456789/610/Ingles_Instrumental_PB_CAPA_ficha_ISBN_20130814.pdf?sequence=3&isAllowed=y",
+     "tipo": "livro",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Apostila em PDF com técnicas para ler textos técnicos em inglês: cognatos, skimming, scanning e uso do dicionário.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Inglês para programadores: como estudar da forma certa",
+     "fonte": "Hashtag Treinamentos (blog)",
+     "url": "https://www.hashtagtreinamentos.com/ingles-para-programadores",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Dicas para montar um glossário técnico pessoal e se acostumar a ler documentação e mensagens de erro em inglês.",
+     "verificado_em": "2026-10-17"
+    }
+   ]
+  },
+  {
+   "id": "computador",
+   "etapa": "maquina",
+   "titulo": "Hardware, sistema operacional e arquivos",
+   "horas": 3,
+   "areas": [
+    "infra",
+    "seguranca"
+   ],
+   "resumo": "Todo computador tem as mesmas peças básicas: o processador (CPU), que executa as instruções; a memória RAM, que guarda o que está em uso agora; e o armazenamento (SSD ou HD), que guarda os arquivos mesmo desligado. O sistema operacional, como Windows, Linux ou macOS, organiza tudo isso e deixa os programas usarem as peças.",
+   "essencial": [
+    "A RAM é rápida e temporária. O disco é mais lento e guarda os dados mesmo desligado.",
+    "Arquivos ficam em pastas, numa árvore que começa na raiz.",
+    "Todo arquivo tem um caminho, como `C:\\Users\\ana\\notas.txt` ou `/home/ana/notas.txt`.",
+    "A extensão (`.txt`, `.jpg`) indica o tipo do arquivo, mas não garante o que ele tem dentro."
+   ],
+   "checklist": [
+    "Descobri quanto de RAM e de armazenamento meu computador tem",
+    "Abri o gerenciador de tarefas e vi o uso de CPU e de memória",
+    "Escrevi o caminho completo de um arquivo meu",
+    "Configurei o sistema para mostrar as extensões dos arquivos"
+   ],
+   "quiz": [
+    {
+     "pergunta": "O computador fica lento quando você abre muitas abas no navegador, e o gerenciador de tarefas mostra a memória em 98%. O que está faltando?",
+     "opcoes": [
+      "Armazenamento",
+      "Internet",
+      "Memória RAM",
+      "Placa de vídeo"
+     ],
+     "correta": 2,
+     "explicacao": "Cada aba ocupa memória RAM. Quando ela enche, o sistema começa a usar o disco no lugar, que é muito mais lento."
+    },
+    {
+     "pergunta": "Você estava editando um documento sem salvar e a energia caiu. Por que perdeu o texto?",
+     "opcoes": [
+      "O texto estava só na RAM, que se apaga sem energia",
+      "O SSD apaga os arquivos abertos quando o computador desliga",
+      "O sistema apaga documentos não salvos, por segurança",
+      "O documento era grande demais para ser guardado"
+     ],
+     "correta": 0,
+     "explicacao": "Até você salvar, o documento só existe na RAM. Salvar é gravar no armazenamento, que mantém os dados sem energia."
+    },
+    {
+     "pergunta": "Você recebeu por e-mail um anexo chamado `fatura.pdf.exe`. O que isso indica?",
+     "opcoes": [
+      "É um PDF normal, com a extensão repetida",
+      "É um arquivo compactado com um PDF dentro",
+      "É um PDF protegido por senha",
+      "É um programa disfarçado de PDF, então não abra"
+     ],
+     "correta": 3,
+     "explicacao": "O que vale é a última extensão: `.exe` é um programa que roda no Windows. Esconder o `.exe` atrás de `.pdf` é um truque comum de golpes."
+    }
+   ],
+   "pergunta_ako": "Por que você acha que o sistema esconde as extensões dos arquivos por padrão? Isso ajuda ou atrapalha?",
+   "recursos": [
+    {
+     "titulo": "Fundamentos de TI: Hardware e Software",
+     "fonte": "Fundação Bradesco, Escola Virtual",
+     "url": "https://www.ev.org.br/cursos/fundamentos-de-ti-hardware-e-software",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Curso de 7 horas sobre componentes do computador, diferença entre hardware e software, sistemas operacionais e segurança básica.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Hardware",
+     "fonte": "Curso em Vídeo",
+     "url": "https://www.cursoemvideo.com/curso/hardware/",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim, certificado pago",
+     "nota": "Acompanha a montagem de um computador real, da escolha das peças até a instalação do sistema operacional.",
+     "verificado_em": "2026-10-17"
+    }
+   ]
+  },
+  {
+   "id": "terminal",
+   "etapa": "maquina",
+   "titulo": "Terminal: a linha de comando",
+   "horas": 4,
+   "areas": [
+    "infra",
+    "seguranca",
+    "dev"
+   ],
+   "resumo": "O terminal é um jeito de falar com o computador escrevendo comandos em vez de clicar. Em servidores e na nuvem, muitas vezes ele é o único jeito. Parece difícil no começo, mas uns dez comandos já resolvem boa parte do dia a dia.",
+   "essencial": [
+    "`pwd` mostra em que pasta você está, `ls` lista os arquivos e `cd` muda de pasta.",
+    "`mkdir` cria pasta, `cp` copia, `mv` move ou renomeia, e `rm` apaga. No terminal não tem lixeira.",
+    "A tecla Tab completa nomes e evita erros de digitação.",
+    "Quase todo comando tem ajuda: `comando --help` ou `man comando`.",
+    "No Windows, use o WSL (um Linux que roda dentro do Windows) ou o Git Bash para seguir os mesmos comandos."
+   ],
+   "checklist": [
+    "Abri o terminal e rodei `pwd`, `ls` e `cd`",
+    "Criei uma pasta e um arquivo só pelo terminal",
+    "Usei a tecla Tab para completar um nome",
+    "Li a ajuda de um comando com `--help`"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Você rodou `ls` e não viu o arquivo relatorio.txt, que você sabe que existe. O que checar primeiro?",
+     "opcoes": [
+      "Rodar `pwd` para ver se você está na pasta certa",
+      "Reinstalar o sistema operacional do zero",
+      "Apagar a pasta e criar tudo de novo",
+      "Rodar `ls` de novo como administrador"
+     ],
+     "correta": 0,
+     "explicacao": "Na maioria das vezes, o arquivo está em outra pasta. `pwd` mostra onde você está, e `ls` mostra só o que tem ali."
+    },
+    {
+     "pergunta": "Você precisa renomear foto1.jpg para perfil.jpg. Qual comando usar?",
+     "opcoes": [
+      "`cp foto1.jpg perfil.jpg`",
+      "`rm foto1.jpg`",
+      "`mv foto1.jpg perfil.jpg`",
+      "`mkdir perfil.jpg`"
+     ],
+     "correta": 2,
+     "explicacao": "`mv` move ou renomeia. O `cp` deixaria dois arquivos, o original e a cópia."
+    },
+    {
+     "pergunta": "Um tutorial manda rodar `rm -rf` numa pasta. O que você precisa saber antes?",
+     "opcoes": [
+      "Que ele só esvazia a lixeira, então não tem risco",
+      "Que ele pede confirmação antes de apagar cada arquivo",
+      "Que ele apaga só os arquivos vazios da pasta",
+      "Que ele apaga a pasta e tudo dentro, sem perguntar"
+     ],
+     "correta": 3,
+     "explicacao": "O -r apaga a pasta com tudo o que tem dentro, incluindo subpastas. O -f força: não pede confirmação. Não tem lixeira nem como desfazer, então confira o caminho com `pwd` e `ls` antes de rodar."
+    }
+   ],
+   "pergunta_ako": "O que te dá mais medo no terminal? Como você poderia testar isso num lugar onde errar não tem problema?",
+   "recursos": [
+    {
+     "titulo": "Introdução à Linha de Comando Bash",
+     "fonte": "Programming Historian em português",
+     "url": "https://programminghistorian.org/pt/licoes/introducao-linha-comando-bash",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição para iniciantes sobre navegar entre pastas e ler, copiar, mover e apagar arquivos pelo terminal, com dicas para Windows.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Material para estudantes sobre linha de comando",
+     "fonte": "Google for Developers (Codelabs)",
+     "url": "https://developers.google.com/codelabs/cssi-command-line?hl=pt-br",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Exercício prático com pwd, ls, cd, mkdir, cp, mv e rm, com desafios e quiz. Tradução feita por IA, pode ter pequenos erros.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "The Linux command line for beginners",
+     "fonte": "Ubuntu (Canonical)",
+     "url": "https://ubuntu.com/desktop/docs/en/latest/tutorial/the-linux-command-line-for-beginners/",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Tutorial oficial sobre abrir o terminal, navegar por pastas, mexer em arquivos, usar pipes, man e sudo com segurança.",
+     "verificado_em": "2026-10-17"
+    }
+   ]
+  },
+  {
+   "id": "linux",
+   "etapa": "maquina",
+   "titulo": "Linux básico",
+   "horas": 6,
+   "areas": [
+    "infra",
+    "seguranca"
+   ],
+   "resumo": "A maior parte dos servidores da internet e da nuvem roda Linux. Saber o básico de usuários, permissões, pacotes e processos é pré-requisito para quase toda área técnica, principalmente infraestrutura, cloud e segurança.",
+   "essencial": [
+    "Tudo fica numa árvore que começa em / (a raiz). Sua pasta pessoal é `/home/seu-usuario`, também chamada de `~`.",
+    "Permissões dizem quem pode ler (r), escrever (w) e executar (x) cada arquivo.",
+    "root é o usuário administrador do Linux. `sudo` roda um comando como root. Use só quando precisar.",
+    "Programas são instalados por um gerenciador de pacotes, como o `apt` no Ubuntu.",
+    "Processo é um programa em execução. `ps` e `top` mostram os processos rodando agora."
+   ],
+   "checklist": [
+    "Tenho um Linux para praticar (WSL no Windows, máquina virtual ou servidor de teste)",
+    "Instalei um programa com o gerenciador de pacotes",
+    "Vi as permissões de um arquivo com `ls -l`",
+    "Listei os processos com `ps` ou `top`"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Ao rodar `apt install nginx`, o erro termina com \"are you root?\" (você é root?). O que fazer?",
+     "opcoes": [
+      "Apagar a pasta /etc para liberar o acesso",
+      "Rodar de novo com `sudo`: `sudo` `apt install nginx`",
+      "Desistir, porque o programa não é compatível",
+      "Reiniciar o computador e tentar de novo"
+     ],
+     "correta": 1,
+     "explicacao": "Instalar programas mexe no sistema todo, então exige permissão de administrador. O `sudo` dá essa permissão só para aquele comando."
+    },
+    {
+     "pergunta": "`ls -l` mostra `-rw-r--r--` para script.sh, e `./script.sh` responde \"Permission denied\". Por quê?",
+     "opcoes": [
+      "Falta a permissão de execução (x)",
+      "O arquivo está vazio e não tem o que executar",
+      "O nome do arquivo não pode ter ponto",
+      "O script precisa de internet para rodar"
+     ],
+     "correta": 0,
+     "explicacao": "Nas permissões, r é ler, w é escrever e x é executar. Sem o x, o sistema não deixa rodar o arquivo como programa. Para adicionar: `chmod +x script.sh`."
+    },
+    {
+     "pergunta": "Um colega sugere rodar `chmod 777` em tudo para acabar com os erros de permissão. Qual é o problema?",
+     "opcoes": [
+      "Nenhum, é a solução padrão em servidores",
+      "Ele apaga os arquivos depois de liberar",
+      "Qualquer usuário pode ler, alterar e executar",
+      "Ele deixa os arquivos só para leitura"
+     ],
+     "correta": 2,
+     "explicacao": "Cada 7 libera ler, escrever e executar, e são três: para o dono, para o grupo e para todos os outros usuários. Isso abre uma brecha de segurança. O certo é dar só a permissão necessária para quem precisa."
+    }
+   ],
+   "pergunta_ako": "Se o `sudo` resolve tantos erros, por que não usar sempre?",
+   "recursos": [
+    {
+     "titulo": "Guia Foca GNU/Linux",
+     "fonte": "GuiaFoca (Gleydson Mazioli)",
+     "url": "https://www.guiafoca.org/",
+     "tipo": "livro",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Guia brasileiro clássico, com nível Iniciante para ler online ou baixar em PDF, HTML ou texto.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Linux",
+     "fonte": "Curso em Vídeo",
+     "url": "https://www.cursoemvideo.com/curso/linux/",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim, certificado pago",
+     "nota": "Curso de 40 horas sobre instalar e usar o Linux Mint, incluindo comandos básicos no terminal.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Linux Journey",
+     "fonte": "LabEx (antigo linuxjourney.com)",
+     "url": "https://labex.io/linuxjourney",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Lições curtas e laboratórios no navegador, de linha de comando a permissões e processos, sem precisar de cadastro.",
+     "verificado_em": "2026-10-17"
+    }
+   ]
+  },
+  {
+   "id": "redes",
+   "etapa": "internet",
+   "titulo": "Redes: IP, DNS e portas",
+   "horas": 5,
+   "areas": [
+    "infra",
+    "seguranca"
+   ],
+   "resumo": "Quando você acessa um site, seu computador precisa encontrar outro computador na internet e conversar com ele. O endereço IP é como o endereço de uma casa, o DNS é a lista que traduz nomes como google.com em IPs, e a porta indica qual serviço daquela máquina você quer usar.",
+   "essencial": [
+    "Um IP privado, como `192.168.0.10`, só vale dentro da sua rede. O IP público é o que a internet vê.",
+    "O DNS traduz nomes em IPs. Quando ele falha, parece que a internet caiu, mas o acesso por IP continua funcionando.",
+    "Portas conhecidas: 22 para SSH (acesso ao terminal de outra máquina), 80 para HTTP e 443 para HTTPS.",
+    "`ping` testa se uma máquina responde, e `nslookup` pergunta ao DNS qual é o IP de um nome."
+   ],
+   "checklist": [
+    "Descobri o IP do meu computador na rede de casa",
+    "Rodei `ping` num site e entendi a resposta",
+    "Rodei `nslookup` num domínio e vi o IP",
+    "Sei para que servem as portas 22, 80 e 443"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Nenhum site abre pelo nome, mas `ping 8.8.8.8` responde normalmente. Qual é o problema mais provável?",
+     "opcoes": [
+      "O cabo está desconectado",
+      "O navegador está desatualizado",
+      "Falta memória RAM",
+      "O DNS"
+     ],
+     "correta": 3,
+     "explicacao": "Se o `ping` para um IP responde, a conexão existe. O que falhou foi a tradução de nomes em IPs, que é o trabalho do DNS."
+    },
+    {
+     "pergunta": "Um site com HTTPS normalmente usa qual porta?",
+     "opcoes": [
+      "22",
+      "80",
+      "443",
+      "3306"
+     ],
+     "correta": 2,
+     "explicacao": "A porta padrão do HTTPS é a 443. A 80 é do HTTP sem criptografia, e a 22 é do SSH."
+    },
+    {
+     "pergunta": "Um colega diz que o servidor dele tem o IP `192.168.1.20` e pede para você acessar de casa, pela internet. Por que não vai funcionar direto?",
+     "opcoes": [
+      "Faltou colocar https na frente",
+      "Porque é um IP privado, que só vale dentro da rede dele",
+      "IPs que começam com 192 são bloqueados no Brasil",
+      "O IP está incompleto"
+     ],
+     "correta": 1,
+     "explicacao": "Endereços 192.168.x.x são privados: o mesmo endereço existe em milhões de redes de casa. Para acessar de fora, é preciso outro caminho, como um IP público ou uma VPN (uma conexão segura que coloca você dentro da rede dele)."
+    }
+   ],
+   "pergunta_ako": "Na próxima vez que a internet parecer cair, como você vai descobrir se o problema é a rede, o DNS ou o site?",
+   "recursos": [
+    {
+     "titulo": "Curso Prático de Redes de Computadores e Internet",
+     "fonte": "Curso em Vídeo",
+     "url": "https://www.cursoemvideo.com/curso/curso-pratico-de-redes-de-computadores-e-internet-20-horas/",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim, certificado pago",
+     "nota": "Curso prático de 20 horas com endereçamento IP, DHCP, DNS, protocolos e portas, montando redes de casa e de empresa.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Curso de Redes de Computadores (playlist)",
+     "fonte": "Bóson Treinamentos (YouTube)",
+     "url": "https://www.youtube.com/playlist?list=PLucm8g_ezqNpGh95n-OdEk06ity7YYfvU",
+     "tipo": "video",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Playlist com mais de 70 aulas sobre conceitos de redes, como modelo OSI, protocolos e endereçamento.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Como a Internet funciona?",
+     "fonte": "MDN Web Docs",
+     "url": "https://developer.mozilla.org/pt-BR/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Texto curto que explica roteadores, provedores, endereços IP e nomes de domínio, e a diferença entre internet e web.",
+     "verificado_em": "2026-10-17"
+    }
+   ]
+  },
+  {
+   "id": "web",
+   "etapa": "internet",
+   "titulo": "Como a web funciona",
+   "horas": 4,
+   "areas": [
+    "dev",
+    "qa",
+    "seguranca"
+   ],
+   "resumo": "Ao abrir um site, o navegador (o cliente) faz um pedido HTTP a um servidor, que devolve uma resposta: uma página, uma imagem ou dados. Toda resposta tem um código de status que diz se deu certo. Entender esse vai e volta ajuda a achar erros em qualquer área.",
+   "essencial": [
+    "Os métodos mais comuns: GET busca algo, POST envia dados.",
+    "Códigos de status: 2xx deu certo, 3xx redirecionou, 4xx é erro de quem pediu (como o 404, não encontrado), 5xx é erro no servidor.",
+    "HTTPS é o HTTP com criptografia, que protege o que trafega.",
+    "O navegador tem ferramentas de desenvolvedor (tecla F12 no Windows e no Linux, Cmd+Option+I no Mac) que mostram cada pedido."
+   ],
+   "checklist": [
+    "Abri as ferramentas de desenvolvedor (F12) na aba Rede e vi os pedidos de um site",
+    "Achei um pedido com status 200 e entendi o que ele trouxe",
+    "Provoquei um 404 digitando um endereço que não existe",
+    "Sei explicar a diferença entre HTTP e HTTPS"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Clientes recebem \"500 Internal Server Error\" ao finalizar a compra. Onde está o problema mais provável?",
+     "opcoes": [
+      "No servidor, no código ou num serviço que ele usa",
+      "No navegador do cliente, que está desatualizado",
+      "Na internet do cliente, que está lenta",
+      "No DNS, que não encontrou o site"
+     ],
+     "correta": 0,
+     "explicacao": "Códigos 5xx indicam erro do lado do servidor. O pedido chegou, mas o servidor falhou ao responder. Se o problema fosse DNS ou internet, nem chegaria um código de status."
+    },
+    {
+     "pergunta": "Um link antigo do blog mostra \"404\". O que isso significa?",
+     "opcoes": [
+      "O servidor está fora do ar agora",
+      "A página precisa de login e senha",
+      "Tem gente demais acessando ao mesmo tempo",
+      "A página não foi encontrada naquele endereço"
+     ],
+     "correta": 3,
+     "explicacao": "O 404 quer dizer que o servidor respondeu, mas não existe nada naquele endereço. Muitas vezes a página mudou de lugar."
+    },
+    {
+     "pergunta": "Por que não digitar sua senha num site que abre só com http://, sem o s?",
+     "opcoes": [
+      "Porque sites sem o s carregam mais devagar",
+      "Porque os dados viajam sem criptografia",
+      "Porque só sites pagos usam http://",
+      "Porque o navegador não consegue salvar a senha"
+     ],
+     "correta": 1,
+     "explicacao": "Sem o HTTPS, nada é embaralhado: quem estiver no meio do caminho, como numa rede Wi-Fi pública, pode ler o que você envia."
+    }
+   ],
+   "pergunta_ako": "Quando um site não abre, que informação da aba Rede você mandaria para alguém te ajudar?",
+   "recursos": [
+    {
+     "titulo": "Como a Web funciona",
+     "fonte": "MDN Web Docs",
+     "url": "https://developer.mozilla.org/pt-BR/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Mostra o caminho de uma página: navegador pede ao servidor, DNS acha o endereço, HTTP leva os dados em pacotes.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Uma visão geral do HTTP",
+     "fonte": "MDN Web Docs",
+     "url": "https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Guides/Overview",
+     "tipo": "documentacao",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Explica requisições e respostas HTTP, cabeçalhos, cookies e por que o protocolo não guarda estado.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "O que é um servidor web?",
+     "fonte": "MDN Web Docs",
+     "url": "https://developer.mozilla.org/pt-BR/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_web_server",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Explica o que é um servidor web, em hardware e software, e como ele entrega sites estáticos e dinâmicos.",
+     "verificado_em": "2026-10-17"
+    }
+   ]
+  },
+  {
+   "id": "logica",
+   "etapa": "codigo",
+   "titulo": "Lógica de programação",
+   "horas": 8,
+   "areas": [
+    "dev",
+    "dados",
+    "qa"
+   ],
+   "resumo": "Programar é dar instruções muito precisas para o computador. Antes de qualquer linguagem, vem a lógica: quebrar um problema em passos, decidir com condições (se e senão) e repetir com laços. Quem domina a lógica aprende qualquer linguagem mais rápido.",
+   "essencial": [
+    "Algoritmo é uma sequência finita de passos para resolver um problema.",
+    "Variáveis guardam valores, condições decidem o caminho e laços repetem.",
+    "Escreva a solução em português (pseudocódigo) antes de programar.",
+    "Teste com casos fáceis, difíceis e estranhos, como zero, número negativo e lista vazia."
+   ],
+   "checklist": [
+    "Escrevi em pseudocódigo um algoritmo do dia a dia, como fazer café",
+    "Resolvi três exercícios com condição (se e senão)",
+    "Resolvi três exercícios com laço",
+    "Testei uma solução com um caso estranho: zero, vazio ou negativo"
+   ],
+   "quiz": [
+    {
+     "pergunta": "O algoritmo diz: \"se a nota for maior que 7, aprovado; senão, reprovado\". Pela regra da escola, quem tira 7 é aprovado. O que está errado?",
+     "opcoes": [
+      "Nada, a condição está certa",
+      "Faltou um laço para repetir a nota",
+      "A condição deveria ser \"maior ou igual a 7\"",
+      "A nota deveria ser guardada como texto"
+     ],
+     "correta": 2,
+     "explicacao": "Com \"maior que 7\", quem tira exatamente 7 cai no senão e é reprovado. Erros nos limites, como esse, estão entre os mais comuns."
+    },
+    {
+     "pergunta": "Você precisa somar os números de 1 a 100. Que estrutura usar?",
+     "opcoes": [
+      "Um laço que repete, somando cada número",
+      "Uma condição se e senão",
+      "Cem variáveis, uma para cada número",
+      "Nenhuma, isso não dá para fazer com código"
+     ],
+     "correta": 0,
+     "explicacao": "Laços servem para repetir a mesma ação várias vezes. A cada volta, você soma o número atual ao total."
+    },
+    {
+     "pergunta": "Um programa calcula a média de uma lista de notas. Que teste tem mais chance de revelar um erro escondido?",
+     "opcoes": [
+      "Uma lista com três notas",
+      "Uma lista vazia",
+      "Uma lista só com notas 10",
+      "Uma lista com cinco notas"
+     ],
+     "correta": 1,
+     "explicacao": "Com a lista vazia, a média vira uma divisão por zero. Casos extremos revelam erros que os casos comuns escondem."
+    }
+   ],
+   "pergunta_ako": "Antes de procurar a resposta pronta, você tentou escrever a solução em português?",
+   "recursos": [
+    {
+     "titulo": "Algoritmos e Lógica de Programação",
+     "fonte": "Curso em Vídeo",
+     "url": "https://www.cursoemvideo.com/curso/curso-de-algoritmo/",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim, certificado pago",
+     "nota": "Curso de 40 horas do Gustavo Guanabara para quem nunca programou, com variáveis, condições e repetições.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Portugol Webstudio",
+     "fonte": "Portugol Webstudio (código aberto)",
+     "url": "https://portugol.dev/",
+     "tipo": "ferramenta",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Editor online para escrever e rodar algoritmos em português direto no navegador, sem instalar nada.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "CC50: o curso de Ciência da Computação de Harvard",
+     "fonte": "Fundação Estudar",
+     "url": "https://www.estudarfora.org.br/cc50-v2/",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Versão brasileira do CS50, com cerca de 25 horas de aulas sobre algoritmos e programação para iniciantes.",
+     "verificado_em": "2026-10-17"
+    }
+   ]
+  },
+  {
+   "id": "python",
+   "etapa": "codigo",
+   "titulo": "Primeira linguagem: Python",
+   "horas": 15,
+   "areas": [
+    "dev",
+    "dados",
+    "infra"
+   ],
+   "resumo": "Python é uma boa primeira linguagem: a escrita é próxima do inglês e ela é usada em automação, dados, IA, sistemas e infraestrutura. O objetivo aqui não é dominar Python, e sim transformar a lógica que você aprendeu em programas que rodam.",
+   "essencial": [
+    "`print` mostra algo na tela, e `input` lê o que a pessoa digita, sempre como texto.",
+    "Tipos básicos: números (`int` e `float`), texto (`str`), listas e dicionários.",
+    "A indentação, os espaços no começo da linha, faz parte da linguagem.",
+    "Quando der erro, comece pela última linha da mensagem: ela diz o tipo do erro."
+   ],
+   "checklist": [
+    "Instalei o Python, ou usei um ambiente online, e rodei meu primeiro `print`",
+    "Fiz um programa que lê um dado e responde usando uma condição",
+    "Usei uma lista e um laço for",
+    "Li uma mensagem de erro e corrigi o problema sozinho"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Este código dá TypeError quando a pessoa digita a idade. Por quê?",
+     "codigo": "idade = input(\"Idade: \")\nif idade >= 18:\n    print(\"Pode entrar\")",
+     "opcoes": [
+      "idade é uma palavra reservada do Python",
+      "Faltou um `print` antes do if para mostrar a idade",
+      "O 18 deveria estar entre aspas, como texto",
+      "`input` devolve texto, e texto não se compara com número"
+     ],
+     "correta": 3,
+     "explicacao": "Tudo que vem do `input` é texto (`str`). No Python 3, comparar texto com número usando >= dá TypeError: '>=' not supported between instances of '`str`' and '`int`'. O certo é converter: `idade = int(input(\"Idade: \"))`. Pôr o 18 entre aspas tira o erro, mas compara letra por letra: \"9\" >= \"18\" dá True."
+    },
+    {
+     "pergunta": "Aparece um IndentationError. O que procurar?",
+     "opcoes": [
+      "Uma variável usada antes de receber valor",
+      "Espaços no começo de uma linha fora do padrão",
+      "Uma biblioteca que não foi instalada",
+      "Uma divisão por zero no meio do código"
+     ],
+     "correta": 1,
+     "explicacao": "No Python, os espaços no começo da linha dizem o que está dentro de cada bloco. Uma linha com espaços a mais ou a menos que as outras do mesmo bloco causa esse erro. Misturar tab com espaço também dá problema."
+    },
+    {
+     "pergunta": "Como guardar o nome e o telefone de vários contatos para buscar o telefone pelo nome?",
+     "opcoes": [
+      "Num dicionário, com o nome como chave",
+      "Numa única variável de texto, com tudo junto",
+      "Num número inteiro que junta nome e telefone",
+      "Num laço while que pergunta sem parar"
+     ],
+     "correta": 0,
+     "explicacao": "Dicionários guardam pares de chave e valor. Com o nome como chave e o telefone como valor, `contatos[\"Ana\"]` devolve o telefone da Ana na hora."
+    }
+   ],
+   "pergunta_ako": "Que tarefa repetitiva do seu dia daria para automatizar com um script de dez linhas?",
+   "recursos": [
+    {
+     "titulo": "Python 3, Mundo 1: Fundamentos",
+     "fonte": "Curso em Vídeo",
+     "url": "https://www.cursoemvideo.com/curso/python-3-mundo-1/",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim, certificado pago",
+     "nota": "Primeiro de quatro módulos de Python, com aulas e exercícios práticos para quem está começando.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Linguagem de Programação Python, Básico",
+     "fonte": "Fundação Bradesco, Escola Virtual",
+     "url": "https://www.ev.org.br/cursos/linguagem-de-programacao-python-basico",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Curso de 18 horas que junta lógica de programação e Python, com variáveis, estruturas lógicas e funções.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "O tutorial do Python",
+     "fonte": "Documentação oficial do Python",
+     "url": "https://docs.python.org/pt-br/3/tutorial/index.html",
+     "tipo": "documentacao",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Tutorial oficial traduzido, bom para depois do básico, pois parte do princípio que você já programou um pouco.",
+     "verificado_em": "2026-10-17"
+    }
+   ]
+  },
+  {
+   "id": "git",
+   "etapa": "codigo",
+   "titulo": "Git e GitHub",
+   "horas": 5,
+   "areas": [
+    "dev",
+    "infra",
+    "dados",
+    "qa"
+   ],
+   "resumo": "O Git guarda o histórico do seu código: cada commit é uma foto do projeto que você pode consultar ou para a qual pode voltar. O GitHub é um site que guarda repositórios Git e permite colaborar. Git aparece com frequência nas vagas técnicas, de desenvolvimento a infraestrutura e dados.",
+   "essencial": [
+    "`git init` cria um repositório, `git add` escolhe o que entra no próximo commit e `git commit` salva a foto.",
+    "`git status` mostra o que mudou. Rode sempre que estiver em dúvida.",
+    "`git push` envia para o GitHub, e `git pull` traz o que outras pessoas enviaram.",
+    "Nunca faça commit de senhas ou chaves. Depois de publicado, considere vazado."
+   ],
+   "checklist": [
+    "Instalei o Git e configurei meu nome e e-mail",
+    "Criei um repositório e fiz três commits com mensagens claras",
+    "Publiquei o repositório no GitHub",
+    "Desfiz uma mudança usando o Git"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Você editou um arquivo e rodou `git commit`, mas o Git responde \"no changes added to commit\" (nenhuma mudança adicionada ao commit). O que faltou?",
+     "opcoes": [
+      "Rodar `git push`",
+      "Rodar `git add` no arquivo",
+      "Reiniciar o terminal",
+      "Criar outro repositório"
+     ],
+     "correta": 1,
+     "explicacao": "O Git só inclui no commit o que você escolheu com `git add`. Rode `git status` para ver o que mudou e o que já foi adicionado."
+    },
+    {
+     "pergunta": "Você fez commit de uma senha e enviou para um repositório público. Qual é a primeira ação?",
+     "opcoes": [
+      "Trocar a senha agora, porque ela já pode ter sido copiada",
+      "Apagar o arquivo e fazer um novo commit",
+      "Deixar o repositório privado e seguir em frente",
+      "Renomear o arquivo que tem a senha"
+     ],
+     "correta": 0,
+     "explicacao": "A senha continua no histórico mesmo depois de apagar o arquivo, e robôs procuram senhas em repositórios públicos o tempo todo. Primeiro troque a senha. Depois limpe o histórico."
+    },
+    {
+     "pergunta": "Qual mensagem de commit ajuda mais quem lê o histórico depois?",
+     "opcoes": [
+      "ajustes",
+      "arrumei umas coisas que estavam dando problema",
+      "corrige frete de pedidos acima de 10 kg",
+      "asdf"
+     ],
+     "correta": 2,
+     "explicacao": "Uma boa mensagem diz o que mudou e, quando ajuda, por quê. Daqui a meses, quem vai agradecer é você mesmo."
+    }
+   ],
+   "pergunta_ako": "Daqui a seis meses, suas mensagens de commit vão explicar o que você fez e por quê?",
+   "recursos": [
+    {
+     "titulo": "Git e GitHub",
+     "fonte": "Curso em Vídeo",
+     "url": "https://www.cursoemvideo.com/curso/curso-de-git-e-github/",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim, certificado pago",
+     "nota": "Curso de 20 horas sobre commits, branches e GitHub Pages, pensado para iniciantes.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Pro Git (2ª edição)",
+     "fonte": "git-scm.com",
+     "url": "https://git-scm.com/book/pt-br/v2",
+     "tipo": "livro",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Livro de referência do Git traduzido, para ler online ou baixar em PDF e EPUB; os capítulos 1 a 3 cobrem o básico.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Introduction to GitHub",
+     "fonte": "GitHub Skills",
+     "url": "https://github.com/skills/introduction-to-github",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Exercício guiado de menos de uma hora: criar branch, fazer commit, abrir e aceitar um pull request.",
+     "verificado_em": "2026-10-17"
+    }
+   ]
+  },
+  {
+   "id": "ia-responsavel",
+   "etapa": "responsa",
+   "titulo": "Usar IA com responsabilidade",
+   "horas": 2,
+   "areas": [],
+   "resumo": "A IA escreve código e comandos em segundos, mas quem responde pelo que roda é você. Ela pode inventar comandos que não existem, sugerir algo inseguro ou acertar sem que você aprenda nada. Use a IA para acelerar o que você entende, não para pular o entendimento.",
+   "essencial": [
+    "Antes de rodar algo que a IA sugeriu, responda: o que isso muda, como desfazer e como saber que deu certo.",
+    "Peça para a IA explicar cada parte, não só entregar a resposta.",
+    "Desconfie de flags, funções e versões que você nunca viu. Confira na documentação.",
+    "Nunca cole senhas, chaves ou dados de clientes numa IA."
+   ],
+   "checklist": [
+    "Configurei minha IA com o guia \"Dicas antes de rodar\"",
+    "Pedi para a IA explicar um comando em vez de só entregar",
+    "Conferi na documentação oficial algo que a IA sugeriu",
+    "Resolvi um exercício sem IA e depois comparei com a resposta dela"
+   ],
+   "quiz": [
+    {
+     "pergunta": "A IA sugere rodar `terraform apply --safe-mode`. O Terraform é uma ferramenta que cria servidores na nuvem, e você nunca viu essa flag (opção do comando). O que fazer?",
+     "opcoes": [
+      "Rodar, porque a IA não inventaria uma opção",
+      "Rodar direto no sistema real para ver o que acontece",
+      "Conferir com `terraform apply -help` ou na documentação",
+      "Perguntar para outra IA e rodar se ela concordar"
+     ],
+     "correta": 2,
+     "explicacao": "IAs às vezes inventam opções que parecem reais. Essa flag não existe no Terraform. A ajuda do comando e a documentação oficial são a fonte da verdade."
+    },
+    {
+     "pergunta": "Você quer ajuda da IA para entender um erro num sistema da empresa, mas o log tem e-mails e CPFs de clientes. O que fazer?",
+     "opcoes": [
+      "Colar o log inteiro, porque a IA não guarda nada",
+      "Trocar os dados pessoais por fictícios antes de colar",
+      "Mandar um print do log em vez do texto",
+      "Nunca mais usar IA para nada no trabalho"
+     ],
+     "correta": 1,
+     "explicacao": "Dados pessoais de clientes são protegidos pela LGPD (Lei Geral de Proteção de Dados) e pelas regras da empresa. Um print tem os mesmos dados. Troque por dados fictícios, como `fulano@exemplo.com`, e siga a regra da empresa sobre uso de IA."
+    },
+    {
+     "pergunta": "Qual uso da IA mais ajuda a aprender?",
+     "opcoes": [
+      "Tentar primeiro e depois pedir para a IA explicar o que você errou",
+      "Copiar a resposta e seguir para o próximo exercício",
+      "Pedir a resposta de todos os exercícios de uma vez",
+      "Usar a IA só para escrever textos e e-mails"
+     ],
+     "correta": 0,
+     "explicacao": "O esforço de tentar primeiro é o que faz aprender. A IA entra como revisora e professora, não como quem faz por você."
+    }
+   ],
+   "pergunta_ako": "Na última vez que você usou IA, você saberia refazer aquilo sem ela?",
+   "recursos": [
+    {
+     "titulo": "Dicas antes de rodar",
+     "fonte": "Iniciativa Ako",
+     "url": "../guias/dicas-antes-de-rodar-prompt/pagina.html",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Configure sua IA em uns 5 minutos para dizer o que um comando muda, como desfazer e como conferir."
+    },
+    {
+     "titulo": "Skill antes-de-rodar",
+     "fonte": "Iniciativa Ako",
+     "url": "https://github.com/rizzygo/iniciativa-ako/tree/main/skills/antes-de-rodar",
+     "tipo": "ferramenta",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Para quem usa Claude Code, GitHub Copilot ou Cortex Code: guard rails contra alucinação e retrabalho."
+    },
+    {
+     "titulo": "Inteligência Artificial: IA é assistente. O responsável é você!",
+     "fonte": "CERT.br, Cartilha de Segurança para Internet",
+     "url": "https://cartilha.cert.br/fasciculos/ia/fasciculo-ia.pdf",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Fascículo curto sobre limites da IA, cuidado com dados pessoais, checagem de respostas e golpes com deepfake.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Introdução aos conceitos de IA",
+     "fonte": "Microsoft Learn",
+     "url": "https://learn.microsoft.com/pt-br/training/modules/get-started-ai-fundamentals/",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Módulo para iniciantes sobre tipos de IA, como IA generativa e visão computacional, com unidade sobre IA responsável.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Ética na Era da IA",
+     "fonte": "Fundação Bradesco, Escola Virtual",
+     "url": "https://www.ev.org.br/cursos/etica_IA",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Webinário de 2 horas sobre ética, lei e viés algorítmico no uso de inteligência artificial.",
+     "verificado_em": "2026-10-17"
+    }
+   ]
+  },
+  {
+   "id": "seguranca",
+   "etapa": "responsa",
+   "titulo": "Segurança digital básica",
+   "horas": 3,
+   "areas": [
+    "seguranca"
+   ],
+   "resumo": "Em TI, você vai ter acesso a sistemas e a dados de outras pessoas. Cuidar da sua própria segurança é o primeiro passo para cuidar da segurança dos outros. Muitos ataques começam com algo simples: uma senha fraca, uma senha repetida ou um link falso.",
+   "essencial": [
+    "Use um gerenciador de senhas e uma senha diferente para cada serviço.",
+    "Ative a verificação em duas etapas (2FA), de preferência por aplicativo autenticador em vez de SMS, que pode ser desviado num golpe de troca de chip.",
+    "Desconfie de urgência: \"sua conta será bloqueada hoje\" é uma tática comum de golpe (phishing).",
+    "Mantenha o sistema e os aplicativos atualizados."
+   ],
+   "checklist": [
+    "Ativei a verificação em duas etapas no meu e-mail principal",
+    "Comecei a usar um gerenciador de senhas",
+    "Troquei as senhas repetidas das contas mais importantes",
+    "Aprendi a conferir o endereço real de um link antes de clicar"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Chega um e-mail \"do banco\" pedindo para clicar e confirmar seus dados em 24 horas, senão a conta será bloqueada. O que fazer?",
+     "opcoes": [
+      "Clicar no link só para conferir",
+      "Responder o e-mail pedindo mais informações",
+      "Não clicar e entrar pelo aplicativo do banco",
+      "Encaminhar para os amigos ficarem atentos"
+     ],
+     "correta": 2,
+     "explicacao": "Pressa e ameaça são sinais clássicos de golpe. Se tiver dúvida, entre pelo aplicativo ou digitando o endereço oficial, nunca pelo link do e-mail."
+    },
+    {
+     "pergunta": "Por que usar a mesma senha em vários sites é perigoso?",
+     "opcoes": [
+      "Porque fica mais fácil esquecer a senha",
+      "Porque a senha vazada de um site abre os outros",
+      "Porque os sites bloqueiam senhas repetidas",
+      "Porque o login fica mais lento em todos"
+     ],
+     "correta": 1,
+     "explicacao": "Vazamentos acontecem o tempo todo, e criminosos testam a senha vazada em vários outros sites. Com senhas diferentes, um vazamento não abre suas outras contas."
+    },
+    {
+     "pergunta": "Alguém liga dizendo ser do suporte da empresa e pede o código de seis dígitos que chegou no seu celular. O que fazer?",
+     "opcoes": [
+      "Não passar. O suporte de verdade nunca pede esse código",
+      "Passar, porque o suporte precisa dele para ajudar",
+      "Passar só metade do código, por segurança",
+      "Pedir o nome da pessoa e depois passar"
+     ],
+     "correta": 0,
+     "explicacao": "Esse código é a segunda etapa do seu login. Quem tem sua senha e o código entra na sua conta. O golpe é comum porque parece um pedido normal."
+    }
+   ],
+   "pergunta_ako": "Se alguém conseguisse a senha do seu e-mail hoje, a que outras contas essa pessoa teria acesso?",
+   "recursos": [
+    {
+     "titulo": "Proteja sua vida digital: use autenticação forte",
+     "fonte": "CERT.br, Cartilha de Segurança para Internet",
+     "url": "https://cartilha.cert.br/fasciculos/autenticacao/fasciculo-autenticacao.pdf",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Fascículo sobre senhas fortes e diferentes, gerenciador de senhas e verificação em duas etapas.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Golpes: Não se Deixe Enganar",
+     "fonte": "CERT.br, Cartilha de Segurança para Internet",
+     "url": "https://cartilha.cert.br/fasciculos/golpes/fasciculo-golpes.pdf",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Fascículo sobre engenharia social, mensagens falsas com links maliciosos e golpes com voz e vídeo feitos por IA.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Introduction to Cybersecurity (Introdução à Cibersegurança)",
+     "fonte": "Cisco Networking Academy",
+     "url": "https://www.netacad.com/pt/courses/introduction-to-cybersecurity?courseLang=pt-BR",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Curso online e no seu ritmo sobre ameaças digitais e como se proteger; pede cadastro gratuito.",
+     "verificado_em": "2026-10-17"
+    }
+   ]
+  },
+  {
+   "id": "soft-skills",
+   "etapa": "responsa",
+   "titulo": "Comunicação e trabalho em equipe",
+   "horas": 3,
+   "areas": [
+    "produto"
+   ],
+   "resumo": "Em tecnologia, quase nada se faz sozinho. Explicar um problema, pedir ajuda na hora certa, dar e receber feedback e escrever com clareza pesam tanto quanto o conhecimento técnico, principalmente no começo.",
+   "essencial": [
+    "Ao relatar um problema, diga o que você fez, o que esperava, o que aconteceu e o que já tentou.",
+    "Diga \"não sei, vou descobrir\" em vez de chutar.",
+    "Atualize as pessoas antes que elas precisem perguntar.",
+    "Feedback é sobre o trabalho, não sobre a pessoa."
+   ],
+   "checklist": [
+    "Escrevi um relato de problema no modelo fiz, esperava, aconteceu, tentei",
+    "Pedi feedback sobre algo que fiz",
+    "Entrei numa comunidade ou grupo de estudo",
+    "Ajudei alguém com uma dúvida"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Você recebeu uma tarefa, está travado há dois dias e o prazo é amanhã. O que fazer?",
+     "opcoes": [
+      "Esperar até conseguir resolver sozinho",
+      "Entregar no prazo, mesmo sem testar",
+      "Pedir para um colega fazer, sem avisar ninguém",
+      "Avisar o responsável agora e pedir ajuda"
+     ],
+     "correta": 3,
+     "explicacao": "Avisar cedo, contando o que já tentou, dá tempo de mudar o plano. Esconder o problema até o prazo é o que mais quebra a confiança num time."
+    },
+    {
+     "pergunta": "No primeiro emprego, alguém pergunta numa reunião algo que você não sabe. Qual é a melhor resposta?",
+     "opcoes": [
+      "\"Não sei, vou descobrir e te respondo amanhã.\"",
+      "Inventar uma resposta que pareça certa",
+      "Ficar em silêncio até alguém responder",
+      "Fingir que não entendeu a pergunta"
+     ],
+     "correta": 0,
+     "explicacao": "Ninguém espera que você saiba tudo. Espera que seja honesto e cumpra o que combinou."
+    },
+    {
+     "pergunta": "Um colega revisa seu código e aponta três problemas. Como reagir?",
+     "opcoes": [
+      "Defender cada linha até o colega desistir",
+      "Agradecer, entender cada ponto e perguntar quando discordar",
+      "Ignorar os comentários e seguir em frente",
+      "Pedir revisão para outra pessoa, mais tolerante"
+     ],
+     "correta": 1,
+     "explicacao": "Revisão de código (code review) é uma das melhores formas de aprender. Discordar é válido, desde que seja para entender, não para se defender."
+    }
+   ],
+   "pergunta_ako": "Quando foi a última vez que você ensinou algo para alguém? O que você aprendeu ao explicar?",
+   "recursos": [
+    {
+     "titulo": "Como fazer perguntas inteligentes",
+     "fonte": "Área31 Hackerspace (tradução do guia de Eric Raymond)",
+     "url": "https://area31.net.br/wiki/Como_fazer_perguntas_inteligentes",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Ensina a pedir ajuda bem: pesquisar antes, descrever o problema com detalhes e dar retorno quando resolver.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Comunicação Empresarial",
+     "fonte": "Fundação Bradesco, Escola Virtual",
+     "url": "https://www.ev.org.br/cursos/comunicacao-empresarial",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Curso de 12 horas para se comunicar melhor por escrito e falando no ambiente de trabalho.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Primeiro emprego em tecnologia: 12 passos para começar na área de TI",
+     "fonte": "Serasa Experian (blog de carreiras)",
+     "url": "https://www.serasaexperian.com.br/carreiras/blog-carreiras/primeiro-emprego-em-tecnologia/",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Passo a passo de carreira: escolher área, montar projetos, cuidar do LinkedIn, buscar estágio e se preparar para entrevistas.",
+     "verificado_em": "2026-10-17"
+    }
+   ]
+  },
+  {
+   "id": "projeto",
+   "etapa": "pratica",
+   "titulo": "Seu primeiro projeto no GitHub",
+   "horas": 10,
+   "areas": [],
+   "resumo": "Um projeto pequeno e terminado ensina mais do que dez tutoriais pela metade. Ele junta tudo da trilha: terminal, lógica, código, Git e comunicação. E vira uma prova concreta do que você sabe fazer.",
+   "essencial": [
+    "Escolha um problema seu ou de alguém perto: uma calculadora de gastos, um script que organiza arquivos, uma página pessoal.",
+    "Comece pelo menor pedaço que funciona e melhore aos poucos.",
+    "Escreva um README, o arquivo de apresentação do projeto, dizendo o que ele é, como rodar e o que você aprendeu.",
+    "Peça para alguém testar e ouça o que travou."
+   ],
+   "checklist": [
+    "Escolhi um problema real e pequeno",
+    "Fiz uma primeira versão que funciona",
+    "Escrevi um README com como rodar e o que aprendi",
+    "Publiquei no GitHub e pedi para alguém testar"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Você quer fazer um projeto para o portfólio. Qual é o melhor começo?",
+     "opcoes": [
+      "Um clone completo da Netflix, com tudo que ela tem",
+      "Esperar até saber todas as tecnologias",
+      "Um script que resolve um problema seu, terminado e com README",
+      "Copiar um projeto pronto da internet e publicar"
+     ],
+     "correta": 2,
+     "explicacao": "Projeto terminado e explicado vale mais que projeto grande e pela metade. E ele mostra como você pensa."
+    },
+    {
+     "pergunta": "Quem abre seu repositório pela primeira vez precisa saber o que o projeto faz e como rodar. Onde isso fica?",
+     "opcoes": [
+      "No README",
+      "Na mensagem do primeiro commit",
+      "No nome das variáveis",
+      "Em lugar nenhum, o código fala por si"
+     ],
+     "correta": 0,
+     "explicacao": "O README é a porta de entrada do repositório. O GitHub mostra o conteúdo dele logo na página inicial do projeto."
+    },
+    {
+     "pergunta": "Seu projeto funciona no seu computador, mas um amigo não consegue rodar. O que isso mostra?",
+     "opcoes": [
+      "Que o amigo fez alguma coisa errada",
+      "Que o README não explica como instalar e rodar",
+      "Que o projeto precisa ser refeito do zero",
+      "Que o amigo precisa de um computador melhor"
+     ],
+     "correta": 1,
+     "explicacao": "Faltam no README as dependências, que são os programas e bibliotecas que o projeto precisa (inclusive a versão do Python), e os passos de instalação. \"Na minha máquina funciona\" é um clássico. Escrever os passos e testar em outro computador faz parte de terminar um projeto."
+    }
+   ],
+   "pergunta_ako": "Seu projeto resolve um problema real? Para quem?",
+   "recursos": [
+    {
+     "titulo": "Como montar um GitHub que ajuda você a conseguir oportunidades em TI",
+     "fonte": "Curso em Vídeo (blog)",
+     "url": "https://www.cursoemvideo.com/blog/como-montar-um-github-que-ajuda-voce-a-conseguir-oportunidades-em-ti/",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Dicas para organizar repositórios, escrever README, fazer bons commits e evitar projetos abandonados.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Dicas para usar o GitHub como portfólio",
+     "fonte": "GitHub no DEV Community",
+     "url": "https://dev.to/github/dicas-para-usar-o-github-como-portfolio-2ab8",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Mostra como criar o README de perfil, preencher a bio e fixar de 1 a 6 projetos com boas descrições.",
+     "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Como montar um portfólio no GitHub",
+     "fonte": "Mulheres Programando",
+     "url": "https://mulheresprogramando.com.br/como-montar-um-portfolio-no-github/",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Sugere poucos projetos bem feitos, cada um com README completo, e como começar a contribuir com código aberto.",
+     "verificado_em": "2026-10-17"
+    }
+   ]
+  },
+  {
+   "id": "escolha-caminho",
+   "etapa": "pratica",
+   "titulo": "Escolha seu próximo caminho",
+   "horas": 1,
+   "tipo": "ramificacao",
+   "areas": [],
+   "resumo": "Você já tem a base que toda área usa. Agora é hora de escolher onde aprofundar. A escolha não é para sempre: muita gente começa numa área e muda depois, levando o que aprendeu.",
+   "essencial": [
+    "Escolha pela área cujo dia a dia mais te atraiu, não só pelo salário.",
+    "Volte nos tópicos com que você mais se divertiu: eles dão pistas.",
+    "Converse com alguém da área antes de decidir."
+   ],
+   "pergunta_ako": "Que área você escolheria se ninguém fosse opinar?",
+   "recursos": []
+  }
+ ],
+ "areas": [
+  {
+   "id": "infra",
+   "nome": "Infraestrutura e cloud",
+   "cor": "#1F4FD8",
+   "descricao": "Servidores, redes, Linux, nuvem (com foco em GCP na Rizzygo), automação e observabilidade.",
+   "roadmap": "https://roadmap.sh/devops"
+  },
+  {
+   "id": "dev",
+   "nome": "Desenvolvimento",
+   "cor": "#16855A",
+   "descricao": "Sites, aplicativos e sistemas: frontend, backend ou os dois.",
+   "roadmap": "https://roadmap.sh/backend"
+  },
+  {
+   "id": "dados",
+   "nome": "Dados",
+   "cor": "#7246C9",
+   "descricao": "SQL, planilhas, análise e visualização de dados. Porta de entrada para IA aplicada.",
+   "roadmap": "https://roadmap.sh/data-analyst"
+  },
+  {
+   "id": "qa",
+   "nome": "Qualidade (QA)",
+   "cor": "#0E8A99",
+   "descricao": "Testes manuais e automatizados para achar problemas antes do cliente.",
+   "roadmap": "https://roadmap.sh/qa"
+  },
+  {
+   "id": "seguranca",
+   "nome": "Segurança",
+   "cor": "#C93A3A",
+   "descricao": "Proteger sistemas, redes e pessoas. Linux e redes são a base.",
+   "roadmap": "https://roadmap.sh/cyber-security"
+  },
+  {
+   "id": "produto",
+   "nome": "Produto e agilidade",
+   "cor": "#C76A12",
+   "descricao": "Entender o problema do cliente, decidir o que construir e organizar o time.",
+   "roadmap": "https://roadmap.sh/product-manager"
+  }
+ ]
+}
