@@ -30,7 +30,7 @@
 
   /* ---------- estado ---------- */
   function vazio() {
-    return { versao: 1, perfil: null, topicos: {}, dias: [], conquistas: {}, caminho: null };
+    return { versao: 1, perfil: null, topicos: {}, dias: [], conquistas: {}, caminho: null, revisoes: [] };
   }
   function carregar() {
     try {
@@ -133,6 +133,7 @@
       { id: 'sem-chute', nome: 'Sem chute', desc: 'Acertou tudo de primeira em três desafios.', ok: function () { return contarTopicos(function (t) { var s = estado.topicos[t.id]; return s && s.quiz && s.quiz.primeiraPerfeita; }) >= 3; } },
       { id: 'mao-dupla', nome: 'Mão de duas vias', desc: 'Explicou para outra pessoa o que aprendeu em três tópicos.', ok: function () { return contarTopicos(function (t) { var s = estado.topicos[t.id]; return s && s.ensinei; }) >= 3; } },
       { id: 'questionador', nome: 'Questionador', desc: 'Respondeu a cinco perguntas Ako com suas palavras.', ok: function () { return contarTopicos(function (t) { var s = estado.topicos[t.id]; return s && (s.reflexao || '').trim().length >= MIN_REFLEXAO; }) >= 5; } },
+      { id: 'memoria', nome: 'Memória afiada', desc: 'Fez três revisões rápidas com pelo menos 4 acertos de 5.', ok: function () { return estado.revisoes.filter(function (r) { return r.acertos >= 4; }).length >= 3; } },
       { id: 'constancia', nome: 'Constância', desc: 'Estudou em cinco dias diferentes.', ok: function () { return estado.dias.length >= 5; } },
       { id: 'trilha', nome: 'Trilha completa', desc: 'Concluiu todos os tópicos de Primeiros passos em TI.', ok: function () { return dados.topicos.every(concluido); } }
     );
@@ -210,6 +211,7 @@
     else if (rota === 'roteiro') { viewRoteiro(); titulo = 'Seu roteiro | ' + titulo; }
     else if (rota === 'trilha') { viewTrilha(); titulo = dados.titulo + ' | ' + titulo; }
     else if (rota === 't' && topico(partes[1])) { viewTopico(partes[1]); titulo = topico(partes[1]).titulo + ' | ' + titulo; }
+    else if (rota === 'revisao') { viewRevisao(); titulo = 'Revisão rápida | ' + titulo; }
     else if (rota === 'conquistas') { viewConquistas(); titulo = 'Conquistas | ' + titulo; }
     else viewInicio();
     document.title = titulo;
@@ -251,7 +253,7 @@
   function viewInicio() {
     var prox = proximoTopico();
     var cta = estado.perfil
-      ? '<a class="btn" href="#/t/' + (prox ? prox.id : dados.topicos[0].id) + '">Continuar de onde parei</a><a class="btn btn-sec" href="#/roteiro">Ver meu roteiro</a>'
+      ? '<a class="btn" href="#/t/' + (prox ? prox.id : dados.topicos[0].id) + '">Continuar de onde parei</a>' + (revisaoLiberada() ? '<a class="btn btn-sec" href="#/revisao">Revisão rápida</a>' : '<a class="btn btn-sec" href="#/roteiro">Ver meu roteiro</a>')
       : '<a class="btn" href="#/montar">Montar meu roteiro</a><a class="btn btn-sec" href="#/trilha">Ver a trilha completa</a>';
     app.innerHTML =
       '<section class="hero"><div class="casca hero-grade"><div>' +
@@ -374,7 +376,8 @@
     var prox = proximoTopico();
     var feitos = contarTopicos(concluido);
     var html = '<div class="coluna"><div class="pagina-cab"><h1>' + esc(dados.titulo) + '</h1><p>' + esc(dados.descricao) + '</p>' +
-      '<p><strong>' + feitos + ' de ' + dados.topicos.length + '</strong> tópicos concluídos.' + (estado.perfil ? '' : ' <a href="#/montar">Monte seu roteiro</a> para ver quanto tempo cada etapa leva.') + '</p></div>' +
+      '<p><strong>' + feitos + ' de ' + dados.topicos.length + '</strong> tópicos concluídos.' + (estado.perfil ? '' : ' <a href="#/montar">Monte seu roteiro</a> para ver quanto tempo cada etapa leva.') + '</p>' +
+      (revisaoLiberada() ? '<div class="acoes" style="margin-top:1rem"><a class="btn btn-sec" href="#/revisao">Fazer uma revisão rápida</a></div>' : '') + '</div>' +
       '<div class="mapa" id="mapa">';
     dados.etapas.forEach(function (e) {
       var ts = topicosDa(e.id);
@@ -489,7 +492,7 @@
           return '<li><a href="' + urlSegura(r.url) + '"' + (/^https?:/.test(r.url) ? ' target="_blank" rel="noopener"' : '') + '>' + esc(r.titulo) + '</a><p>' + esc(r.fonte) + (r.idioma === 'en' ? ', em inglês' : '') + (r.gratuito && r.gratuito !== 'sim' ? ' (' + esc(r.gratuito.replace(/^sim, /, '')) + ')' : '') + '. ' + esc(r.nota) + '</p></li>';
         }).join('') + '</ul>'
         : '<p class="vazio">Ainda não temos materiais para este tópico. Conhece um bom e gratuito? Sugira no GitHub.</p>') + '</section>';
-      html += '<section class="bloco"><h2>Desafio</h2><p class="dica">Acerte pelo menos 2 de 3 para concluir. Vale ' + XP.quiz + ' XP, e mais ' + XP.perfeito + ' se acertar tudo de primeira.</p><div id="quiz"></div></section>';
+      html += '<section class="bloco"><h2>Desafio</h2><p class="dica">Cada tentativa sorteia 3 de ' + t.quiz.length + ' perguntas. Acerte pelo menos 2 para concluir. Vale ' + XP.quiz + ' XP, e mais ' + XP.perfeito + ' se acertar tudo de primeira.</p><div id="quiz"></div></section>';
     }
     html += '<section class="bloco"><h2>Pergunta Ako</h2><p class="resumo-texto">' + fmt(t.pergunta_ako) + '</p>' +
       '<label for="reflexao" class="dica" style="display:block;margin-top:.8rem">Responda com suas palavras. Só você vê, e fica salvo neste navegador.</label>' +
@@ -543,45 +546,65 @@
     if (!el) return;
     el.innerHTML = '<span class="etiqueta">' + horasTxt(t.horas) + '</span><span class="etiqueta ambar">' + xpDo(t) + ' de ' + xpMax(t) + ' XP</span>' + rotuloSituacao(t);
   }
-  function montarQuiz(t) {
-    var cont = document.getElementById('quiz');
-    var s = st(t.id);
-    var previo = s.quiz && s.quiz.aprovado
-      ? '<p class="resultado-quiz">Você já concluiu este desafio. Melhor resultado: ' + s.quiz.melhor + ' de ' + t.quiz.length + '. Pode refazer quando quiser.</p>' : '';
-    cont.innerHTML = previo + '<form id="form-quiz" novalidate>' + t.quiz.map(function (q, qi) {
+  var POR_DESAFIO = 3, POR_REVISAO = 5;
+  function sortear(lista, n) {
+    var c = lista.slice();
+    for (var i = c.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var x = c[i]; c[i] = c[j]; c[j] = x; }
+    return c.slice(0, n);
+  }
+  function htmlQuestoes(lista, comOrigem) {
+    return lista.map(function (item, qi) {
+      var q = item.q;
       return '<fieldset class="questao" data-q="' + qi + '"><legend>' + (qi + 1) + '. ' + fmt(q.pergunta) + '</legend>' +
+        (comOrigem ? '<p class="origem">Do tópico ' + esc(item.t.titulo) + '</p>' : '') +
         (q.codigo ? '<pre><code>' + esc(q.codigo) + '</code></pre>' : '') +
         '<div class="alternativas">' + q.opcoes.map(function (o, oi) {
           return '<label class="alt" data-o="' + oi + '"><input type="radio" name="q' + qi + '" value="' + oi + '"><span>' + fmt(o) + '</span></label>';
         }).join('') + '</div><div class="explicacao-area"></div></fieldset>';
-    }).join('') + '<p class="erro-form" id="quiz-erro" role="alert"></p><div class="acoes"><button class="btn" type="submit">Conferir respostas</button></div></form>';
+    }).join('');
+  }
+  function lerRespostas(f, lista) {
+    return lista.map(function (_, qi) { var m = f.querySelector('input[name=q' + qi + ']:checked'); return m ? Number(m.value) : null; });
+  }
+  function corrigir(f, lista, respostas) {
+    var erradas = [];
+    lista.forEach(function (item, qi) {
+      var q = item.q, fs = f.querySelector('[data-q="' + qi + '"]');
+      var certo = respostas[qi] === q.correta;
+      if (!certo) erradas.push(item);
+      fs.querySelectorAll('input').forEach(function (i) { i.disabled = true; });
+      fs.querySelector('[data-o="' + q.correta + '"]').classList.add('certa');
+      if (!certo) fs.querySelector('[data-o="' + respostas[qi] + '"]').classList.add('errada');
+      fs.querySelector('.explicacao-area').innerHTML = '<div class="explicacao"><strong>' + (certo ? 'Certo.' : 'Não foi dessa vez.') + '</strong>' + fmt(q.explicacao) + '</div>';
+    });
+    f.classList.add('quiz-conferido');
+    return erradas;
+  }
+  function montarQuiz(t) {
+    var cont = document.getElementById('quiz');
+    var s = st(t.id);
+    var lista = sortear(t.quiz, POR_DESAFIO).map(function (q) { return { q: q, t: t }; });
+    var previo = s.quiz && s.quiz.aprovado
+      ? '<p class="resultado-quiz">Você já concluiu este desafio. Melhor resultado: ' + Math.min(s.quiz.melhor, POR_DESAFIO) + ' de ' + POR_DESAFIO + '. Pode refazer quando quiser.</p>' : '';
+    cont.innerHTML = previo + '<form id="form-quiz" novalidate>' + htmlQuestoes(lista, false) +
+      '<p class="erro-form" id="quiz-erro" role="alert"></p><div class="acoes"><button class="btn" type="submit">Conferir respostas</button></div></form>';
     document.getElementById('form-quiz').addEventListener('submit', function (ev) {
       ev.preventDefault();
       var f = ev.target;
-      var respostas = t.quiz.map(function (q, qi) { var m = f.querySelector('input[name=q' + qi + ']:checked'); return m ? Number(m.value) : null; });
+      var respostas = lerRespostas(f, lista);
       if (respostas.some(function (r) { return r === null; })) {
-        document.getElementById('quiz-erro').textContent = 'Responda às ' + t.quiz.length + ' perguntas antes de conferir.';
+        document.getElementById('quiz-erro').textContent = 'Responda às ' + POR_DESAFIO + ' perguntas antes de conferir.';
         return;
       }
       document.getElementById('quiz-erro').textContent = '';
-      var acertos = 0;
-      t.quiz.forEach(function (q, qi) {
-        var fs = f.querySelector('[data-q="' + qi + '"]');
-        var certo = respostas[qi] === q.correta;
-        if (certo) acertos++;
-        fs.querySelectorAll('input').forEach(function (i) { i.disabled = true; });
-        fs.querySelector('[data-o="' + q.correta + '"]').classList.add('certa');
-        if (!certo) fs.querySelector('[data-o="' + respostas[qi] + '"]').classList.add('errada');
-        fs.querySelector('.explicacao-area').innerHTML = '<div class="explicacao"><strong>' + (certo ? 'Certo.' : 'Não foi dessa vez.') + '</strong>' + fmt(q.explicacao) + '</div>';
-      });
-      f.classList.add('quiz-conferido');
+      var acertos = POR_DESAFIO - corrigir(f, lista, respostas).length;
       var tentativas = (s.quiz ? s.quiz.tentativas : 0) + 1;
       var aprovado = acertos >= 2;
       s.quiz = {
         tentativas: tentativas,
         melhor: Math.max(acertos, s.quiz ? s.quiz.melhor : 0),
         aprovado: aprovado || !!(s.quiz && s.quiz.aprovado),
-        primeiraPerfeita: (s.quiz && s.quiz.primeiraPerfeita) || (tentativas === 1 && acertos === t.quiz.length)
+        primeiraPerfeita: (s.quiz && s.quiz.primeiraPerfeita) || (tentativas === 1 && acertos === POR_DESAFIO)
       };
       if (aprovado && paraValidar(t)) t.checklist.forEach(function (_, i) { s.check[i] = true; });
       depoisDeAgir();
@@ -589,7 +612,7 @@
       var res = document.createElement('p');
       res.className = 'resultado-quiz';
       res.setAttribute('role', 'status');
-      res.textContent = 'Você acertou ' + acertos + ' de ' + t.quiz.length + '. ' + (aprovado ? (checklistCompleto(t) ? 'Desafio e tópico concluídos.' : 'Desafio concluído. Complete o checklist para concluir o tópico.') : 'Você precisa de 2 acertos para concluir. Leia as explicações e tente de novo.');
+      res.textContent = 'Você acertou ' + acertos + ' de ' + POR_DESAFIO + '. ' + (aprovado ? (checklistCompleto(t) ? 'Desafio e tópico concluídos.' : 'Desafio concluído. Complete o checklist para concluir o tópico.') : 'Você precisa de 2 acertos para concluir. Leia as explicações e tente de novo. Cada tentativa faz um novo sorteio.');
       botao.parentNode.parentNode.insertBefore(res, botao.parentNode);
       botao.textContent = 'Tentar de novo';
       botao.type = 'button';
@@ -598,6 +621,55 @@
         document.querySelectorAll('#checklist input').forEach(function (i) { i.checked = true; });
       }
       atualizarEstadoTopico(t);
+    });
+  }
+
+  /* ---------- revisão rápida ---------- */
+  function topicosParaRevisar() {
+    return dados.topicos.filter(function (t) { return !ramificacao(t) && (concluido(t) || iniciado(t)); });
+  }
+  function revisaoLiberada() { return topicosParaRevisar().length >= 2; }
+  function viewRevisao() {
+    var ts = topicosParaRevisar();
+    if (ts.length < 2) {
+      app.innerHTML = '<div class="coluna"><div class="pagina-cab"><h1>Revisão rápida</h1><p>A revisão mistura perguntas dos tópicos que você já estudou. Comece pelo menos dois tópicos para liberar.</p></div>' +
+        '<div class="acoes"><a class="btn" href="#/trilha">Ir para a trilha</a></div></div>';
+      return;
+    }
+    var pool = [];
+    ts.forEach(function (t) { t.quiz.forEach(function (q) { pool.push({ q: q, t: t }); }); });
+    var lista = sortear(pool, POR_REVISAO);
+    var feitas = estado.revisoes.length;
+    app.innerHTML = '<div class="coluna"><div class="pagina-cab"><h1>Revisão rápida</h1><p>' + POR_REVISAO + ' perguntas sorteadas dos ' + ts.length + ' tópicos que você já estudou. Rever o conteúdo em dias diferentes é o que mais ajuda a lembrar dele depois.</p>' +
+      '<p class="dica">A revisão não vale XP. Faça 3 revisões com pelo menos 4 acertos para ganhar a conquista Memória afiada.' + (feitas ? ' Você já fez ' + (feitas === 1 ? '1 revisão' : feitas + ' revisões') + '.' : '') + '</p></div>' +
+      '<form id="form-revisao" novalidate>' + htmlQuestoes(lista, true) +
+      '<p class="erro-form" id="revisao-erro" role="alert"></p><div class="acoes"><button class="btn" type="submit">Conferir respostas</button></div></form></div>';
+    document.getElementById('form-revisao').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      var f = ev.target;
+      if (f.classList.contains('quiz-conferido')) return;
+      var respostas = lerRespostas(f, lista);
+      if (respostas.some(function (r) { return r === null; })) {
+        document.getElementById('revisao-erro').textContent = 'Responda às ' + POR_REVISAO + ' perguntas antes de conferir.';
+        return;
+      }
+      document.getElementById('revisao-erro').textContent = '';
+      var erradas = corrigir(f, lista, respostas);
+      var acertos = POR_REVISAO - erradas.length;
+      estado.revisoes.push({ data: hoje(), acertos: acertos });
+      depoisDeAgir();
+      var rever = [];
+      erradas.forEach(function (item) { if (rever.indexOf(item.t) === -1) rever.push(item.t); });
+      var res = document.createElement('div');
+      res.className = 'resultado-quiz';
+      res.setAttribute('role', 'status');
+      res.innerHTML = '<p>Você acertou ' + acertos + ' de ' + POR_REVISAO + '.</p>' + (rever.length
+        ? '<p>Vale rever: ' + rever.map(function (t) { return '<a href="#/t/' + t.id + '">' + esc(t.titulo) + '</a>'; }).join(', ') + '.</p>'
+        : '<p>Nenhum tópico para rever desta vez.</p>');
+      var acoes = f.querySelector('.acoes');
+      acoes.parentNode.insertBefore(res, acoes);
+      acoes.innerHTML = '<button class="btn" type="button" id="nova-revisao">Fazer outra revisão</button><a class="btn btn-sec" href="#/trilha">Voltar para a trilha</a>';
+      document.getElementById('nova-revisao').addEventListener('click', function () { viewRevisao(); window.scrollTo(0, 0); });
     });
   }
 
@@ -622,6 +694,7 @@
       '<section class="bloco"><h2>Como ganhar XP em cada tópico</h2><ul class="essencial">' +
       '<li>Completar o checklist de prática: ' + XP.checklist + ' XP</li><li>Concluir o desafio (2 de 3 acertos): ' + XP.quiz + ' XP</li><li>Acertar tudo de primeira: mais ' + XP.perfeito + ' XP</li>' +
       '<li>Responder à pergunta Ako com suas palavras: ' + XP.reflexao + ' XP</li><li>Explicar o assunto para outra pessoa: ' + XP.ensinei + ' XP</li></ul></section>' +
+      '<section class="bloco"><h2>Revisão rápida</h2><p>Cinco perguntas sorteadas dos tópicos que você já estudou. Não vale XP, mas três revisões com pelo menos 4 acertos dão a conquista Memória afiada.</p><div class="acoes" style="margin-top:.8rem">' + (revisaoLiberada() ? '<a class="btn btn-sec" href="#/revisao">Fazer uma revisão rápida</a>' : '<span class="dica">Comece pelo menos dois tópicos para liberar a revisão.</span>') + '</div></section>' +
       '<section class="bloco"><h2>Conquistas</h2><ul class="selos">' + selos + '</ul></section>' +
       '<section class="bloco"><h2>Seus dados</h2><div class="dados-acoes">' +
       '<p>O progresso fica só neste navegador. Para levar para outro aparelho, exporte aqui e importe lá.</p>' +

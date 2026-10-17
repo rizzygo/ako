@@ -203,6 +203,8 @@ legend{font-family:var(--f-titulo);font-weight:700;font-size:1.25rem;margin-bott
 .explicacao{margin-top:.8rem;padding-top:.7rem;border-top:1px solid var(--linha)}
 .explicacao strong{display:block}
 .resultado-quiz{font-weight:700;margin:.5rem 0 1rem}
+.resultado-quiz p + p{margin-top:.4rem}
+.origem{clear:both;color:var(--suave);font-size:.88rem;margin:-.3rem 0 .6rem}
 
 /* reflexão */
 textarea{width:100%;min-height:7rem;font:inherit;color:var(--tinta);background:var(--superficie);border:2px solid var(--linha);border-radius:var(--raio-p);padding:.7rem .8rem;resize:vertical}

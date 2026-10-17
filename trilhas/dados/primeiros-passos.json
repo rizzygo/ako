@@ -94,6 +94,39 @@
      ],
      "correta": 3,
      "explicacao": "Reconhecer não é o mesmo que saber. Explicar e aplicar em outro contexto mostra que o conceito ficou."
+    },
+    {
+     "pergunta": "Você entendeu tudo na aula de Git, mas uma semana depois travou num exercício simples. O que mais ajuda a fixar?",
+     "opcoes": [
+      "Reler as anotações e grifar o mais importante",
+      "Refazer exercícios sem olhar, em dias diferentes",
+      "Assistir a outro curso do começo",
+      "Ler o resumo que outra pessoa fez da aula"
+     ],
+     "correta": 1,
+     "explicacao": "Tentar lembrar sem olhar, e repetir isso em dias diferentes, fixa muito mais do que reler. Reler dá a sensação de que você sabe, mas não treina a memória."
+    },
+    {
+     "pergunta": "Você tem 3 horas por semana para estudar. Qual plano tende a funcionar melhor?",
+     "opcoes": [
+      "Uma sessão de 3 horas no domingo à noite",
+      "Estudar só quando bater vontade",
+      "Seis sessões de 30 minutos ao longo da semana",
+      "Guardar tudo para estudar nas férias"
+     ],
+     "correta": 2,
+     "explicacao": "O mesmo total de horas, espalhado em sessões curtas, rende mais: o cérebro tem tempo de consolidar entre uma sessão e outra, e a rotina não depende de motivação."
+    },
+    {
+     "pergunta": "Você copiou o código de um tutorial e ele funcionou, mas você não sabe explicar por quê. Qual é o próximo passo?",
+     "opcoes": [
+      "Seguir para o próximo tutorial da lista",
+      "Apagar e copiar de novo, com mais atenção",
+      "Guardar o código numa pasta para usar depois",
+      "Mudar uma parte, prever o resultado e testar"
+     ],
+     "correta": 3,
+     "explicacao": "Mudar uma parte de propósito, prever o que vai acontecer e conferir mostra se você entendeu. Quando o resultado surpreende, você achou exatamente o que precisa estudar."
     }
    ],
    "pergunta_ako": "Qual assunto você acha que entendeu, mas não conseguiria explicar para alguém agora?",
@@ -185,6 +218,39 @@
      ],
      "correta": 2,
      "explicacao": "QA planeja e executa testes, manuais ou automatizados, para achar problemas antes que cheguem ao cliente."
+    },
+    {
+     "pergunta": "Um funcionário liga dizendo que não consegue entrar no e-mail da empresa. Que área costuma atender primeiro?",
+     "opcoes": [
+      "Suporte",
+      "Dados",
+      "Produto",
+      "QA"
+     ],
+     "correta": 0,
+     "explicacao": "O suporte é a linha de frente: recebe o chamado, resolve o que pode e encaminha para outras áreas quando o problema é mais profundo."
+    },
+    {
+     "pergunta": "Uma empresa descobre que senhas de clientes vazaram. Que área lidera a investigação?",
+     "opcoes": [
+      "Produto",
+      "Segurança",
+      "Dados",
+      "Suporte"
+     ],
+     "correta": 1,
+     "explicacao": "A segurança conduz a resposta a incidentes: descobre como aconteceu, contém o problema e orienta as correções, com ajuda de infraestrutura e desenvolvimento."
+    },
+    {
+     "pergunta": "O time precisa decidir o que construir primeiro: o login com Google ou o carrinho de compras salvo. Quem costuma priorizar?",
+     "opcoes": [
+      "Infraestrutura",
+      "QA",
+      "Produto",
+      "Suporte"
+     ],
+     "correta": 2,
+     "explicacao": "Quem trabalha com produto ouve clientes, olha dados e define a ordem do que vale mais a pena construir, junto com o time."
     }
    ],
    "pergunta_ako": "Qual área te atrai, e é pelo trabalho em si ou pelo salário que você imagina?",
@@ -263,6 +329,39 @@
      ],
      "correta": 0,
      "explicacao": "Timed out quer dizer que o tempo de espera acabou sem resposta. O servidor pode estar desligado, ou um firewall (um filtro que bloqueia conexões) pode estar barrando o caminho. Senha errada daria outra mensagem, porque nesse caso o servidor responde."
+    },
+    {
+     "pergunta": "O terminal mostra \"File not found\". O que isso quer dizer?",
+     "opcoes": [
+      "O arquivo não foi encontrado no caminho indicado",
+      "O arquivo está corrompido e não abre",
+      "O arquivo é grande demais para abrir",
+      "Você não tem permissão para abrir o arquivo"
+     ],
+     "correta": 0,
+     "explicacao": "Not found quer dizer não encontrado. Confira o nome, as maiúsculas e minúsculas e a pasta em que você está."
+    },
+    {
+     "pergunta": "Um tutorial diz: \"Make sure to back up your data before upgrading.\" O que fazer?",
+     "opcoes": [
+      "Atualizar primeiro e fazer o backup depois",
+      "Fazer backup dos dados antes de atualizar",
+      "Voltar para a versão anterior",
+      "Apagar os dados antigos antes de atualizar"
+     ],
+     "correta": 1,
+     "explicacao": "Back up é fazer cópia de segurança, e before upgrading é antes de atualizar. A frase pede o backup primeiro."
+    },
+    {
+     "pergunta": "A documentação diz que um parâmetro é \"optional\" e tem \"default: 10\". O que acontece se você não passar esse parâmetro?",
+     "opcoes": [
+      "O programa dá erro",
+      "O valor fica vazio",
+      "O programa usa o valor 10",
+      "O programa pergunta o valor"
+     ],
+     "correta": 2,
+     "explicacao": "Optional quer dizer que não é obrigatório, e default é o valor padrão usado quando você não informa nada."
     }
    ],
    "pergunta_ako": "Você costuma traduzir tudo de uma vez ou tenta entender primeiro? O que muda quando você tenta primeiro?",
@@ -354,6 +453,39 @@
      ],
      "correta": 3,
      "explicacao": "O que vale é a última extensão: `.exe` é um programa que roda no Windows. Esconder o `.exe` atrás de `.pdf` é um truque comum de golpes."
+    },
+    {
+     "pergunta": "Você quer guardar 300 GB de fotos no computador. O que precisa conferir?",
+     "opcoes": [
+      "A quantidade de memória RAM",
+      "A velocidade do processador",
+      "O espaço livre no SSD ou HD",
+      "A velocidade da placa de rede"
+     ],
+     "correta": 2,
+     "explicacao": "Arquivos ficam guardados no armazenamento, que é o SSD ou o HD. A RAM só guarda o que está em uso no momento e se apaga ao desligar."
+    },
+    {
+     "pergunta": "Qual é o papel do sistema operacional?",
+     "opcoes": [
+      "Organizar hardware, arquivos e programas",
+      "Guardar os arquivos quando a energia cai",
+      "Aumentar a memória RAM disponível",
+      "Criar documentos e planilhas"
+     ],
+     "correta": 0,
+     "explicacao": "O sistema operacional, como Windows, Linux ou macOS, gerencia o hardware, que são as peças físicas do computador, e deixa os programas usarem essas peças de forma organizada. Criar documentos é trabalho de programas como editores de texto, que rodam em cima dele."
+    },
+    {
+     "pergunta": "Um arquivo está no caminho /home/ana/docs/cv.pdf. Em que pasta ele está?",
+     "opcoes": [
+      "/home",
+      "/docs",
+      "/home/ana",
+      "/home/ana/docs"
+     ],
+     "correta": 3,
+     "explicacao": "Num caminho, a última parte é o arquivo e tudo antes dele é a pasta onde ele está. O cv.pdf está dentro de docs, que fica dentro de ana, que fica dentro de home."
     }
    ],
    "pergunta_ako": "Por que você acha que o sistema esconde as extensões dos arquivos por padrão? Isso ajuda ou atrapalha?",
@@ -437,6 +569,39 @@
      ],
      "correta": 3,
      "explicacao": "O -r apaga a pasta com tudo o que tem dentro, incluindo subpastas. O -f força: não pede confirmação. Não tem lixeira nem como desfazer, então confira o caminho com `pwd` e `ls` antes de rodar."
+    },
+    {
+     "pergunta": "Você está em /home/ana/projetos e roda `cd ..`. Em que pasta você fica?",
+     "opcoes": [
+      "/home/ana",
+      "/home",
+      "/home/ana/projetos",
+      "/"
+     ],
+     "correta": 0,
+     "explicacao": "O `..` quer dizer a pasta de cima. De /home/ana/projetos, você sobe um nível e fica em /home/ana."
+    },
+    {
+     "pergunta": "Você quer ver só as 5 últimas linhas do arquivo app.log. Qual comando usar?",
+     "opcoes": [
+      "`head -n 5 app.log`",
+      "`cat app.log`",
+      "`tail -n 5 app.log`",
+      "`ls -n 5 app.log`"
+     ],
+     "correta": 2,
+     "explicacao": "O `tail` mostra o fim do arquivo, e `-n 5` diz quantas linhas. O `head` faz o mesmo com o começo. É assim que se olha o que aconteceu por último num log."
+    },
+    {
+     "pergunta": "Você rodou um comando que não termina nunca e o terminal ficou preso. O que fazer?",
+     "opcoes": [
+      "Desligar o computador pelo botão",
+      "Apertar Ctrl+C",
+      "Digitar exit e apertar Enter",
+      "Apertar Tab várias vezes"
+     ],
+     "correta": 1,
+     "explicacao": "Ctrl+C interrompe o comando que está rodando e devolve o terminal para você. Digitar exit não funciona enquanto o comando está ocupando o terminal."
     }
    ],
    "pergunta_ako": "O que te dá mais medo no terminal? Como você poderia testar isso num lugar onde errar não tem problema?",
@@ -538,6 +703,39 @@
      ],
      "correta": 2,
      "explicacao": "Cada 7 libera ler, escrever e executar, e são três: para o dono, para o grupo e para todos os outros usuários. Isso abre uma brecha de segurança. O certo é dar só a permissão necessária para quem precisa."
+    },
+    {
+     "pergunta": "Que comando mostra o espaço livre em cada disco, em números fáceis de ler?",
+     "opcoes": [
+      "`free -h`",
+      "`df -h`",
+      "`du -sh /`",
+      "`ps aux`"
+     ],
+     "correta": 1,
+     "explicacao": "O `df -h` mostra o espaço usado e livre de cada disco. O `free -h` mostra a memória RAM, e o `du` mostra quanto uma pasta ocupa, não quanto sobra."
+    },
+    {
+     "pergunta": "Depois de rodar `chmod 640 relatorio.txt`, o que o grupo pode fazer com o arquivo?",
+     "opcoes": [
+      "Ler e escrever",
+      "Nada",
+      "Ler, escrever e executar",
+      "Só ler"
+     ],
+     "correta": 3,
+     "explicacao": "Cada número vale para um público: o primeiro para o dono, o segundo para o grupo e o terceiro para os outros. Ler vale 4, escrever vale 2 e executar vale 1. Então o dono tem 6 (ler e escrever), o grupo tem 4 (só ler) e os outros têm 0 (nada)."
+    },
+    {
+     "pergunta": "Por que rodar `sudo apt update` antes de instalar um programa?",
+     "opcoes": [
+      "Para atualizar a lista de pacotes disponíveis",
+      "Para instalar todas as atualizações do sistema",
+      "Para reiniciar o gerenciador de pacotes",
+      "Para apagar os pacotes antigos e liberar espaço"
+     ],
+     "correta": 0,
+     "explicacao": "O `update` só baixa a lista atualizada do que existe nos repositórios, os servidores de onde o `apt` baixa os programas. Quem instala as atualizações é o `apt upgrade`."
     }
    ],
    "pergunta_ako": "Se o `sudo` resolve tantos erros, por que não usar sempre?",
@@ -638,6 +836,39 @@
      ],
      "correta": 1,
      "explicacao": "Endereços 192.168.x.x são privados: o mesmo endereço existe em milhões de redes de casa. Para acessar de fora, é preciso outro caminho, como um IP público ou uma VPN (uma conexão segura que coloca você dentro da rede dele)."
+    },
+    {
+     "pergunta": "Qual comando foi feito especificamente para consultar o DNS e ver o IP de um nome?",
+     "opcoes": [
+      "`ping`",
+      "`nslookup`",
+      "`ip addr`",
+      "`traceroute`"
+     ],
+     "correta": 1,
+     "explicacao": "O `nslookup` pergunta ao DNS, o serviço que traduz nomes em IPs, qual IP corresponde a um nome. O `ping` também mostra um IP, mas o trabalho dele é testar se a máquina responde. O `traceroute` mostra o caminho até a máquina, e o `ip addr` mostra os IPs do seu próprio computador."
+    },
+    {
+     "pergunta": "Você vai acessar um servidor por SSH. Qual porta precisa estar liberada no firewall, no padrão?",
+     "opcoes": [
+      "80",
+      "443",
+      "22",
+      "53"
+     ],
+     "correta": 2,
+     "explicacao": "O SSH usa a porta 22 por padrão. A 80 e a 443 são da web, e a 53 é do DNS."
+    },
+    {
+     "pergunta": "Todos os aparelhos da sua casa aparecem na internet com o mesmo endereço IP. Por quê?",
+     "opcoes": [
+      "O roteador compartilha um único IP público entre eles",
+      "Todos os aparelhos usam o mesmo IP privado",
+      "O DNS esconde os IPs privados de cada aparelho",
+      "O provedor libera um aparelho de cada vez"
+     ],
+     "correta": 0,
+     "explicacao": "Dentro de casa, cada aparelho tem um IP privado diferente. O roteador traduz tudo para o IP público da sua conexão. Essa tradução se chama NAT."
     }
    ],
    "pergunta_ako": "Na próxima vez que a internet parecer cair, como você vai descobrir se o problema é a rede, o DNS ou o site?",
@@ -730,6 +961,39 @@
      ],
      "correta": 1,
      "explicacao": "Sem o HTTPS, nada é embaralhado: quem estiver no meio do caminho, como numa rede Wi-Fi pública, pode ler o que você envia."
+    },
+    {
+     "pergunta": "Você envia um formulário de cadastro com nome e e-mail. Qual método HTTP é o mais comum para isso?",
+     "opcoes": [
+      "GET",
+      "POST",
+      "DELETE",
+      "HEAD"
+     ],
+     "correta": 1,
+     "explicacao": "O POST envia dados para o servidor criar ou processar algo. O GET serve para buscar informações."
+    },
+    {
+     "pergunta": "Você abre um endereço antigo e o navegador vai sozinho para o endereço novo. Que código de status costuma estar por trás disso?",
+     "opcoes": [
+      "200",
+      "404",
+      "301",
+      "500"
+     ],
+     "correta": 2,
+     "explicacao": "Códigos 3xx são redirecionamentos. O 301 diz que o conteúdo mudou de endereço de forma permanente, e o navegador segue para o novo."
+    },
+    {
+     "pergunta": "Uma API responde \"401 Unauthorized\". O que conferir primeiro?",
+     "opcoes": [
+      "Se o servidor caiu ou saiu do ar",
+      "Se o DNS respondeu com o IP certo",
+      "Se a API mudou de endereço",
+      "Se você enviou o token de acesso"
+     ],
+     "correta": 3,
+     "explicacao": "O 401 quer dizer que o servidor está funcionando, mas não reconheceu quem fez o pedido. Falta a credencial, como um token de acesso, ou ela está errada ou vencida."
     }
    ],
    "pergunta_ako": "Quando um site não abre, que informação da aba Rede você mandaria para alguém te ajudar?",
@@ -822,6 +1086,40 @@
      ],
      "correta": 1,
      "explicacao": "Com a lista vazia, a média vira uma divisão por zero. Casos extremos revelam erros que os casos comuns escondem."
+    },
+    {
+     "pergunta": "Qual é o valor de x no fim deste algoritmo?",
+     "codigo": "x = 0\nrepita 3 vezes:\n    x = x + 2\nmostre x",
+     "opcoes": [
+      "2",
+      "3",
+      "6",
+      "5"
+     ],
+     "correta": 2,
+     "explicacao": "O laço roda 3 vezes e cada volta soma 2: x vale 2, depois 4, depois 6."
+    },
+    {
+     "pergunta": "Um laço \"enquanto contador < 10\" nunca termina. Qual é a causa mais provável?",
+     "opcoes": [
+      "O contador não muda dentro do laço",
+      "O limite deveria ser maior",
+      "A condição compara com um número",
+      "Faltou um se e senão dentro do laço"
+     ],
+     "correta": 0,
+     "explicacao": "Se nada dentro do laço muda o contador, a condição continua verdadeira para sempre. É o laço infinito, um dos erros mais comuns."
+    },
+    {
+     "pergunta": "Que condição diz se um número é par?",
+     "opcoes": [
+      "O número é maior que 2",
+      "O número termina em 0",
+      "A divisão por 2 dá mais que 1",
+      "A divisão por 2 deixa resto 0"
+     ],
+     "correta": 3,
+     "explicacao": "Número par é o que se divide por 2 sem sobrar nada. Em muitas linguagens, o resto se calcula com o operador %, como em `n % 2 == 0`."
     }
    ],
    "pergunta_ako": "Antes de procurar a resposta pronta, você tentou escrever a solução em português?",
@@ -915,6 +1213,41 @@
      ],
      "correta": 0,
      "explicacao": "Dicionários guardam pares de chave e valor. Com o nome como chave e o telefone como valor, `contatos[\"Ana\"]` devolve o telefone da Ana na hora."
+    },
+    {
+     "pergunta": "O que este código mostra na tela?",
+     "codigo": "nums = [3, 7, 1]\nprint(nums[0])",
+     "opcoes": [
+      "7",
+      "3",
+      "1",
+      "[3, 7, 1]"
+     ],
+     "correta": 1,
+     "explicacao": "No Python, a contagem das posições de uma lista começa em zero. nums[0] é o primeiro item, o 3."
+    },
+    {
+     "pergunta": "O que este código mostra na tela?",
+     "codigo": "for i in range(3):\n    print(i)",
+     "opcoes": [
+      "1, 2 e 3, um por linha",
+      "0, 1, 2 e 3, um por linha",
+      "0, 1 e 2, um por linha",
+      "O número 3 três vezes"
+     ],
+     "correta": 2,
+     "explicacao": "range(3) gera 0, 1 e 2. Ele começa no zero e para antes do número que você passou."
+    },
+    {
+     "pergunta": "Aparece \"NameError: name 'totl' is not defined\". Qual é a causa mais provável?",
+     "opcoes": [
+      "Falta instalar uma biblioteca",
+      "Houve uma divisão por zero",
+      "O arquivo está na pasta errada",
+      "Erro de digitação no nome da variável"
+     ],
+     "correta": 3,
+     "explicacao": "NameError quer dizer que o Python não conhece aquele nome. Aqui, `totl` parece `total` digitado errado. O mesmo erro aparece quando a variável é usada antes de ser criada."
     }
    ],
    "pergunta_ako": "Que tarefa repetitiva do seu dia daria para automatizar com um script de dez linhas?",
@@ -1008,6 +1341,39 @@
      ],
      "correta": 2,
      "explicacao": "Uma boa mensagem diz o que mudou e, quando ajuda, por quê. Daqui a meses, quem vai agradecer é você mesmo."
+    },
+    {
+     "pergunta": "Você quer ver exatamente o que mudou nos arquivos antes de fazer o commit. Qual comando usar?",
+     "opcoes": [
+      "`git log`",
+      "`git diff`",
+      "`git push`",
+      "`git clone`"
+     ],
+     "correta": 1,
+     "explicacao": "O `git diff` mostra as linhas adicionadas e removidas que ainda não passaram pelo `git add`. Se você já rodou `git add`, use `git diff --staged`. O `git log` mostra o histórico de commits já feitos."
+    },
+    {
+     "pergunta": "Um colega enviou mudanças para o GitHub e você quer trazê-las para o seu computador. Qual comando usar?",
+     "opcoes": [
+      "`git push`",
+      "`git commit`",
+      "`git pull`",
+      "`git init`"
+     ],
+     "correta": 2,
+     "explicacao": "O `git pull` traz as mudanças do repositório remoto (a cópia no GitHub) e junta com as suas. O `git push` faz o caminho contrário: envia as suas."
+    },
+    {
+     "pergunta": "Por que trabalhar numa branch em vez de direto na main?",
+     "opcoes": [
+      "Para mudar sem afetar a versão principal",
+      "Porque a main não aceita commits",
+      "Porque o código roda mais rápido",
+      "Para não precisar fazer commits"
+     ],
+     "correta": 0,
+     "explicacao": "Na branch, você pode errar, testar e pedir revisão. A mudança só chega à main quando as duas são juntadas, em geral por um pull request, que é o pedido para revisar e juntar a sua branch."
     }
    ],
    "pergunta_ako": "Daqui a seis meses, suas mensagens de commit vão explicar o que você fez e por quê?",
@@ -1105,6 +1471,39 @@
      ],
      "correta": 0,
      "explicacao": "O esforço de tentar primeiro é o que faz aprender. A IA entra como revisora e professora, não como quem faz por você."
+    },
+    {
+     "pergunta": "A IA garante que uma função existe numa biblioteca, mas o seu código dá AttributeError ao usar essa função. O que provavelmente aconteceu?",
+     "opcoes": [
+      "A biblioteca não está instalada",
+      "A internet caiu no meio",
+      "A IA inventou ou confundiu a função",
+      "O arquivo foi salvo em outra pasta"
+     ],
+     "correta": 2,
+     "explicacao": "IAs podem citar funções que não existem ou que existiam em outra versão. Confira na documentação oficial da versão que você usa. Se a biblioteca não estivesse instalada, o erro seria outro: ModuleNotFoundError, já no import."
+    },
+    {
+     "pergunta": "A IA gerou um script que apaga arquivos de log antigos. Antes de rodar, o que você precisa saber?",
+     "opcoes": [
+      "Quantas linhas o script tem",
+      "Em que linguagem ele foi escrito",
+      "Se outra IA faria parecido",
+      "O que ele apaga e como desfazer"
+     ],
+     "correta": 3,
+     "explicacao": "Um script que apaga arquivos pode não ter volta. Antes de rodar, entenda o que muda, como desfazer e como conferir o resultado."
+    },
+    {
+     "pergunta": "O que pode ser colado numa IA pública com menos risco?",
+     "opcoes": [
+      "Uma mensagem de erro sem dados pessoais",
+      "O arquivo .env com as chaves do sistema",
+      "Uma planilha com CPFs de clientes",
+      "A senha do banco de dados"
+     ],
+     "correta": 0,
+     "explicacao": "Chaves, senhas e dados pessoais nunca devem ir para uma IA pública. Uma mensagem de erro sem dados sensíveis costuma ser segura."
     }
    ],
    "pergunta_ako": "Na última vez que você usou IA, você saberia refazer aquilo sem ela?",
@@ -1213,6 +1612,39 @@
      ],
      "correta": 0,
      "explicacao": "Esse código é a segunda etapa do seu login. Quem tem sua senha e o código entra na sua conta. O golpe é comum porque parece um pedido normal."
+    },
+    {
+     "pergunta": "Qual destas senhas é a mais forte?",
+     "opcoes": [
+      "Brasil2026!",
+      "Senha@123",
+      "joao1990",
+      "cavalo-nuvem-teclado-laranja"
+     ],
+     "correta": 3,
+     "explicacao": "Comprimento pesa mais que símbolos. Quatro palavras aleatórias formam uma senha longa e difícil de adivinhar. Nomes, datas e palavras comuns com número no fim são as primeiras tentativas dos criminosos."
+    },
+    {
+     "pergunta": "Você vai usar o Wi-Fi aberto de um café. O que reduz o risco?",
+     "opcoes": [
+      "Ativar o compartilhamento de arquivos",
+      "Usar só sites com HTTPS",
+      "Desativar as atualizações automáticas",
+      "Usar uma senha curta para digitar rápido"
+     ],
+     "correta": 1,
+     "explicacao": "Em redes abertas, outras pessoas podem ver o tráfego que não usa criptografia. HTTPS protege o conteúdo. Mesmo assim, deixe operações sensíveis, como acessar o banco, para uma rede confiável."
+    },
+    {
+     "pergunta": "O sistema pede para atualizar o navegador. Por que não adiar?",
+     "opcoes": [
+      "As atualizações mudam só a aparência",
+      "As atualizações apagam o histórico",
+      "Elas corrigem falhas de segurança",
+      "Elas liberam mais memória RAM"
+     ],
+     "correta": 2,
+     "explicacao": "Quando uma falha é corrigida, ela costuma se tornar pública, e criminosos passam a explorar quem não atualizou. Atualizar rápido fecha essa porta."
     }
    ],
    "pergunta_ako": "Se alguém conseguisse a senha do seu e-mail hoje, a que outras contas essa pessoa teria acesso?",
@@ -1303,6 +1735,39 @@
      ],
      "correta": 1,
      "explicacao": "Revisão de código (code review) é uma das melhores formas de aprender. Discordar é válido, desde que seja para entender, não para se defender."
+    },
+    {
+     "pergunta": "Você vai relatar um bug para o time. O que não pode faltar?",
+     "opcoes": [
+      "Os passos, o esperado e o que aconteceu",
+      "Sua opinião sobre quem causou o erro",
+      "Um print da tela, sem explicação",
+      "A palavra URGENTE no título do chamado"
+     ],
+     "correta": 0,
+     "explicacao": "Com os passos para reproduzir, o resultado esperado e o resultado real, qualquer pessoa consegue reproduzir o problema. Achar culpados não ajuda a corrigir."
+    },
+    {
+     "pergunta": "Num projeto em grupo, você terminou sua parte antes do prazo. O que mais ajuda o time?",
+     "opcoes": [
+      "Esperar em silêncio até o fim do prazo",
+      "Avisar e oferecer ajuda no que falta",
+      "Começar outra tarefa sem avisar ninguém",
+      "Refazer sozinho a parte de outra pessoa"
+     ],
+     "correta": 1,
+     "explicacao": "Avisar mantém todo mundo informado e oferecer ajuda distribui melhor o trabalho. Refazer a parte de alguém sem combinar gera retrabalho e atrito."
+    },
+    {
+     "pergunta": "Você recebeu um feedback que achou injusto. Qual é a melhor primeira reação?",
+     "opcoes": [
+      "Responder na hora, se defendendo",
+      "Ignorar e seguir em frente",
+      "Reclamar com outro colega",
+      "Pedir exemplos para entender o ponto"
+     ],
+     "correta": 3,
+     "explicacao": "Pedir exemplos mostra que você quer entender. Às vezes o feedback faz sentido quando você vê o caso concreto, e às vezes você descobre que houve um mal-entendido."
     }
    ],
    "pergunta_ako": "Quando foi a última vez que você ensinou algo para alguém? O que você aprendeu ao explicar?",
@@ -1391,6 +1856,39 @@
      ],
      "correta": 1,
      "explicacao": "Faltam no README as dependências, que são os programas e bibliotecas que o projeto precisa (inclusive a versão do Python), e os passos de instalação. \"Na minha máquina funciona\" é um clássico. Escrever os passos e testar em outro computador faz parte de terminar um projeto."
+    },
+    {
+     "pergunta": "Seu projeto está pela metade há dois meses. O que ajuda a terminar?",
+     "opcoes": [
+      "Começar um projeto novo, mais interessante",
+      "Terminar uma versão menor que funcione",
+      "Esperar até ter mais tempo livre",
+      "Reescrever tudo do zero"
+     ],
+     "correta": 1,
+     "explicacao": "Cortar o escopo, ou seja, o que o projeto vai fazer, ajuda a chegar ao fim. Uma versão pequena e terminada vale mais que uma grande pela metade. Depois de publicar, você melhora aos poucos."
+    },
+    {
+     "pergunta": "O que o README de um projeto de portfólio precisa ter?",
+     "opcoes": [
+      "Só o nome e a data de criação",
+      "A lista de tudo o que você sabe",
+      "O que faz, como rodar e o que você aprendeu",
+      "Seu currículo completo e seus contatos"
+     ],
+     "correta": 2,
+     "explicacao": "O README é o arquivo de apresentação do repositório. Quem abre o repositório quer entender o projeto em poucos segundos e conseguir rodar. Contar o que aprendeu mostra como você pensa."
+    },
+    {
+     "pergunta": "Antes de publicar o projeto no GitHub, o que conferir?",
+     "opcoes": [
+      "Se há senhas ou dados pessoais nos arquivos",
+      "Se o código tem mais de mil linhas",
+      "Se você usou a linguagem mais nova",
+      "Se o nome do projeto está em inglês"
+     ],
+     "correta": 0,
+     "explicacao": "Depois de publicado, o conteúdo pode ser copiado por qualquer pessoa ou robô. Senhas, chaves de acesso e dados pessoais nunca devem ir para um repositório público."
     }
    ],
    "pergunta_ako": "Seu projeto resolve um problema real? Para quem?",

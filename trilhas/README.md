@@ -10,6 +10,8 @@ A primeira trilha é **Primeiros passos em TI**: 16 tópicos em 6 etapas, do "co
 
 - **Sem cadastro:** o progresso fica salvo só no navegador de quem usa. Na página de conquistas dá para exportar e importar o progresso por arquivo.
 - **Sem build:** HTML, CSS e JavaScript puros. Todo o conteúdo fica num arquivo só, o `dados/primeiros-passos.json`.
+- **Desafios sorteados:** cada tópico tem um banco de 6 perguntas, e cada tentativa sorteia 3. Quem refaz o desafio não decora as respostas.
+- **Revisão rápida:** depois de começar dois tópicos, a pessoa pode fazer revisões com 5 perguntas sorteadas do que já estudou. A revisão não vale XP, mas três revisões com pelo menos 4 acertos dão a conquista Memória afiada.
 - **XP por prática:** cada tópico vale até 90 XP. São 20 pelo checklist completo, 30 pelo desafio (2 de 3 acertos), 10 por acertar tudo de primeira, 10 por responder à pergunta Ako e 20 por explicar o assunto para outra pessoa.
 
 ## Materiais em português
@@ -52,7 +54,7 @@ Quando o melhor material gratuito de um tópico só existe em inglês, a Iniciat
 
 - **Escreva para quem está começando:** frases curtas e todo termo técnico explicado na primeira vez.
 - **Materiais só gratuitos e conferidos:** abra o link antes de sugerir. Se estiver em inglês, use `"idioma": "en"`. Se o certificado for pago, escreva em `gratuito`.
-- **Desafios com problemas reais:** uma situação do dia a dia, quatro alternativas plausíveis, uma certa e uma explicação que ensina. Varie a posição da resposta certa.
+- **Desafios com problemas reais:** cada tópico precisa de pelo menos 3 perguntas, e o ideal são 6, para o sorteio variar. Cada uma traz uma situação do dia a dia, quatro alternativas plausíveis, uma certa e uma explicação que ensina. Varie a posição da resposta certa.
 - **Rode o verificador antes de mandar:** `python3 trilhas/validar.py` aponta erros de formato.
 
 ## Testar no seu computador

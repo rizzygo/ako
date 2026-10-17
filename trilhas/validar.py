@@ -38,8 +38,8 @@ for t in d.get("topicos", []):
     if len(t.get("checklist", [])) < 2:
         erro(onde, "o checklist precisa de pelo menos 2 itens")
     quiz = t.get("quiz", [])
-    if len(quiz) < 2:
-        erro(onde, "o desafio precisa de pelo menos 2 perguntas")
+    if len(quiz) < 3:
+        erro(onde, "o desafio precisa de pelo menos 3 perguntas, porque o site sorteia 3 por tentativa")
     for i, q in enumerate(quiz, 1):
         ops = q.get("opcoes", [])
         if len(ops) < 2:
