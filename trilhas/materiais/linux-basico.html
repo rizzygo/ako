@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Linux básico, na prática | Trilhas Rizzygo</title>
+<meta name="description" content="Lição prática em português: a árvore de pastas do Linux, usuários e root, permissões, instalação de programas com apt, processos, disco, memória e logs.">
+<meta name="theme-color" content="#0B1B3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="../app.css">
+<link rel="stylesheet" href="materiais.css">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="../#/" aria-label="Trilhas Rizzygo, início"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 26V6" stroke="var(--azul)" stroke-width="5" stroke-linecap="round"/><path d="M6 16c8 0 10 10 20 10" stroke="var(--ambar)" stroke-width="5" fill="none" stroke-linecap="round"/></svg><span>Rizzygo <b>Trilhas</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="../#/trilha">Trilha</a><a href="./">Materiais</a></nav>
+</div></header>
+
+<main id="conteudo" class="licao">
+<div class="licao-cab">
+  <a class="voltar" href="../#/t/linux">Voltar para o tópico Linux básico</a>
+  <h1>Linux básico, na prática</h1>
+  <p class="lead">Como o Linux organiza pastas, usuários e permissões, como instalar programas e como ver o que está rodando. É a base para trabalhar com servidores, nuvem e segurança.</p>
+  <div class="ficha"><span class="etiqueta">Cerca de 2 horas</span><span class="etiqueta">Exemplos no Ubuntu 24.04</span><span class="etiqueta ambar">Material gratuito em português</span></div>
+</div>
+
+<nav class="indice" aria-label="Nesta lição">
+  <h2>Nesta lição</h2>
+  <ol>
+    <li><a href="#o-que-e">O que é o Linux</a></li>
+    <li><a href="#praticar">Onde praticar sem medo</a></li>
+    <li><a href="#arvore">A árvore de pastas</a></li>
+    <li><a href="#usuarios">Usuários, grupos e o root</a></li>
+    <li><a href="#permissoes">Permissões: quem pode o quê</a></li>
+    <li><a href="#pacotes">Instalar e remover programas</a></li>
+    <li><a href="#processos">Processos: o que está rodando</a></li>
+    <li><a href="#recursos">Disco e memória</a></li>
+    <li><a href="#logs">Logs e serviços</a></li>
+    <li><a href="#missao">Missão final</a></li>
+  </ol>
+</nav>
+
+<section id="o-que-e">
+  <h2>1. O que é o Linux</h2>
+  <p>Linux é o nome do <strong>kernel</strong>, a parte do sistema que conversa com o hardware: processador, memória, disco e rede. Em volta dele, cada <strong>distribuição</strong> junta programas, um jeito de instalar pacotes e, às vezes, uma interface gráfica. Ubuntu, Debian, Fedora e Linux Mint são distribuições.</p>
+  <p>A maioria dos servidores da internet e das máquinas na nuvem roda Linux, quase sempre sem interface gráfica: tudo é feito pelo terminal. Por isso esta lição usa só o terminal. Se você ainda não se sente confortável com ele, faça antes a lição <a href="linha-de-comando.html">Linha de comando para iniciantes</a>.</p>
+  <p>Os exemplos usam o Ubuntu, a distribuição mais comum para quem está começando. Em outras distribuições, quase tudo é igual. A maior diferença está na instalação de programas, que você vê na parte 6.</p>
+</section>
+
+<section id="praticar">
+  <h2>2. Onde praticar sem medo</h2>
+  <ul>
+    <li><strong>WSL, no Windows:</strong> roda um Ubuntu dentro do Windows. Rode <code>wsl --install</code> no PowerShell como administrador e reinicie.</li>
+    <li><strong>Máquina virtual:</strong> um computador simulado dentro do seu, com programas gratuitos como o VirtualBox. Se quebrar, é só apagar e criar outra.</li>
+    <li><strong>Uma máquina virtual (VM) pequena na nuvem:</strong> é o mais parecido com o trabalho real. Antes, leia como funciona a cobrança do provedor e apague a máquina quando terminar, para não ter surpresa na fatura.</li>
+  </ul>
+  <div class="faca"><strong>Faça agora</strong>No seu Linux, rode <code>cat /etc/os-release</code>. A primeira linha mostra o nome e a versão da distribuição, como <code>PRETTY_NAME="Ubuntu 24.04.5 LTS"</code>.</div>
+</section>
+
+<section id="arvore">
+  <h2>3. A árvore de pastas</h2>
+  <p>No Linux não existe <code>C:</code> nem <code>D:</code>. Tudo fica numa árvore só, que começa na raiz, <code>/</code>. Até discos extras e pendrives aparecem como pastas dentro dela.</p>
+  <div class="cmd"><pre>ls /</pre></div>
+  <p>As pastas que você mais vai visitar:</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Pasta</th><th>O que guarda</th></tr></thead>
+    <tbody>
+      <tr><td><code>/home</code></td><td>As pastas pessoais dos usuários. A sua é <code>/home/seu-usuario</code>, também chamada de <code>~</code></td></tr>
+      <tr><td><code>/root</code></td><td>A pasta pessoal do administrador (root)</td></tr>
+      <tr><td><code>/etc</code></td><td>Arquivos de configuração do sistema e dos programas</td></tr>
+      <tr><td><code>/var/log</code></td><td>Logs, os registros do que aconteceu no sistema</td></tr>
+      <tr><td><code>/tmp</code></td><td>Arquivos temporários, que podem ser apagados ao reiniciar</td></tr>
+      <tr><td><code>/usr/bin</code></td><td>A maior parte dos programas que você roda, como <code>ls</code> e <code>cp</code></td></tr>
+      <tr><td><code>/dev</code></td><td>Dispositivos, como discos, representados como arquivos</td></tr>
+    </tbody>
+  </table></div>
+  <div class="faca"><strong>Faça agora</strong>Rode <code>ls /etc | head</code> para ver os primeiros arquivos de configuração. Não precisa mexer em nada: só olhar já ajuda a criar o mapa na cabeça.</div>
+</section>
+
+<section id="usuarios">
+  <h2>4. Usuários, grupos e o root</h2>
+  <p>O Linux foi feito para várias pessoas usarem o mesmo computador ao mesmo tempo. Cada pessoa tem um <strong>usuário</strong>, e usuários podem fazer parte de <strong>grupos</strong>, que facilitam dar a mesma permissão para várias pessoas.</p>
+  <div class="cmd"><pre>whoami</pre></div>
+  <div class="cmd"><pre>id</pre></div>
+  <div class="saida"><small>Saída parecida com esta:</small><pre>uid=1000(ana) gid=1000(ana) groups=1000(ana),27(sudo)</pre></div>
+  <p>O <code>id</code> mostra seu número de usuário (uid), seu grupo principal (gid) e todos os seus grupos. Estar no grupo <code>sudo</code> quer dizer que você pode usar o comando <code>sudo</code>.</p>
+  <p>O <strong>root</strong> é o administrador: pode tudo, inclusive apagar o sistema inteiro. Por isso, no dia a dia, você usa seu usuário comum e pede o poder de root só quando precisa, com <code>sudo</code> na frente do comando.</p>
+</section>
+
+<section id="permissoes">
+  <h2>5. Permissões: quem pode o quê</h2>
+  <p>Todo arquivo tem um dono, um grupo e três tipos de permissão: ler (<code>r</code>), escrever (<code>w</code>) e executar (<code>x</code>). Crie uma pasta de treino e um arquivo para ver isso. O <code>&amp;&amp;</code> roda o segundo comando só se o primeiro der certo, e o <code>touch</code> cria um arquivo vazio:</p>
+  <div class="cmd"><pre>mkdir ~/treino-linux &amp;&amp; cd ~/treino-linux</pre></div>
+  <div class="cmd"><pre>touch script.sh</pre></div>
+  <div class="cmd"><pre>ls -l script.sh</pre></div>
+  <div class="saida"><small>Saída parecida com esta:</small><pre>-rw-r--r-- 1 ana ana 0 out 17 17:23 script.sh</pre></div>
+  <p>Se o seu mostrar <code>-rw-rw-r--</code>, tudo bem: em muitas instalações do Ubuntu, o grupo também ganha escrita por padrão. A leitura funciona do mesmo jeito.</p>
+  <h3>Como ler o -rw-r--r--</h3>
+  <div class="tabela"><table>
+    <thead><tr><th>Parte</th><th>Para quem</th><th>Neste exemplo</th></tr></thead>
+    <tbody>
+      <tr><td><code>-</code></td><td>Tipo: <code>-</code> é arquivo, <code>d</code> é pasta</td><td>É um arquivo</td></tr>
+      <tr><td><code>rw-</code></td><td>O dono (u, de user)</td><td>Lê e escreve</td></tr>
+      <tr><td><code>r--</code></td><td>O grupo (g)</td><td>Só lê</td></tr>
+      <tr><td><code>r--</code></td><td>Todos os outros (o, de others)</td><td>Só leem</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Mudar permissões com letras</h3>
+  <p>O <code>chmod</code> muda as permissões. Com letras, você diz para quem (<code>u</code>, <code>g</code>, <code>o</code>), se acrescenta (<code>+</code>) ou tira (<code>-</code>), e qual permissão:</p>
+  <div class="cmd"><pre>chmod u+x script.sh</pre></div>
+  <div class="saida"><small>Agora o <code>ls -l script.sh</code> mostra algo assim:</small><pre>-rwxr--r-- 1 ana ana 0 out 17 17:23 script.sh</pre></div>
+  <h3>Mudar permissões com números</h3>
+  <p>Cada permissão vale um número: ler vale 4, escrever vale 2 e executar vale 1. Some os números de cada grupo de três. Por exemplo, <code>754</code> quer dizer:</p>
+  <ul>
+    <li><strong>7</strong> para o dono: 4 + 2 + 1, ou seja, ler, escrever e executar (<code>rwx</code>).</li>
+    <li><strong>5</strong> para o grupo: 4 + 1, ou seja, ler e executar (<code>r-x</code>).</li>
+    <li><strong>4</strong> para os outros: só ler (<code>r--</code>).</li>
+  </ul>
+  <div class="cmd"><pre>chmod 754 script.sh</pre></div>
+  <div class="saida"><small>Resultado no <code>ls -l</code>:</small><pre>-rwxr-xr-- 1 ana ana 0 out 17 17:23 script.sh</pre></div>
+  <p>Os valores mais comuns: <code>644</code> para arquivos comuns e <code>755</code> para scripts e pastas.</p>
+  <h3>Por que um script não roda</h3>
+  <p>Um script é um arquivo de texto com comandos. Crie um e tente rodar. O <code>printf</code> escreve o texto no arquivo, e cada <code>\n</code> vira uma quebra de linha. A primeira linha do script, <code>#!/bin/bash</code>, diz qual programa vai ler o arquivo. O <code>./</code> antes do nome manda rodar o arquivo que está na pasta atual.</p>
+  <div class="cmd"><pre>printf '#!/bin/bash\necho "Olá, Linux"\n' &gt; ola.sh</pre></div>
+  <div class="cmd"><pre>./ola.sh</pre></div>
+  <div class="saida"><small>Saída (num sistema em português, aparece Permissão negada):</small><pre>bash: ./ola.sh: Permission denied</pre></div>
+  <p>Falta a permissão de execução. Dê a permissão e rode de novo. Sem letra antes do <code>+x</code>, a execução vale para o dono, o grupo e os outros:</p>
+  <div class="cmd"><pre>chmod +x ola.sh</pre></div>
+  <div class="cmd"><pre>./ola.sh</pre></div>
+  <div class="saida"><small>Saída:</small><pre>Olá, Linux</pre></div>
+  <div class="cuidado"><strong>Nunca resolva com chmod 777</strong>Os três 7 dão leitura, escrita e execução para o dono, o grupo e todos os outros usuários. O erro some, mas qualquer pessoa ou programa na máquina passa a poder alterar o arquivo. Dê só a permissão que falta, para quem precisa.</div>
+  <p>Para trocar o dono de um arquivo, existe o <code>chown</code>, que exige administrador: <code>sudo chown ana:ana arquivo</code> deixa o arquivo com o usuário <code>ana</code> e o grupo <code>ana</code>.</p>
+</section>
+
+<section id="pacotes">
+  <h2>6. Instalar e remover programas</h2>
+  <p>No Linux, você raramente baixa programas de sites. Eles vêm de <strong>repositórios</strong>, listas oficiais de programas mantidas pela distribuição, e são instalados por um <strong>gerenciador de pacotes</strong>. No Ubuntu e no Debian, ele se chama <code>apt</code>.</p>
+  <div class="cmd"><pre>sudo apt update</pre></div>
+  <p>Esse comando não instala nada. Ele atualiza a lista de programas e versões disponíveis. Rode antes de instalar algo.</p>
+  <div class="cmd"><pre>sudo apt install tree</pre></div>
+  <div class="cmd"><pre>tree ~/treino-linux</pre></div>
+  <p>O <code>tree</code> mostra pastas e arquivos em forma de árvore. Para remover:</p>
+  <div class="cmd"><pre>sudo apt remove tree</pre></div>
+  <div class="cuidado"><strong>Antes de rodar sudo apt upgrade</strong>
+    <ol>
+      <li><strong>O que muda:</strong> atualiza para a versão mais nova todos os programas instalados que têm atualização. O <code>apt</code> mostra a lista e pede confirmação antes.</li>
+      <li><strong>Como desfazer:</strong> voltar versões é trabalhoso. Num servidor de verdade, atualize primeiro num ambiente de teste e tenha backup.</li>
+      <li><strong>Como saber que deu certo:</strong> rode <code>sudo apt update</code> de novo e veja se ainda há pacotes para atualizar. O Ubuntu às vezes deixa alguns para depois, e isso é normal.</li>
+    </ol>
+  </div>
+  <p>Em outras distribuições, o nome muda: o Fedora usa o <code>dnf</code> (<code>sudo dnf install tree</code>), por exemplo. A ideia é a mesma.</p>
+</section>
+
+<section id="processos">
+  <h2>7. Processos: o que está rodando</h2>
+  <p>Todo programa em execução é um <strong>processo</strong>, e cada processo tem um número de identificação, o PID.</p>
+  <div class="cmd"><pre>ps aux | head</pre></div>
+  <p>O <code>ps aux</code> lista todos os processos, e o <code>head</code> mostra só as primeiras linhas. As colunas mais úteis são <code>USER</code> (de quem é), <code>PID</code>, <code>%CPU</code>, <code>%MEM</code> e <code>COMMAND</code> (o que está rodando). Para ver em tempo real, ordenado por uso de CPU:</p>
+  <div class="cmd"><pre>top</pre></div>
+  <p>Aperte <code>q</code> para sair. Existe também o <code>htop</code>, mais fácil de ler, que você instala com <code>sudo apt install htop</code>.</p>
+  <h3>Encerrar um processo</h3>
+  <p>Vamos criar um processo de teste que só espera 5 minutos. O <code>&amp;</code> no fim faz ele rodar em segundo plano, ou seja, o terminal fica livre para outros comandos. O terminal também mostra o PID:</p>
+  <div class="cmd"><pre>sleep 300 &amp;</pre></div>
+  <div class="saida"><small>Saída parecida com esta (o número muda):</small><pre>[1] 2541</pre></div>
+  <div class="cmd"><pre>ps aux | grep sleep</pre></div>
+  <div class="cmd"><pre>kill 2541</pre></div>
+  <p>No resultado do <code>grep</code>, uma das linhas é a própria busca (<code>grep sleep</code>); ignore essa. Troque <code>2541</code> pelo PID que apareceu para você. O <code>kill</code> pede para o processo terminar. Se ele não obedecer, existe o <code>kill -9 PID</code>, que encerra à força, sem dar chance de salvar nada. Use como último recurso.</p>
+  <div class="cuidado"><strong>Confira o PID antes do kill</strong>Encerrar o processo errado pode derrubar um serviço ou fazer alguém perder trabalho. Leia a coluna <code>COMMAND</code> antes.</div>
+</section>
+
+<section id="recursos">
+  <h2>8. Disco e memória</h2>
+  <div class="cmd"><pre>df -h</pre></div>
+  <p>Mostra o espaço de cada disco. Se o seu Ubuntu estiver em português, os nomes das colunas aparecem traduzidos. O <code>-h</code> deixa os números legíveis, em G (gigabytes) e M (megabytes). Olhe a coluna <code>Use%</code>: disco perto de 100% é uma causa clássica de sistema fora do ar.</p>
+  <div class="cmd"><pre>free -h</pre></div>
+  <p>Mostra a memória RAM. Olhe a coluna <code>available</code>, que é quanto ainda dá para usar. O Linux usa a memória livre como cache para acelerar o acesso ao disco, então um número baixo na coluna <code>free</code> nem sempre é problema.</p>
+  <div class="cmd"><pre>du -sh ~/treino-linux</pre></div>
+  <p>O <code>du</code> mostra quanto espaço uma pasta ocupa. É útil para achar o que está enchendo o disco.</p>
+</section>
+
+<section id="logs">
+  <h2>9. Logs e serviços</h2>
+  <p>Quando algo dá errado num servidor, a primeira pergunta é: o que diz o log? Na maioria das distribuições atuais, os logs do sistema são lidos com o <code>journalctl</code>:</p>
+  <div class="cmd"><pre>journalctl -n 20</pre></div>
+  <p>Mostra os 20 registros mais recentes. Se aparecer um aviso de permissão, rode com <code>sudo</code> na frente. Para acompanhar ao vivo, use <code>journalctl -f</code> e aperte <code>Ctrl+C</code> para parar. Se a saída não voltar para o prompt sozinha, aperte <code>q</code>; isso vale também para o <code>systemctl</code> abaixo.</p>
+  <p>Programas que ficam rodando o tempo todo, como um servidor web, são <strong>serviços</strong>. Eles são controlados pelo <code>systemctl</code>:</p>
+  <div class="cmd"><pre>systemctl status cron</pre></div>
+  <p>Mostra se o serviço <code>cron</code>, que roda tarefas agendadas, está ativo, desde quando e as últimas linhas de log dele. Em contêineres e em instalações antigas do WSL, o <code>systemctl</code> pode não funcionar, porque o gerenciador de serviços (systemd) não está ativo. Num servidor ou numa máquina virtual, ele funciona.</p>
+</section>
+
+<section id="missao">
+  <h2>10. Missão final</h2>
+  <p>Junte o que você aprendeu. Tente fazer cada item antes de abrir a resposta.</p>
+  <details class="exercicio"><summary>1. Crie um script que mostra a data e dê a permissão certa</summary>
+    <div class="cmd"><pre>printf '#!/bin/bash\ndate\n' &gt; data.sh</pre></div>
+    <div class="cmd"><pre>chmod 755 data.sh</pre></div>
+    <div class="cmd"><pre>./data.sh</pre></div>
+  </details>
+  <details class="exercicio"><summary>2. Descubra quanto espaço livre tem o disco principal</summary>
+    <div class="cmd"><pre>df -h /</pre></div>
+    <p>A resposta está na coluna <code>Avail</code>.</p>
+  </details>
+  <details class="exercicio"><summary>3. Descubra o PID do shell em que você está</summary>
+    <div class="cmd"><pre>echo $$</pre></div>
+    <p>O shell é o programa que lê e roda seus comandos dentro do terminal (no Ubuntu, o <code>bash</code>). O <code>$$</code> guarda o PID dele. Procure esse número no <code>ps aux</code>.</p>
+  </details>
+  <details class="exercicio"><summary>4. Limpe a pasta de treino</summary>
+    <div class="cmd"><pre>cd ~ &amp;&amp; rm -r ~/treino-linux</pre></div>
+    <p>Confira o caminho antes de apertar Enter: o <code>rm -r</code> não tem volta.</p>
+  </details>
+  <div class="faca"><strong>Para fixar</strong>Explique para alguém por que <code>chmod 777</code> resolve o erro, mas cria outro problema. Depois, marque no tópico que você ensinou alguém.</div>
+  <div class="proximo"><a class="btn" href="../#/t/linux">Voltar para o tópico e fazer o desafio</a><a class="btn btn-sec" href="primeiros-passos-github.html">Outra lição: primeiros passos no GitHub</a></div>
+</section>
+
+<div class="credito">
+  <p>Lição escrita em português pela Iniciativa Ako, da Rizzygo, com base nos temas do <a href="https://labex.io/linuxjourney">Linux Journey</a> (em inglês). Não é uma tradução: o texto e os exemplos são próprios. Os comandos foram testados no Ubuntu 24.04, menos os de serviços e logs (<code>systemctl</code> e <code>journalctl</code>), que dependem de um ambiente com systemd.</p>
+  <p>Conteúdo aberto sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR">CC BY 4.0</a>. Viu um erro? <a href="https://github.com/rizzygo/iniciativa-ako/issues">Abra uma issue</a>.</p>
+</div>
+</main>
+<footer class="rodape"><div class="rodape-in"><p class="credo">Sou Zy: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="materiais.js"></script>
+</body>
+</html>

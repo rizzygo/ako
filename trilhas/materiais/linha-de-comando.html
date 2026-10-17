@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Linha de comando para iniciantes | Trilhas Rizzygo</title>
+<meta name="description" content="Lição prática em português: abra o terminal, navegue entre pastas, crie, copie, mova e apague arquivos, peça ajuda aos comandos e combine comandos com segurança.">
+<meta name="theme-color" content="#0B1B3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="../app.css">
+<link rel="stylesheet" href="materiais.css">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="../#/" aria-label="Trilhas Rizzygo, início"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 26V6" stroke="var(--azul)" stroke-width="5" stroke-linecap="round"/><path d="M6 16c8 0 10 10 20 10" stroke="var(--ambar)" stroke-width="5" fill="none" stroke-linecap="round"/></svg><span>Rizzygo <b>Trilhas</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="../#/trilha">Trilha</a><a href="./">Materiais</a></nav>
+</div></header>
+
+<main id="conteudo" class="licao">
+<div class="licao-cab">
+  <a class="voltar" href="../#/t/terminal">Voltar para o tópico Terminal</a>
+  <h1>Linha de comando para iniciantes</h1>
+  <p class="lead">Uma lição prática para perder o medo do terminal. Você vai criar uma pasta de treino, onde errar não tem problema, e usar os comandos que resolvem a maior parte do dia a dia.</p>
+  <div class="ficha"><span class="etiqueta">Cerca de 1 hora</span><span class="etiqueta">Linux, macOS ou Windows com WSL</span><span class="etiqueta ambar">Material gratuito em português</span></div>
+</div>
+
+<nav class="indice" aria-label="Nesta lição">
+  <h2>Nesta lição</h2>
+  <ol>
+    <li><a href="#abrir">Abra o terminal</a></li>
+    <li><a href="#anatomia">Como um comando é escrito</a></li>
+    <li><a href="#navegar">Onde estou e como ando entre pastas</a></li>
+    <li><a href="#criar">Criar, copiar, mover e apagar</a></li>
+    <li><a href="#ler">Ler o conteúdo de arquivos</a></li>
+    <li><a href="#ajuda">Pedir ajuda ao próprio comando</a></li>
+    <li><a href="#juntar">Juntar comandos: &gt;, &gt;&gt; e |</a></li>
+    <li><a href="#sudo">sudo: o comando de administrador</a></li>
+    <li><a href="#erros">Ler os erros mais comuns</a></li>
+    <li><a href="#limpar">Limpe a pasta de treino</a></li>
+  </ol>
+</nav>
+
+<section id="abrir">
+  <h2>1. Abra o terminal</h2>
+  <p>O terminal é um programa em que você escreve comandos e o computador responde em texto. Onde ele fica muda de um sistema para outro:</p>
+  <ul>
+    <li><strong>Linux (Ubuntu e parecidos):</strong> aperte <code>Ctrl+Alt+T</code> ou procure por "Terminal" no menu.</li>
+    <li><strong>macOS:</strong> abra o Spotlight com <code>Cmd+Espaço</code> e digite "Terminal".</li>
+    <li><strong>Windows:</strong> instale o WSL (Subsistema do Windows para Linux), que roda um Ubuntu dentro do Windows. Abra o PowerShell (o terminal do Windows) como administrador e rode <code>wsl --install</code>. Depois de reiniciar, abra o "Ubuntu" no menu Iniciar. Na primeira vez, ele pede para você criar um usuário e uma senha. Guarde a senha: o <code>sudo</code>, da parte 8, vai pedir por ela. O Git Bash, que vem com o Git para Windows, também aceita a maioria dos comandos desta lição.</li>
+  </ul>
+  <p>Ao abrir, você vê uma linha parecida com <code>ana@notebook:~$</code>. Ela se chama <em>prompt</em> e diz quem você é (<code>ana</code>), em que computador está (<code>notebook</code>) e em que pasta (<code>~</code>, que é a sua pasta pessoal). O <code>$</code> indica que o terminal está esperando um comando. No macOS, o prompt é um pouco diferente e costuma terminar em <code>%</code>.</p>
+  <div class="faca"><strong>Faça agora</strong>Abra o terminal, digite <code>whoami</code> e aperte Enter. Ele responde com o seu nome de usuário.</div>
+</section>
+
+<section id="anatomia">
+  <h2>2. Como um comando é escrito</h2>
+  <p>Quase todo comando segue a mesma forma: o nome do programa, depois opções que mudam o comportamento, depois o alvo.</p>
+  <div class="cmd"><pre>ls -l /etc</pre></div>
+  <ul>
+    <li><code>ls</code> é o programa: listar arquivos.</li>
+    <li><code>-l</code> é uma opção: mostrar a lista em formato longo, com detalhes.</li>
+    <li><code>/etc</code> é o alvo: a pasta que você quer listar, onde ficam as configurações do sistema.</li>
+  </ul>
+  <p>Três regras evitam muita dor de cabeça:</p>
+  <ul>
+    <li>O terminal diferencia maiúsculas de minúsculas no Linux: <code>Notas</code> e <code>notas</code> são pastas diferentes.</li>
+    <li>Espaço separa as partes do comando. Se um nome tiver espaço, use aspas: <code>cd "minhas fotos"</code>. Por isso, prefira nomes sem espaço, como <code>minhas-fotos</code>.</li>
+    <li>Na maioria das vezes, quando dá certo, o terminal não diz nada. Silêncio quer dizer sucesso. Confira o resultado com outro comando, como <code>ls</code>.</li>
+  </ul>
+</section>
+
+<section id="navegar">
+  <h2>3. Onde estou e como ando entre pastas</h2>
+  <p>Os arquivos ficam em pastas, uma dentro da outra, como galhos de uma árvore. Você está sempre "dentro" de uma pasta. Vamos criar a pasta de treino e entrar nela:</p>
+  <div class="cmd"><pre>mkdir ~/treino-terminal</pre></div>
+  <div class="cmd"><pre>cd ~/treino-terminal</pre></div>
+  <div class="cmd"><pre>pwd</pre></div>
+  <div class="saida"><small>Saída esperada (com o seu usuário no lugar de ana; no macOS, começa com /Users):</small><pre>/home/ana/treino-terminal</pre></div>
+  <ul>
+    <li><code>mkdir</code> (make directory) cria uma pasta.</li>
+    <li><code>cd</code> (change directory) entra numa pasta.</li>
+    <li><code>pwd</code> (print working directory) mostra em que pasta você está.</li>
+  </ul>
+  <h3>Atalhos de caminho</h3>
+  <div class="tabela"><table>
+    <thead><tr><th>Atalho</th><th>Quer dizer</th><th>Exemplo</th></tr></thead>
+    <tbody>
+      <tr><td><code>~</code></td><td>Sua pasta pessoal</td><td><code>cd ~</code> volta para casa de qualquer lugar</td></tr>
+      <tr><td><code>..</code></td><td>A pasta de cima</td><td><code>cd ..</code> sobe um nível</td></tr>
+      <tr><td><code>.</code></td><td>A pasta atual</td><td><code>ls .</code> é o mesmo que <code>ls</code></td></tr>
+      <tr><td><code>-</code></td><td>A pasta onde você estava antes</td><td><code>cd -</code> volta para a anterior</td></tr>
+      <tr><td><code>/</code></td><td>A raiz, o começo de tudo</td><td><code>cd /</code> vai para o topo da árvore</td></tr>
+    </tbody>
+  </table></div>
+  <p>Um caminho que começa com <code>/</code> é <strong>absoluto</strong>: funciona de qualquer lugar, como um endereço completo. Um caminho sem <code>/</code> no começo é <strong>relativo</strong>: parte da pasta em que você está, como "a segunda porta à direita".</p>
+  <div class="faca"><strong>Faça agora</strong>Rode <code>cd /</code>, depois <code>pwd</code>, depois <code>cd -</code> e <code>pwd</code> de novo. Você foi até a raiz e voltou para a pasta de treino.</div>
+  <h3>Duas teclas que poupam tempo</h3>
+  <ul>
+    <li><strong>Tab</strong> completa nomes de pastas e arquivos. Digite <code>cd ~/trei</code> e aperte Tab. Além de rápido, evita erro de digitação.</li>
+    <li><strong>Seta para cima</strong> traz de volta os comandos que você já rodou.</li>
+  </ul>
+</section>
+
+<section id="criar">
+  <h2>4. Criar, copiar, mover e apagar</h2>
+  <p>Dentro de <code>~/treino-terminal</code>, crie duas pastas de uma vez e confira:</p>
+  <div class="cmd"><pre>mkdir notas fotos</pre></div>
+  <div class="cmd"><pre>ls</pre></div>
+  <div class="saida"><small>Saída esperada:</small><pre>fotos  notas</pre></div>
+  <p>Agora crie um arquivo de texto com duas linhas. O <code>echo</code> repete o texto que você der, e o <code>&gt;</code> manda esse texto para um arquivo. Na segunda linha, o <code>&gt;&gt;</code> acrescenta o texto no fim do arquivo, sem apagar o que já estava lá. A parte 7 explica os dois com calma:</p>
+  <div class="cmd"><pre>echo "arroz" &gt; notas/compras.txt</pre></div>
+  <div class="cmd"><pre>echo "feijão" &gt;&gt; notas/compras.txt</pre></div>
+  <h3>Copiar, mover e renomear</h3>
+  <div class="cmd"><pre>cp notas/compras.txt notas/copia.txt</pre></div>
+  <div class="cmd"><pre>mv notas/copia.txt notas/mercado.txt</pre></div>
+  <div class="cmd"><pre>ls notas</pre></div>
+  <div class="saida"><small>Saída esperada:</small><pre>compras.txt  mercado.txt</pre></div>
+  <ul>
+    <li><code>cp origem destino</code> copia. O original continua lá.</li>
+    <li><code>mv origem destino</code> move. Se o destino for outro nome na mesma pasta, ele renomeia.</li>
+  </ul>
+  <div class="cuidado"><strong>Antes de rodar cp ou mv</strong>Se já existir um arquivo com o nome do destino, ele é substituído sem aviso. Para o terminal perguntar antes, use a opção <code>-i</code>: <code>cp -i</code> e <code>mv -i</code>.</div>
+  <h3>Apagar</h3>
+  <div class="cmd"><pre>rm notas/mercado.txt</pre></div>
+  <div class="cuidado"><strong>Antes de rodar rm</strong>
+    <ol>
+      <li><strong>O que muda:</strong> o arquivo é apagado na hora.</li>
+      <li><strong>Como desfazer:</strong> não tem como. O terminal não usa a lixeira.</li>
+      <li><strong>Como saber que deu certo:</strong> <code>ls notas</code> não mostra mais o arquivo.</li>
+    </ol>
+    Para apagar uma pasta vazia, use <code>rmdir</code>. Para apagar uma pasta com tudo dentro, existe <code>rm -r</code>. Antes de usar, confira com <code>pwd</code> e <code>ls</code> se você está mesmo no lugar certo. Em tutoriais, você vai ver <code>rm -rf</code>. O <code>-f</code> (de force, forçar) faz o <code>rm</code> nunca perguntar nada, nem nos casos em que perguntaria. Use só quando tiver certeza absoluta do caminho.
+  </div>
+  <details class="exercicio"><summary>Exercício: crie e renomeie um arquivo</summary>
+    <p>Dentro de <code>fotos</code>, crie um arquivo vazio chamado <code>praia.jpg</code>, renomeie para <code>ferias.jpg</code> e confira. Dica: o comando <code>touch</code> cria um arquivo vazio. Tente sozinho antes de ler os comandos abaixo.</p>
+    <div class="cmd"><pre>touch fotos/praia.jpg</pre></div>
+    <div class="cmd"><pre>mv fotos/praia.jpg fotos/ferias.jpg</pre></div>
+    <div class="cmd"><pre>ls fotos</pre></div>
+  </details>
+</section>
+
+<section id="ler">
+  <h2>5. Ler o conteúdo de arquivos</h2>
+  <div class="cmd"><pre>cat notas/compras.txt</pre></div>
+  <div class="saida"><small>Saída esperada:</small><pre>arroz
+feijão</pre></div>
+  <ul>
+    <li><code>cat</code> mostra o arquivo inteiro. Bom para arquivos curtos.</li>
+    <li><code>less</code> abre arquivos longos página por página. Use as setas ou a barra de espaço para andar, <code>/palavra</code> para buscar e <code>q</code> para sair.</li>
+    <li><code>head</code> mostra as 10 primeiras linhas, e <code>tail</code>, as 10 últimas. <code>tail -n 3 arquivo</code> mostra as 3 últimas.</li>
+  </ul>
+  <h3>Arquivos escondidos</h3>
+  <p>No Linux e no macOS, arquivos que começam com ponto, como <code>.bashrc</code>, ficam escondidos. Eles costumam guardar configurações. Para ver todos:</p>
+  <div class="cmd"><pre>ls -a</pre></div>
+  <p>Você também vai ver <code>.</code> e <code>..</code> na lista. São os atalhos da pasta atual e da pasta de cima.</p>
+  <h3>Detalhes de cada arquivo</h3>
+  <div class="cmd"><pre>ls -l notas</pre></div>
+  <div class="saida"><small>Saída parecida com esta:</small><pre>-rw-r--r-- 1 ana ana 14 out 17 17:22 compras.txt</pre></div>
+  <p>Da esquerda para a direita: as permissões (quem pode ler, escrever e executar), um número que você pode ignorar por enquanto, o dono, o grupo, o tamanho em bytes, a data da última alteração e o nome. As permissões são explicadas na lição <a href="linux-basico.html#permissoes">Linux básico</a>.</p>
+</section>
+
+<section id="ajuda">
+  <h2>6. Pedir ajuda ao próprio comando</h2>
+  <p>Você não precisa decorar opções. Quase todo comando explica a si mesmo:</p>
+  <div class="cmd"><pre>mv --help</pre></div>
+  <div class="cmd"><pre>man mv</pre></div>
+  <p><code>--help</code> mostra um resumo direto no terminal. No macOS, muitos comandos não aceitam <code>--help</code>; use o <code>man</code>. <code>man</code> abre o manual completo, com as mesmas teclas do <code>less</code> (<code>q</code> para sair). Os dois costumam estar em inglês, e é aí que a lista de termos do tópico de inglês ajuda.</p>
+  <p>Se uma IA sugerir uma opção que você nunca viu, confira com <code>--help</code> antes de rodar. IAs às vezes inventam opções que não existem.</p>
+</section>
+
+<section id="juntar">
+  <h2>7. Juntar comandos: &gt;, &gt;&gt; e |</h2>
+  <p>O que um comando mostra na tela se chama <em>saída</em>. Ela pode ir para um arquivo ou para outro comando, em vez de aparecer na tela.</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Símbolo</th><th>O que faz</th><th>Exemplo</th></tr></thead>
+    <tbody>
+      <tr><td><code>&gt;</code></td><td>Grava a saída num arquivo, <strong>substituindo</strong> o que havia</td><td><code>ls &gt; lista.txt</code></td></tr>
+      <tr><td><code>&gt;&gt;</code></td><td>Acrescenta a saída no fim do arquivo</td><td><code>echo "sal" &gt;&gt; notas/compras.txt</code></td></tr>
+      <tr><td><code>|</code></td><td>Entrega a saída de um comando para o próximo</td><td><code>ls notas | wc -l</code></td></tr>
+    </tbody>
+  </table></div>
+  <p>O <code>|</code> se chama <em>pipe</em> (cano). No exemplo, o <code>ls</code> lista os arquivos e o <code>wc -l</code> conta as linhas, ou seja, quantos arquivos há na pasta.</p>
+  <p>Para buscar uma palavra dentro de arquivos, use o <code>grep</code>:</p>
+  <div class="cmd"><pre>grep feijão notas/compras.txt</pre></div>
+  <div class="saida"><small>Saída esperada:</small><pre>feijão</pre></div>
+  <div class="cuidado"><strong>Cuidado com o &gt;</strong>Trocar <code>&gt;&gt;</code> por <code>&gt;</code> apaga o conteúdo anterior do arquivo, sem aviso. Teste: rode <code>echo "linha 1" &gt; teste.txt</code>, depois <code>echo "linha 2" &gt; teste.txt</code> e <code>cat teste.txt</code>. Só sobra a linha 2.</div>
+  <details class="exercicio"><summary>Exercício: quantos itens tem a sua pasta de treino?</summary>
+    <p>Combine <code>ls</code> e <code>wc -l</code> com um pipe.</p>
+    <div class="cmd"><pre>ls ~/treino-terminal | wc -l</pre></div>
+    <p>O número conta o que está direto dentro da pasta de treino: as pastas e os arquivos que você criou ali.</p>
+  </details>
+</section>
+
+<section id="sudo">
+  <h2>8. sudo: o comando de administrador</h2>
+  <p>Algumas ações mexem no sistema inteiro, como instalar programas. Elas exigem permissão de administrador. No Linux, o administrador é um usuário chamado <em>root</em>. O <code>sudo</code> na frente de um comando roda só aquele comando como root:</p>
+  <div class="cmd"><pre>sudo apt update</pre></div>
+  <p>Esse exemplo vale para Ubuntu e WSL; no macOS não existe <code>apt</code>. O terminal pede a sua senha. Em muitos sistemas, nada aparece na tela enquanto você digita. Em outros, aparecem asteriscos. Os dois casos são normais: digite e aperte Enter.</p>
+  <div class="cuidado"><strong>Antes de usar sudo</strong>Com <code>sudo</code>, o sistema deixa de proteger você de si mesmo. Um <code>rm -r</code> no caminho errado com <code>sudo</code> pode apagar arquivos do sistema. Use só quando o comando precisar, e nunca rode com <code>sudo</code> algo que você não entendeu.</div>
+</section>
+
+<section id="erros">
+  <h2>9. Ler os erros mais comuns</h2>
+  <p>As mensagens de erro costumam vir em inglês, principalmente em servidores. Se o seu sistema estiver em português, elas aparecem traduzidas. Estas são as que você mais vai ver:</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Mensagem</th><th>O que quer dizer</th><th>O que tentar</th></tr></thead>
+    <tbody>
+      <tr><td><code>No such file or directory</code></td><td>O arquivo ou a pasta não existe nesse caminho</td><td>Rode <code>pwd</code> e <code>ls</code> e confira o nome, com maiúsculas e minúsculas</td></tr>
+      <tr><td><code>command not found</code></td><td>O programa não está instalado ou o nome está errado</td><td>Confira a digitação e, se for o caso, instale o programa</td></tr>
+      <tr><td><code>Permission denied</code></td><td>Seu usuário não pode fazer isso</td><td>Veja as permissões com <code>ls -l</code>. Use <code>sudo</code> só se a ação for mesmo de administrador</td></tr>
+      <tr><td><code>Is a directory</code></td><td>Você usou um comando de arquivo numa pasta</td><td>Se queria apagar a pasta, use <code>rmdir</code> (vazia) ou <code>rm -r</code> (com conteúdo)</td></tr>
+      <tr><td><code>Directory not empty</code></td><td>O <code>rmdir</code> só apaga pastas vazias</td><td>Veja o que tem dentro com <code>ls</code> antes de decidir</td></tr>
+    </tbody>
+  </table></div>
+  <p>Se um comando travar ou não terminar nunca, aperte <code>Ctrl+C</code>. Ele interrompe o comando que está rodando.</p>
+</section>
+
+<section id="limpar">
+  <h2>10. Limpe a pasta de treino</h2>
+  <p>Quando terminar, apague a pasta de treino. É um bom exercício de cuidado com o <code>rm -r</code>.</p>
+  <div class="cmd"><pre>cd ~</pre></div>
+  <div class="cmd"><pre>ls</pre></div>
+  <div class="cmd"><pre>rm -r ~/treino-terminal</pre></div>
+  <div class="cuidado"><strong>Antes de rodar</strong>
+    <ol>
+      <li><strong>O que muda:</strong> apaga a pasta <code>treino-terminal</code> e tudo o que você criou dentro dela.</li>
+      <li><strong>Como desfazer:</strong> não tem como, então confira o caminho letra por letra antes de apertar Enter.</li>
+      <li><strong>Como saber que deu certo:</strong> <code>ls ~</code> não mostra mais <code>treino-terminal</code>.</li>
+    </ol>
+  </div>
+  <div class="faca"><strong>Para fixar</strong>Explique para alguém, com suas palavras, a diferença entre <code>cp</code> e <code>mv</code> e entre <code>&gt;</code> e <code>&gt;&gt;</code>. Depois, marque no tópico que você ensinou alguém.</div>
+  <div class="proximo"><a class="btn" href="../#/t/terminal">Voltar para o tópico e fazer o desafio</a><a class="btn btn-sec" href="linux-basico.html">Próxima lição: Linux básico</a></div>
+</section>
+
+<div class="credito">
+  <p>Lição escrita em português pela Iniciativa Ako, da Rizzygo, com base nos temas do tutorial <a href="https://ubuntu.com/desktop/docs/en/latest/tutorial/the-linux-command-line-for-beginners/">The Linux command line for beginners</a>, do Ubuntu (em inglês). Não é uma tradução: o texto e os exemplos são próprios.</p>
+  <p>Conteúdo aberto sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR">CC BY 4.0</a>. Viu um erro? <a href="https://github.com/rizzygo/iniciativa-ako/issues">Abra uma issue</a>.</p>
+</div>
+</main>
+<footer class="rodape"><div class="rodape-in"><p class="credo">Sou Zy: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="materiais.js"></script>
+</body>
+</html>

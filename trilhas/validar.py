@@ -50,7 +50,7 @@ for t in d.get("topicos", []):
             erro(onde, f"pergunta {i} está sem explicação")
     for r in t.get("recursos", []):
         url = r.get("url", "")
-        if not (url.startswith("https://") or url.startswith("../")):
+        if not (url.startswith("https://") or url.startswith("../") or url.startswith("./materiais/")):
             erro(onde, f"recurso '{r.get('titulo')}' precisa de um link https")
         if r.get("idioma") not in ("pt-BR", "en", "es"):
             erro(onde, f"recurso '{r.get('titulo')}' com idioma inválido")

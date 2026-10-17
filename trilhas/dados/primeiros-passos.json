@@ -442,6 +442,15 @@
    "pergunta_ako": "O que te dá mais medo no terminal? Como você poderia testar isso num lugar onde errar não tem problema?",
    "recursos": [
     {
+     "titulo": "Linha de comando para iniciantes",
+     "fonte": "Iniciativa Ako",
+     "url": "./materiais/linha-de-comando.html",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição prática escrita para esta trilha: navegar entre pastas, criar, copiar, mover e apagar arquivos, pedir ajuda aos comandos e juntar comandos."
+    },
+    {
      "titulo": "Introdução à Linha de Comando Bash",
      "fonte": "Programming Historian em português",
      "url": "https://programminghistorian.org/pt/licoes/introducao-linha-comando-bash",
@@ -468,7 +477,7 @@
      "tipo": "artigo",
      "idioma": "en",
      "gratuito": "sim",
-     "nota": "Tutorial oficial sobre abrir o terminal, navegar por pastas, mexer em arquivos, usar pipes, man e sudo com segurança.",
+     "nota": "Tutorial oficial sobre abrir o terminal, navegar por pastas, mexer em arquivos, usar pipes, man e sudo com segurança. A lição da Iniciativa Ako acima cobre o mesmo assunto em português.",
      "verificado_em": "2026-10-17"
     }
    ]
@@ -534,6 +543,15 @@
    "pergunta_ako": "Se o `sudo` resolve tantos erros, por que não usar sempre?",
    "recursos": [
     {
+     "titulo": "Linux básico, na prática",
+     "fonte": "Iniciativa Ako",
+     "url": "./materiais/linux-basico.html",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição prática escrita para esta trilha, com exemplos no Ubuntu 24.04: pastas, usuários, permissões, apt, processos e logs."
+    },
+    {
      "titulo": "Guia Foca GNU/Linux",
      "fonte": "GuiaFoca (Gleydson Mazioli)",
      "url": "https://www.guiafoca.org/",
@@ -560,7 +578,7 @@
      "tipo": "curso",
      "idioma": "en",
      "gratuito": "sim",
-     "nota": "Lições curtas e laboratórios no navegador, de linha de comando a permissões e processos, sem precisar de cadastro.",
+     "nota": "Lições curtas e laboratórios no navegador, de linha de comando a permissões e processos, sem precisar de cadastro. A lição da Iniciativa Ako acima cobre o mesmo assunto em português.",
      "verificado_em": "2026-10-17"
     }
    ]
@@ -995,6 +1013,15 @@
    "pergunta_ako": "Daqui a seis meses, suas mensagens de commit vão explicar o que você fez e por quê?",
    "recursos": [
     {
+     "titulo": "Primeiros passos no GitHub",
+     "fonte": "Iniciativa Ako",
+     "url": "./materiais/primeiros-passos-github.html",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição prática escrita para esta trilha, só pelo navegador: repositório, branch, commit, pull request e merge."
+    },
+    {
      "titulo": "Git e GitHub",
      "fonte": "Curso em Vídeo",
      "url": "https://www.cursoemvideo.com/curso/curso-de-git-e-github/",
@@ -1021,7 +1048,7 @@
      "tipo": "curso",
      "idioma": "en",
      "gratuito": "sim",
-     "nota": "Exercício guiado de menos de uma hora: criar branch, fazer commit, abrir e aceitar um pull request.",
+     "nota": "Exercício guiado de menos de uma hora: criar branch, fazer commit, abrir e aceitar um pull request. A lição da Iniciativa Ako acima cobre o mesmo assunto em português.",
      "verificado_em": "2026-10-17"
     }
    ]

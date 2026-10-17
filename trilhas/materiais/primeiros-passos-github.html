@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Primeiros passos no GitHub | Trilhas Rizzygo</title>
+<meta name="description" content="Lição prática em português, só pelo navegador: crie um repositório, uma branch, um commit, um pull request e faça o merge no GitHub.">
+<meta name="theme-color" content="#0B1B3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="../app.css">
+<link rel="stylesheet" href="materiais.css">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="../#/" aria-label="Trilhas Rizzygo, início"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 26V6" stroke="var(--azul)" stroke-width="5" stroke-linecap="round"/><path d="M6 16c8 0 10 10 20 10" stroke="var(--ambar)" stroke-width="5" fill="none" stroke-linecap="round"/></svg><span>Rizzygo <b>Trilhas</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="../#/trilha">Trilha</a><a href="./">Materiais</a></nav>
+</div></header>
+
+<main id="conteudo" class="licao">
+<div class="licao-cab">
+  <a class="voltar" href="../#/t/git">Voltar para o tópico Git e GitHub</a>
+  <h1>Primeiros passos no GitHub</h1>
+  <p class="lead">Em menos de uma hora, só pelo navegador, você faz o ciclo que times de tecnologia repetem todo dia: cria um repositório, abre uma branch, faz um commit, propõe a mudança num pull request e junta tudo com um merge.</p>
+  <div class="ficha"><span class="etiqueta">Cerca de 45 minutos</span><span class="etiqueta">Só o navegador, nada para instalar</span><span class="etiqueta ambar">Material gratuito em português</span></div>
+</div>
+
+<nav class="indice" aria-label="Nesta lição">
+  <h2>Nesta lição</h2>
+  <ol>
+    <li><a href="#palavras">As palavras que você vai usar</a></li>
+    <li><a href="#passos">O ciclo completo, passo a passo</a></li>
+    <li><a href="#markdown">Escrever no README com Markdown</a></li>
+    <li><a href="#perfil">Bônus: o README do seu perfil</a></li>
+    <li><a href="#depois">Git no terminal e projetos abertos</a></li>
+  </ol>
+</nav>
+
+<section id="palavras">
+  <h2>1. As palavras que você vai usar</h2>
+  <p>O <strong>Git</strong> é o programa que guarda o histórico do código. O <strong>GitHub</strong> é um site que hospeda projetos com Git e permite que várias pessoas trabalhem juntas. Nesta lição você usa só o site. O Git no terminal fica para depois.</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Palavra</th><th>O que é</th></tr></thead>
+    <tbody>
+      <tr><td>Repositório</td><td>A pasta do projeto, com todos os arquivos e o histórico de mudanças</td></tr>
+      <tr><td>Commit</td><td>Uma mudança salva no histórico, com uma mensagem dizendo o que mudou</td></tr>
+      <tr><td>Branch</td><td>Uma linha de trabalho paralela. Você mexe nela sem afetar a versão principal</td></tr>
+      <tr><td>main</td><td>O nome mais comum da branch principal, a versão "oficial" do projeto</td></tr>
+      <tr><td>Pull request</td><td>Um pedido para juntar as mudanças de uma branch em outra, com espaço para revisão e conversa</td></tr>
+      <tr><td>Merge</td><td>O ato de juntar as mudanças de uma branch em outra</td></tr>
+      <tr><td>README</td><td>O arquivo de apresentação do projeto, que o GitHub mostra na página inicial do repositório</td></tr>
+    </tbody>
+  </table></div>
+  <p>A interface do GitHub está em inglês. Nesta lição, o nome de cada botão aparece assim: <span class="botao-gh">New repository</span>, do jeito que você vai encontrar na tela.</p>
+</section>
+
+<section id="passos">
+  <h2>2. O ciclo completo, passo a passo</h2>
+  <div class="passos-gh">
+
+  <div class="passo-gh">
+    <h3>Crie sua conta</h3>
+    <p>Em <a href="https://github.com/">github.com</a>, clique em <span class="botao-gh">Sign up</span> e siga as instruções. Escolha o nome de usuário com cuidado: ele vira o endereço do seu portfólio, como <code>github.com/seu-nome</code>. Prefira algo profissional, próximo do seu nome.</p>
+    <p>Ative também a verificação em duas etapas (2FA) nas configurações da conta. Com ela, além da senha, o GitHub pede um código gerado no seu celular. Assim, ninguém entra na sua conta só porque descobriu a senha. O GitHub exige a 2FA de quem contribui com código.</p>
+  </div>
+
+  <div class="passo-gh">
+    <h3>Crie um repositório</h3>
+    <ol>
+      <li>No canto superior direito de qualquer página, abra o menu com o sinal de mais e clique em <span class="botao-gh">New repository</span>.</li>
+      <li>Em <span class="botao-gh">Repository name</span>, digite <code>ola-mundo</code>.</li>
+      <li>Escreva uma descrição curta, como "Meu primeiro repositório no GitHub".</li>
+      <li>Deixe o repositório como público (<span class="botao-gh">Public</span>).</li>
+      <li>Ligue a opção <span class="botao-gh">Add README</span>, para o repositório já nascer com um arquivo de apresentação.</li>
+      <li>Clique em <span class="botao-gh">Create repository</span>.</li>
+    </ol>
+    <div class="cuidado"><strong>Antes de criar</strong>Um repositório público pode ser visto por qualquer pessoa na internet, inclusive o histórico de mudanças. Nunca coloque ali senhas, chaves, telefone, CPF ou endereço. Mesmo apagando depois, o conteúdo pode continuar no histórico.</div>
+  </div>
+
+  <div class="passo-gh">
+    <h3>Crie uma branch</h3>
+    <p>Em vez de mexer direto na <code>main</code>, você vai trabalhar numa branch. É assim que times evitam que uma mudança pela metade quebre a versão principal.</p>
+    <ol>
+      <li>Na página do repositório, clique no botão que mostra <span class="botao-gh">main</span>, acima da lista de arquivos.</li>
+      <li>No campo <span class="botao-gh">Find or create a branch...</span>, digite <code>minha-apresentacao</code>.</li>
+      <li>Clique em <span class="botao-gh">Create branch</span>.</li>
+    </ol>
+    <p>O botão agora mostra <code>minha-apresentacao</code>. Tudo o que você fizer daqui em diante fica nessa branch.</p>
+  </div>
+
+  <div class="passo-gh">
+    <h3>Faça um commit</h3>
+    <ol>
+      <li>Com a branch <code>minha-apresentacao</code> selecionada, clique no arquivo <code>README.md</code>.</li>
+      <li>Clique no ícone de lápis, no canto superior direito do arquivo, para editar.</li>
+      <li>Escreva uma apresentação curta: quem você é, o que está estudando e o que quer aprender. A parte 3 mostra como formatar.</li>
+      <li>Clique na aba <span class="botao-gh">Preview</span> para ver como vai ficar.</li>
+      <li>Clique em <span class="botao-gh">Commit changes...</span>.</li>
+      <li>Em <span class="botao-gh">Commit message</span>, escreva o que mudou, por exemplo "Adiciona minha apresentação no README".</li>
+      <li>Confirme que está marcada a opção de commit direto na branch <code>minha-apresentacao</code> e clique em <span class="botao-gh">Commit changes</span>.</li>
+    </ol>
+    <p>Pronto: sua mudança está salva no histórico da branch, mas a <code>main</code> continua igual. Confira trocando a branch de volta para <code>main</code> no mesmo botão.</p>
+  </div>
+
+  <div class="passo-gh">
+    <h3>Abra um pull request</h3>
+    <ol>
+      <li>Volte para a página inicial do repositório. Deve aparecer um aviso amarelo com o botão <span class="botao-gh">Compare &amp; pull request</span>. Clique nele.</li>
+      <li>Se o aviso não aparecer, abra a aba <span class="botao-gh">Pull requests</span>, clique em <span class="botao-gh">New pull request</span> e escolha as branches como no passo seguinte.</li>
+      <li>Confira as branches: <span class="botao-gh">base</span> deve ser <code>main</code> (para onde a mudança vai) e <span class="botao-gh">compare</span> deve ser <code>minha-apresentacao</code> (de onde ela vem).</li>
+      <li>Dê um título claro e, na descrição, conte o que mudou e por quê.</li>
+      <li>Clique em <span class="botao-gh">Create pull request</span>.</li>
+    </ol>
+    <p>Num time, este é o momento em que outra pessoa revisa sua mudança, comenta e pede ajustes. É uma das melhores formas de aprender com quem tem mais experiência.</p>
+  </div>
+
+  <div class="passo-gh">
+    <h3>Revise e faça o merge</h3>
+    <ol>
+      <li>Abra a aba <span class="botao-gh">Files changed</span>. Ela mostra exatamente o que mudou: linhas novas em verde e removidas em vermelho. Revisar o próprio pull request antes de pedir revisão é um bom hábito.</li>
+      <li>Volte para a aba <span class="botao-gh">Conversation</span> e clique em <span class="botao-gh">Merge pull request</span>.</li>
+      <li>Clique em <span class="botao-gh">Confirm merge</span>.</li>
+      <li>O GitHub oferece o botão <span class="botao-gh">Delete branch</span>. Pode apagar: as mudanças já estão na <code>main</code>, e o histórico guarda tudo.</li>
+    </ol>
+  </div>
+
+  <div class="passo-gh">
+    <h3>Confira que deu certo</h3>
+    <ul>
+      <li>A página inicial do repositório, na <code>main</code>, mostra a sua apresentação.</li>
+      <li>Clicando no número de commits, perto da lista de arquivos, você vê o histórico: o commit inicial, o seu commit e o merge.</li>
+      <li>Na aba <span class="botao-gh">Pull requests</span>, em <span class="botao-gh">Closed</span>, está o seu primeiro pull request concluído.</li>
+    </ul>
+  </div>
+  </div>
+  <div class="faca"><strong>Repita o ciclo</strong>Faça mais uma vez, agora criando um arquivo novo com <span class="botao-gh">Add file</span> e <span class="botao-gh">Create new file</span>, numa branch nova. Na segunda vez o ciclo já fica natural.</div>
+</section>
+
+<section id="markdown">
+  <h2>3. Escrever no README com Markdown</h2>
+  <p>O README usa <strong>Markdown</strong>, um jeito simples de formatar texto com símbolos. O GitHub transforma os símbolos em formatação.</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Você escreve</th><th>Aparece como</th></tr></thead>
+    <tbody>
+      <tr><td><code># Olá, eu sou a Ana</code></td><td>Um título grande</td></tr>
+      <tr><td><code>## O que estou estudando</code></td><td>Um subtítulo</td></tr>
+      <tr><td><code>**Linux** e **redes**</code></td><td>Texto em negrito</td></tr>
+      <tr><td><code>- Git</code></td><td>Um item de lista</td></tr>
+      <tr><td><code>[Meu LinkedIn](https://...)</code></td><td>Um link</td></tr>
+      <tr><td><code>`ls -l`</code></td><td>Um trecho de código</td></tr>
+    </tbody>
+  </table></div>
+  <details class="exercicio"><summary>Exemplo de apresentação para usar como ponto de partida</summary>
+    <div class="saida"><pre># Olá, eu sou a Ana
+
+Estou começando em tecnologia e estudando a trilha Primeiros passos em TI.
+
+## O que estou estudando
+- Terminal e Linux
+- Git e GitHub
+- Python
+
+## O que quero aprender
+Infraestrutura e cloud.</pre></div>
+    <p>Troque pelos seus dados. Lembre que o repositório é público: deixe de fora informações pessoais.</p>
+  </details>
+</section>
+
+<section id="perfil">
+  <h2>4. Bônus: o README do seu perfil</h2>
+  <p>Se você criar um repositório público com <strong>exatamente o mesmo nome do seu usuário</strong>, com um README, o GitHub mostra esse README no topo do seu perfil. Quem visita seu perfil, inclusive recrutadores, vê esse texto logo de cara.</p>
+  <ol>
+    <li>Crie um repositório novo com o nome igual ao seu usuário. O GitHub avisa que é um repositório especial.</li>
+    <li>Deixe público e ligue a opção <span class="botao-gh">Add README</span>.</li>
+    <li>Escreva uma apresentação curta, com o que você estuda e links para seus projetos.</li>
+  </ol>
+</section>
+
+<section id="depois">
+  <h2>5. Git no terminal e projetos abertos</h2>
+  <ul>
+    <li>Aprenda os mesmos passos no terminal com <code>git clone</code>, <code>git add</code>, <code>git commit</code> e <code>git push</code>. O livro <a href="https://git-scm.com/book/pt-br/v2">Pro Git</a>, em português, cobre isso nos capítulos 1 a 3.</li>
+    <li>Contribua com um projeto aberto. A <a href="https://github.com/rizzygo/iniciativa-ako">Iniciativa Ako</a> aceita contribuições de quem está começando, e o guia de contribuição explica o passo a passo pelo navegador.</li>
+  </ul>
+  <div class="faca"><strong>Para fixar</strong>Explique para alguém a diferença entre commit, branch e pull request, usando o seu repositório como exemplo. Depois, marque no tópico que você ensinou alguém.</div>
+  <div class="proximo"><a class="btn" href="../#/t/git">Voltar para o tópico e fazer o desafio</a><a class="btn btn-sec" href="./">Ver todos os materiais</a></div>
+</section>
+
+<div class="credito">
+  <p>Lição escrita em português pela Iniciativa Ako, da Rizzygo, com base nos temas do exercício <a href="https://github.com/skills/introduction-to-github">Introduction to GitHub</a>, do GitHub Skills (em inglês), e na documentação oficial do GitHub. Não é uma tradução: o texto e os exemplos são próprios. Os nomes dos botões foram conferidos na documentação do GitHub em outubro de 2026 e podem mudar.</p>
+  <p>Conteúdo aberto sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR">CC BY 4.0</a>. Viu um erro? <a href="https://github.com/rizzygo/iniciativa-ako/issues">Abra uma issue</a>.</p>
+</div>
+</main>
+<footer class="rodape"><div class="rodape-in"><p class="credo">Sou Zy: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="materiais.js"></script>
+</body>
+</html>

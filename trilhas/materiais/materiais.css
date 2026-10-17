@@ -1,0 +1,47 @@
+/* Estilo das lições em português. Usa as cores e fontes de ../app.css. */
+.licao{max-width:44rem;margin:0 auto;padding:0 16px 3rem}
+.licao-cab{padding:2.5rem 0 1rem}
+.licao-cab .voltar{display:inline-block;margin-bottom:1rem;font-weight:700;text-decoration:none}
+.licao-cab h1{font-size:clamp(1.9rem,5vw,2.7rem);font-weight:800}
+.licao-cab .lead{font-size:1.15rem;color:var(--suave);margin-top:.7rem}
+.ficha{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}
+.indice{background:var(--superficie);border:1px solid var(--linha);border-radius:var(--raio);padding:1rem 1.2rem;margin:1.5rem 0 1rem}
+.indice h2{font-size:1.05rem;margin-bottom:.4rem}
+.indice ol{margin:0;padding-left:1.3rem;display:grid;gap:.15rem}
+.licao section{margin-top:2.6rem;scroll-margin-top:5rem}
+.licao h2{font-size:1.5rem;margin-bottom:.7rem}
+.licao h3{font-size:1.12rem;margin:1.4rem 0 .4rem}
+.licao p + p,.licao p + ul,.licao ul + p,.licao pre + p,.licao .cmd + p,.licao p + .cmd,.licao table + p{margin-top:.75rem}
+.licao ul,.licao ol{padding-left:1.25rem}
+.licao li + li{margin-top:.3rem}
+.cmd{position:relative;margin:.8rem 0}
+.cmd pre,.saida pre{margin:0;font-family:var(--f-mono);font-size:.9rem;line-height:1.55;white-space:pre-wrap;word-break:break-word;border-radius:var(--raio-p);padding:.85rem 1rem}
+.cmd pre{background:#0B1B3A;color:#E8ECF6;border:1px solid var(--linha);padding-right:5.5rem}
+.cmd pre::before{content:"$ ";color:#7EA2FF;user-select:none}
+.cmd .copiar{position:absolute;top:.5rem;right:.5rem;font:700 .8rem/1 var(--f-texto);padding:.45rem .7rem;border-radius:6px;border:0;background:#F5A524;color:#0B1B3A;cursor:pointer}
+.saida{margin:.4rem 0 .9rem}
+.saida pre{background:var(--superficie);color:var(--tinta);border:1px dashed var(--linha)}
+.saida small{display:block;color:var(--suave);font-size:.85rem;margin-bottom:.25rem}
+.faca{background:var(--azul-claro);border-radius:var(--raio-p);padding:1rem 1.1rem;margin:1.2rem 0}
+.faca > strong:first-child,.cuidado > strong:first-child{display:block;margin-bottom:.3rem;font-family:var(--f-titulo);font-size:1.05rem}
+.cuidado{background:var(--ambar-claro);border-left:6px solid var(--ambar);border-radius:var(--raio-p);padding:1rem 1.1rem;margin:1.2rem 0}
+.cuidado ol{margin:.4rem 0 0}
+details.exercicio{background:var(--superficie);border:1px solid var(--linha);border-radius:var(--raio-p);padding:.8rem 1rem;margin:.8rem 0}
+details.exercicio summary{cursor:pointer;font-weight:700}
+details.exercicio[open] summary{margin-bottom:.6rem}
+.tabela{overflow-x:auto;margin:.9rem 0}
+.tabela table{border-collapse:collapse;width:100%;font-size:.95rem}
+.tabela th,.tabela td{text-align:left;padding:.5rem .7rem;border-bottom:1px solid var(--linha);vertical-align:top}
+.tabela th{font-family:var(--f-titulo)}
+.tabela td:first-child{white-space:nowrap}
+.passo-gh{counter-increment:gh;position:relative;padding-left:2.6rem;margin-top:1.4rem}
+.passo-gh::before{content:counter(gh);position:absolute;left:0;top:-.1rem;width:1.9rem;height:1.9rem;border-radius:50%;background:var(--azul);color:var(--azul-tinta);font:800 1rem/1.9rem var(--f-titulo);text-align:center}
+.passos-gh{counter-reset:gh}
+.botao-gh{font-family:var(--f-mono);font-size:.88em;background:var(--superficie);border:1px solid var(--linha);border-radius:6px;padding:.05em .4em;white-space:nowrap}
+.credito{margin-top:3rem;padding-top:1.2rem;border-top:1px solid var(--linha);color:var(--suave);font-size:.93rem}
+.credito p + p{margin-top:.5rem}
+.proximo{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2rem}
+.lista-materiais{list-style:none;padding:0;display:grid;gap:1rem;margin-top:1.5rem}
+.lista-materiais li{background:var(--superficie);border:1px solid var(--linha);border-left:6px solid var(--azul);border-radius:var(--raio-p);padding:1rem 1.1rem}
+.lista-materiais h2{font-size:1.2rem;margin:0}
+.lista-materiais p{color:var(--suave);margin-top:.3rem}

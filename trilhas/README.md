@@ -12,6 +12,14 @@ A primeira trilha é **Primeiros passos em TI**: 16 tópicos em 6 etapas, do "co
 - **Sem build:** HTML, CSS e JavaScript puros. Todo o conteúdo fica num arquivo só, o `dados/primeiros-passos.json`.
 - **XP por prática:** cada tópico vale até 90 XP. São 20 pelo checklist completo, 30 pelo desafio (2 de 3 acertos), 10 por acertar tudo de primeira, 10 por responder à pergunta Ako e 20 por explicar o assunto para outra pessoa.
 
+## Materiais em português
+
+Quando o melhor material gratuito de um tópico só existe em inglês, a Iniciativa Ako escreve uma lição própria em português, na pasta [](materiais). Elas são textos originais, não traduções, e dão crédito aos materiais que serviram de base.
+
+- [Linha de comando para iniciantes](https://rizzygo.github.io/iniciativa-ako/trilhas/materiais/linha-de-comando.html), para o tópico Terminal
+- [Linux básico, na prática](https://rizzygo.github.io/iniciativa-ako/trilhas/materiais/linux-basico.html), para o tópico Linux básico
+- [Primeiros passos no GitHub](https://rizzygo.github.io/iniciativa-ako/trilhas/materiais/primeiros-passos-github.html), para o tópico Git e GitHub
+
 ## Três jeitos de contribuir com o conteúdo
 
 1. **Sugerir um material gratuito:** abra uma [issue](https://github.com/rizzygo/iniciativa-ako/issues) com o link, o tópico e uma frase sobre o que a pessoa encontra ali.
