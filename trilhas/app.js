@@ -1,4 +1,4 @@
-/* Trilhas Rizzygo. Iniciativa Ako. HTML, CSS e JS puros, sem build.
+/* Rizzygo Ako: trilhas de estudo da Iniciativa Ako. HTML, CSS e JS puros, sem build.
    O conteúdo da trilha fica em dados/primeiros-passos.json.
    O progresso fica só no navegador (localStorage), e a pessoa pode exportar e importar. */
 (function () {
@@ -206,7 +206,7 @@
       if (alvo === rota || (rota === 't' && alvo === 'trilha')) a.setAttribute('aria-current', 'page');
       else a.removeAttribute('aria-current');
     });
-    var titulo = 'Trilhas Rizzygo';
+    var titulo = 'Rizzygo Ako';
     if (rota === 'montar') { viewMontar(); titulo = 'Montar meu roteiro | ' + titulo; }
     else if (rota === 'roteiro') { viewRoteiro(); titulo = 'Seu roteiro | ' + titulo; }
     else if (rota === 'trilha') { viewTrilha(); titulo = dados.titulo + ' | ' + titulo; }

@@ -1,4 +1,6 @@
-# Trilhas Rizzygo
+# Rizzygo Ako
+
+As trilhas de estudo da Iniciativa Ako, da Rizzygo.
 
 Um site para montar seu roteiro de estudos em TI, em português e de graça. Ele mostra por onde começar, indica materiais gratuitos, traz desafios com problemas do dia a dia e dá XP e conquistas conforme você pratica.
 

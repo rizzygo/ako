@@ -6,7 +6,7 @@ Ako é uma filosofia maori que se refere à relação de reciprocidade entre que
 
 A Iniciativa Ako é um dos pilares da [Rizzygo](https://github.com/rizzygo), comunidade para quem quer começar em tecnologia e para quem começou há pouco.
 
-**Comece pelas [Trilhas Rizzygo](https://rizzygo.github.io/iniciativa-ako/trilhas/):** responda quatro perguntas, receba seu roteiro de estudos em TI e avance com materiais gratuitos, desafios práticos e conquistas.
+**Comece pela [Rizzygo Ako](https://rizzygo.github.io/iniciativa-ako/trilhas/), as trilhas de estudo da iniciativa:** responda quatro perguntas, receba seu roteiro de estudos em TI e avance com materiais gratuitos, desafios práticos e conquistas.
 
 ## Trilhas, guias e skills publicados
 
