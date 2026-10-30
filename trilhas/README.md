@@ -10,11 +10,19 @@ A primeira trilha é **Primeiros passos em TI**: 16 tópicos em 6 etapas, do "co
 
 ## Como o site funciona
 
-- **Sem cadastro:** o progresso fica salvo só no navegador de quem usa. Na página de conquistas dá para exportar e importar o progresso por arquivo.
+- **Cadastro opcional:** sem entrar, o progresso fica salvo só no navegador de quem usa, e a página de conquistas exporta e importa o progresso por arquivo. Quem entra com a conta Google guarda o progresso na conta e continua em qualquer aparelho.
 - **Sem build:** HTML, CSS e JavaScript puros. Todo o conteúdo fica num arquivo só, o `dados/primeiros-passos.json`.
 - **Desafios sorteados:** cada tópico tem um banco de 6 perguntas, e cada tentativa sorteia 3. Quem refaz o desafio não decora as respostas.
 - **Revisão rápida:** depois de começar dois tópicos, a pessoa pode fazer revisões com 5 perguntas sorteadas do que já estudou. A revisão não vale XP, mas três revisões com pelo menos 4 acertos dão a conquista Memória afiada.
 - **XP por prática:** cada tópico vale até 90 XP. São 20 pelo checklist completo, 30 pelo desafio (2 de 3 acertos), 10 por acertar tudo de primeira, 10 por responder à pergunta Ako e 20 por explicar o assunto para outra pessoa.
+
+## Login com Google
+
+O login usa o Firebase Authentication, e o progresso de quem entra fica no Firestore, num documento por pessoa (`progresso/{uid}`). Três arquivos cuidam disso:
+
+- `firebase-config.js` guarda a configuração do app web do Firebase. Enquanto ela for `null`, o botão Entrar não aparece e o site funciona só com o navegador.
+- `conta.js` faz o login e junta o progresso da conta com o deste navegador, ficando com o mais avançado de cada tópico.
+- `firestore.rules`, na raiz do repositório, deixa cada pessoa ler e gravar só o próprio progresso. O arquivo é a fonte das regras: cole o conteúdo no console do Firebase a cada mudança.
 
 ## Materiais em português
 

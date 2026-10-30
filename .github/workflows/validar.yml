@@ -19,3 +19,5 @@ jobs:
       - run: python3 trilhas/validar.py
       - name: JavaScript sem erro de sintaxe
         run: node --check trilhas/app.js && node --check trilhas/materiais/materiais.js
+      - name: Módulos do login sem erro de sintaxe
+        run: for f in trilhas/conta.js trilhas/firebase-config.js; do node --input-type=module --check < "$f"; done

@@ -1,0 +1,17 @@
+rules_version = '2';
+
+// Regras do Firestore do Ako. Copie este arquivo em Firestore Database > Regras, no console do Firebase.
+// Cada pessoa lê e grava só o próprio progresso, em progresso/{uid}. Todo o resto fica fechado.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /progresso/{uid} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['versao', 'dados', 'atualizadoEm'])
+        && request.resource.data.versao == 1
+        && request.resource.data.dados is string
+        && request.resource.data.dados.size() < 500000
+        && request.resource.data.atualizadoEm == request.time;
+    }
+  }
+}

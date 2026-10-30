@@ -1,6 +1,7 @@
 /* Rizzygo Ako: trilhas de estudo da Iniciativa Ako. HTML, CSS e JS puros, sem build.
    O conteúdo da trilha fica em dados/primeiros-passos.json.
-   O progresso fica só no navegador (localStorage), e a pessoa pode exportar e importar. */
+   O progresso fica no navegador (localStorage), e a pessoa pode exportar e importar.
+   Quem entra com Google também guarda o progresso na conta: o conta.js cuida disso pela ponte window.AkoProgresso. */
 (function () {
   'use strict';
 
@@ -46,9 +47,74 @@
     for (var k in base) if (obj[k] === undefined) obj[k] = base[k];
     return obj;
   }
+  var aoSalvar = [];
   function salvar() {
+    estado.atualizadoEm = new Date().toISOString();
     try { localStorage.setItem(CHAVE, JSON.stringify(estado)); } catch (e) { /* modo privado: segue sem salvar */ }
+    aoSalvar.forEach(function (fn) { fn(estado); });
   }
+  /* Junta dois progressos sem perder nada: vale o que cada um tem de mais avançado. */
+  function mesclar(a, b) {
+    var r = vazio();
+    var novo = (b.atualizadoEm || '') > (a.atualizadoEm || '') ? b : a, velho = novo === a ? b : a;
+    r.perfil = novo.perfil || velho.perfil;
+    r.caminho = novo.caminho || velho.caminho;
+    r.atualizadoEm = novo.atualizadoEm || velho.atualizadoEm;
+    var ids = Object.keys(a.topicos).concat(Object.keys(b.topicos));
+    ids.forEach(function (id) {
+      var x = a.topicos[id], y = b.topicos[id];
+      if (!x || !y) { r.topicos[id] = x || y; return; }
+      var check = [];
+      for (var i = 0; i < Math.max(x.check.length, y.check.length); i++) check[i] = !!(x.check[i] || y.check[i]);
+      var quiz = x.quiz && y.quiz ? {
+        tentativas: Math.max(x.quiz.tentativas, y.quiz.tentativas),
+        melhor: Math.max(x.quiz.melhor, y.quiz.melhor),
+        aprovado: !!(x.quiz.aprovado || y.quiz.aprovado),
+        primeiraPerfeita: !!(x.quiz.primeiraPerfeita || y.quiz.primeiraPerfeita)
+      } : (x.quiz || y.quiz);
+      var rx = x.reflexao || '', ry = y.reflexao || '';
+      r.topicos[id] = { check: check, quiz: quiz, reflexao: ry.length > rx.length ? ry : rx, ensinei: !!(x.ensinei || y.ensinei) };
+    });
+    r.dias = a.dias.concat(b.dias.filter(function (d) { return a.dias.indexOf(d) === -1; })).sort();
+    [a.conquistas, b.conquistas].forEach(function (c) {
+      for (var k in c) if (!r.conquistas[k] || c[k] < r.conquistas[k]) r.conquistas[k] = c[k];
+    });
+    // A mesma revisão aparece nos dois lados depois da primeira sincronização: conta cada uma pelo maior número de vezes.
+    function contar(lista) {
+      var n = {};
+      lista.forEach(function (rv) { var k = rv.data + '|' + rv.acertos; n[k] = (n[k] || 0) + 1; });
+      return n;
+    }
+    var na = contar(a.revisoes), nb = contar(b.revisoes);
+    a.revisoes.concat(b.revisoes).forEach(function (rv) {
+      var k = rv.data + '|' + rv.acertos;
+      var ja = r.revisoes.filter(function (z) { return z.data + '|' + z.acertos === k; }).length;
+      if (ja < Math.max(na[k] || 0, nb[k] || 0)) r.revisoes.push(rv);
+    });
+    return r;
+  }
+  function recarregarTela() {
+    if (!dados) return;
+    nivelAntes = nivelDe(xpTotal()).atual;
+    atualizarTopo();
+    rotear();
+  }
+  window.AkoProgresso = {
+    obter: function () { return estado; },
+    valido: valido,
+    juntar: function (remoto) {
+      estado = mesclar(estado, normalizar(remoto));
+      salvar();
+      recarregarTela();
+    },
+    limpar: function () {
+      estado = vazio();
+      try { localStorage.removeItem(CHAVE); } catch (e) { /* segue */ }
+      recarregarTela();
+    },
+    aoSalvar: function (fn) { aoSalvar.push(fn); },
+    avisar: function (msg) { avisar(msg); }
+  };
   function st(id) {
     if (!estado.topicos[id]) estado.topicos[id] = { check: [], quiz: null, reflexao: '', ensinei: false };
     return estado.topicos[id];
@@ -215,6 +281,7 @@
     else if (rota === 'conquistas') { viewConquistas(); titulo = 'Conquistas | ' + titulo; }
     else viewInicio();
     document.title = titulo;
+    document.dispatchEvent(new CustomEvent('ako:pagina', { detail: { rota: rota } }));
   }
   function trocarPagina() {
     rotear();
@@ -706,7 +773,7 @@
       '<section class="bloco"><h2>Revisão rápida</h2><p>Cinco perguntas sorteadas dos tópicos que você já estudou. Não vale XP, mas três revisões com pelo menos 4 acertos dão a conquista Memória afiada.</p><div class="acoes" style="margin-top:.8rem">' + (revisaoLiberada() ? '<a class="btn btn-sec" href="#/revisao">Fazer uma revisão rápida</a>' : '<span class="dica">Comece pelo menos dois tópicos para liberar a revisão.</span>') + '</div></section>' +
       '<section class="bloco"><h2>Conquistas</h2><ul class="selos">' + selos + '</ul></section>' +
       '<section class="bloco"><h2>Seus dados</h2><div class="dados-acoes">' +
-      '<p>O progresso fica só neste navegador. Para levar para outro aparelho, exporte aqui e importe lá.</p>' +
+      '<div id="conta-painel"><p>O progresso fica só neste navegador. Para levar para outro aparelho, exporte aqui e importe lá.</p></div>' +
       '<div class="acoes"><button class="btn btn-sec" type="button" id="exportar">Exportar progresso</button>' +
       '<label class="btn btn-sec" for="importar" tabindex="0">Importar progresso</label><input type="file" id="importar" accept="application/json,.json" hidden></div>' +
       '<p class="salvo" id="dados-msg" aria-live="polite"></p>' +

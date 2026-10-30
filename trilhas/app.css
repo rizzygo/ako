@@ -52,6 +52,8 @@ main{display:block;outline:none}
 .xp-nivel{font-size:.85rem;white-space:nowrap}
 .xp-barra{width:56px;height:8px;border-radius:99px;background:var(--trilho);overflow:hidden}
 .xp-barra i{display:block;height:100%;width:0;background:var(--ambar);border-radius:99px;transition:width .5s ease}
+.conta-btn{font:700 .95rem/1.2 var(--f-texto);color:var(--azul);background:transparent;border:2px solid var(--azul);border-radius:999px;padding:.35rem .9rem;cursor:pointer;white-space:nowrap}
+.conta-btn.logado{width:2.1rem;height:2.1rem;padding:0;background:var(--azul);color:var(--azul-tinta);font-family:var(--f-titulo)}
 
 /* botões */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;font:700 1rem/1.2 var(--f-texto);padding:.8rem 1.25rem;border-radius:var(--raio-p);border:2px solid var(--azul);background:var(--azul);color:var(--azul-tinta);text-decoration:none;cursor:pointer}
@@ -246,4 +248,6 @@ textarea:focus{border-color:var(--azul);outline:none}
 .noscript{padding:2rem 16px;text-align:center}
 .carregando{padding:4rem 16px;text-align:center;color:var(--suave)}
 
-@media (max-width:420px){.menu{gap:.6rem}.marca{font-size:1rem}.xp-barra{width:36px}.xp-pill{padding:.25rem .55rem}.xp-nivel{font-size:.8rem}}
+@media (max-width:420px){.menu{gap:.6rem}.conta-btn{padding:.3rem .65rem;font-size:.85rem}.marca{font-size:1rem}.xp-barra{width:36px}.xp-pill{padding:.25rem .55rem}.xp-nivel{font-size:.8rem}}
+@media (max-width:420px){.topo-in:has(.conta-btn:not([hidden])) .marca span{display:none}}
+@media (max-width:340px){.topo-in:has(.conta-btn:not([hidden])) .xp-barra{display:none}}
