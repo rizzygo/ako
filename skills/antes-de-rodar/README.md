@@ -18,7 +18,7 @@ A pasta `.claude/skills/` funciona nas três ferramentas. Para instalar só no p
 
 ```bash
 mkdir -p .claude/skills/antes-de-rodar
-curl -fsSL https://raw.githubusercontent.com/rizzygo/iniciativa-ako/main/skills/antes-de-rodar/SKILL.md \
+curl -fsSL https://raw.githubusercontent.com/rizzygo/ako/main/skills/antes-de-rodar/SKILL.md \
   -o .claude/skills/antes-de-rodar/SKILL.md
 ```
 
@@ -121,7 +121,7 @@ A skill é simples de propósito, para todo mundo conseguir ler e melhorar. Algu
 - Um exemplo para outra ferramenta ou outra nuvem.
 - Um caso em que a skill atrapalhou mais do que ajudou.
 
-Abra uma [issue](https://github.com/rizzygo/iniciativa-ako/issues) ou mande um pull request. O passo a passo está no [CONTRIBUTING.md](../../CONTRIBUTING.md).
+Abra uma [issue](https://github.com/rizzygo/ako/issues) ou mande um pull request. O passo a passo está no [CONTRIBUTING.md](../../CONTRIBUTING.md).
 
 ---
 

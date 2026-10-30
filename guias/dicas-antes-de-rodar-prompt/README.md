@@ -4,7 +4,7 @@ Em cerca de 5 minutos, você configura sua IA para terminar toda sugestão de co
 
 Você salva a instrução uma vez e ela vale para as próximas conversas. Funciona no ChatGPT, no Claude, no Gemini, no GitHub Copilot e em qualquer IA que aceite instruções personalizadas.
 
-Prefere com visual e botão de copiar? Abra a [versão em página](https://rizzygo.github.io/iniciativa-ako/guias/dicas-antes-de-rodar-prompt/pagina.html).
+Prefere com visual e botão de copiar? Abra a [versão em página](https://ako.rizzygo.com.br/guias/dicas-antes-de-rodar-prompt/pagina.html).
 
 ## As três perguntas que a IA vai responder
 
@@ -114,6 +114,6 @@ A IA ajuda muito, mas entender como as coisas funcionam continua sendo com você
 
 **Danilo Rizzo · Rizzygo**
 
-Fez o teste? Abra uma [issue](https://github.com/rizzygo/iniciativa-ako/issues) ou me conte no LinkedIn qual pergunta você adicionaria.
+Fez o teste? Abra uma [issue](https://github.com/rizzygo/ako/issues) ou me conte no LinkedIn qual pergunta você adicionaria.
 
 *Sou Zy: domino o ofício, questiono o jeito, caminho junto.*
