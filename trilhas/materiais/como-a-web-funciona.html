@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Como a web funciona, do clique à página | Rizzygo Ako</title>
+<meta name="description" content="Lição prática em português: as partes de uma URL, DNS, conexão e TLS, pedido e resposta HTTP, métodos, códigos de status, cabeçalhos, cookies, cache e CDN, APIs com JSON e as ferramentas de desenvolvedor do navegador.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"%3E%3Crect width="64" height="64" rx="14" fill="%230B1B3A"/%3E%3Cg transform="translate%285 5%29 scale%28.84%29"%3E%3Cpath d="M13 14L32 32" fill="none" stroke="%23F5A524" stroke-width="8" stroke-linecap="round"/%3E%3Cpath d="M13 14H51L13 50H51" fill="none" stroke="%23FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/%3E%3Cpath d="M27 27L32 32" fill="none" stroke="%23F5A524" stroke-width="8" stroke-linecap="round"/%3E%3C/g%3E%3C/svg%3E">
+<meta name="theme-color" content="#0B1B3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="../app.css">
+<link rel="stylesheet" href="materiais.css">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="../#/" aria-label="Rizzygo Ako, início"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="var(--azul)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/></svg><span>Rizzygo <b>Ako</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="../#/trilha">Trilha</a><a href="./">Materiais</a></nav>
+</div></header>
+
+<main id="conteudo" class="licao">
+<div class="licao-cab">
+  <a class="voltar" href="../#/t/web">Voltar para o tópico Como a web funciona</a>
+  <h1>Como a web funciona, do clique à página</h1>
+  <p class="lead">O que acontece entre você apertar Enter e a página aparecer. Você vai ver cada etapa acontecer de verdade nas ferramentas do navegador e no terminal, com o curl.</p>
+  <div class="ficha"><span class="etiqueta">Cerca de 1 hora e 15 minutos</span><span class="etiqueta">Navegador e terminal</span><span class="etiqueta ambar">Material gratuito em português</span></div>
+</div>
+<nav class="indice" aria-label="Nesta lição">
+  <h2>Nesta lição</h2>
+  <ol>
+    <li><a href="#url">As partes de uma URL</a></li>
+    <li><a href="#caminho">O caminho completo, em seis passos</a></li>
+    <li><a href="#http">Pedido e resposta HTTP</a></li>
+    <li><a href="#status">Códigos de status</a></li>
+    <li><a href="#devtools">Ver tudo nas ferramentas do navegador</a></li>
+    <li><a href="#curl">HTTP pelo terminal com curl</a></li>
+    <li><a href="#https">HTTPS: o cadeado</a></li>
+    <li><a href="#cookies">Cookies e sessões</a></li>
+    <li><a href="#cache">Cache e CDN: por que alguns sites são tão rápidos</a></li>
+    <li><a href="#api">APIs: quando a resposta não é uma página</a></li>
+    <li><a href="#missao">Missão final</a></li>
+  </ol>
+</nav>
+
+<section id="url">
+  <h2>1. As partes de uma URL</h2>
+  <p>Uma URL é o endereço completo de algo na web. Veja cada parte desta:</p>
+  <div class="saida"><pre>https://loja.exemplo.com.br:443/produtos/camisa?cor=azul#avaliacoes</pre></div>
+  <div class="tabela"><table>
+    <thead><tr><th>Parte</th><th>Neste exemplo</th><th>Para que serve</th></tr></thead>
+    <tbody>
+      <tr><td>Protocolo</td><td><code>https</code></td><td>Como conversar com o servidor</td></tr>
+      <tr><td>Domínio</td><td><code>loja.exemplo.com.br</code></td><td>O nome do servidor, que o DNS traduz em IP</td></tr>
+      <tr><td>Porta</td><td><code>443</code></td><td>O serviço no servidor. Fica escondida quando é a padrão (443 no HTTPS, 80 no HTTP)</td></tr>
+      <tr><td>Caminho</td><td><code>/produtos/camisa</code></td><td>Qual recurso você quer</td></tr>
+      <tr><td>Parâmetros</td><td><code>?cor=azul</code></td><td>Informações extras para o servidor, em pares nome=valor</td></tr>
+      <tr><td>Fragmento</td><td><code>#avaliacoes</code></td><td>Um ponto dentro da página. Fica no navegador e não vai para o servidor</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="caminho">
+  <h2>2. O caminho completo, em seis passos</h2>
+  <ol>
+    <li><strong>DNS:</strong> o navegador descobre o IP do domínio. A lição <a href="redes-na-pratica.html">Redes na prática</a> mostra como.</li>
+    <li><strong>Conexão:</strong> o navegador abre uma conexão com o servidor naquele IP, na porta 443.</li>
+    <li><strong>TLS:</strong> navegador e servidor combinam uma criptografia, e o servidor prova quem é com um certificado digital.</li>
+    <li><strong>Pedido:</strong> o navegador manda um pedido HTTP, por exemplo "me dê <code>/produtos/camisa</code>".</li>
+    <li><strong>Resposta:</strong> o servidor devolve um código de status, cabeçalhos e o conteúdo, normalmente HTML.</li>
+    <li><strong>Montagem:</strong> o navegador lê o HTML, descobre que precisa de CSS, JavaScript, imagens e fontes, e faz um novo pedido para cada um. Só então a página aparece completa.</li>
+  </ol>
+  <p>Uma página comum dispara dezenas de pedidos. Em sites grandes, passa de uma centena.</p>
+</section>
+
+<section id="http">
+  <h2>3. Pedido e resposta HTTP</h2>
+  <p>HTTP é a língua que navegador e servidor falam. Por baixo, um pedido é um texto organizado assim:</p>
+  <div class="saida"><small>Pedido (request):</small><pre>GET /produtos/camisa?cor=azul HTTP/1.1
+Host: loja.exemplo.com.br
+User-Agent: Mozilla/5.0 ...
+Accept: text/html
+Accept-Language: pt-BR</pre></div>
+  <div class="saida"><small>Resposta (response):</small><pre>HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+Cache-Control: max-age=300
+
+&lt;!doctype html&gt;
+&lt;html&gt; ... a página ... &lt;/html&gt;</pre></div>
+  <p>A primeira linha do pedido tem o <strong>método</strong> e o caminho. As linhas seguintes são <strong>cabeçalhos</strong> (headers), informações extras em pares nome: valor. Na resposta, depois dos cabeçalhos vem uma linha em branco e o <strong>corpo</strong>, que é o conteúdo.</p>
+  <h3>Os métodos mais usados</h3>
+  <div class="tabela"><table>
+    <thead><tr><th>Método</th><th>Para quê</th><th>Exemplo</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET</code></td><td>Buscar algo, sem mudar nada</td><td>Abrir uma página, listar produtos</td></tr>
+      <tr><td><code>POST</code></td><td>Enviar dados para criar algo ou executar uma ação</td><td>Enviar um formulário, fazer um pedido</td></tr>
+      <tr><td><code>PUT</code> e <code>PATCH</code></td><td>Atualizar algo que já existe</td><td>Mudar o endereço de entrega</td></tr>
+      <tr><td><code>DELETE</code></td><td>Apagar</td><td>Remover um item do carrinho</td></tr>
+    </tbody>
+  </table></div>
+  <p>O HTTP não guarda memória entre um pedido e outro: cada pedido chega ao servidor como se fosse o primeiro. É por isso que existem os cookies, que você vê na parte 8.</p>
+  <p>Hoje, a maioria dos sites usa HTTP/2 ou HTTP/3, que mandam várias coisas ao mesmo tempo pela mesma conexão e em formato binário, mais rápido. A ideia de pedido, cabeçalhos, status e corpo continua a mesma.</p>
+</section>
+
+<section id="status">
+  <h2>4. Códigos de status</h2>
+  <p>Toda resposta traz um número de três dígitos. O primeiro dígito já diz muito:</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Faixa</th><th>Significado</th><th>Os que você mais vai ver</th></tr></thead>
+    <tbody>
+      <tr><td>2xx</td><td>Deu certo</td><td><code>200 OK</code>, <code>201 Created</code> (algo foi criado), <code>204 No Content</code> (deu certo, sem conteúdo para devolver)</td></tr>
+      <tr><td>3xx</td><td>Vá para outro lugar</td><td><code>301</code> (mudou de endereço de vez), <code>302</code> (mudou temporariamente), <code>304</code> (não mudou, use o que está no cache)</td></tr>
+      <tr><td>4xx</td><td>Erro de quem pediu</td><td><code>400</code> (pedido mal formado), <code>401</code> (falta se identificar), <code>403</code> (identificado, mas sem permissão), <code>404</code> (não encontrado), <code>429</code> (pedidos demais, espere)</td></tr>
+      <tr><td>5xx</td><td>Erro no servidor</td><td><code>500</code> (erro interno), <code>502</code> e <code>504</code> (um servidor intermediário não recebeu resposta a tempo ou recebeu uma inválida), <code>503</code> (indisponível)</td></tr>
+    </tbody>
+  </table></div>
+  <p>Saber a faixa já direciona a investigação: com 4xx, confira o que foi pedido; com 5xx, olhe os logs do servidor.</p>
+</section>
+
+<section id="devtools">
+  <h2>5. Ver tudo nas ferramentas do navegador</h2>
+  <p>Todo navegador moderno tem ferramentas de desenvolvedor (DevTools). Abra com <code>F12</code> ou <code>Ctrl+Shift+I</code> no Windows e no Linux, ou <code>Cmd+Option+I</code> no Mac. No Safari, ative antes as ferramentas para desenvolvedores nos ajustes avançados do navegador.</p>
+  <ol>
+    <li>Abra um site qualquer e as ferramentas de desenvolvedor.</li>
+    <li>Vá na aba <strong>Network</strong> (Rede).</li>
+    <li>Recarregue a página com <code>F5</code>. Cada linha que aparece é um pedido.</li>
+    <li>Clique no primeiro pedido, o do HTML. Em <strong>Headers</strong>, veja o método, o status e os cabeçalhos do pedido e da resposta. Em <strong>Response</strong> ou <strong>Preview</strong>, veja o conteúdo.</li>
+  </ol>
+  <p>Repare também nas colunas <strong>Status</strong>, <strong>Type</strong> (tipo do arquivo), <strong>Size</strong> e <strong>Time</strong>. A barra de baixo mostra quantos pedidos a página fez e quanto tempo levou.</p>
+  <div class="faca"><strong>Faça agora</strong>Na aba Network, digite <code>status-code:404</code> no filtro (no Chrome, no Edge e no Firefox). Depois, mude a URL do site para um caminho que não existe, como <code>/pagina-que-nao-existe</code>, e veja o 404 aparecer.</div>
+</section>
+
+<section id="curl">
+  <h2>6. HTTP pelo terminal com curl</h2>
+  <p>O <code>curl</code> faz pedidos HTTP pelo terminal. Ele já vem instalado no Linux, no Mac e no Windows 10 e 11. No PowerShell, digite <code>curl.exe</code> em vez de <code>curl</code>, porque <code>curl</code> sozinho chama outro comando.</p>
+  <div class="cmd"><pre>curl -I https://www.wikipedia.org</pre></div>
+  <p>O <code>-I</code> pede só o status e os cabeçalhos, sem o corpo. Para ver a conversa inteira, inclusive a conexão e o certificado:</p>
+  <div class="cmd"><pre>curl -v https://www.wikipedia.org -o /dev/null</pre></div>
+  <p>As linhas que começam com <code>&gt;</code> são o que o curl mandou. As que começam com <code>&lt;</code> são o que o servidor respondeu. O <code>-o /dev/null</code> descarta o corpo para não encher a tela (no Windows, use <code>-o NUL</code>).</p>
+  <p>Para ver um redirecionamento:</p>
+  <div class="cmd"><pre>curl -I http://wikipedia.org</pre></div>
+  <div class="saida"><small>Saída parecida com esta:</small><pre>HTTP/1.1 301 Moved Permanently
+location: https://wikipedia.org/</pre></div>
+  <p>O servidor respondeu 301 e mandou ir para a versão com HTTPS. O navegador segue o redirecionamento sozinho; o curl só segue com a opção <code>-L</code>.</p>
+</section>
+
+<section id="https">
+  <h2>7. HTTPS: o cadeado</h2>
+  <p>HTTPS é o HTTP dentro de uma conexão criptografada com TLS. Ele garante três coisas:</p>
+  <ul>
+    <li><strong>Sigilo:</strong> quem está no meio do caminho, como alguém no mesmo Wi-Fi público, não consegue ler o que trafega.</li>
+    <li><strong>Integridade:</strong> ninguém consegue alterar os dados no caminho sem ser percebido.</li>
+    <li><strong>Identidade:</strong> o certificado prova que o servidor é mesmo dono daquele domínio. Ele é emitido por uma autoridade certificadora em que o navegador confia. O Let's Encrypt emite certificados de graça, e muitos serviços de hospedagem já configuram o HTTPS sozinhos.</li>
+  </ul>
+  <div class="cuidado"><strong>Cadeado não quer dizer site honesto</strong>O cadeado só garante que a conexão é segura e que o site é dono daquele domínio. Um site de golpe também pode ter HTTPS. Confira sempre se o domínio é o certo.</div>
+</section>
+
+<section id="cookies">
+  <h2>8. Cookies e sessões</h2>
+  <p>Como o HTTP não guarda memória, o servidor precisa de um jeito de reconhecer você de um pedido para o outro. Depois do login, ele responde com um cabeçalho <code>Set-Cookie</code>, e o navegador passa a mandar esse cookie em todo pedido seguinte para aquele site:</p>
+  <div class="saida"><pre>Set-Cookie: sessao=a8f3k2...; Secure; HttpOnly; SameSite=Lax</pre></div>
+  <ul>
+    <li><code>Secure</code>: só vai por HTTPS.</li>
+    <li><code>HttpOnly</code>: o JavaScript da página não consegue ler, o que dificulta o roubo do cookie.</li>
+    <li><code>SameSite</code>: limita o envio do cookie quando o pedido vem de outro site.</li>
+  </ul>
+  <p>Quem tem o cookie de sessão age como você naquele site. Por isso, nunca compartilhe cookies nem prints que mostrem cabeçalhos de pedidos logados. Nas ferramentas de desenvolvedor, os cookies ficam na aba <strong>Application</strong> (Chrome e Edge) ou <strong>Storage</strong> (Firefox).</p>
+</section>
+
+<section id="cache">
+  <h2>9. Cache e CDN: por que alguns sites são tão rápidos</h2>
+  <p><strong>Cache</strong> é guardar uma cópia para não buscar de novo. O servidor diz, no cabeçalho <code>Cache-Control</code>, por quanto tempo a cópia vale. Logos, fontes e arquivos CSS costumam ficar em cache por dias.</p>
+  <p>Uma <strong>CDN</strong> (rede de entrega de conteúdo), como Cloudflare, Fastly ou Google Cloud CDN, tem servidores espalhados pelo mundo que guardam cópias dos arquivos do site. Quem acessa de São Paulo recebe a cópia de um servidor próximo, sem precisar ir até o servidor original. Além de acelerar, a CDN aguenta picos de acesso e filtra ataques.</p>
+  <p>Ao rodar <code>curl -I</code> num site atrás de uma CDN, você costuma ver cabeçalhos extras, como <code>cf-cache-status</code> na Cloudflare ou <code>age</code>, que diz há quantos segundos a cópia está em cache.</p>
+</section>
+
+<section id="api">
+  <h2>10. APIs: quando a resposta não é uma página</h2>
+  <p>Muitas vezes, o que volta do servidor não é HTML, e sim dados, quase sempre em <strong>JSON</strong>. É assim que aplicativos de celular e sites modernos conversam com o backend (a parte do sistema que roda no servidor): por uma <strong>API</strong>, um conjunto de endereços que recebem e devolvem dados.</p>
+  <div class="cmd"><pre>curl https://api.github.com/users/octocat</pre></div>
+  <div class="saida"><small>Trecho da resposta:</small><pre>{
+  "login": "octocat",
+  "name": "The Octocat",
+  ...
+}</pre></div>
+  <p>JSON organiza os dados em pares <code>"nome": valor</code> entre chaves. A mesma lógica de métodos, status e cabeçalhos vale aqui: um <code>GET</code> busca dados, um <code>POST</code> cria, e o código de status diz se deu certo.</p>
+</section>
+
+<section id="missao">
+  <h2>11. Missão final</h2>
+  <details class="exercicio"><summary>1. Conte os pedidos de uma página</summary>
+    <p>Abra a aba Network, recarregue um site que você usa e anote quantos pedidos ele fez, quanto pesou e quanto tempo levou. Depois compare com outro site.</p>
+  </details>
+  <details class="exercicio"><summary>2. Descubra se um site usa CDN</summary>
+    <div class="cmd"><pre>curl -sI https://www.cloudflare.com | grep -i -E "server|cache"</pre></div>
+    <p>O <code>-s</code> esconde a barra de progresso. O <code>grep -i -E</code> filtra as linhas que têm "server" ou "cache", sem diferenciar maiúsculas. O PowerShell do Windows não tem <code>grep</code>: use <code>curl.exe -sI https://www.cloudflare.com | findstr /i "server cache"</code>.</p>
+  </details>
+  <details class="exercicio"><summary>3. Siga um redirecionamento até o fim</summary>
+    <div class="cmd"><pre>curl -sIL http://github.com | grep -i -E "^HTTP|^location"</pre></div>
+    <p>Cada par de linhas mostra um salto: o status e para onde o servidor mandou ir. No PowerShell, use <code>curl.exe -sIL http://github.com | findstr /i /r "^HTTP ^location"</code>.</p>
+  </details>
+  <div class="faca"><strong>Para fixar</strong>Explique para alguém a diferença entre um erro 404 e um erro 500, e quem precisa agir em cada caso. Depois, marque no tópico que você ensinou alguém.</div>
+  <div class="proximo"><a class="btn" href="../#/t/web">Voltar para o tópico e fazer o desafio</a><a class="btn btn-sec" href="redes-na-pratica.html">Outra lição: redes na prática</a></div>
+</section>
+
+<div class="credito">
+  <p>Lição escrita em português pela Iniciativa Ako, da Rizzygo, com base na documentação do <a href="https://developer.mozilla.org/pt-BR/docs/Web/HTTP">MDN sobre HTTP</a>. O texto e os exemplos são próprios. Os cabeçalhos e números das saídas mudam conforme o site e o dia.</p>
+  <p>Conteúdo aberto sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR">CC BY 4.0</a>. Viu um erro? <a href="https://github.com/rizzygo/iniciativa-ako/issues">Abra uma issue</a>.</p>
+</div>
+</main>
+<footer class="rodape"><div class="rodape-in"><p class="credo">Sou Zy: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="materiais.js"></script>
+</body>
+</html>

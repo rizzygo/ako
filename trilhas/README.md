@@ -18,11 +18,26 @@ A primeira trilha é **Primeiros passos em TI**: 16 tópicos em 6 etapas, do "co
 
 ## Materiais em português
 
-Quando o melhor material gratuito de um tópico só existe em inglês, a Iniciativa Ako escreve uma lição própria em português, na pasta [materiais](materiais). Elas são textos originais, não traduções, e dão crédito aos materiais que serviram de base.
+A Iniciativa Ako escreve lições próprias em português, na pasta [materiais](materiais), para os tópicos em que o melhor material gratuito só existia em inglês ou era um texto solto de blog. Elas são textos originais, não traduções, e dão crédito aos materiais que serviram de base.
 
-- [Linha de comando para iniciantes](https://rizzygo.github.io/iniciativa-ako/trilhas/materiais/linha-de-comando.html), para o tópico Terminal
-- [Linux básico, na prática](https://rizzygo.github.io/iniciativa-ako/trilhas/materiais/linux-basico.html), para o tópico Linux básico
-- [Primeiros passos no GitHub](https://rizzygo.github.io/iniciativa-ako/trilhas/materiais/primeiros-passos-github.html), para o tópico Git e GitHub
+| Lição | Tópico |
+|---|---|
+| [Como estudar tecnologia](materiais/como-estudar.html) | Como estudar tecnologia |
+| [As áreas da TI e o que cada pessoa faz](materiais/areas-da-ti.html) | As áreas da TI e as carreiras |
+| [Inglês para ler documentação](materiais/ingles-para-ti.html) | Inglês para ler documentação |
+| [Linha de comando para iniciantes](materiais/linha-de-comando.html) | Terminal |
+| [Linux básico, na prática](materiais/linux-basico.html) | Linux básico |
+| [Redes na prática: IP, DNS e portas](materiais/redes-na-pratica.html) | Redes |
+| [Como a web funciona, do clique à página](materiais/como-a-web-funciona.html) | Como a web funciona |
+| [Primeiros passos no GitHub](materiais/primeiros-passos-github.html) | Git e GitHub |
+| [IA com responsabilidade, no estudo e no trabalho](materiais/ia-com-responsabilidade.html) | Usar IA com responsabilidade |
+| [Segurança digital no dia a dia](materiais/seguranca-digital.html) | Segurança digital básica |
+| [Comunicação no trabalho de tecnologia](materiais/comunicacao-no-trabalho.html) | Comunicação e trabalho em equipe |
+| [Seu primeiro projeto no GitHub, do zero ao link](materiais/primeiro-projeto.html) | Seu primeiro projeto no GitHub |
+
+## Materiais pagos, sempre opcionais
+
+Todo tópico dá para concluir só com materiais gratuitos. Quando existe um curso, livro ou certificação paga que vale o investimento, ele aparece numa seção separada do tópico, "Para ir além, se quiser investir". Só entram opções acessíveis e bem avaliadas, com a nota e o número de avaliações conferidos na fonte.
 
 ## Três jeitos de contribuir com o conteúdo
 
@@ -55,7 +70,7 @@ Quando o melhor material gratuito de um tópico só existe em inglês, a Iniciat
 ## Combinados para o conteúdo
 
 - **Escreva para quem está começando:** frases curtas e todo termo técnico explicado na primeira vez.
-- **Materiais só gratuitos e conferidos:** abra o link antes de sugerir. Se estiver em inglês, use `"idioma": "en"`. Se o certificado for pago, escreva em `gratuito`.
+- **Materiais gratuitos primeiro, sempre conferidos:** abra o link antes de sugerir. Se estiver em inglês, use `"idioma": "en"`. Se só o certificado for pago, escreva `"gratuito": "sim, certificado pago"`. Material pago começa com `não`, como `"gratuito": "não, livro impresso ou e-book"`, e vai para a seção de opções pagas. Diga na `nota` a avaliação e onde ela foi conferida.
 - **Desafios com problemas reais:** cada tópico precisa de pelo menos 3 perguntas, e o ideal são 6, para o sorteio variar. Cada uma traz uma situação do dia a dia, quatro alternativas plausíveis, uma certa e uma explicação que ensina. Varie a posição da resposta certa.
 - **Rode o verificador antes de mandar:** `python3 trilhas/validar.py` aponta erros de formato.
 

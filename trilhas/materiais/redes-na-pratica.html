@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Redes na prática: IP, DNS e portas | Rizzygo Ako</title>
+<meta name="description" content="Lição prática em português sobre redes: IP privado e público, IPv4 e IPv6, roteador, NAT e DHCP, DNS e seus registros, portas, e os comandos ping, traceroute, nslookup, dig e ss para investigar problemas.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"%3E%3Crect width="64" height="64" rx="14" fill="%230B1B3A"/%3E%3Cg transform="translate%285 5%29 scale%28.84%29"%3E%3Cpath d="M13 14L32 32" fill="none" stroke="%23F5A524" stroke-width="8" stroke-linecap="round"/%3E%3Cpath d="M13 14H51L13 50H51" fill="none" stroke="%23FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/%3E%3Cpath d="M27 27L32 32" fill="none" stroke="%23F5A524" stroke-width="8" stroke-linecap="round"/%3E%3C/g%3E%3C/svg%3E">
+<meta name="theme-color" content="#0B1B3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="../app.css">
+<link rel="stylesheet" href="materiais.css">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="../#/" aria-label="Rizzygo Ako, início"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="var(--azul)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/></svg><span>Rizzygo <b>Ako</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="../#/trilha">Trilha</a><a href="./">Materiais</a></nav>
+</div></header>
+
+<main id="conteudo" class="licao">
+<div class="licao-cab">
+  <a class="voltar" href="../#/t/redes">Voltar para o tópico Redes: IP, DNS e portas</a>
+  <h1>Redes na prática: IP, DNS e portas</h1>
+  <p class="lead">Como seu computador encontra outro na internet e conversa com ele, explicado com comandos que você roda agora. No fim, você sabe investigar o clássico "a internet caiu" camada por camada.</p>
+  <div class="ficha"><span class="etiqueta">Cerca de 1 hora e 30 minutos</span><span class="etiqueta">Comandos para Linux, Mac e Windows</span><span class="etiqueta ambar">Material gratuito em português</span></div>
+</div>
+<nav class="indice" aria-label="Nesta lição">
+  <h2>Nesta lição</h2>
+  <ol>
+    <li><a href="#ideia">A ideia geral</a></li>
+    <li><a href="#ip">Endereço IP: privado e público</a></li>
+    <li><a href="#roteador">Roteador, DHCP e NAT</a></li>
+    <li><a href="#ipv6">IPv4 e IPv6</a></li>
+    <li><a href="#ping">Testar se uma máquina responde</a></li>
+    <li><a href="#dns">DNS: os nomes da internet</a></li>
+    <li><a href="#portas">Portas e protocolos</a></li>
+    <li><a href="#diagnostico">Investigar "a internet caiu"</a></li>
+    <li><a href="#missao">Missão final</a></li>
+  </ol>
+</nav>
+
+<section id="ideia">
+  <h2>1. A ideia geral</h2>
+  <p>Uma rede é um conjunto de dispositivos que trocam dados. A internet é uma rede de redes: a da sua casa se liga à do seu provedor, que se liga a outras, até chegar ao servidor do site que você quer abrir.</p>
+  <p>Para uma mensagem chegar ao destino, três perguntas precisam de resposta:</p>
+  <ul>
+    <li><strong>Qual é o endereço da máquina?</strong> É o endereço IP.</li>
+    <li><strong>Como descubro o endereço a partir de um nome, como <code>wikipedia.org</code>?</strong> É o DNS.</li>
+    <li><strong>Com qual programa daquela máquina eu quero falar?</strong> É a porta.</li>
+  </ul>
+  <p>Os dados viajam em pedaços chamados <strong>pacotes</strong>. Cada pacote leva o endereço de origem e o de destino, e os roteadores pelo caminho decidem para onde mandá-lo, como numa rede de correios.</p>
+</section>
+
+<section id="ip">
+  <h2>2. Endereço IP: privado e público</h2>
+  <p>Um endereço IPv4 tem quatro números de 0 a 255 separados por pontos, como <code>192.168.0.15</code>. Descubra o seu:</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Sistema</th><th>Comando</th></tr></thead>
+    <tbody>
+      <tr><td>Linux</td><td><code>ip -4 address</code></td></tr>
+      <tr><td>Mac</td><td><code>ipconfig getifaddr en0</code></td></tr>
+      <tr><td>Windows (PowerShell ou Prompt)</td><td><code>ipconfig</code></td></tr>
+    </tbody>
+  </table></div>
+  <div class="saida"><small>No Linux, procure a linha <code>inet</code> da sua placa de rede (ignore a <code>lo</code>):</small><pre>2: wlan0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; ...
+    inet 192.168.0.15/24 brd 192.168.0.255 scope global dynamic wlan0</pre></div>
+  <p>Esse é o seu <strong>IP privado</strong>, que só vale dentro da sua rede. Três faixas são reservadas para redes privadas, e você vai vê-las o tempo todo:</p>
+  <ul>
+    <li><code>10.0.0.0</code> a <code>10.255.255.255</code></li>
+    <li><code>172.16.0.0</code> a <code>172.31.255.255</code></li>
+    <li><code>192.168.0.0</code> a <code>192.168.255.255</code></li>
+  </ul>
+  <p>Na nuvem, as máquinas também recebem IPs dessas faixas dentro da rede privada do projeto. Já o <strong>IP público</strong> é o endereço com que a sua rede aparece na internet. Para ver o seu:</p>
+  <div class="cmd"><pre>curl https://ifconfig.me</pre></div>
+  <p>No PowerShell do Windows, digite <code>curl.exe</code> em vez de <code>curl</code>, porque <code>curl</code> sozinho chama outro comando.</p>
+  <p>O <code>/24</code> depois do IP é a <strong>máscara</strong>, escrita no formato CIDR. Ele diz quantos bits (os zeros e uns que formam o endereço) identificam a rede. Num <code>/24</code>, os três primeiros números são a rede (<code>192.168.0</code>) e o último identifica cada aparelho, o que dá até 254 aparelhos. Você vai encontrar essa notação ao criar redes na nuvem.</p>
+  <p>O endereço <code>127.0.0.1</code>, também chamado de <code>localhost</code>, é sempre a própria máquina. É o que você usa para testar um site rodando no seu computador.</p>
+</section>
+
+<section id="roteador">
+  <h2>3. Roteador, DHCP e NAT</h2>
+  <p>O roteador da sua casa faz três trabalhos ao mesmo tempo:</p>
+  <ul>
+    <li><strong>DHCP:</strong> quando um aparelho entra na rede, o roteador entrega a ele um IP privado, a máscara, o endereço do próprio roteador (o <em>gateway</em>, a saída para a internet) e os servidores de DNS. É por isso que você não configura nada à mão.</li>
+    <li><strong>Roteamento:</strong> tudo que não é da rede local vai para o gateway, que manda para o provedor.</li>
+    <li><strong>NAT:</strong> todos os aparelhos da casa saem para a internet com o mesmo IP público. O roteador anota quem pediu o quê e devolve cada resposta para o aparelho certo.</li>
+  </ul>
+  <p>Para ver o gateway: no Linux, <code>ip route</code> (linha que começa com <code>default via</code>); no Windows, <code>ipconfig</code> (linha Gateway Padrão); no Mac, <code>netstat -rn | grep default</code>.</p>
+</section>
+
+<section id="ipv6">
+  <h2>4. IPv4 e IPv6</h2>
+  <p>O IPv4 permite cerca de 4,3 bilhões de endereços, e eles se esgotaram. O NAT foi um dos jeitos de contornar o problema. A solução definitiva é o <strong>IPv6</strong>, com endereços bem mais longos, escritos em hexadecimal (com os algarismos de 0 a 9 e as letras de a a f) e separados por dois-pontos, como <code>2001:db8::1</code>.</p>
+  <p>Hoje as duas versões convivem, e muitos provedores já entregam os dois tipos de endereço. Rode <code>ip address</code> no Linux, <code>ifconfig</code> no Mac ou <code>ipconfig</code> no Windows e procure um endereço com dois-pontos.</p>
+</section>
+
+<section id="ping">
+  <h2>5. Testar se uma máquina responde</h2>
+  <p>O <code>ping</code> manda pequenos pacotes para uma máquina e mede quanto tempo a resposta leva. No Linux e no Mac, ele não para sozinho: o <code>-c 4</code> manda só 4 pacotes. No Windows, ele já para depois de 4: digite só <code>ping wikipedia.org</code>, sem o <code>-c 4</code>.</p>
+  <div class="cmd"><pre>ping -c 4 wikipedia.org</pre></div>
+  <div class="saida"><small>Saída parecida com esta:</small><pre>64 bytes from text-lb.eqiad.wikimedia.org (208.80.154.224): icmp_seq=1 ttl=56 time=18.2 ms
+...
+4 packets transmitted, 4 received, 0% packet loss</pre></div>
+  <ul>
+    <li><strong>time:</strong> o tempo de ida e volta, em milissegundos. Quanto menor, melhor.</li>
+    <li><strong>packet loss:</strong> quantos pacotes se perderam. Acima de 0% de forma constante indica problema na rede.</li>
+  </ul>
+  <p>Um <code>ping</code> sem resposta nem sempre quer dizer que a máquina está fora do ar: muitos servidores bloqueiam ping por segurança. Para ver o caminho que os pacotes fazem, use <code>traceroute wikipedia.org</code> no Linux e no Mac ou <code>tracert wikipedia.org</code> no Windows. Cada linha é um roteador pelo caminho. Em algumas distribuições Linux, como o Ubuntu, é preciso instalar antes o pacote <code>traceroute</code>.</p>
+</section>
+
+<section id="dns">
+  <h2>6. DNS: os nomes da internet</h2>
+  <p>Ninguém decora IPs. O DNS é o sistema que traduz nomes em endereços. Quando você digita um endereço no navegador, o computador pergunta a um servidor de DNS (normalmente o do provedor ou um público, como o <code>1.1.1.1</code> da Cloudflare e o <code>8.8.8.8</code> do Google), que descobre a resposta e a guarda por um tempo em <em>cache</em> (uma memória temporária, para não precisar perguntar de novo).</p>
+  <div class="cmd"><pre>nslookup wikipedia.org</pre></div>
+  <p>O <code>nslookup</code> funciona no Linux, no Mac e no Windows. No Linux e no Mac existe também o <code>dig</code>, que mostra mais detalhes:</p>
+  <div class="cmd"><pre>dig +short wikipedia.org</pre></div>
+  <h3>Os tipos de registro mais comuns</h3>
+  <div class="tabela"><table>
+    <thead><tr><th>Registro</th><th>Para que serve</th></tr></thead>
+    <tbody>
+      <tr><td><code>A</code></td><td>Liga um nome a um endereço IPv4</td></tr>
+      <tr><td><code>AAAA</code></td><td>Liga um nome a um endereço IPv6</td></tr>
+      <tr><td><code>CNAME</code></td><td>Diz que um nome é apelido de outro nome</td></tr>
+      <tr><td><code>MX</code></td><td>Diz qual servidor recebe os e-mails do domínio</td></tr>
+      <tr><td><code>TXT</code></td><td>Guarda textos, muito usados para provar que você é dono do domínio e para regras de e-mail</td></tr>
+      <tr><td><code>NS</code></td><td>Diz quais servidores respondem pelos registros do domínio</td></tr>
+    </tbody>
+  </table></div>
+  <div class="cmd"><pre>dig +short MX gmail.com</pre></div>
+  <p>Cada registro tem um <strong>TTL</strong>, o tempo em segundos que ele pode ficar em cache. É por isso que, quando alguém muda o DNS de um site, a mudança pode levar de minutos a horas para chegar a todo mundo.</p>
+  <div class="faca"><strong>Faça agora</strong>Descubra o IP de três sites que você usa com <code>nslookup</code>. Depois, rode <code>nslookup</code> num nome que não existe, como <code>naoexiste.exemplo.invalid</code>, e leia a mensagem de erro.</div>
+</section>
+
+<section id="portas">
+  <h2>7. Portas e protocolos</h2>
+  <p>Uma máquina pode rodar vários serviços ao mesmo tempo: um site, um banco de dados, um acesso remoto. A <strong>porta</strong>, um número de 0 a 65535, diz com qual deles você quer falar. Se o IP é o endereço do prédio, a porta é o número do apartamento.</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Porta</th><th>Serviço</th></tr></thead>
+    <tbody>
+      <tr><td>22</td><td>SSH, acesso seguro ao terminal de outra máquina</td></tr>
+      <tr><td>53</td><td>DNS</td></tr>
+      <tr><td>80</td><td>HTTP, sites sem criptografia</td></tr>
+      <tr><td>443</td><td>HTTPS, sites com criptografia</td></tr>
+      <tr><td>3306 e 5432</td><td>Bancos de dados MySQL e PostgreSQL</td></tr>
+    </tbody>
+  </table></div>
+  <p>Os dados viajam principalmente por dois protocolos de transporte. O <strong>TCP</strong> confirma a entrega e reenvia o que se perdeu; é usado em sites, e-mail e SSH. O <strong>UDP</strong> manda sem confirmar e é mais rápido; é usado em chamadas de vídeo, jogos e na maioria das consultas de DNS. O HTTP/3, versão mais nova do protocolo da web, roda sobre o QUIC, que usa UDP.</p>
+  <p>Para ver quais portas estão esperando conexões no seu Linux:</p>
+  <div class="cmd"><pre>ss -tuln</pre></div>
+  <p>No Mac e no Windows, o equivalente é <code>netstat -an</code>. Um <strong>firewall</strong> é o que decide quais portas aceitam conexões de fora. Na nuvem, ele aparece como regras de firewall ou grupos de segurança, e um serviço que "não responde" muitas vezes é só uma porta bloqueada.</p>
+  <div class="cuidado"><strong>Abra só o que precisa</strong>Liberar portas como 22 ou a do banco de dados para a internet inteira é um dos caminhos mais comuns para ataques. Restrinja ao seu IP ou use uma VPN (uma conexão criptografada que coloca você dentro da rede privada).</div>
+</section>
+
+<section id="diagnostico">
+  <h2>8. Investigar "a internet caiu"</h2>
+  <p>Quando algo não carrega, teste de dentro para fora. Cada passo elimina uma possibilidade:</p>
+  <ol>
+    <li><strong>Tenho IP?</strong> Rode <code>ip -4 address</code> ou <code>ipconfig</code>. Se o endereço começar com <code>169.254</code>, o computador não conseguiu IP do DHCP: o problema está no Wi-Fi, no cabo ou no roteador.</li>
+    <li><strong>Chego no roteador?</strong> Faça <code>ping</code> no IP do gateway.</li>
+    <li><strong>Chego na internet?</strong> Faça <code>ping -c 4 1.1.1.1</code> (no Windows, <code>ping 1.1.1.1</code>). Se funcionar, a conexão está de pé.</li>
+    <li><strong>O DNS funciona?</strong> Rode <code>nslookup wikipedia.org</code>. Se o ping por IP funciona e o nome não resolve, o problema é DNS.</li>
+    <li><strong>O serviço responde?</strong> Rode <code>curl -I https://wikipedia.org</code> (no PowerShell, <code>curl.exe</code>). Se tudo acima funciona e só um site falha, o problema provavelmente é no site, não em você.</li>
+  </ol>
+  <p>Esse raciocínio, de testar camada por camada, é o mesmo que times de infraestrutura e SRE (engenharia de confiabilidade) usam para investigar incidentes em produção, o sistema real que os clientes usam.</p>
+</section>
+
+<section id="missao">
+  <h2>9. Missão final</h2>
+  <details class="exercicio"><summary>1. Anote os dados da sua rede</summary>
+    <p>Seu IP privado, a máscara, o gateway, o IP público e o servidor de DNS. Os comandos estão nas partes 2, 3 e 6. Se o seu sistema usa o <code>systemd-resolved</code>, o comando <code>resolvectl status</code> mostra o DNS em uso.</p>
+  </details>
+  <details class="exercicio"><summary>2. Compare dois servidores de DNS</summary>
+    <div class="cmd"><pre>nslookup wikipedia.org 1.1.1.1</pre></div>
+    <div class="cmd"><pre>nslookup wikipedia.org 8.8.8.8</pre></div>
+    <p>O segundo argumento diz para qual servidor de DNS perguntar. As respostas podem variar, porque sites grandes devolvem servidores próximos de quem pergunta.</p>
+  </details>
+  <details class="exercicio"><summary>3. Descubra quem recebe os e-mails de um domínio</summary>
+    <div class="cmd"><pre>nslookup -type=MX gmail.com</pre></div>
+  </details>
+  <div class="faca"><strong>Para fixar</strong>Explique para alguém por que um site pode não abrir pelo nome, mas abrir pelo IP. Depois, marque no tópico que você ensinou alguém.</div>
+  <div class="proximo"><a class="btn" href="../#/t/redes">Voltar para o tópico e fazer o desafio</a><a class="btn btn-sec" href="como-a-web-funciona.html">Próxima lição: como a web funciona</a></div>
+</section>
+
+<div class="credito">
+  <p>Lição escrita em português pela Iniciativa Ako, da Rizzygo, com base nas faixas de endereços privados da <a href="https://www.rfc-editor.org/rfc/rfc1918">RFC 1918</a> e na documentação do <a href="https://developer.mozilla.org/pt-BR/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work">MDN</a>. O texto e os exemplos são próprios. Os números das saídas de exemplo mudam de rede para rede.</p>
+  <p>Conteúdo aberto sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR">CC BY 4.0</a>. Viu um erro? <a href="https://github.com/rizzygo/iniciativa-ako/issues">Abra uma issue</a>.</p>
+</div>
+</main>
+<footer class="rodape"><div class="rodape-in"><p class="credo">Sou Zy: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="materiais.js"></script>
+</body>
+</html>

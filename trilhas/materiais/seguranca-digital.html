@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Segurança digital no dia a dia | Rizzygo Ako</title>
+<meta name="description" content="Lição prática em português: gerenciador de senhas, passkeys, verificação em duas etapas, golpes e phishing, atualizações, backup 3-2-1, Wi-Fi público e os cuidados de quem começa em TI com segredos e acessos.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"%3E%3Crect width="64" height="64" rx="14" fill="%230B1B3A"/%3E%3Cg transform="translate%285 5%29 scale%28.84%29"%3E%3Cpath d="M13 14L32 32" fill="none" stroke="%23F5A524" stroke-width="8" stroke-linecap="round"/%3E%3Cpath d="M13 14H51L13 50H51" fill="none" stroke="%23FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/%3E%3Cpath d="M27 27L32 32" fill="none" stroke="%23F5A524" stroke-width="8" stroke-linecap="round"/%3E%3C/g%3E%3C/svg%3E">
+<meta name="theme-color" content="#0B1B3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="../app.css">
+<link rel="stylesheet" href="materiais.css">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="../#/" aria-label="Rizzygo Ako, início"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="var(--azul)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/></svg><span>Rizzygo <b>Ako</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="../#/trilha">Trilha</a><a href="./">Materiais</a></nav>
+</div></header>
+
+<main id="conteudo" class="licao">
+<div class="licao-cab">
+  <a class="voltar" href="../#/t/seguranca">Voltar para o tópico Segurança digital básica</a>
+  <h1>Segurança digital no dia a dia</h1>
+  <p class="lead">Os hábitos que protegem suas contas hoje e que o mercado espera de quem trabalha em TI: senhas únicas, passkeys, verificação em duas etapas, olho vivo para golpes e cuidado com segredos no código.</p>
+  <div class="ficha"><span class="etiqueta">Cerca de 1 hora</span><span class="etiqueta">Celular e computador</span><span class="etiqueta ambar">Material gratuito em português</span></div>
+</div>
+<nav class="indice" aria-label="Nesta lição">
+  <h2>Nesta lição</h2>
+  <ol>
+    <li><a href="#por-que">Por que começar por você</a></li>
+    <li><a href="#senhas">Senhas: uma por serviço, num gerenciador</a></li>
+    <li><a href="#passkeys">Passkeys: login sem senha</a></li>
+    <li><a href="#2fa">Verificação em duas etapas</a></li>
+    <li><a href="#golpes">Golpes e phishing</a></li>
+    <li><a href="#atualizar">Atualizações e backup</a></li>
+    <li><a href="#redes">Wi-Fi público e redes</a></li>
+    <li><a href="#ti">Para quem trabalha em TI: segredos e acessos</a></li>
+    <li><a href="#vazou">Se algo vazar, o que fazer</a></li>
+    <li><a href="#missao">Missão final</a></li>
+  </ol>
+</nav>
+
+<section id="por-que">
+  <h2>1. Por que começar por você</h2>
+  <p>Quem trabalha em TI tem acesso a sistemas, servidores e dados de outras pessoas. Se a sua conta pessoal cai, o atacante pode chegar ao seu e-mail de trabalho, ao seu GitHub ou à nuvem da empresa. Muitos ataques grandes começaram assim: uma senha repetida, um link falso, uma chave esquecida num repositório.</p>
+  <p>A boa notícia é que poucos hábitos bloqueiam a maior parte dos ataques comuns. Esta lição passa por eles na ordem em que vale a pena aplicar.</p>
+</section>
+
+<section id="senhas">
+  <h2>2. Senhas: uma por serviço, num gerenciador</h2>
+  <p>Mais comum do que a senha fraca é a senha repetida. Quando um site vaza, criminosos testam o mesmo e-mail e senha em outros serviços, de forma automática. Se você repete, uma senha vazada abre várias contas.</p>
+  <p>A solução prática é um <strong>gerenciador de senhas</strong>: um aplicativo que cria e guarda uma senha forte e diferente para cada site. Você só precisa lembrar de uma, a senha mestra.</p>
+  <ul>
+    <li><strong>Opções:</strong> Bitwarden (tem plano gratuito e é de código aberto), 1Password, Proton Pass, ou o gerenciador do Google ou da Apple, que já vem no celular.</li>
+    <li><strong>Senha mestra:</strong> longa e fácil de lembrar. Uma frase com quatro ou cinco palavras aleatórias funciona bem, como <code>cadeira-vulcão-limão-tarde</code> (não use esta).</li>
+    <li><strong>Comece pelas contas que importam:</strong> e-mail principal, banco, celular (conta Google ou Apple) e GitHub.</li>
+  </ul>
+  <p>Para saber se seu e-mail apareceu em vazamentos conhecidos, consulte o site <a href="https://haveibeenpwned.com">Have I Been Pwned</a>.</p>
+</section>
+
+<section id="passkeys">
+  <h2>3. Passkeys: login sem senha</h2>
+  <p>As <strong>passkeys</strong> (chaves de acesso) substituem a senha por uma chave criptográfica guardada no seu celular, computador ou gerenciador de senhas. Para entrar, você confirma com a digital, o rosto ou o PIN do aparelho.</p>
+  <ul>
+    <li><strong>Não dá para ser enganado por site falso:</strong> a passkey só funciona no site verdadeiro para o qual foi criada.</li>
+    <li><strong>Não tem o que vazar:</strong> o site guarda só uma parte pública da chave, que não serve para entrar.</li>
+  </ul>
+  <p>Google, Apple, Microsoft, GitHub e vários outros serviços já aceitam passkeys. Procure por "passkey" ou "chave de acesso" nas configurações de segurança da conta.</p>
+</section>
+
+<section id="2fa">
+  <h2>4. Verificação em duas etapas</h2>
+  <p>A verificação em duas etapas (2FA) pede algo além da senha. Mesmo que alguém descubra sua senha, não entra sem o segundo fator. Do mais fraco ao mais forte:</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Tipo</th><th>Como funciona</th><th>Cuidado</th></tr></thead>
+    <tbody>
+      <tr><td>SMS</td><td>Código por mensagem de texto</td><td>Melhor que nada, mas pode ser desviado num golpe de troca de chip</td></tr>
+      <tr><td>Aplicativo autenticador</td><td>Código que muda a cada 30 segundos, como no Google Authenticator, Microsoft Authenticator ou 2FAS</td><td>Ative o backup do aplicativo para não perder os códigos se trocar de celular</td></tr>
+      <tr><td>Passkey ou chave física</td><td>Confirmação no aparelho ou numa chave USB, como a YubiKey</td><td>A opção mais resistente a phishing</td></tr>
+    </tbody>
+  </table></div>
+  <div class="cuidado"><strong>Guarde os códigos de recuperação</strong>Ao ativar a 2FA, o serviço mostra códigos de recuperação. Guarde no gerenciador de senhas ou impressos em lugar seguro. Sem eles, perder o celular pode significar perder a conta.</div>
+</section>
+
+<section id="golpes">
+  <h2>5. Golpes e phishing</h2>
+  <p><strong>Phishing</strong> é a mensagem falsa que tenta fazer você clicar num link, baixar um arquivo ou passar dados. Chega por e-mail, SMS, WhatsApp, ligação ou rede social. Os sinais mais comuns:</p>
+  <ul>
+    <li><strong>Urgência:</strong> "sua conta será bloqueada hoje", "última chance", "pague agora para evitar multa".</li>
+    <li><strong>Pedido fora do normal:</strong> um "parente" com número novo pedindo PIX, o "banco" pedindo senha ou código por telefone.</li>
+    <li><strong>Endereço estranho:</strong> domínio parecido com o verdadeiro, como <code>itau-seguranca.com</code> ou <code>gooogle.com</code>.</li>
+    <li><strong>Oferta boa demais:</strong> vaga de emprego que paga muito por pouco, produto com desconto absurdo.</li>
+  </ul>
+  <p>Como se proteger:</p>
+  <ul>
+    <li>No computador, passe o mouse sobre o link sem clicar e veja o endereço real no canto da tela. No celular, segure o dedo sobre o link.</li>
+    <li>Em vez de clicar, abra o aplicativo ou digite o endereço do site você mesmo.</li>
+    <li>Confirme pedidos de dinheiro por outro canal: ligue para o número que você já tinha.</li>
+    <li>Banco não pede senha, token ou código por telefone, mensagem ou e-mail.</li>
+  </ul>
+  <p>Golpes com voz e vídeo falsos, feitos com IA, já existem. Combine uma palavra-chave com a família para confirmar pedidos urgentes.</p>
+  <div class="faca"><strong>Faça agora</strong>Abra sua caixa de spam e escolha uma mensagem suspeita. Sem clicar em nada, liste os sinais de golpe que ela tem.</div>
+</section>
+
+<section id="atualizar">
+  <h2>6. Atualizações e backup</h2>
+  <p>Atualizações corrigem falhas de segurança que já são conhecidas, inclusive pelos atacantes. Deixe as atualizações automáticas ligadas no sistema, no navegador e nos aplicativos. Aparelhos que não recebem mais atualizações, como celulares muito antigos, ficam cada vez mais expostos.</p>
+  <p>O backup protege contra o que a prevenção não segura: o ransomware (programa que sequestra seus arquivos), o celular roubado, o disco que pifa. Uma regra simples e muito usada é a <strong>3-2-1</strong>:</p>
+  <ul>
+    <li><strong>3</strong> cópias dos seus arquivos importantes,</li>
+    <li>em <strong>2</strong> tipos de mídia diferentes (o computador e um HD externo, por exemplo),</li>
+    <li>com <strong>1</strong> cópia fora de casa, como num serviço de nuvem.</li>
+  </ul>
+  <p>Teste a restauração de vez em quando: backup que nunca foi restaurado é só uma esperança.</p>
+</section>
+
+<section id="redes">
+  <h2>7. Wi-Fi público e redes</h2>
+  <ul>
+    <li>Hoje a maioria dos sites usa HTTPS, o que protege o conteúdo mesmo no Wi-Fi público. Ainda assim, evite fazer login em contas importantes em redes abertas e desconfie de redes com nomes genéricos, como "Wi-Fi Grátis".</li>
+    <li>Prefira o 4G ou 5G do celular para coisas sensíveis.</li>
+    <li>Em casa, troque a senha padrão do roteador e mantenha o firmware (o programa interno do aparelho) atualizado.</li>
+  </ul>
+</section>
+
+<section id="ti">
+  <h2>8. Para quem trabalha em TI: segredos e acessos</h2>
+  <p>Ao começar a programar e a usar a nuvem, você passa a lidar com <strong>segredos</strong>: senhas de banco de dados, chaves de API, tokens de acesso. Eles exigem cuidados próprios:</p>
+  <ul>
+    <li><strong>Nunca coloque segredos no código</strong> nem faça commit deles (não os registre no histórico do Git). Use variáveis de ambiente (valores guardados no sistema, fora do código) e um arquivo <code>.env</code> listado no <code>.gitignore</code>, o arquivo que diz ao Git o que ignorar, ou um cofre de segredos, como o Secret Manager do Google Cloud.</li>
+    <li><strong>Repositório público é público para sempre.</strong> Robôs varrem o GitHub atrás de chaves o tempo todo. Apagar o arquivo no commit seguinte não resolve, porque o segredo continua no histórico.</li>
+    <li><strong>Ative a proteção do GitHub.</strong> A <em>push protection</em> do secret scanning bloqueia o envio de vários tipos de chave conhecidos. Em repositórios públicos, ela já vem ligada.</li>
+    <li><strong>Menor privilégio:</strong> dê a cada pessoa, sistema ou chave só o acesso necessário, pelo tempo necessário.</li>
+    <li><strong>Não compartilhe contas.</strong> Cada pessoa com o seu login, para saber quem fez o quê.</li>
+  </ul>
+  <div class="cuidado"><strong>Antes de rodar git add .</strong>
+    <ol>
+      <li><strong>O que muda:</strong> todos os arquivos da pasta entram no próximo commit, inclusive um <code>.env</code> que não esteja no <code>.gitignore</code>.</li>
+      <li><strong>Como desfazer:</strong> antes do commit, <code>git restore --staged arquivo</code> tira o arquivo da lista.</li>
+      <li><strong>Como saber que deu certo:</strong> rode <code>git status</code> e confira se só os arquivos certos aparecem em verde.</li>
+    </ol>
+  </div>
+</section>
+
+<section id="vazou">
+  <h2>9. Se algo vazar, o que fazer</h2>
+  <ol>
+    <li><strong>Troque a senha ou revogue a chave na hora.</strong> Não espere confirmar se alguém usou.</li>
+    <li><strong>Encerre as sessões abertas.</strong> A maioria dos serviços tem a opção "sair de todos os dispositivos".</li>
+    <li><strong>Confira a atividade recente</strong> da conta: logins, e-mails enviados, regras de encaminhamento criadas.</li>
+    <li><strong>Avise quem precisa saber.</strong> No trabalho, o time de segurança ou a liderança. Avisar rápido é sempre melhor do que esconder.</li>
+    <li><strong>Golpe financeiro:</strong> fale com o banco imediatamente. No caso de PIX, peça o uso do Mecanismo Especial de Devolução (MED) e registre um boletim de ocorrência.</li>
+  </ol>
+</section>
+
+<section id="missao">
+  <h2>10. Missão final</h2>
+  <details class="exercicio"><summary>1. Proteja seu e-mail principal</summary>
+    <p>Troque a senha por uma única e forte, guardada num gerenciador. Ative a 2FA com aplicativo autenticador ou passkey e guarde os códigos de recuperação.</p>
+  </details>
+  <details class="exercicio"><summary>2. Faça o mesmo no GitHub</summary>
+    <p>Em Settings, Password and authentication, ative a autenticação em duas etapas e cadastre uma passkey.</p>
+  </details>
+  <details class="exercicio"><summary>3. Crie um .gitignore que protege segredos</summary>
+    <div class="cmd"><pre>printf '\n.env\n*.pem\n*.key\n' &gt;&gt; .gitignore</pre></div>
+    <p>Rode dentro da pasta de um projeto com Git (no Windows, use o Git Bash, que vem com o Git). O <code>&gt;&gt;</code> acrescenta as linhas ao fim do arquivo sem apagar o que já existe. O <code>\n</code> do começo pula uma linha, para a primeira regra não grudar na última linha que já estava no arquivo.</p>
+  </details>
+  <div class="faca"><strong>Para fixar</strong>Explique para alguém da sua família como reconhecer um golpe por mensagem e por que senha repetida é perigosa. Depois, marque no tópico que você ensinou alguém.</div>
+  <div class="proximo"><a class="btn" href="../#/t/seguranca">Voltar para o tópico e fazer o desafio</a><a class="btn btn-sec" href="comunicacao-no-trabalho.html">Próxima lição: comunicação no trabalho</a></div>
+</section>
+
+<div class="credito">
+  <p>Lição escrita em português pela Iniciativa Ako, da Rizzygo, com base nos fascículos da <a href="https://cartilha.cert.br/">Cartilha de Segurança para Internet</a> do CERT.br, nas orientações sobre passkeys da <a href="https://fidoalliance.org/passkeys/">FIDO Alliance</a> (em inglês) e na documentação do <a href="https://docs.github.com/pt/code-security/secret-scanning">secret scanning do GitHub</a>. O texto e os exemplos são próprios.</p>
+  <p>Conteúdo aberto sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR">CC BY 4.0</a>. Viu um erro? <a href="https://github.com/rizzygo/iniciativa-ako/issues">Abra uma issue</a>.</p>
+</div>
+</main>
+<footer class="rodape"><div class="rodape-in"><p class="credo">Sou Zy: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="materiais.js"></script>
+</body>
+</html>

@@ -132,34 +132,22 @@
    "pergunta_ako": "Qual assunto você acha que entendeu, mas não conseguiria explicar para alguém agora?",
    "recursos": [
     {
-     "titulo": "Como estudar programação de forma eficiente",
-     "fonte": "Rocketseat (blog)",
-     "url": "https://www.rocketseat.com.br/blog/artigos/post/como-estudar-programacao-eficiente",
+     "titulo": "Como estudar tecnologia",
+     "fonte": "Iniciativa Ako",
+     "url": "./materiais/como-estudar.html",
      "tipo": "artigo",
      "idioma": "pt-BR",
      "gratuito": "sim",
-     "nota": "Dicas de rotina, prática ativa, revisão espaçada, Pomodoro e projetos pequenos para fixar o que você estuda.",
-     "verificado_em": "2026-10-17"
+     "nota": "Lição escrita para esta trilha: lembrar sem olhar, revisão espaçada, prática ativa, rotina semanal e a IA como professora, não como cola."
     },
     {
-     "titulo": "Como aprender a programar? Guia para iniciantes",
-     "fonte": "Rocketseat (blog)",
-     "url": "https://www.rocketseat.com.br/blog/artigos/post/aprender-a-programar-guia-completo-iniciantes",
-     "tipo": "artigo",
+     "titulo": "Aprendendo a aprender",
+     "fonte": "Coursera (Barbara Oakley e Terrence Sejnowski)",
+     "url": "https://www.coursera.org/learn/aprender",
+     "tipo": "curso",
      "idioma": "pt-BR",
-     "gratuito": "sim",
-     "nota": "Guia para definir objetivo, quebrar o conteúdo em partes, usar Anki e técnica de Feynman e lidar com procrastinação.",
-     "verificado_em": "2026-10-17"
-    },
-    {
-     "titulo": "Como usar Inteligência Artificial para estudar programação com mais eficiência",
-     "fonte": "Curso em Vídeo (blog)",
-     "url": "https://www.cursoemvideo.com/blog/descubra-como-usar-inteligencia-artificial-para-estudar-programacao-com-mais-eficiencia-aprenda-a-tirar-duvidas-revisar-conteudos-criar-exercicios-e-acelerar-seu-aprendizado-com-ia-descubra-como-us",
-     "tipo": "artigo",
-     "idioma": "pt-BR",
-     "gratuito": "sim",
-     "nota": "Mostra como usar a IA como apoio para tirar dúvidas, revisar e montar exercícios, sem deixar de entender o conteúdo.",
-     "verificado_em": "2026-10-17"
+     "gratuito": "sim, certificado pago",
+     "nota": "Curso em português sobre como o cérebro aprende: foco, memória, procrastinação e prática. Nota 4,9 no Coursera, com mais de 4 mil avaliações."
     }
    ]
   },
@@ -256,14 +244,13 @@
    "pergunta_ako": "Qual área te atrai, e é pelo trabalho em si ou pelo salário que você imagina?",
    "recursos": [
     {
-     "titulo": "O que é e como funciona a área de TI? Confira 11 áreas para atuar",
-     "fonte": "Serasa Experian (blog de carreiras)",
-     "url": "https://www.serasaexperian.com.br/carreiras/blog-carreiras/area-de-ti/",
+     "titulo": "As áreas da TI e o que cada pessoa faz",
+     "fonte": "Iniciativa Ako",
+     "url": "./materiais/areas-da-ti.html",
      "tipo": "artigo",
      "idioma": "pt-BR",
      "gratuito": "sim",
-     "nota": "Panorama curto de 11 áreas, como segurança, dados, desenvolvimento, QA, suporte e nuvem, com o que cada uma faz.",
-     "verificado_em": "2026-10-17"
+     "nota": "Lição escrita para esta trilha: o que cada área faz, as funções, as ferramentas e um mini projeto para testar cada uma antes de escolher."
     },
     {
      "titulo": "Trilhas de aprendizagem",
@@ -274,6 +261,15 @@
      "gratuito": "sim, certificado pago",
      "nota": "Sete trilhas gratuitas, como infraestrutura, programação e IA, que ajudam a ver o caminho de estudo de cada área.",
      "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Certificado Profissional de Suporte em TI do Google",
+     "fonte": "Google, no Coursera",
+     "url": "https://www.coursera.org/professional-certificates/suporte-em-ti-do-google",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "não, assinatura mensal do Coursera, com auxílio financeiro para quem pedir",
+     "nota": "Uma porta de entrada pelo suporte, a área de onde muita gente migra para infraestrutura e segurança. Nota 4,8 no Coursera, com mais de 200 mil avaliações."
     }
    ]
   },
@@ -367,6 +363,15 @@
    "pergunta_ako": "Você costuma traduzir tudo de uma vez ou tenta entender primeiro? O que muda quando você tenta primeiro?",
    "recursos": [
     {
+     "titulo": "Inglês para ler documentação",
+     "fonte": "Iniciativa Ako",
+     "url": "./materiais/ingles-para-ti.html",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição escrita para esta trilha: cognatos e falsos cognatos, leitura em camadas, como a documentação é organizada, mensagens de erro e um glossário inicial."
+    },
+    {
      "titulo": "Curso de Inglês para Iniciantes, Módulo 01: Beginners",
      "fonte": "Curso em Vídeo",
      "url": "https://www.cursoemvideo.com/curso/curso-de-ingles-para-iniciantes-modulo-1-beginners-gratis-e-completo/",
@@ -384,16 +389,6 @@
      "idioma": "pt-BR",
      "gratuito": "sim",
      "nota": "Apostila em PDF com técnicas para ler textos técnicos em inglês: cognatos, skimming, scanning e uso do dicionário.",
-     "verificado_em": "2026-10-17"
-    },
-    {
-     "titulo": "Inglês para programadores: como estudar da forma certa",
-     "fonte": "Hashtag Treinamentos (blog)",
-     "url": "https://www.hashtagtreinamentos.com/ingles-para-programadores",
-     "tipo": "artigo",
-     "idioma": "pt-BR",
-     "gratuito": "sim",
-     "nota": "Dicas para montar um glossário técnico pessoal e se acostumar a ler documentação e mensagens de erro em inglês.",
      "verificado_em": "2026-10-17"
     }
    ]
@@ -509,6 +504,15 @@
      "gratuito": "sim, certificado pago",
      "nota": "Acompanha a montagem de um computador real, da escolha das peças até a instalação do sistema operacional.",
      "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Certificado Profissional de Suporte em TI do Google",
+     "fonte": "Google, no Coursera",
+     "url": "https://www.coursera.org/professional-certificates/suporte-em-ti-do-google",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "não, assinatura mensal do Coursera, com auxílio financeiro para quem pedir",
+     "nota": "Programa para quem está começando, com hardware, sistemas operacionais, redes, administração de sistemas e segurança. Nota 4,8 no Coursera, com mais de 200 mil avaliações."
     }
    ]
   },
@@ -778,6 +782,15 @@
      "gratuito": "sim",
      "nota": "Lições curtas e laboratórios no navegador, de linha de comando a permissões e processos, sem precisar de cadastro. A lição da Iniciativa Ako acima cobre o mesmo assunto em português.",
      "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Certificação Linux Essentials",
+     "fonte": "Linux Professional Institute (LPI)",
+     "url": "https://www.lpi.org/our-certifications/linux-essentials-overview/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "não, prova paga",
+     "nota": "Certificação de entrada em Linux, com prova de 40 questões em 60 minutos. Hoje a prova é em inglês, e o LPI anunciou a versão em português. Vale depois de dominar a lição Ako e o Guia Foca."
     }
    ]
   },
@@ -874,6 +887,15 @@
    "pergunta_ako": "Na próxima vez que a internet parecer cair, como você vai descobrir se o problema é a rede, o DNS ou o site?",
    "recursos": [
     {
+     "titulo": "Redes na prática: IP, DNS e portas",
+     "fonte": "Iniciativa Ako",
+     "url": "./materiais/redes-na-pratica.html",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição escrita para esta trilha, com comandos para Linux, Mac e Windows: IP, DHCP, NAT, IPv6, DNS, portas e como investigar \"a internet caiu\"."
+    },
+    {
      "titulo": "Curso Prático de Redes de Computadores e Internet",
      "fonte": "Curso em Vídeo",
      "url": "https://www.cursoemvideo.com/curso/curso-pratico-de-redes-de-computadores-e-internet-20-horas/",
@@ -902,6 +924,15 @@
      "gratuito": "sim",
      "nota": "Texto curto que explica roteadores, provedores, endereços IP e nomes de domínio, e a diferença entre internet e web.",
      "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Certificado Profissional de Suporte em TI do Google",
+     "fonte": "Google, no Coursera",
+     "url": "https://www.coursera.org/professional-certificates/suporte-em-ti-do-google",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "não, assinatura mensal do Coursera, com auxílio financeiro para quem pedir",
+     "nota": "O segundo curso do programa é todo sobre redes, do modelo em camadas ao DNS e à solução de problemas. Nota 4,8 no Coursera, com mais de 200 mil avaliações."
     }
    ]
   },
@@ -999,14 +1030,13 @@
    "pergunta_ako": "Quando um site não abre, que informação da aba Rede você mandaria para alguém te ajudar?",
    "recursos": [
     {
-     "titulo": "Como a Web funciona",
-     "fonte": "MDN Web Docs",
-     "url": "https://developer.mozilla.org/pt-BR/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works",
+     "titulo": "Como a web funciona, do clique à página",
+     "fonte": "Iniciativa Ako",
+     "url": "./materiais/como-a-web-funciona.html",
      "tipo": "artigo",
      "idioma": "pt-BR",
      "gratuito": "sim",
-     "nota": "Mostra o caminho de uma página: navegador pede ao servidor, DNS acha o endereço, HTTP leva os dados em pacotes.",
-     "verificado_em": "2026-10-17"
+     "nota": "Lição escrita para esta trilha: partes da URL, HTTP, códigos de status, ferramentas do navegador, curl, HTTPS, cookies, cache, CDN e APIs."
     },
     {
      "titulo": "Uma visão geral do HTTP",
@@ -1016,16 +1046,6 @@
      "idioma": "pt-BR",
      "gratuito": "sim",
      "nota": "Explica requisições e respostas HTTP, cabeçalhos, cookies e por que o protocolo não guarda estado.",
-     "verificado_em": "2026-10-17"
-    },
-    {
-     "titulo": "O que é um servidor web?",
-     "fonte": "MDN Web Docs",
-     "url": "https://developer.mozilla.org/pt-BR/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_web_server",
-     "tipo": "artigo",
-     "idioma": "pt-BR",
-     "gratuito": "sim",
-     "nota": "Explica o que é um servidor web, em hardware e software, e como ele entrega sites estáticos e dinâmicos.",
      "verificado_em": "2026-10-17"
     }
    ]
@@ -1153,6 +1173,15 @@
      "gratuito": "sim",
      "nota": "Versão brasileira do CS50, com cerca de 25 horas de aulas sobre algoritmos e programação para iniciantes.",
      "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Entendendo Algoritmos (2ª edição)",
+     "fonte": "Novatec (Aditya Y. Bhargava)",
+     "url": "https://novatec.com.br/livros/entendendo-algoritmos-2ed/",
+     "tipo": "livro",
+     "idioma": "pt-BR",
+     "gratuito": "não, livro impresso ou e-book",
+     "nota": "Guia ilustrado de algoritmos, com exemplos em Python 3. A edição nova inclui árvores e problemas NP-completos. A primeira edição tem nota 4,4 no Skoob, com mais de 300 avaliações."
     }
    ]
   },
@@ -1281,6 +1310,24 @@
      "gratuito": "sim",
      "nota": "Tutorial oficial traduzido, bom para depois do básico, pois parte do princípio que você já programou um pouco.",
      "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Pense em Python",
+     "fonte": "Allen B. Downey, tradução publicada pela Novatec",
+     "url": "https://penseallen.github.io/PensePython2e/",
+     "tipo": "livro",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Livro completo para ler online, de graça, que ensina a programar pensando como cientista da computação. Bom para ler junto com um curso em vídeo."
+    },
+    {
+     "titulo": "Introdução à Programação com Python (4ª edição)",
+     "fonte": "Novatec (Nilo Ney Coutinho Menezes)",
+     "url": "https://novatec.com.br/livros/introducao-python-4ed",
+     "tipo": "livro",
+     "idioma": "pt-BR",
+     "gratuito": "não, livro impresso ou e-book",
+     "nota": "Livro de autor brasileiro para quem nunca programou, que ensina lógica e Python juntos, do zero."
     }
    ]
   },
@@ -1509,6 +1556,15 @@
    "pergunta_ako": "Na última vez que você usou IA, você saberia refazer aquilo sem ela?",
    "recursos": [
     {
+     "titulo": "IA com responsabilidade, no estudo e no trabalho",
+     "fonte": "Iniciativa Ako",
+     "url": "./materiais/ia-com-responsabilidade.html",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição escrita para esta trilha: como os modelos funcionam, onde erram, como pedir e conferir, o que nunca colar numa IA, agentes e LGPD."
+    },
+    {
      "titulo": "Dicas antes de rodar",
      "fonte": "Iniciativa Ako",
      "url": "../guias/dicas-antes-de-rodar-prompt/pagina.html",
@@ -1555,6 +1611,24 @@
      "gratuito": "sim",
      "nota": "Webinário de 2 horas sobre ética, lei e viés algorítmico no uso de inteligência artificial.",
      "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "AI For Everyone",
+     "fonte": "DeepLearning.AI (Andrew Ng), no Coursera",
+     "url": "https://www.coursera.org/learn/ai-for-everyone",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, certificado pago",
+     "nota": "Curso curto, sem programação, sobre o que a IA consegue e não consegue fazer e como usá-la no trabalho. Nota 4,8 no Coursera, com mais de 50 mil avaliações."
+    },
+    {
+     "titulo": "Google AI Essentials",
+     "fonte": "Google, no Coursera",
+     "url": "https://www.coursera.org/specializations/ai-essentials-google",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "não, assinatura mensal do Coursera, com 7 dias grátis",
+     "nota": "Curso prático sobre usar ferramentas de IA generativa no trabalho, escrever bons pedidos e usar IA com responsabilidade. Nota 4,8 no Coursera, com mais de 25 mil avaliações."
     }
    ]
   },
@@ -1650,6 +1724,15 @@
    "pergunta_ako": "Se alguém conseguisse a senha do seu e-mail hoje, a que outras contas essa pessoa teria acesso?",
    "recursos": [
     {
+     "titulo": "Segurança digital no dia a dia",
+     "fonte": "Iniciativa Ako",
+     "url": "./materiais/seguranca-digital.html",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição escrita para esta trilha: gerenciador de senhas, passkeys, verificação em duas etapas, golpes, backup 3-2-1 e cuidados com segredos no código."
+    },
+    {
      "titulo": "Proteja sua vida digital: use autenticação forte",
      "fonte": "CERT.br, Cartilha de Segurança para Internet",
      "url": "https://cartilha.cert.br/fasciculos/autenticacao/fasciculo-autenticacao.pdf",
@@ -1678,6 +1761,15 @@
      "gratuito": "sim",
      "nota": "Curso online e no seu ritmo sobre ameaças digitais e como se proteger; pede cadastro gratuito.",
      "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Google Cybersecurity Professional Certificate",
+     "fonte": "Google, no Coursera",
+     "url": "https://www.coursera.org/professional-certificates/google-cybersecurity",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "não, assinatura mensal do Coursera, com 7 dias grátis",
+     "nota": "Programa de entrada em segurança, com Linux, SQL, Python, redes e resposta a incidentes. Nota 4,8 no Coursera, com mais de 69 mil avaliações. Faça depois da base de Linux e redes."
     }
    ]
   },
@@ -1773,14 +1865,13 @@
    "pergunta_ako": "Quando foi a última vez que você ensinou algo para alguém? O que você aprendeu ao explicar?",
    "recursos": [
     {
-     "titulo": "Como fazer perguntas inteligentes",
-     "fonte": "Área31 Hackerspace (tradução do guia de Eric Raymond)",
-     "url": "https://area31.net.br/wiki/Como_fazer_perguntas_inteligentes",
+     "titulo": "Comunicação no trabalho de tecnologia",
+     "fonte": "Iniciativa Ako",
+     "url": "./materiais/comunicacao-no-trabalho.html",
      "tipo": "artigo",
      "idioma": "pt-BR",
      "gratuito": "sim",
-     "nota": "Ensina a pedir ajuda bem: pesquisar antes, descrever o problema com detalhes e dar retorno quando resolver.",
-     "verificado_em": "2026-10-17"
+     "nota": "Lição escrita para esta trilha, com modelos prontos: pedir ajuda, escrever no chat, relatar problemas, descrever pull requests, feedback e reuniões."
     },
     {
      "titulo": "Comunicação Empresarial",
@@ -1790,16 +1881,6 @@
      "idioma": "pt-BR",
      "gratuito": "sim",
      "nota": "Curso de 12 horas para se comunicar melhor por escrito e falando no ambiente de trabalho.",
-     "verificado_em": "2026-10-17"
-    },
-    {
-     "titulo": "Primeiro emprego em tecnologia: 12 passos para começar na área de TI",
-     "fonte": "Serasa Experian (blog de carreiras)",
-     "url": "https://www.serasaexperian.com.br/carreiras/blog-carreiras/primeiro-emprego-em-tecnologia/",
-     "tipo": "artigo",
-     "idioma": "pt-BR",
-     "gratuito": "sim",
-     "nota": "Passo a passo de carreira: escolher área, montar projetos, cuidar do LinkedIn, buscar estágio e se preparar para entrevistas.",
      "verificado_em": "2026-10-17"
     }
    ]
@@ -1894,34 +1975,22 @@
    "pergunta_ako": "Seu projeto resolve um problema real? Para quem?",
    "recursos": [
     {
-     "titulo": "Como montar um GitHub que ajuda você a conseguir oportunidades em TI",
-     "fonte": "Curso em Vídeo (blog)",
-     "url": "https://www.cursoemvideo.com/blog/como-montar-um-github-que-ajuda-voce-a-conseguir-oportunidades-em-ti/",
+     "titulo": "Seu primeiro projeto no GitHub, do zero ao link",
+     "fonte": "Iniciativa Ako",
+     "url": "./materiais/primeiro-projeto.html",
      "tipo": "artigo",
      "idioma": "pt-BR",
      "gratuito": "sim",
-     "nota": "Dicas para organizar repositórios, escrever README, fazer bons commits e evitar projetos abandonados.",
-     "verificado_em": "2026-10-17"
+     "nota": "Lição escrita para esta trilha: escolher um problema real, cortar até a primeira versão, organizar o repositório, escrever o README, publicar e montar o perfil."
     },
     {
-     "titulo": "Dicas para usar o GitHub como portfólio",
-     "fonte": "GitHub no DEV Community",
-     "url": "https://dev.to/github/dicas-para-usar-o-github-como-portfolio-2ab8",
-     "tipo": "artigo",
+     "titulo": "Documentação do GitHub Pages",
+     "fonte": "GitHub Docs",
+     "url": "https://docs.github.com/pt/pages/getting-started-with-github-pages",
+     "tipo": "documentacao",
      "idioma": "pt-BR",
      "gratuito": "sim",
-     "nota": "Mostra como criar o README de perfil, preencher a bio e fixar de 1 a 6 projetos com boas descrições.",
-     "verificado_em": "2026-10-17"
-    },
-    {
-     "titulo": "Como montar um portfólio no GitHub",
-     "fonte": "Mulheres Programando",
-     "url": "https://mulheresprogramando.com.br/como-montar-um-portfolio-no-github/",
-     "tipo": "artigo",
-     "idioma": "pt-BR",
-     "gratuito": "sim",
-     "nota": "Sugere poucos projetos bem feitos, cada um com README completo, e como começar a contribuir com código aberto.",
-     "verificado_em": "2026-10-17"
+     "nota": "Guia oficial para publicar um site estático de graça a partir de um repositório, com domínio próprio opcional."
     }
    ]
   },

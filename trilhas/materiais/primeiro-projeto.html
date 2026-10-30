@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seu primeiro projeto no GitHub, do zero ao link | Rizzygo Ako</title>
+<meta name="description" content="Lição prática em português: escolher um projeto pequeno e real, planejar a primeira versão, organizar o repositório, escrever um bom README, publicar com GitHub Pages e montar um perfil que mostra o que você sabe fazer.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"%3E%3Crect width="64" height="64" rx="14" fill="%230B1B3A"/%3E%3Cg transform="translate%285 5%29 scale%28.84%29"%3E%3Cpath d="M13 14L32 32" fill="none" stroke="%23F5A524" stroke-width="8" stroke-linecap="round"/%3E%3Cpath d="M13 14H51L13 50H51" fill="none" stroke="%23FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/%3E%3Cpath d="M27 27L32 32" fill="none" stroke="%23F5A524" stroke-width="8" stroke-linecap="round"/%3E%3C/g%3E%3C/svg%3E">
+<meta name="theme-color" content="#0B1B3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="../app.css">
+<link rel="stylesheet" href="materiais.css">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="../#/" aria-label="Rizzygo Ako, início"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="var(--azul)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/></svg><span>Rizzygo <b>Ako</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="../#/trilha">Trilha</a><a href="./">Materiais</a></nav>
+</div></header>
+
+<main id="conteudo" class="licao">
+<div class="licao-cab">
+  <a class="voltar" href="../#/t/projeto">Voltar para o tópico Seu primeiro projeto no GitHub</a>
+  <h1>Seu primeiro projeto no GitHub, do zero ao link</h1>
+  <p class="lead">Como sair da ideia até um link que você pode mandar para alguém: escolher um problema pequeno, terminar uma primeira versão, documentar e publicar. No fim, você tem um projeto de verdade no seu perfil.</p>
+  <div class="ficha"><span class="etiqueta">Cerca de 1 hora de leitura, mais o tempo do projeto</span><span class="etiqueta">Git e uma conta no GitHub</span><span class="etiqueta ambar">Material gratuito em português</span></div>
+</div>
+<nav class="indice" aria-label="Nesta lição">
+  <h2>Nesta lição</h2>
+  <ol>
+    <li><a href="#por-que">Por que um projeto terminado vale mais</a></li>
+    <li><a href="#escolher">Escolher o projeto</a></li>
+    <li><a href="#escopo">Cortar até caber: a primeira versão</a></li>
+    <li><a href="#repo">Organizar o repositório</a></li>
+    <li><a href="#commits">Trabalhar em pequenos passos</a></li>
+    <li><a href="#readme">Escrever um README que se explica</a></li>
+    <li><a href="#publicar">Publicar para qualquer pessoa ver</a></li>
+    <li><a href="#feedback">Pedir para alguém testar</a></li>
+    <li><a href="#perfil">Montar seu perfil</a></li>
+    <li><a href="#ia">E a IA no projeto?</a></li>
+    <li><a href="#missao">Missão final</a></li>
+  </ol>
+</nav>
+
+<section id="por-que">
+  <h2>1. Por que um projeto terminado vale mais</h2>
+  <p>Tutoriais mostram o caminho já aberto. Um projeto seu obriga a tomar decisões, travar, pesquisar e resolver, que é o que o trabalho real pede. E um projeto pequeno, terminado e bem explicado mostra mais do que dez repositórios pela metade.</p>
+  <p>Para quem está procurando a primeira vaga, um projeto publicado dá assunto na entrevista: você pode contar o que construiu, o que deu errado e o que aprendeu.</p>
+</section>
+
+<section id="escolher">
+  <h2>2. Escolher o projeto</h2>
+  <p>O melhor primeiro projeto resolve um problema seu ou de alguém perto de você. Problema real dá motivação para terminar e uma história para contar. Algumas ideias por área:</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Área</th><th>Ideia de projeto</th></tr></thead>
+    <tbody>
+      <tr><td>Infraestrutura</td><td>Um script que faz backup de uma pasta todo dia e apaga as cópias com mais de 7 dias</td></tr>
+      <tr><td>Desenvolvimento</td><td>Uma página que calcula a divisão da conta entre amigos, com gorjeta</td></tr>
+      <tr><td>Dados</td><td>Uma análise dos seus gastos do mês, com gráficos e conclusões</td></tr>
+      <tr><td>QA</td><td>Testes automatizados para uma página simples, com um relatório do que encontrou</td></tr>
+      <tr><td>Segurança</td><td>Um verificador que avisa se uma pasta tem arquivos com permissão 777 ou arquivos <code>.env</code></td></tr>
+      <tr><td>Produto</td><td>A pesquisa e o protótipo de uma melhoria num aplicativo que você usa</td></tr>
+    </tbody>
+  </table></div>
+  <p>Evite clones de projetos famosos que todo mundo faz igual seguindo o mesmo vídeo. Eles mostram que você sabe seguir um tutorial, não que sabe resolver um problema.</p>
+</section>
+
+<section id="escopo">
+  <h2>3. Cortar até caber: a primeira versão</h2>
+  <p>Todo projeto começa grande na cabeça. Corte até sobrar o menor pedaço que já é útil e que você termina em uma ou duas semanas. Isso costuma ser chamado de MVP (produto mínimo viável).</p>
+  <p>Escreva três listas antes de começar:</p>
+  <ul>
+    <li><strong>Precisa ter:</strong> o mínimo para funcionar. Por exemplo: "digito o valor e o número de pessoas e vejo quanto cada uma paga".</li>
+    <li><strong>Seria bom ter:</strong> fica para a versão 2. "Escolher a porcentagem da gorjeta."</li>
+    <li><strong>Fica de fora:</strong> não entra agora. "Login, salvar histórico, aplicativo de celular."</li>
+  </ul>
+  <p>Coloque as listas como <strong>issues</strong> no seu repositório. Fechar cada uma dá a sensação de progresso e mostra como você organiza o trabalho.</p>
+</section>
+
+<section id="repo">
+  <h2>4. Organizar o repositório</h2>
+  <ul>
+    <li><strong>Nome claro e em minúsculas</strong>, com hífens: <code>divide-conta</code>, não <code>projeto1</code> nem <code>teste-final-agora-vai</code>.</li>
+    <li><strong>Descrição de uma linha</strong> no campo About do GitHub.</li>
+    <li><strong><code>.gitignore</code></strong> desde o primeiro commit, para não subir arquivos de sistema, dependências baixadas nem segredos. O GitHub oferece modelos prontos por linguagem ao criar o repositório.</li>
+    <li><strong>Licença:</strong> sem licença, ninguém tem permissão legal para reutilizar seu código. Para projetos de estudo, a MIT é uma escolha comum e simples. O GitHub oferece a opção ao criar o repositório.</li>
+    <li><strong>Pastas simples:</strong> código numa pasta, testes em outra, imagens do README numa terceira. Não precisa de mais que isso.</li>
+  </ul>
+  <div class="cuidado"><strong>Nada de segredos no repositório</strong>Senhas e chaves de API vão em variáveis de ambiente ou num arquivo <code>.env</code> listado no <code>.gitignore</code>. A lição <a href="seguranca-digital.html">Segurança digital no dia a dia</a> explica por quê.</div>
+</section>
+
+<section id="commits">
+  <h2>5. Trabalhar em pequenos passos</h2>
+  <p>Faça um commit cada vez que uma parte pequena funcionar. Commits pequenos facilitam voltar atrás quando algo quebra e contam a história do projeto.</p>
+  <div class="saida"><small>Mensagens que contam a história:</small><pre>feat: calcula o valor por pessoa
+feat: adiciona campo de gorjeta
+fix: arredonda centavos para cima
+docs: explica como rodar no README</pre></div>
+  <p>Experimente trabalhar com branches (linhas paralelas de trabalho no mesmo repositório) e pull requests mesmo sozinho: crie uma branch para cada funcionalidade e junte na <code>main</code> por um PR. É o fluxo que você vai usar em qualquer time, e a lição <a href="primeiros-passos-github.html">Primeiros passos no GitHub</a> mostra como.</p>
+</section>
+
+<section id="readme">
+  <h2>6. Escrever um README que se explica</h2>
+  <p>O README é a primeira coisa que alguém vê no seu repositório. Muita gente decide em segundos se vai continuar lendo. Um bom README responde, nesta ordem:</p>
+  <div class="saida"><small>Modelo para copiar (em Markdown, um jeito simples de formatar texto com símbolos como # e *):</small><pre># Divide Conta
+
+Calcula quanto cada pessoa paga numa conta de restaurante, com gorjeta.
+
+![Tela do Divide Conta](imagens/tela.png)
+
+**Acesse:** https://seu-usuario.github.io/divide-conta/
+
+## Como rodar no seu computador
+1. Clone o repositório: `git clone https://github.com/seu-usuario/divide-conta.git`
+2. Abra o arquivo `index.html` no navegador.
+
+## O que eu usei
+HTML, CSS e JavaScript, sem bibliotecas.
+
+## O que eu aprendi
+- Como tratar números com centavos sem erro de arredondamento.
+- Como publicar um site estático no GitHub Pages.
+
+## Próximos passos
+- [ ] Salvar as últimas contas no navegador
+- [ ] Dividir por item consumido</pre></div>
+  <p>A seção <strong>O que eu aprendi</strong> é a mais valiosa para quem está começando: mostra como você pensa. Uma imagem ou um GIF curto do projeto funcionando também ajuda muito.</p>
+  <div class="faca"><strong>Faça agora</strong>Abra o README de um projeto seu ou de um projeto que você usa. Ele responde o que é, como rodar e o que foi usado nos primeiros 30 segundos de leitura?</div>
+</section>
+
+<section id="publicar">
+  <h2>7. Publicar para qualquer pessoa ver</h2>
+  <p>Um link que abre e funciona vale mais do que um "clone e rode". Opções gratuitas para começar:</p>
+  <ul>
+    <li><strong>GitHub Pages:</strong> para sites estáticos (HTML, CSS e JavaScript). No repositório, vá em Settings, Pages, escolha a branch <code>main</code> e salve. Na conta gratuita, o repositório precisa ser público. Em alguns minutos o site fica em <code>https://seu-usuario.github.io/nome-do-repositorio/</code>.</li>
+    <li><strong>Cloudflare Pages, Netlify ou Vercel:</strong> também publicam sites a partir do GitHub, de graça para projetos pequenos, e atualizam sozinhos a cada push.</li>
+    <li><strong>Scripts e análises de dados:</strong> não precisam de site. Um README com exemplos de uso e da saída, ou um notebook publicado (um documento que junta código, resultados e texto, como os do Jupyter), resolve.</li>
+  </ul>
+  <p>Planos gratuitos mudam com o tempo. Confira as condições atuais do serviço antes de publicar.</p>
+</section>
+
+<section id="feedback">
+  <h2>8. Pedir para alguém testar</h2>
+  <p>Mande o link para duas ou três pessoas, de preferência uma que não seja de TI. Peça para usarem sem a sua ajuda e observe, ou pergunte depois:</p>
+  <ul>
+    <li>Você entendeu para que serve só pelo README ou pela tela?</li>
+    <li>Onde você travou?</li>
+    <li>O que você esperava que acontecesse e não aconteceu?</li>
+  </ul>
+  <p>Transforme cada resposta numa issue. Corrigir o que outra pessoa encontrou é o ciclo de trabalho de um time de produto.</p>
+</section>
+
+<section id="perfil">
+  <h2>9. Montar seu perfil</h2>
+  <ul>
+    <li><strong>Foto, nome e uma bio curta</strong> dizendo o que você está estudando e para qual área quer ir.</li>
+    <li><strong>README do perfil:</strong> crie um repositório com o mesmo nome do seu usuário. O README dele aparece no topo do seu perfil. Três ou quatro linhas sobre você e seus projetos bastam.</li>
+    <li><strong>Fixe de dois a seis projetos</strong> (opção Customize your pins). Escolha os mais completos e com melhor README.</li>
+    <li><strong>Constância vale mais que volume.</strong> Um projeto pequeno que você melhora aos poucos conta uma história melhor do que dezenas de repositórios vazios.</li>
+  </ul>
+</section>
+
+<section id="ia">
+  <h2>10. E a IA no projeto?</h2>
+  <p>Usar IA no projeto é normal e é uma habilidade que o mercado valoriza. O que conta é você entender e conseguir explicar cada parte do que está no repositório.</p>
+  <ul>
+    <li>Use a IA para tirar dúvidas, revisar seu código e sugerir testes.</li>
+    <li>Não publique como seu um projeto inteiro gerado que você não sabe explicar. Na primeira pergunta da entrevista, isso aparece.</li>
+    <li>Se usou IA de forma relevante, conte no README. Explicar como você usou mostra maturidade.</li>
+  </ul>
+</section>
+
+<section id="missao">
+  <h2>11. Missão final</h2>
+  <details class="exercicio"><summary>1. Escreva as três listas do seu projeto</summary>
+    <p>Precisa ter, seria bom ter, fica de fora. Crie o repositório e cadastre cada item do "precisa ter" como issue.</p>
+  </details>
+  <details class="exercicio"><summary>2. Termine e publique a primeira versão</summary>
+    <p>Com README completo e, se for um site, publicado no GitHub Pages.</p>
+  </details>
+  <details class="exercicio"><summary>3. Peça um teste e feche uma issue</summary>
+    <p>Mande o link para alguém, transforme o retorno numa issue e feche essa issue com um pull request.</p>
+  </details>
+  <div class="faca"><strong>Para fixar</strong>Apresente seu projeto para alguém em dois minutos: o problema, o que você construiu e o que aprendeu. Depois, marque no tópico que você ensinou alguém.</div>
+  <div class="proximo"><a class="btn" href="../#/t/projeto">Voltar para o tópico e fazer o desafio</a><a class="btn btn-sec" href="../#/t/escolha-caminho">Escolher meu próximo caminho</a></div>
+</section>
+
+<div class="credito">
+  <p>Lição escrita em português pela Iniciativa Ako, da Rizzygo, com base na documentação oficial do <a href="https://docs.github.com/pt/pages">GitHub Pages</a> e do <a href="https://docs.github.com/pt/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme">README de perfil</a>. O texto e os exemplos são próprios.</p>
+  <p>Conteúdo aberto sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR">CC BY 4.0</a>. Viu um erro? <a href="https://github.com/rizzygo/iniciativa-ako/issues">Abra uma issue</a>.</p>
+</div>
+</main>
+<footer class="rodape"><div class="rodape-in"><p class="credo">Sou Zy: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="materiais.js"></script>
+</body>
+</html>
