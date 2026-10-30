@@ -1,0 +1,3 @@
+# Regras do Cloudflare Pages para ako.rizzygo.com.br.
+# A raiz leva para o app das trilhas enquanto o Ako não tem página inicial própria.
+/ /trilhas/ 302

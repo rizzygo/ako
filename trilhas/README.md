@@ -4,7 +4,7 @@ As trilhas de estudo da Iniciativa Ako, da Rizzygo.
 
 Um site para montar seu roteiro de estudos em TI, em português e de graça. Ele mostra por onde começar, indica materiais gratuitos, traz desafios com problemas do dia a dia e dá XP e conquistas conforme você pratica.
 
-Acesse em **https://rizzygo.github.io/iniciativa-ako/trilhas/**
+Acesse em **https://ako.rizzygo.com.br/trilhas/**
 
 A primeira trilha é **Primeiros passos em TI**: 16 tópicos em 6 etapas, do "como estudar" até um primeiro projeto publicado no GitHub. No fim, a trilha se divide em seis caminhos: infraestrutura e cloud, desenvolvimento, dados, QA, segurança e produto.
 
@@ -20,9 +20,9 @@ A primeira trilha é **Primeiros passos em TI**: 16 tópicos em 6 etapas, do "co
 
 Quando o melhor material gratuito de um tópico só existe em inglês, a Iniciativa Ako escreve uma lição própria em português, na pasta [materiais](materiais). Elas são textos originais, não traduções, e dão crédito aos materiais que serviram de base.
 
-- [Linha de comando para iniciantes](https://rizzygo.github.io/iniciativa-ako/trilhas/materiais/linha-de-comando.html), para o tópico Terminal
-- [Linux básico, na prática](https://rizzygo.github.io/iniciativa-ako/trilhas/materiais/linux-basico.html), para o tópico Linux básico
-- [Primeiros passos no GitHub](https://rizzygo.github.io/iniciativa-ako/trilhas/materiais/primeiros-passos-github.html), para o tópico Git e GitHub
+- [Linha de comando para iniciantes](https://ako.rizzygo.com.br/trilhas/materiais/linha-de-comando.html), para o tópico Terminal
+- [Linux básico, na prática](https://ako.rizzygo.com.br/trilhas/materiais/linux-basico.html), para o tópico Linux básico
+- [Primeiros passos no GitHub](https://ako.rizzygo.com.br/trilhas/materiais/primeiros-passos-github.html), para o tópico Git e GitHub
 
 ## Três jeitos de contribuir com o conteúdo
 

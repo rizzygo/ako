@@ -26,6 +26,7 @@
 
   var dados = null;
   var estado = carregar();
+  receberMigracao();
   var app = document.getElementById('conteudo');
 
   /* ---------- estado ---------- */
@@ -48,6 +49,20 @@
   }
   function salvar() {
     try { localStorage.setItem(CHAVE, JSON.stringify(estado)); } catch (e) { /* modo privado: segue sem salvar */ }
+  }
+  /* Progresso vindo do endereço antigo (ver endereco.js). Só entra se aqui ainda não houver progresso. */
+  function receberMigracao() {
+    var prefixo = '#migrar=';
+    if (location.hash.indexOf(prefixo) !== 0) return;
+    try {
+      var obj = JSON.parse(decodeURIComponent(location.hash.slice(prefixo.length)));
+      var vazioAqui = !estado.perfil && Object.keys(estado.topicos).length === 0;
+      if (vazioAqui && valido(obj)) {
+        estado = normalizar(obj);
+        salvar();
+      }
+    } catch (e) { /* fragmento inválido: ignora */ }
+    history.replaceState(null, '', location.pathname + location.search + '#/');
   }
   function st(id) {
     if (!estado.topicos[id]) estado.topicos[id] = { check: [], quiz: null, reflexao: '', ensinei: false };

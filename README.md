@@ -6,7 +6,7 @@ Ako é uma filosofia maori que se refere à relação de reciprocidade entre que
 
 A Iniciativa Ako é um dos pilares da [Rizzygo](https://github.com/rizzygo), comunidade para quem quer começar em tecnologia e para quem começou há pouco.
 
-**Comece pela [Rizzygo Ako](https://rizzygo.github.io/iniciativa-ako/trilhas/), as trilhas de estudo da iniciativa:** responda quatro perguntas, receba seu roteiro de estudos em TI e avance com materiais gratuitos, desafios práticos e conquistas.
+**Comece pela [Rizzygo Ako](https://ako.rizzygo.com.br/trilhas/), as trilhas de estudo da iniciativa:** responda quatro perguntas, receba seu roteiro de estudos em TI e avance com materiais gratuitos, desafios práticos e conquistas.
 
 ## Trilhas, guias e skills publicados
 
@@ -14,8 +14,8 @@ Cada conteúdo novo entra nesta tabela.
 
 | Conteúdo | Para que serve | Tempo |
 | --- | --- | --- |
-| [Trilha Primeiros passos em TI](https://rizzygo.github.io/iniciativa-ako/trilhas/) ([conteúdo](trilhas)) | Montar seu roteiro de estudos e aprender a base que toda área usa, de como estudar até um primeiro projeto no GitHub. | 16 tópicos, no seu ritmo |
-| [Dicas antes de rodar](guias/dicas-antes-de-rodar-prompt) ([versão em página](https://rizzygo.github.io/iniciativa-ako/guias/dicas-antes-de-rodar-prompt/pagina.html)) | Configurar sua IA para explicar o que um comando muda, como desfazer e como conferir o resultado. | 5 a 10 minutos |
+| [Trilha Primeiros passos em TI](https://ako.rizzygo.com.br/trilhas/) ([conteúdo](trilhas)) | Montar seu roteiro de estudos e aprender a base que toda área usa, de como estudar até um primeiro projeto no GitHub. | 16 tópicos, no seu ritmo |
+| [Dicas antes de rodar](guias/dicas-antes-de-rodar-prompt) ([versão em página](https://ako.rizzygo.com.br/guias/dicas-antes-de-rodar-prompt/pagina.html)) | Configurar sua IA para explicar o que um comando muda, como desfazer e como conferir o resultado. | 5 a 10 minutos |
 | [Skill antes-de-rodar](skills/antes-de-rodar) | Fazer sua IA de código (Claude Code, GitHub Copilot, Cortex Code) confirmar o contexto, seguir guard rails contra alucinação e retrabalho e fechar toda mudança com "Antes de rodar". | 2 minutos para instalar |
 
 ## Três ideias por trás dos guias: base, questionamento e mão de duas vias
@@ -33,6 +33,12 @@ Um guia pode passar por três formatos.
 1. **Guia:** passo a passo curto, para ler e aplicar no mesmo dia.
 2. **Instrução para IA:** texto pronto para colar no ChatGPT, no Claude, no Gemini ou no Copilot.
 3. **Skill ou plugin:** quando um guia funciona bem, ele vira um pacote instalável, e a IA passa a seguir o padrão sem você precisar lembrar.
+
+## Onde fica publicado
+
+O site está em **https://ako.rizzygo.com.br**, no Cloudflare Pages. Cada commit na `main` publica uma versão nova sozinho, e cada pull request ganha um endereço de prévia para conferir antes do merge. Não há build: o Pages serve os arquivos deste repositório como estão, e `_redirects` e `_headers` ajustam a raiz e os cabeçalhos.
+
+O endereço antigo, `rizzygo.github.io/iniciativa-ako`, leva para o novo pelo `endereco.js`, e quem abre as trilhas por lá leva junto o progresso salvo no navegador.
 
 ## Como ajudar a melhorar os guias
 
