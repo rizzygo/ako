@@ -114,6 +114,6 @@ A IA ajuda muito, mas entender como as coisas funcionam continua sendo com você
 
 **Danilo Rizzo · Rizzygo**
 
-Fez o teste? Abra uma [issue](https://github.com/rizzygo/iniciativa-ako/issues) ou me conte no LinkedIn qual pergunta você adicionaria.
+Fez o teste? Abra uma [issue](https://github.com/rizzygo/ako/issues) ou me conte no LinkedIn qual pergunta você adicionaria.
 
 *Sou Zy: domino o ofício, questiono o jeito, caminho junto.*
