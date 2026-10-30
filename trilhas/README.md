@@ -16,6 +16,24 @@ A primeira trilha é **Primeiros passos em TI**: 16 tópicos em 6 etapas, do "co
 - **Revisão rápida:** depois de começar dois tópicos, a pessoa pode fazer revisões com 5 perguntas sorteadas do que já estudou. A revisão não vale XP, mas três revisões com pelo menos 4 acertos dão a conquista Memória afiada.
 - **XP por prática:** cada tópico vale até 90 XP. São 20 pelo checklist completo, 30 pelo desafio (2 de 3 acertos), 10 por acertar tudo de primeira, 10 por responder à pergunta Ako e 20 por explicar o assunto para outra pessoa.
 
+## Mapas das áreas
+
+Em [mapas](https://ako.rizzygo.com.br/trilhas/mapas/) ficam os mapas em grafo de cada caminho do fim da trilha: infraestrutura e cloud, desenvolvimento, dados, QA, segurança e produto. Há também um mapa da própria trilha Primeiros passos. Cada mapa vai do que a trilha já ensina até o nível de quem procura a primeira vaga na área, sem descer para assuntos avançados.
+
+Clicando num tópico, a pessoa vê um resumo, um exercício, os links para o tópico e para a lição do Ako, e materiais gratuitos. Ela pode marcar o tópico como "Estudando" ou "Já estudei". Nos tópicos que já existem na trilha, o progresso vem da própria trilha.
+
+O conteúdo fica em `dados/mapas.json`, um mapa por área, dividido em seções:
+
+```json
+{ "id": "shell-script", "titulo": "Shell script", "nivel": "essencial", "topico": "terminal", "licao": "linha-de-comando.html",
+  "resumo": "Uma ou duas frases.", "pratica": "Um exercício curto.",
+  "recursos": [{ "titulo": "...", "fonte": "...", "url": "https://...", "idioma": "en" }] }
+```
+
+- `nivel` é `essencial` (padrão) ou `opcional`. Opcional aparece com borda tracejada.
+- `topico` liga ao tópico da trilha, e `licao`, a um arquivo de `materiais/`. Os dois são opcionais.
+- Só entram materiais gratuitos, e todo link é aberto e conferido antes de entrar no arquivo.
+
 ## Materiais em português
 
 A Iniciativa Ako escreve lições próprias em português, na pasta [materiais](materiais), para os tópicos em que o melhor material gratuito só existia em inglês ou era um texto solto de blog. Elas são textos originais, não traduções, e dão crédito aos materiais que serviram de base.

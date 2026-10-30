@@ -2017,42 +2017,42 @@
    "nome": "Infraestrutura e cloud",
    "cor": "#1F4FD8",
    "descricao": "Servidores, redes, Linux, nuvem (com foco em GCP na Rizzygo), automação e observabilidade.",
-   "roadmap": "https://roadmap.sh/devops"
+   "mapa": "mapas/#/infra"
   },
   {
    "id": "dev",
    "nome": "Desenvolvimento",
    "cor": "#16855A",
    "descricao": "Sites, aplicativos e sistemas: frontend, backend ou os dois.",
-   "roadmap": "https://roadmap.sh/backend"
+   "mapa": "mapas/#/dev"
   },
   {
    "id": "dados",
    "nome": "Dados",
    "cor": "#7246C9",
    "descricao": "SQL, planilhas, análise e visualização de dados. Porta de entrada para IA aplicada.",
-   "roadmap": "https://roadmap.sh/data-analyst"
+   "mapa": "mapas/#/dados"
   },
   {
    "id": "qa",
    "nome": "Qualidade (QA)",
    "cor": "#0E8A99",
    "descricao": "Testes manuais e automatizados para achar problemas antes do cliente.",
-   "roadmap": "https://roadmap.sh/qa"
+   "mapa": "mapas/#/qa"
   },
   {
    "id": "seguranca",
    "nome": "Segurança",
    "cor": "#C93A3A",
    "descricao": "Proteger sistemas, redes e pessoas. Linux e redes são a base.",
-   "roadmap": "https://roadmap.sh/cyber-security"
+   "mapa": "mapas/#/seguranca"
   },
   {
    "id": "produto",
    "nome": "Produto e agilidade",
    "cor": "#C76A12",
    "descricao": "Entender o problema do cliente, decidir o que construir e organizar o time.",
-   "roadmap": "https://roadmap.sh/product-manager"
+   "mapa": "mapas/#/produto"
   }
  ]
 }
