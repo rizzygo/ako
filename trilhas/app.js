@@ -268,7 +268,7 @@
       '<section class="secao"><div class="casca"><div class="ako"><div class="ako-palavra" aria-hidden="true">Ako</div><div>' +
       '<h2>Quem ensina também aprende</h2>' +
       '<p>Ako é uma filosofia maori que se refere à relação de reciprocidade entre quem ensina e quem aprende. Aqui, ela vira prática: cada tópico pede que você explique o que aprendeu para alguém, e quem já sabe ajuda a melhorar a trilha.</p>' +
-      '<p>Esta trilha faz parte da Iniciativa Ako, da Rizzygo. Todo o conteúdo é aberto e qualquer pessoa pode sugerir melhorias no <a href="https://github.com/rizzygo/iniciativa-ako">GitHub</a>.</p>' +
+      '<p>Esta trilha faz parte da Iniciativa Ako, da Rizzygo. Todo o conteúdo é aberto e qualquer pessoa pode sugerir melhorias no <a href="https://github.com/rizzygo/ako">GitHub</a>.</p>' +
       '</div></div>' +
       '<div class="principios">' +
       '<div><h3>Sem passo a passo único</h3><p>O roteiro é um ponto de partida, não um trilho. Pule o que já sabe, volte quando precisar e questione o caminho.</p></div>' +
@@ -492,7 +492,7 @@
           return '<div class="ramo" data-area="' + a.id + '" style="--cor:' + a.cor + '"><input type="radio" name="caminho" id="c-' + a.id + '" value="' + a.id + '"' + (estado.caminho === a.id ? ' checked' : '') + '>' +
             '<label for="c-' + a.id + '"><h3>' + esc(a.nome) + '</h3><p>' + esc(a.descricao) + '</p><div class="meta"><a href="' + urlSegura(a.roadmap) + '" target="_blank" rel="noopener">Mapa da área no roadmap.sh</a><span>em inglês</span></div></label></div>';
         }).join('') + '</div>' +
-        '<p>As próximas trilhas em português ainda estão sendo construídas. Quer ajudar a criar a da sua área? <a href="https://github.com/rizzygo/iniciativa-ako/issues">Abra uma issue no GitHub</a>.</p></section>';
+        '<p>As próximas trilhas em português ainda estão sendo construídas. Quer ajudar a criar a da sua área? <a href="https://github.com/rizzygo/ako/issues">Abra uma issue no GitHub</a>.</p></section>';
     } else {
       html += '<section class="bloco"><h2>Pratique</h2><p class="dica">Marque o que você já fez. O checklist completo vale ' + XP.checklist + ' XP.</p><ul class="checklist" id="checklist">' +
         t.checklist.map(function (c, i) { return '<li><label><input type="checkbox" data-i="' + i + '"' + (s.check[i] ? ' checked' : '') + '><span>' + fmt(c) + '</span></label></li>'; }).join('') + '</ul></section>';
@@ -789,6 +789,6 @@
       desenharLeque(document.getElementById('ramos-escolha'), false);
     });
   }).catch(function () {
-    app.innerHTML = '<div class="coluna"><div class="pagina-cab"><h1>Não foi possível carregar a trilha</h1><p>Confira sua conexão e recarregue a página. Se o problema continuar, avise no <a href="https://github.com/rizzygo/iniciativa-ako/issues">GitHub</a>.</p></div></div>';
+    app.innerHTML = '<div class="coluna"><div class="pagina-cab"><h1>Não foi possível carregar a trilha</h1><p>Confira sua conexão e recarregue a página. Se o problema continuar, avise no <a href="https://github.com/rizzygo/ako/issues">GitHub</a>.</p></div></div>';
   });
 })();

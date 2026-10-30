@@ -41,7 +41,7 @@ Todo tópico dá para concluir só com materiais gratuitos. Quando existe um cur
 
 ## Três jeitos de contribuir com o conteúdo
 
-1. **Sugerir um material gratuito:** abra uma [issue](https://github.com/rizzygo/iniciativa-ako/issues) com o link, o tópico e uma frase sobre o que a pessoa encontra ali.
+1. **Sugerir um material gratuito:** abra uma [issue](https://github.com/rizzygo/ako/issues) com o link, o tópico e uma frase sobre o que a pessoa encontra ali.
 2. **Corrigir ou melhorar um tópico:** edite o `dados/primeiros-passos.json` pelo navegador (ícone de lápis) e mande um pull request. O passo a passo está no [CONTRIBUTING.md](../CONTRIBUTING.md).
 3. **Propor uma trilha nova**, por exemplo Cloud e DevOps ou Dados: abra uma issue com as etapas e os tópicos que você imagina.
 
