@@ -1,0 +1,76 @@
+/* Estilo dos mapas das áreas. Usa as cores e fontes de ../app.css. */
+.mapas-cab{padding:2.5rem 0 1rem}
+.mapas-cab .voltar{display:inline-block;margin-bottom:1rem;font-weight:700;text-decoration:none}
+.mapas-cab h1{font-size:clamp(1.9rem,5vw,2.8rem);font-weight:800}
+.mapas-cab .lead{font-size:1.1rem;color:var(--suave);margin-top:.7rem;max-width:44rem}
+
+/* lista de mapas */
+.lista-mapas{list-style:none;margin:1.5rem 0 3rem;padding:0;display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr))}
+.lista-mapas a{display:flex;flex-direction:column;gap:.45rem;height:100%;background:var(--superficie);border:1px solid var(--linha);border-top:6px solid var(--cor,var(--azul));border-radius:var(--raio);padding:1.1rem 1.2rem;color:var(--tinta);text-decoration:none}
+.lista-mapas a:hover{border-color:var(--cor,var(--azul))}
+.lista-mapas h2{font-size:1.25rem}
+.lista-mapas p{color:var(--suave);font-size:.95rem}
+.lista-mapas .rodape-card{margin-top:auto;padding-top:.4rem;display:flex;justify-content:space-between;gap:.5rem;font-size:.85rem;color:var(--suave)}
+.lista-mapas .destaque{grid-column:1/-1;border-top-color:var(--ambar)}
+
+/* legenda e progresso */
+.legenda{display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;margin-top:1.2rem;font-size:.9rem;color:var(--suave);align-items:center}
+.legenda span{display:inline-flex;align-items:center;gap:.4rem}
+.legenda i{display:inline-block;width:1.6rem;height:1rem;border-radius:5px;border:2px solid var(--tinta);background:var(--superficie)}
+.legenda i.l-opcional{border-style:dashed;border-color:var(--suave)}
+.legenda i.l-base{background:var(--azul-claro);border-color:var(--azul)}
+.legenda i.l-feito{background:var(--certo-claro);border-color:var(--certo)}
+.progresso{margin-top:1rem;max-width:26rem}
+.progresso p{font-size:.9rem;color:var(--suave);margin-bottom:.3rem}
+.progresso .barra{height:10px;border-radius:99px;background:var(--trilho);overflow:hidden}
+.progresso .barra i{display:block;height:100%;background:var(--certo);border-radius:99px;transition:width .4s ease}
+
+/* o grafo */
+.grafo{position:relative;margin:1.5rem 0 3rem;--cor:var(--azul)}
+.grafo > svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.grafo .ligacao{fill:none;stroke:var(--cor);stroke-width:2.5;opacity:.55}
+.grafo .ligacao.opcional{stroke-dasharray:5 6}
+.grafo .espinha{fill:none;stroke:var(--cor);stroke-width:5;stroke-linecap:round}
+.bloco-mapa{position:relative;display:grid;grid-template-columns:1fr minmax(13rem,17rem) 1fr;gap:1rem 3.5rem;align-items:center;padding:1.6rem 0}
+.bloco-mapa-titulo{grid-column:2;grid-row:1;align-self:center;position:relative;z-index:1;margin:0;font-size:1.05rem;text-align:center;background:var(--cor);color:#fff;border-radius:var(--raio);padding:.8rem 1rem;box-shadow:0 2px 0 rgba(11,27,58,.15)}
+.bloco-mapa-titulo small{display:block;font-family:var(--f-texto);font-weight:400;font-size:.8rem;opacity:.9;margin-top:.15rem}
+.lado{display:flex;flex-direction:column;gap:.7rem;position:relative;z-index:1}
+.lado.esq{grid-column:1;grid-row:1;align-items:flex-end}
+.lado.dir{grid-column:3;grid-row:1;align-items:flex-start}
+.no{display:flex;align-items:center;gap:.5rem;width:100%;max-width:16rem;text-align:left;font:700 .95rem/1.25 var(--f-texto);color:var(--tinta);background:var(--superficie);border:2px solid var(--tinta);border-radius:var(--raio-p);padding:.6rem .8rem;cursor:pointer}
+.no:hover{background:var(--ambar-claro)}
+.no .marca-no{flex:none;width:1.15rem;height:1.15rem;border-radius:50%;border:2px solid currentColor;opacity:.35;display:grid;place-items:center;font-size:.75rem;line-height:1}
+.no.opcional{border-style:dashed;border-color:var(--suave);font-weight:400}
+.no.base{background:var(--azul-claro);border-color:var(--azul)}
+.no.andamento .marca-no{opacity:1;color:var(--ambar);background:var(--ambar)}
+.no.feito{background:var(--certo-claro);border-color:var(--certo)}
+.no.feito .marca-no{opacity:1;color:#fff;background:var(--certo);border-color:var(--certo)}
+.no.feito .marca-no::before{content:"✓"}
+.no.mapa-link{border-color:var(--cor-no,var(--tinta));border-left-width:8px}
+.fim-grafo{text-align:center;color:var(--suave);font-size:.95rem;max-width:34rem;margin:0 auto}
+
+@media (max-width:760px){
+  .bloco-mapa{grid-template-columns:1fr;gap:.6rem;padding:1.2rem 0 1.2rem 2.4rem}
+  .bloco-mapa-titulo{grid-column:1;grid-row:auto;text-align:left;margin-left:-2.4rem}
+  .lado.esq,.lado.dir{grid-column:1;grid-row:auto;align-items:stretch}
+  .no{max-width:none}
+}
+
+/* painel do tópico */
+dialog.painel{margin:0 0 0 auto;height:100%;max-height:none;width:min(30rem,100%);border:0;border-left:1px solid var(--linha);padding:0;background:var(--superficie);color:var(--tinta)}
+dialog.painel::backdrop{background:rgba(11,27,58,.45)}
+.painel-in{padding:1.4rem 1.4rem 2.5rem}
+.painel-topo{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.painel h2{font-size:1.5rem;margin-top:.5rem}
+.painel h3{font-size:1.05rem;margin:1.5rem 0 .5rem}
+.painel .resumo-no{margin-top:.8rem}
+.painel .fechar{flex:none;font:700 .9rem/1 var(--f-texto);background:transparent;border:2px solid var(--linha);color:var(--tinta);border-radius:var(--raio-p);padding:.5rem .7rem;cursor:pointer}
+.painel .pratica{background:var(--azul-claro);border-radius:var(--raio-p);padding:.9rem 1rem;margin-top:1.2rem}
+.painel .pratica strong{display:block;font-family:var(--f-titulo);margin-bottom:.2rem}
+.painel .links-ako{list-style:none;margin:0;padding:0;display:grid;gap:.5rem}
+.painel .links-ako a{font-weight:700}
+.estado-no{display:flex;flex-wrap:wrap;gap:.5rem}
+.estado-no button{font:700 .9rem/1.2 var(--f-texto);padding:.55rem .85rem;border-radius:var(--raio-p);border:2px solid var(--linha);background:transparent;color:var(--tinta);cursor:pointer}
+.estado-no button[aria-pressed="true"]{border-color:var(--azul);background:var(--azul);color:var(--azul-tinta)}
+.painel .nota-estado{font-size:.88rem;color:var(--suave);margin-top:.5rem}
+.no.mapa-link .marca-no{display:none}

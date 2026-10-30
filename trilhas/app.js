@@ -490,7 +490,7 @@
       html += '<section class="bloco"><h2>Escolha um caminho</h2><p class="dica">Sua escolha fica salva e pode mudar quando quiser.</p>' +
         '<div class="ramos" id="ramos-escolha" style="margin-left:0;padding-top:1.6rem;--ramos-esq:96px">' + dados.areas.map(function (a) {
           return '<div class="ramo" data-area="' + a.id + '" style="--cor:' + a.cor + '"><input type="radio" name="caminho" id="c-' + a.id + '" value="' + a.id + '"' + (estado.caminho === a.id ? ' checked' : '') + '>' +
-            '<label for="c-' + a.id + '"><h3>' + esc(a.nome) + '</h3><p>' + esc(a.descricao) + '</p><div class="meta"><a href="' + urlSegura(a.roadmap) + '" target="_blank" rel="noopener">Mapa da área no roadmap.sh</a><span>em inglês</span></div></label></div>';
+            '<label for="c-' + a.id + '"><h3>' + esc(a.nome) + '</h3><p>' + esc(a.descricao) + '</p><div class="meta"><a href="' + urlSegura('./' + a.mapa) + '">Mapa da área no Ako</a><span>em português</span></div></label></div>';
         }).join('') + '</div>' +
         '<p>As próximas trilhas em português ainda estão sendo construídas. Quer ajudar a criar a da sua área? <a href="https://github.com/rizzygo/ako/issues">Abra uma issue no GitHub</a>.</p></section>';
     } else {

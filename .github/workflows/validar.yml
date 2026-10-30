@@ -18,4 +18,4 @@ jobs:
           python-version: "3.12"
       - run: python3 trilhas/validar.py
       - name: JavaScript sem erro de sintaxe
-        run: node --check trilhas/app.js && node --check trilhas/materiais/materiais.js
+        run: node --check trilhas/app.js && node --check trilhas/materiais/materiais.js && node --check trilhas/mapas/mapas.js

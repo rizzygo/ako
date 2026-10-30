@@ -1,0 +1,1153 @@
+{
+ "versao": 1,
+ "descricao": "Mapas das áreas da TI que aparecem no fim da trilha Primeiros passos. Cada mapa vai do que a trilha já ensina até o nível de quem procura a primeira vaga na área.",
+ "mapas": [
+  {
+   "id": "infra",
+   "area": "infra",
+   "titulo": "Infraestrutura e cloud",
+   "resumo": "Quem trabalha com infraestrutura cuida para que os sistemas tenham onde rodar, fiquem no ar e custem o justo. Na Rizzygo, a nuvem de referência é o Google Cloud (GCP).",
+   "secoes": [
+    {
+     "titulo": "A base que você já tem",
+     "nos": [
+      {
+       "id": "linux",
+       "titulo": "Linux",
+       "topico": "linux",
+       "resumo": "Quase todo servidor da internet roda Linux. Pastas, permissões, processos e logs aparecem todo dia nesta área."
+      },
+      {
+       "id": "terminal",
+       "titulo": "Terminal",
+       "topico": "terminal",
+       "resumo": "Servidor não tem tela nem mouse. Tudo o que você fizer nele passa pela linha de comando."
+      },
+      {
+       "id": "redes",
+       "titulo": "Redes",
+       "topico": "redes",
+       "resumo": "IP, DNS e portas explicam boa parte dos problemas do tipo \"o site não abre\"."
+      },
+      {
+       "id": "git",
+       "titulo": "Git e GitHub",
+       "topico": "git",
+       "resumo": "Infraestrutura moderna vive em repositórios: scripts, configurações e o próprio servidor descrito em código."
+      }
+     ]
+    },
+    {
+     "titulo": "Automatizar o dia a dia",
+     "nos": [
+      {
+       "id": "shell-script",
+       "titulo": "Shell script",
+       "resumo": "Um shell script junta comandos num arquivo para repetir uma tarefa sempre do mesmo jeito, sem esquecer passo.",
+       "pratica": "Escreva um script que cria uma pasta com a data de hoje e copia para ela os arquivos .log da pasta atual.",
+       "licao": "linha-de-comando.html",
+       "recursos": [
+        {
+         "titulo": "Guia Foca GNU/Linux",
+         "fonte": "Guia Foca",
+         "url": "https://www.guiafoca.org/",
+         "idioma": "pt-BR"
+        }
+       ]
+      },
+      {
+       "id": "python-automacao",
+       "titulo": "Python para automação",
+       "topico": "python",
+       "resumo": "Quando o script passa de umas 50 linhas ou precisa tratar erros, Python fica mais fácil de ler, testar e manter.",
+       "pratica": "Reescreva em Python o seu script de backup e faça ele avisar quando a pasta de origem não existir."
+      },
+      {
+       "id": "ssh",
+       "titulo": "SSH e chaves",
+       "resumo": "SSH é o jeito seguro de abrir um terminal num computador remoto. Com chave, você não manda senha pela rede, e a parte pública pode ser compartilhada sem risco.",
+       "pratica": "Gere um par de chaves com `ssh-keygen`, cadastre a chave pública no GitHub e teste com `ssh -T git@github.com`."
+      }
+     ]
+    },
+    {
+     "titulo": "Nuvem, começando pelo GCP",
+     "nos": [
+      {
+       "id": "o-que-e-nuvem",
+       "titulo": "O que é computação em nuvem",
+       "resumo": "Nuvem é alugar computador, disco e rede de outra empresa, pagando pelo uso. Antes de abrir o painel do GCP, entenda a diferença entre IaaS (você aluga a máquina), PaaS (você só publica o seu código) e SaaS (você usa o programa pronto).",
+       "pratica": "Classifique como IaaS, PaaS ou SaaS: alugar uma máquina virtual, usar o Gmail e publicar um contêiner no Cloud Run.",
+       "recursos": [
+        {
+         "titulo": "O que é computação em nuvem?",
+         "fonte": "Google Cloud",
+         "url": "https://cloud.google.com/learn/what-is-cloud-computing?hl=pt-br",
+         "idioma": "pt-BR"
+        }
+       ]
+      },
+      {
+       "id": "projeto-e-orcamento",
+       "titulo": "Projeto, faturamento e orçamento",
+       "resumo": "No GCP, todo recurso pertence a um projeto, e para usar serviços pagos o projeto precisa estar ligado a uma conta de faturamento. Configure um alerta de orçamento antes de criar qualquer coisa. O alerta avisa, mas não bloqueia o gasto.",
+       "pratica": "Crie um projeto de estudos e um alerta de orçamento de valor baixo. Só depois crie o primeiro recurso.",
+       "recursos": [
+        {
+         "titulo": "Primeiros passos no Google Cloud",
+         "fonte": "Google Cloud",
+         "url": "https://cloud.google.com/docs/get-started?hl=pt-br",
+         "idioma": "pt-BR"
+        }
+       ]
+      },
+      {
+       "id": "iam",
+       "titulo": "IAM: quem pode fazer o quê",
+       "resumo": "IAM define quem acessa cada recurso e com qual permissão. A regra de ouro é o menor privilégio: cada pessoa ou sistema recebe só o que precisa.",
+       "pratica": "Dê a outra conta sua só permissão de leitura num bucket, a pasta de arquivos do Cloud Storage, e confira que ela não consegue apagar nada."
+      },
+      {
+       "id": "maquinas-virtuais",
+       "titulo": "Máquinas virtuais",
+       "resumo": "Uma máquina virtual é um servidor alugado, quase sempre com Linux. No GCP o serviço se chama Compute Engine. É onde você junta Linux, SSH e redes.",
+       "pratica": "Suba a menor máquina disponível com tráfego HTTP liberado, acesse por SSH, instale o nginx, um servidor web, abra a página no navegador e apague a máquina no fim."
+      },
+      {
+       "id": "armazenamento",
+       "titulo": "Armazenamento de arquivos",
+       "resumo": "Para guardar arquivos, a nuvem oferece armazenamento de objetos, como o Cloud Storage. É barato, durável e serve até para hospedar site estático.",
+       "pratica": "Crie um bucket, envie um arquivo pelo terminal com `gcloud storage cp` e confira quem tem acesso a ele."
+      },
+      {
+       "id": "outras-nuvens",
+       "titulo": "AWS e Azure",
+       "nivel": "opcional",
+       "resumo": "Os conceitos se repetem entre as nuvens: projeto ou conta, IAM, máquina virtual, bucket. Muda o nome do serviço. Aprenda bem uma e compare com as outras depois."
+      }
+     ]
+    },
+    {
+     "titulo": "Contêineres",
+     "nos": [
+      {
+       "id": "docker",
+       "titulo": "Docker e contêineres",
+       "resumo": "Um contêiner leva o programa junto com tudo de que ele precisa para rodar. Isso reduz o problema do \"na minha máquina funciona\".",
+       "pratica": "Rode `docker run --rm -p 8080:80 nginx` e abra http://localhost:8080. Depois pare o contêiner e confira que nada ficou rodando.",
+       "recursos": [
+        {
+         "titulo": "Get started",
+         "fonte": "Docker Docs",
+         "url": "https://docs.docker.com/get-started/",
+         "idioma": "en"
+        }
+       ]
+      },
+      {
+       "id": "dockerfile",
+       "titulo": "Dockerfile",
+       "resumo": "O Dockerfile é a receita da imagem: de que base partir, o que copiar e que comando rodar. Imagem pequena sobe mais rápido e costuma ter menos falhas de segurança.",
+       "pratica": "Escreva um Dockerfile que sirva uma página com `python -m http.server 8080` e compare o tamanho da imagem usando `python:3.12` e `python:3.12-slim`."
+      },
+      {
+       "id": "cloud-run",
+       "titulo": "Publicar um contêiner na nuvem",
+       "resumo": "Serviços como o Cloud Run rodam sua imagem sem você cuidar de servidor e cobram só quando há acesso. É o caminho mais curto do Dockerfile até um endereço público.",
+       "pratica": "Publique no Cloud Run a imagem do exercício do Dockerfile e confira nos logs a primeira requisição."
+      },
+      {
+       "id": "kubernetes",
+       "titulo": "Kubernetes, primeiros conceitos",
+       "nivel": "opcional",
+       "resumo": "Kubernetes organiza muitos contêineres em vários servidores. Para começar, entenda pod, deployment e service. O resto vem com o trabalho.",
+       "recursos": [
+        {
+         "titulo": "Aprenda o básico do Kubernetes",
+         "fonte": "Kubernetes",
+         "url": "https://kubernetes.io/pt-br/docs/tutorials/kubernetes-basics/",
+         "idioma": "pt-BR"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "titulo": "Entregar com segurança",
+     "nos": [
+      {
+       "id": "ci-cd",
+       "titulo": "CI/CD com GitHub Actions",
+       "resumo": "Integração contínua testa cada mudança automaticamente. Entrega contínua publica o que passou nos testes. Juntas, tiram das mãos de uma pessoa só a publicação de sexta à noite.",
+       "pratica": "Crie um workflow que roda um teste a cada pull request no seu projeto do GitHub.",
+       "recursos": [
+        {
+         "titulo": "Documentação do GitHub Actions",
+         "fonte": "GitHub Docs",
+         "url": "https://docs.github.com/pt/actions",
+         "idioma": "pt-BR"
+        }
+       ]
+      },
+      {
+       "id": "terraform",
+       "titulo": "Infraestrutura como código",
+       "resumo": "Com Terraform, você descreve a infraestrutura em arquivos e o comando `plan` mostra o que vai mudar antes de mudar. Dá para revisar a infraestrutura como se revisa código.",
+       "pratica": "Crie um bucket com Terraform, rode `terraform plan`, aplique com `terraform apply` e depois destrua tudo com `terraform destroy`.",
+       "recursos": [
+        {
+         "titulo": "Get started: Google Cloud",
+         "fonte": "HashiCorp",
+         "url": "https://developer.hashicorp.com/terraform/tutorials/gcp-get-started",
+         "idioma": "en"
+        }
+       ]
+      },
+      {
+       "id": "gitops",
+       "titulo": "GitOps",
+       "nivel": "opcional",
+       "resumo": "No GitOps, o repositório é a fonte da verdade: o que está na branch principal é o que está no ar. O próprio site do Ako é publicado assim, a cada merge na `main`."
+      }
+     ]
+    },
+    {
+     "titulo": "Manter no ar",
+     "nos": [
+      {
+       "id": "observabilidade",
+       "titulo": "Logs, métricas e alertas",
+       "resumo": "Logs contam o que aconteceu, métricas mostram tendência, e alertas avisam quando alguém precisa agir. Alerta que toca toda hora acaba ignorado.",
+       "pratica": "Escolha um serviço seu e escreva a única métrica que mostraria que ele parou de funcionar para quem usa.",
+       "recursos": [
+        {
+         "titulo": "Overview",
+         "fonte": "Prometheus",
+         "url": "https://prometheus.io/docs/introduction/overview/",
+         "idioma": "en"
+        }
+       ]
+      },
+      {
+       "id": "sre",
+       "titulo": "SRE: SLO e incidentes",
+       "nivel": "opcional",
+       "resumo": "SRE, a engenharia de confiabilidade, trata a estabilidade do sistema como meta medida. Um SLO, a meta de confiabilidade, diz quanto de falha é aceitável, e o pós-incidente busca a causa sem caçar culpado.",
+       "recursos": [
+        {
+         "titulo": "Site Reliability Engineering (livro)",
+         "fonte": "Google",
+         "url": "https://sre.google/sre-book/table-of-contents/",
+         "idioma": "en"
+        }
+       ]
+      },
+      {
+       "id": "custos",
+       "titulo": "Custos na nuvem",
+       "nivel": "opcional",
+       "resumo": "Na nuvem, todo recurso esquecido vira conta no fim do mês. Etiquetar recursos, desligar o que não usa e ler a fatura também é trabalho de infraestrutura."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "dev",
+   "area": "dev",
+   "titulo": "Desenvolvimento",
+   "resumo": "Quem desenvolve transforma uma necessidade em software que funciona: sites, aplicativos e sistemas. Dá para começar pelo frontend, pelo backend ou pelos dois.",
+   "secoes": [
+    {
+     "titulo": "A base que você já tem",
+     "nos": [
+      {
+       "id": "logica",
+       "titulo": "Lógica de programação",
+       "topico": "logica",
+       "resumo": "Quebrar um problema em passos é o trabalho de todo dia, em qualquer linguagem."
+      },
+      {
+       "id": "python",
+       "titulo": "Python",
+       "topico": "python",
+       "resumo": "Sua primeira linguagem. Variáveis, condições, laços e funções funcionam parecido nas outras."
+      },
+      {
+       "id": "git",
+       "titulo": "Git e GitHub",
+       "topico": "git",
+       "resumo": "Todo time de desenvolvimento trabalha com branch, commit e pull request."
+      },
+      {
+       "id": "web",
+       "titulo": "Como a web funciona",
+       "topico": "web",
+       "resumo": "Requisição, resposta, status e cabeçalhos: o caminho que todo site e toda API percorrem."
+      }
+     ]
+    },
+    {
+     "titulo": "Frontend: o que roda no navegador",
+     "nos": [
+      {
+       "id": "html",
+       "titulo": "HTML",
+       "resumo": "HTML dá estrutura e significado à página: título, parágrafo, lista, formulário. HTML bem escrito ajuda leitores de tela e mecanismos de busca.",
+       "pratica": "Monte uma página sobre você usando só HTML, com um título, uma lista e um link.",
+       "recursos": [
+        {
+         "titulo": "HTML",
+         "fonte": "MDN",
+         "url": "https://developer.mozilla.org/pt-BR/docs/Web/HTML",
+         "idioma": "pt-BR"
+        }
+       ]
+      },
+      {
+       "id": "css",
+       "titulo": "CSS",
+       "resumo": "CSS cuida da aparência: cores, espaços e a organização na tela. Flexbox e grid resolvem a maior parte dos layouts.",
+       "pratica": "Faça a sua página funcionar bem no celular e no computador usando flexbox.",
+       "recursos": [
+        {
+         "titulo": "CSS",
+         "fonte": "MDN",
+         "url": "https://developer.mozilla.org/pt-BR/docs/Web/CSS",
+         "idioma": "pt-BR"
+        }
+       ]
+      },
+      {
+       "id": "javascript",
+       "titulo": "JavaScript",
+       "resumo": "JavaScript dá comportamento à página: responder a um clique, buscar dados de uma API, mostrar uma mensagem. É a linguagem que o navegador entende.",
+       "pratica": "Adicione à sua página um botão que alterna entre tema claro e escuro.",
+       "recursos": [
+        {
+         "titulo": "Guia de JavaScript",
+         "fonte": "MDN",
+         "url": "https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Guide",
+         "idioma": "pt-BR"
+        }
+       ]
+      },
+      {
+       "id": "acessibilidade",
+       "titulo": "Acessibilidade",
+       "resumo": "Um site acessível funciona para quem usa leitor de tela, só teclado ou tela ampliada. Começa por HTML correto, contraste bom e texto alternativo nas imagens.",
+       "pratica": "Navegue pela sua página só com a tecla Tab e anote onde o foco some ou fica confuso.",
+       "recursos": [
+        {
+         "titulo": "Acessibilidade",
+         "fonte": "MDN",
+         "url": "https://developer.mozilla.org/pt-BR/docs/Web/Accessibility",
+         "idioma": "pt-BR"
+        }
+       ]
+      },
+      {
+       "id": "framework-front",
+       "titulo": "Um framework de frontend",
+       "nivel": "opcional",
+       "resumo": "React, Vue e Angular organizam páginas grandes em componentes. Aprenda um depois que HTML, CSS e JavaScript estiverem firmes, e escolha pelo que as vagas da sua região pedem."
+      }
+     ]
+    },
+    {
+     "titulo": "Backend: o que roda no servidor",
+     "nos": [
+      {
+       "id": "apis",
+       "titulo": "APIs e HTTP",
+       "topico": "web",
+       "resumo": "Uma API é a porta que um sistema abre para outro. Métodos como GET e POST, status como 200 e 404 e o formato JSON aparecem em toda API.",
+       "pratica": "Use `curl` para chamar uma API pública e identifique o método, o status e o JSON da resposta."
+      },
+      {
+       "id": "framework-back",
+       "titulo": "Um framework web",
+       "resumo": "Frameworks como FastAPI, Flask e Django, em Python, ou Express, em JavaScript, cuidam das rotas e deixam você focar na regra de negócio.",
+       "pratica": "Crie uma API com duas rotas: uma que lista tarefas e outra que adiciona uma tarefa nova.",
+       "recursos": [
+        {
+         "titulo": "FastAPI",
+         "fonte": "FastAPI",
+         "url": "https://fastapi.tiangolo.com/pt/",
+         "idioma": "pt-BR"
+        }
+       ]
+      },
+      {
+       "id": "sql",
+       "titulo": "Banco de dados e SQL",
+       "resumo": "Quase todo sistema guarda dados num banco relacional. SQL é a linguagem para criar tabelas, buscar e alterar esses dados.",
+       "pratica": "Troque a lista de tarefas da sua API por uma tabela no SQLite.",
+       "recursos": [
+        {
+         "titulo": "SQLBolt",
+         "fonte": "SQLBolt",
+         "url": "https://sqlbolt.com/",
+         "idioma": "en"
+        }
+       ]
+      },
+      {
+       "id": "autenticacao",
+       "titulo": "Login e senhas",
+       "resumo": "Senha nunca é guardada como texto: o sistema guarda um hash, um resumo da senha que não dá para desfazer, feito com algoritmo próprio para senhas. Para começar, prefira uma biblioteca pronta a escrever o seu login.",
+       "pratica": "Descubra qual algoritmo de hash de senha o framework que você escolheu recomenda e por quê.",
+       "topico": "seguranca"
+      }
+     ]
+    },
+    {
+     "titulo": "Código que outra pessoa entende",
+     "nos": [
+      {
+       "id": "testes",
+       "titulo": "Testes automatizados",
+       "resumo": "Um teste é um código que confere outro código. Com testes, você muda o sistema sem medo de quebrar o que já funcionava.",
+       "pratica": "Escreva três testes com pytest para uma função sua, incluindo um caso de erro.",
+       "recursos": [
+        {
+         "titulo": "pytest",
+         "fonte": "pytest",
+         "url": "https://docs.pytest.org/",
+         "idioma": "en"
+        }
+       ]
+      },
+      {
+       "id": "code-review",
+       "titulo": "Pull request e revisão",
+       "licao": "primeiros-passos-github.html",
+       "resumo": "Pull request pequeno, com descrição clara do que muda e por quê, é revisado mais rápido e com mais cuidado.",
+       "pratica": "Abra um pull request num projeto seu com uma descrição de três linhas: o que muda, por quê e como testar."
+      },
+      {
+       "id": "ler-erros",
+       "titulo": "Ler documentação e erros",
+       "topico": "ingles-para-ti",
+       "resumo": "Boa parte do trabalho é ler mensagens de erro com calma e achar a resposta na documentação oficial, quase sempre em inglês."
+      },
+      {
+       "id": "seguranca-codigo",
+       "titulo": "Segurança no código",
+       "resumo": "Os erros mais comuns em sistemas web estão listados no OWASP Top 10, como injeção de SQL e controle de acesso falho. Conhecer a lista ajuda a evitar esses erros.",
+       "pratica": "Procure no seu código um lugar onde um texto digitado pela pessoa vai direto para uma consulta SQL.",
+       "recursos": [
+        {
+         "titulo": "OWASP Top 10",
+         "fonte": "OWASP",
+         "url": "https://owasp.org/www-project-top-ten/",
+         "idioma": "en"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "titulo": "Publicar",
+     "nos": [
+      {
+       "id": "publicar-site",
+       "titulo": "Publicar um site",
+       "topico": "projeto",
+       "resumo": "Site estático pode ir para o ar de graça, no GitHub Pages ou no Cloudflare Pages. Ter um link para mostrar vale mais que um projeto parado no computador."
+      },
+      {
+       "id": "docker-dev",
+       "titulo": "Docker para desenvolvimento",
+       "nivel": "opcional",
+       "resumo": "Com Docker, o banco de dados e os outros serviços sobem com um comando, iguais na máquina de todo o time.",
+       "recursos": [
+        {
+         "titulo": "Get started",
+         "fonte": "Docker Docs",
+         "url": "https://docs.docker.com/get-started/",
+         "idioma": "en"
+        }
+       ]
+      },
+      {
+       "id": "ci-dev",
+       "titulo": "Testes no CI",
+       "nivel": "opcional",
+       "resumo": "Rodar os testes a cada pull request, no GitHub Actions, avisa sobre o erro antes do merge.",
+       "recursos": [
+        {
+         "titulo": "Documentação do GitHub Actions",
+         "fonte": "GitHub Docs",
+         "url": "https://docs.github.com/pt/actions",
+         "idioma": "pt-BR"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "dados",
+   "area": "dados",
+   "titulo": "Dados",
+   "resumo": "Quem trabalha com dados transforma números soltos em respostas para perguntas de negócio. Planilha e SQL abrem a porta, e daqui também se chega à IA aplicada.",
+   "secoes": [
+    {
+     "titulo": "A base que você já tem",
+     "nos": [
+      {
+       "id": "logica",
+       "titulo": "Lógica de programação",
+       "topico": "logica",
+       "resumo": "Filtrar, agrupar e calcular são passos de lógica, seja na planilha, no SQL ou no Python."
+      },
+      {
+       "id": "python",
+       "titulo": "Python",
+       "topico": "python",
+       "resumo": "Python é a linguagem mais usada para analisar dados, por causa de bibliotecas como o pandas."
+      },
+      {
+       "id": "git",
+       "titulo": "Git e GitHub",
+       "topico": "git",
+       "resumo": "Análises e consultas também merecem histórico e revisão."
+      }
+     ]
+    },
+    {
+     "titulo": "Organizar e perguntar",
+     "nos": [
+      {
+       "id": "planilhas",
+       "titulo": "Planilhas",
+       "resumo": "Planilha ainda é a ferramenta de dados mais usada nas empresas. Filtro, tabela dinâmica e PROCV ou PROCX resolvem muita pergunta antes de qualquer código.",
+       "pratica": "Baixe uma tabela de dados abertos do governo e responda a uma pergunta com tabela dinâmica."
+      },
+      {
+       "id": "tabelas",
+       "titulo": "Tabelas e tipos de dados",
+       "resumo": "Cada coluna tem um tipo: texto, número, data. Muito erro de análise vem de número salvo como texto ou de data em formato trocado.",
+       "pratica": "Abra um arquivo CSV no editor de texto e anote o separador, o formato das datas e o tipo de cada coluna."
+      },
+      {
+       "id": "sql-basico",
+       "titulo": "SQL: buscar e filtrar",
+       "resumo": "SELECT, WHERE e ORDER BY já respondem perguntas como \"quais pedidos passaram de 100 reais em março?\".",
+       "pratica": "Faça as primeiras lições do SQLBolt e escreva com suas palavras o que cada consulta pede.",
+       "recursos": [
+        {
+         "titulo": "SQLBolt",
+         "fonte": "SQLBolt",
+         "url": "https://sqlbolt.com/",
+         "idioma": "en"
+        }
+       ]
+      },
+      {
+       "id": "sql-juntar",
+       "titulo": "SQL: juntar e agrupar",
+       "resumo": "JOIN junta tabelas, e GROUP BY resume, como em \"total vendido por cidade\". É aqui que o SQL fica poderoso, e onde aparecem as linhas duplicadas por engano.",
+       "pratica": "Escreva uma consulta com JOIN e confira se o total bate com o da tabela original."
+      }
+     ]
+    },
+    {
+     "titulo": "Analisar",
+     "nos": [
+      {
+       "id": "estatistica",
+       "titulo": "Estatística básica",
+       "resumo": "Média, mediana, desvio padrão e distribuição. Saber quando a média engana, como em salários, evita conclusões erradas.",
+       "pratica": "Calcule média e mediana de uma coluna de valores e explique por que elas deram diferentes."
+      },
+      {
+       "id": "limpeza",
+       "titulo": "Limpeza de dados",
+       "resumo": "Dado real vem com linha repetida, campo vazio e erro de digitação. Limpar costuma tomar a maior parte do tempo de uma análise.",
+       "pratica": "Pegue uma base pública, conte as linhas vazias e repetidas e decida o que fazer com cada caso."
+      },
+      {
+       "id": "pandas",
+       "titulo": "pandas",
+       "resumo": "pandas é a biblioteca Python para ler, limpar, juntar e resumir tabelas. Faz o mesmo que planilha e SQL, mas com código que dá para repetir.",
+       "pratica": "Refaça em pandas a análise que você fez na planilha e compare os números.",
+       "recursos": [
+        {
+         "titulo": "Getting started",
+         "fonte": "pandas",
+         "url": "https://pandas.pydata.org/docs/getting_started/index.html",
+         "idioma": "en"
+        },
+        {
+         "titulo": "Kaggle Learn",
+         "fonte": "Kaggle",
+         "url": "https://www.kaggle.com/learn",
+         "idioma": "en"
+        }
+       ]
+      },
+      {
+       "id": "pergunta-negocio",
+       "titulo": "Perguntas de negócio",
+       "topico": "soft-skills",
+       "resumo": "Antes de abrir a base, entenda a decisão que a análise vai apoiar. \"Quantos clientes cancelaram?\" vale menos que \"por que cancelaram e o que dá para mudar?\"."
+      }
+     ]
+    },
+    {
+     "titulo": "Mostrar o resultado",
+     "nos": [
+      {
+       "id": "visualizacao",
+       "titulo": "Escolher o gráfico",
+       "resumo": "Barra compara categorias, linha mostra tempo, e pizza quase nunca ajuda. Um bom gráfico responde a uma pergunta só.",
+       "pratica": "Faça dois gráficos com os mesmos dados e pergunte a alguém qual deles se entende mais rápido."
+      },
+      {
+       "id": "paineis",
+       "titulo": "Painéis",
+       "resumo": "Ferramentas como Looker Studio e Power BI juntam gráficos num painel que se atualiza sozinho. O Looker Studio é gratuito e conecta direto em planilhas.",
+       "pratica": "Monte um painel no Looker Studio a partir de uma planilha sua, com no máximo quatro gráficos."
+      },
+      {
+       "id": "historia",
+       "titulo": "Contar a história dos dados",
+       "resumo": "Resultado bom é o que a pessoa entende e usa. Comece pela conclusão, mostre a prova e diga o que você recomenda."
+      }
+     ]
+    },
+    {
+     "titulo": "Próximos passos",
+     "nos": [
+      {
+       "id": "lgpd",
+       "titulo": "LGPD e dados pessoais",
+       "topico": "seguranca",
+       "resumo": "A LGPD define como dados pessoais podem ser coletados e usados no Brasil. Quem analisa dados lida com isso todo dia: CPF, e-mail e endereço não podem vazar numa planilha compartilhada.",
+       "recursos": [
+        {
+         "titulo": "Agência Nacional de Proteção de Dados",
+         "fonte": "ANPD",
+         "url": "https://www.gov.br/anpd/pt-br",
+         "idioma": "pt-BR"
+        }
+       ]
+      },
+      {
+       "id": "bigquery",
+       "titulo": "Dados na nuvem",
+       "nivel": "opcional",
+       "resumo": "Quando a base não cabe na planilha, entra um data warehouse, banco feito para análise, como o BigQuery. O modo sandbox deixa praticar SQL em bases públicas grandes sem cartão de crédito, com limites de uso.",
+       "recursos": [
+        {
+         "titulo": "Testar o BigQuery usando o sandbox",
+         "fonte": "Google Cloud",
+         "url": "https://cloud.google.com/bigquery/docs/sandbox?hl=pt-br",
+         "idioma": "pt-BR"
+        }
+       ]
+      },
+      {
+       "id": "ml",
+       "titulo": "Aprendizado de máquina",
+       "nivel": "opcional",
+       "resumo": "Modelos que aprendem com dados são o passo seguinte, e dependem de tudo o que veio antes: dado limpo, estatística e uma boa pergunta.",
+       "topico": "ia-responsavel"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "qa",
+   "area": "qa",
+   "titulo": "Qualidade (QA)",
+   "resumo": "Quem trabalha com qualidade procura os problemas antes do cliente e ajuda o time a não criar os mesmos de novo. Começa com olhar curioso e vai até testes automatizados.",
+   "secoes": [
+    {
+     "titulo": "A base que você já tem",
+     "nos": [
+      {
+       "id": "web",
+       "titulo": "Como a web funciona",
+       "topico": "web",
+       "resumo": "Saber o que acontece entre o clique e a página ajuda a dizer onde o erro está."
+      },
+      {
+       "id": "logica",
+       "titulo": "Lógica de programação",
+       "topico": "logica",
+       "resumo": "Pensar nos caminhos de um programa é pensar nos casos de teste."
+      },
+      {
+       "id": "git",
+       "titulo": "Git e GitHub",
+       "topico": "git",
+       "resumo": "Testes automatizados ficam no repositório, ao lado do código."
+      }
+     ]
+    },
+    {
+     "titulo": "Pensar como QA",
+     "nos": [
+      {
+       "id": "papel-qa",
+       "titulo": "Qualidade e o papel do QA",
+       "topico": "areas-da-ti",
+       "resumo": "QA participa desde a ideia, perguntando \"e se a pessoa fizer isso?\", para o problema nem nascer. Achar bug no fim é só uma parte do trabalho."
+      },
+      {
+       "id": "casos-de-teste",
+       "titulo": "Casos de teste",
+       "resumo": "Um caso de teste diz o ponto de partida, os passos e o resultado esperado. Escrito com clareza, qualquer pessoa do time consegue repetir.",
+       "pratica": "Escreva cinco casos de teste para a tela de login de um site que você usa."
+      },
+      {
+       "id": "tecnicas",
+       "titulo": "Partição e valor limite",
+       "resumo": "Em vez de testar todo valor possível, divida em grupos que se comportam igual e teste as bordas. Se a idade mínima é 18, teste 17, 18 e 19.",
+       "pratica": "Para um campo que aceita de 1 a 10 itens no carrinho, liste os valores que você testaria e por quê."
+      },
+      {
+       "id": "relatar-bug",
+       "titulo": "Relatar um bug",
+       "topico": "soft-skills",
+       "resumo": "Um bom relato tem título claro, passos para repetir, o que era esperado, o que aconteceu e evidência, como print ou vídeo. Relato bom é corrigido mais rápido.",
+       "pratica": "Ache um problema pequeno num site e escreva o relato como se fosse abrir uma issue no GitHub."
+      }
+     ]
+    },
+    {
+     "titulo": "Testar na prática",
+     "nos": [
+      {
+       "id": "exploratorio",
+       "titulo": "Teste exploratório",
+       "resumo": "No teste exploratório você aprende o sistema e testa ao mesmo tempo, com uma missão e tempo marcado. Acha o que nenhum roteiro previu.",
+       "pratica": "Separe 30 minutos com uma missão, como \"tentar quebrar o cadastro\", e anote tudo o que encontrar."
+      },
+      {
+       "id": "devtools",
+       "titulo": "DevTools do navegador",
+       "resumo": "Aperte F12, ou Cmd+Option+I no Mac. As abas Console e Rede mostram erros e requisições que a tela esconde, e ajudam a dizer se o problema está no frontend ou no backend.",
+       "pratica": "Abra a aba Rede, recarregue um site e ache uma requisição com status diferente de 200."
+      },
+      {
+       "id": "testar-api",
+       "titulo": "Testar APIs",
+       "resumo": "Testar direto a API, com `curl` ou Postman, é mais rápido que pela tela e acha erro de regra que a interface esconde.",
+       "pratica": "Chame uma API pública com um dado inválido e confira se o status e a mensagem de erro fazem sentido.",
+       "recursos": [
+        {
+         "titulo": "Postman Learning Center",
+         "fonte": "Postman",
+         "url": "https://learning.postman.com/docs/getting-started/overview/",
+         "idioma": "en"
+        }
+       ]
+      },
+      {
+       "id": "acessibilidade-qa",
+       "titulo": "Testar acessibilidade",
+       "nivel": "opcional",
+       "resumo": "Navegar só com teclado e conferir contraste já acha boa parte das barreiras. As diretrizes WCAG dizem o que conferir.",
+       "recursos": [
+        {
+         "titulo": "Acessibilidade",
+         "fonte": "MDN",
+         "url": "https://developer.mozilla.org/pt-BR/docs/Web/Accessibility",
+         "idioma": "pt-BR"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "titulo": "Automatizar testes",
+     "nos": [
+      {
+       "id": "piramide",
+       "titulo": "Pirâmide de testes",
+       "resumo": "Muitos testes de unidade, rápidos e baratos, alguns de integração e poucos de ponta a ponta, que são lentos e quebram fácil. Inverter a pirâmide deixa o time lento."
+      },
+      {
+       "id": "unidade",
+       "titulo": "Testes de unidade",
+       "topico": "python",
+       "resumo": "Testam uma função isolada. Em Python, o pytest é o mais usado e começa com uma função e um `assert`.",
+       "pratica": "Escreva testes com pytest para uma função que calcula desconto, incluindo os valores limite.",
+       "recursos": [
+        {
+         "titulo": "pytest",
+         "fonte": "pytest",
+         "url": "https://docs.pytest.org/",
+         "idioma": "en"
+        }
+       ]
+      },
+      {
+       "id": "e2e",
+       "titulo": "Testes de ponta a ponta",
+       "resumo": "Ferramentas como Playwright abrem o navegador e repetem o que a pessoa faria: clicar, digitar, conferir a tela.",
+       "pratica": "Automatize com Playwright o caso de teste de login que você escreveu antes.",
+       "recursos": [
+        {
+         "titulo": "Installation",
+         "fonte": "Playwright",
+         "url": "https://playwright.dev/docs/intro",
+         "idioma": "en"
+        }
+       ]
+      },
+      {
+       "id": "testes-ci",
+       "titulo": "Testes no CI",
+       "resumo": "Teste que só roda na sua máquina é esquecido. No GitHub Actions, ele roda a cada pull request e pode barrar o merge se falhar.",
+       "recursos": [
+        {
+         "titulo": "Documentação do GitHub Actions",
+         "fonte": "GitHub Docs",
+         "url": "https://docs.github.com/pt/actions",
+         "idioma": "pt-BR"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "titulo": "Ir além",
+     "nos": [
+      {
+       "id": "desempenho",
+       "titulo": "Testes de desempenho",
+       "nivel": "opcional",
+       "resumo": "Medem como o sistema se comporta com muita gente ao mesmo tempo. Comece medindo o tempo de resposta de uma rota antes de simular mil acessos."
+      },
+      {
+       "id": "certificacao-qa",
+       "titulo": "Certificação de testes",
+       "nivel": "opcional",
+       "resumo": "A certificação CTFL, do ISTQB, organiza o vocabulário da área e aparece em vagas. O programa de estudo é público, e a prova é paga."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "seguranca",
+   "area": "seguranca",
+   "titulo": "Segurança",
+   "resumo": "Quem trabalha com segurança protege sistemas, redes e pessoas. Linux e redes são a base, e boa parte do trabalho é defesa: configurar bem, monitorar e responder rápido.",
+   "secoes": [
+    {
+     "titulo": "A base que você já tem",
+     "nos": [
+      {
+       "id": "linux",
+       "titulo": "Linux",
+       "topico": "linux",
+       "resumo": "Usuários, permissões e logs do Linux aparecem em quase toda investigação."
+      },
+      {
+       "id": "redes",
+       "titulo": "Redes",
+       "topico": "redes",
+       "resumo": "Sem entender IP, portas e DNS, não dá para entender ataque nem defesa."
+      },
+      {
+       "id": "terminal",
+       "titulo": "Terminal",
+       "topico": "terminal",
+       "resumo": "As ferramentas de segurança, em grande parte, rodam na linha de comando."
+      },
+      {
+       "id": "seguranca-digital",
+       "titulo": "Segurança digital básica",
+       "topico": "seguranca",
+       "resumo": "Senha forte, verificação em duas etapas e golpe de phishing: comece protegendo você."
+      }
+     ]
+    },
+    {
+     "titulo": "Fundamentos",
+     "nos": [
+      {
+       "id": "cia",
+       "titulo": "Confidencialidade, integridade e disponibilidade",
+       "resumo": "São os três objetivos da segurança: só quem pode vê o dado, ninguém altera sem permissão, e o sistema está no ar quando precisam dele.",
+       "pratica": "Para um aplicativo de banco, escreva um exemplo de falha em cada um dos três objetivos."
+      },
+      {
+       "id": "risco",
+       "titulo": "Ameaça, vulnerabilidade e risco",
+       "resumo": "Vulnerabilidade é a falha, ameaça é quem pode explorar, e risco junta chance e impacto. Ninguém protege tudo, então se protege primeiro o que tem mais risco."
+      },
+      {
+       "id": "autenticacao-seg",
+       "titulo": "Autenticação e MFA",
+       "resumo": "Senha sozinha cai em vazamento e phishing. O segundo fator (MFA), de preferência chave física ou aplicativo, bloqueia a maior parte dos ataques a contas.",
+       "pratica": "Ative a verificação em duas etapas por aplicativo no seu e-mail principal e guarde os códigos de recuperação."
+      },
+      {
+       "id": "cripto",
+       "titulo": "Criptografia no dia a dia",
+       "resumo": "Hash, chave pública e privada, e TLS, o cadeado do navegador. Você não precisa saber a matemática, mas precisa saber o que cada um protege.",
+       "pratica": "Abra os detalhes do certificado de um site e descubra quem o emitiu e até quando vale."
+      }
+     ]
+    },
+    {
+     "titulo": "Defender",
+     "nos": [
+      {
+       "id": "logs-seg",
+       "titulo": "Logs e monitoramento",
+       "resumo": "Um ataque deixa rastro. Saber onde ficam os logs, como o `/var/log/auth.log` no Ubuntu, e o que é normal ajuda a perceber quando algo foge do padrão.",
+       "pratica": "Num Linux, procure no log de autenticação as tentativas de login que falharam.",
+       "topico": "linux"
+      },
+      {
+       "id": "atualizacoes",
+       "titulo": "Atualizações e vulnerabilidades",
+       "resumo": "Muito ataque explora falha que já tinha correção. Saber quais sistemas você tem e mantê-los atualizados é uma das defesas mais baratas."
+      },
+      {
+       "id": "firewall",
+       "titulo": "Firewall e portas",
+       "topico": "redes",
+       "resumo": "Porta aberta sem necessidade é porta de entrada. Firewall libera só o necessário, e o resto fica fechado.",
+       "pratica": "Liste as portas abertas no seu Linux com `sudo ss -tlnp` e explique para que serve cada uma."
+      },
+      {
+       "id": "backup",
+       "titulo": "Backup e recuperação",
+       "resumo": "Contra ransomware, o vírus que sequestra arquivos, e contra erro humano, o que salva é backup testado, com uma cópia fora do alcance do sistema principal."
+      }
+     ]
+    },
+    {
+     "titulo": "Aplicações web",
+     "nos": [
+      {
+       "id": "owasp",
+       "titulo": "OWASP Top 10",
+       "topico": "web",
+       "resumo": "A lista dos riscos mais comuns em aplicações web, como controle de acesso falho e injeção. É o ponto de partida para quem testa ou desenvolve.",
+       "recursos": [
+        {
+         "titulo": "OWASP Top 10",
+         "fonte": "OWASP",
+         "url": "https://owasp.org/www-project-top-ten/",
+         "idioma": "en"
+        }
+       ]
+      },
+      {
+       "id": "segredos",
+       "titulo": "Segredos fora do código",
+       "resumo": "Senha e chave de API não vão para o repositório. Se foram, considere vazadas: troque a chave, não basta apagar o commit.",
+       "pratica": "Procure no seu GitHub se algum projeto tem um arquivo .env ou uma chave no histórico.",
+       "topico": "git"
+      }
+     ]
+    },
+    {
+     "titulo": "Praticar e responder",
+     "nos": [
+      {
+       "id": "laboratorios",
+       "titulo": "Laboratórios e CTFs",
+       "resumo": "Pratique ataque só em ambiente feito para isso, como laboratórios e CTFs, que são competições de desafios. O Bandit, do OverTheWire, ensina Linux e segurança por fases e é gratuito.",
+       "pratica": "Passe das primeiras cinco fases do Bandit e anote o comando que resolveu cada uma.",
+       "recursos": [
+        {
+         "titulo": "Bandit",
+         "fonte": "OverTheWire",
+         "url": "https://overthewire.org/wargames/bandit/",
+         "idioma": "en"
+        }
+       ]
+      },
+      {
+       "id": "incidentes",
+       "titulo": "Resposta a incidentes",
+       "resumo": "Quando algo acontece: conter, investigar, corrigir e aprender. Ter o plano escrito antes do incidente faz a diferença no dia."
+      },
+      {
+       "id": "governanca",
+       "titulo": "LGPD e frameworks",
+       "nivel": "opcional",
+       "resumo": "A LGPD e frameworks como o NIST CSF organizam o que uma empresa precisa ter. Aparecem em vagas de governança, risco e conformidade.",
+       "recursos": [
+        {
+         "titulo": "Agência Nacional de Proteção de Dados",
+         "fonte": "ANPD",
+         "url": "https://www.gov.br/anpd/pt-br",
+         "idioma": "pt-BR"
+        },
+        {
+         "titulo": "Cybersecurity Framework",
+         "fonte": "NIST",
+         "url": "https://www.nist.gov/cyberframework",
+         "idioma": "en"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "produto",
+   "area": "produto",
+   "titulo": "Produto e agilidade",
+   "resumo": "Quem trabalha com produto entende o problema de quem usa, decide com o time o que construir primeiro e confere se a solução resolveu. Não precisa programar, mas precisa entender como o software é feito.",
+   "secoes": [
+    {
+     "titulo": "A base que você já tem",
+     "nos": [
+      {
+       "id": "comunicacao",
+       "titulo": "Comunicação",
+       "topico": "soft-skills",
+       "resumo": "Produto é, antes de tudo, conversa: com cliente, com o time e com quem decide."
+      },
+      {
+       "id": "areas",
+       "titulo": "As áreas da TI",
+       "topico": "areas-da-ti",
+       "resumo": "Saber o que cada pessoa do time faz ajuda a pedir a coisa certa para a pessoa certa."
+      },
+      {
+       "id": "web",
+       "titulo": "Como a web funciona",
+       "topico": "web",
+       "resumo": "Entender o básico da tecnologia evita prometer o que não dá e ajuda a conversar com quem desenvolve."
+      }
+     ]
+    },
+    {
+     "titulo": "Entender o problema",
+     "nos": [
+      {
+       "id": "usuario",
+       "titulo": "Quem usa o produto",
+       "resumo": "Produto bom resolve o problema de alguém específico. Descreva quem é essa pessoa, o que ela tenta fazer e o que atrapalha hoje.",
+       "pratica": "Escolha um aplicativo que você usa e descreva em um parágrafo para quem ele foi feito."
+      },
+      {
+       "id": "entrevistas",
+       "titulo": "Conversar com quem usa",
+       "resumo": "Pergunte sobre o que a pessoa já fez, não sobre o que faria. \"Como você resolveu isso da última vez?\" ensina mais que \"você usaria?\".",
+       "pratica": "Converse 15 minutos com alguém sobre como essa pessoa organiza as contas do mês. Anote só fatos."
+      },
+      {
+       "id": "problema",
+       "titulo": "Problema antes da solução",
+       "resumo": "Times perdem meses construindo a solução certa para o problema errado. Escreva o problema numa frase antes de discutir funcionalidades."
+      },
+      {
+       "id": "metricas",
+       "titulo": "Métricas de sucesso",
+       "resumo": "Antes de construir, defina o número que deve mudar se der certo, como cadastros concluídos ou tempo para achar um produto."
+      }
+     ]
+    },
+    {
+     "titulo": "Decidir o que construir",
+     "nos": [
+      {
+       "id": "priorizacao",
+       "titulo": "Priorização",
+       "resumo": "Sempre há mais ideias que tempo. Comparar valor para quem usa e esforço para construir ajuda a dizer \"agora não\" com argumento.",
+       "pratica": "Liste dez melhorias para um aplicativo e classifique cada uma em valor alto ou baixo e esforço alto ou baixo."
+      },
+      {
+       "id": "historias",
+       "titulo": "Histórias e critérios de aceite",
+       "resumo": "Uma história de usuário diz quem quer o quê e por quê. Os critérios de aceite dizem quando está pronto, e viram casos de teste para o QA.",
+       "pratica": "Escreva uma história de usuário com três critérios de aceite para \"recuperar a senha\"."
+      },
+      {
+       "id": "mvp",
+       "titulo": "MVP e experimentos",
+       "resumo": "O MVP é a menor versão que testa se a ideia funciona. Às vezes é uma planilha ou um formulário, não um sistema."
+      },
+      {
+       "id": "usabilidade",
+       "titulo": "Usabilidade",
+       "nivel": "opcional",
+       "resumo": "As heurísticas de usabilidade, como deixar claro o estado do sistema e prevenir erros, ajudam a revisar uma tela antes de qualquer teste com usuários.",
+       "recursos": [
+        {
+         "titulo": "10 Usability Heuristics",
+         "fonte": "Nielsen Norman Group",
+         "url": "https://www.nngroup.com/articles/ten-usability-heuristics/",
+         "idioma": "en"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "titulo": "Organizar o time",
+     "nos": [
+      {
+       "id": "scrum",
+       "titulo": "Scrum",
+       "resumo": "Scrum organiza o trabalho em ciclos curtos, as sprints, com papéis e eventos definidos. O guia oficial é curto e existe em português.",
+       "recursos": [
+        {
+         "titulo": "Guia do Scrum (a página de download tem a versão em português)",
+         "fonte": "Scrum Guides",
+         "url": "https://scrumguides.org/download.html",
+         "idioma": "en"
+        }
+       ]
+      },
+      {
+       "id": "kanban",
+       "titulo": "Kanban",
+       "resumo": "Kanban mostra o trabalho num quadro e limita quanto fica em andamento ao mesmo tempo. A ideia é terminar antes de começar algo novo.",
+       "recursos": [
+        {
+         "titulo": "The Kanban Guide",
+         "fonte": "Kanban Guides",
+         "url": "https://kanbanguides.org/",
+         "idioma": "en"
+        }
+       ],
+       "pratica": "Monte um quadro com as colunas A fazer, Fazendo e Feito para seus estudos e limite Fazendo a duas tarefas."
+      },
+      {
+       "id": "ritos",
+       "titulo": "Reuniões que ajudam",
+       "topico": "soft-skills",
+       "resumo": "Reunião diária curta, revisão com quem usa e retrospectiva para melhorar o jeito de trabalhar. Reunião sem decisão ou sem próximo passo pode virar mensagem."
+      }
+     ]
+    },
+    {
+     "titulo": "Acompanhar o produto",
+     "nos": [
+      {
+       "id": "roadmap-produto",
+       "titulo": "Roadmap de produto",
+       "resumo": "O roadmap de produto mostra a direção e os problemas que o time vai atacar, sem prometer datas. Mantê-lo atualizado e visível evita surpresa."
+      },
+      {
+       "id": "dados-produto",
+       "titulo": "Dados para decidir",
+       "nivel": "opcional",
+       "resumo": "SQL básico e um painel simples deixam você conferir as próprias métricas sem esperar ninguém. O mapa de Dados mostra o caminho.",
+       "mapa": "dados"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
