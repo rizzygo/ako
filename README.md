@@ -38,8 +38,6 @@ Um guia pode passar por três formatos.
 
 O site está em **https://ako.rizzygo.com.br**, no Cloudflare Pages. Cada commit na `main` publica uma versão nova sozinho, e cada pull request ganha um endereço de prévia para conferir antes do merge. Não há build: o Pages serve os arquivos deste repositório como estão, e `_redirects` e `_headers` ajustam a raiz e os cabeçalhos.
 
-O endereço antigo, `rizzygo.github.io/iniciativa-ako`, leva para o novo pelo `endereco.js`, e quem abre as trilhas por lá leva junto o progresso salvo no navegador.
-
 ## Como ajudar a melhorar os guias
 
 Achou um erro, tem uma pergunta melhor ou quer adaptar um guia para outra ferramenta? Abra uma [issue](../../issues) (um tópico de conversa no GitHub) ou mande um pull request (uma proposta de alteração). O passo a passo está em [CONTRIBUTING.md](CONTRIBUTING.md).
