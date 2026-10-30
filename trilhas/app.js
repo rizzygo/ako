@@ -268,13 +268,22 @@
       '<section class="secao"><div class="casca"><div class="ako"><div class="ako-palavra" aria-hidden="true">Ako</div><div>' +
       '<h2>Quem ensina também aprende</h2>' +
       '<p>Ako é uma filosofia maori que se refere à relação de reciprocidade entre quem ensina e quem aprende. Aqui, ela vira prática: cada tópico pede que você explique o que aprendeu para alguém, e quem já sabe ajuda a melhorar a trilha.</p>' +
-      '<p>Esta trilha faz parte da Iniciativa Ako, da Rizzygo. Todo o conteúdo é aberto e qualquer pessoa pode sugerir melhorias no <a href="https://github.com/rizzygo/iniciativa-ako">GitHub</a>.</p>' +
+      '<p>Esta trilha faz parte da Iniciativa Ako, da Rizzygo. Todo o conteúdo é aberto e qualquer pessoa pode sugerir melhorias no <a href="https://github.com/rizzygo/ako">GitHub</a>.</p>' +
       '</div></div>' +
       '<div class="principios">' +
       '<div><h3>Sem passo a passo único</h3><p>O roteiro é um ponto de partida, não um trilho. Pule o que já sabe, volte quando precisar e questione o caminho.</p></div>' +
-      '<div><h3>De graça, de verdade</h3><p>Só indicamos materiais gratuitos, e sempre dizemos quando um deles está em inglês.</p></div>' +
+      '<div><h3>De graça, de verdade</h3><p>Todo tópico dá para concluir só com materiais gratuitos. Quando vale a pena, indicamos também opções pagas e acessíveis, sempre separadas. E sempre dizemos quando um material está em inglês.</p></div>' +
       '<div><h3>Entender antes de rodar</h3><p>A IA ajuda muito, mas quem responde pelo que roda é você. A trilha treina a base para usar a IA com segurança.</p></div>' +
       '</div></div></section>';
+  }
+
+  /* ---------- materiais ---------- */
+  function pago(r) { return /^não/.test(r.gratuito || ''); }
+  function listaRecursos(lista) {
+    return '<ul class="recursos">' + lista.map(function (r) {
+      var custo = r.gratuito && r.gratuito !== 'sim' ? ' (' + esc(r.gratuito.replace(/^(sim|não), /, '')) + ')' : '';
+      return '<li><a href="' + urlSegura(r.url) + '"' + (/^https?:/.test(r.url) ? ' target="_blank" rel="noopener"' : '') + '>' + esc(r.titulo) + '</a><p>' + esc(r.fonte) + (r.idioma === 'en' ? ', em inglês' : '') + custo + '. ' + esc(r.nota) + '</p></li>';
+    }).join('') + '</ul>';
   }
 
   /* ---------- montar roteiro ---------- */
@@ -483,15 +492,15 @@
           return '<div class="ramo" data-area="' + a.id + '" style="--cor:' + a.cor + '"><input type="radio" name="caminho" id="c-' + a.id + '" value="' + a.id + '"' + (estado.caminho === a.id ? ' checked' : '') + '>' +
             '<label for="c-' + a.id + '"><h3>' + esc(a.nome) + '</h3><p>' + esc(a.descricao) + '</p><div class="meta"><a href="' + urlSegura(a.roadmap) + '" target="_blank" rel="noopener">Mapa da área no roadmap.sh</a><span>em inglês</span></div></label></div>';
         }).join('') + '</div>' +
-        '<p>As próximas trilhas em português ainda estão sendo construídas. Quer ajudar a criar a da sua área? <a href="https://github.com/rizzygo/iniciativa-ako/issues">Abra uma issue no GitHub</a>.</p></section>';
+        '<p>As próximas trilhas em português ainda estão sendo construídas. Quer ajudar a criar a da sua área? <a href="https://github.com/rizzygo/ako/issues">Abra uma issue no GitHub</a>.</p></section>';
     } else {
       html += '<section class="bloco"><h2>Pratique</h2><p class="dica">Marque o que você já fez. O checklist completo vale ' + XP.checklist + ' XP.</p><ul class="checklist" id="checklist">' +
         t.checklist.map(function (c, i) { return '<li><label><input type="checkbox" data-i="' + i + '"' + (s.check[i] ? ' checked' : '') + '><span>' + fmt(c) + '</span></label></li>'; }).join('') + '</ul></section>';
-      html += '<section class="bloco"><h2>Materiais gratuitos</h2>' + (t.recursos.length
-        ? '<ul class="recursos">' + t.recursos.map(function (r) {
-          return '<li><a href="' + urlSegura(r.url) + '"' + (/^https?:/.test(r.url) ? ' target="_blank" rel="noopener"' : '') + '>' + esc(r.titulo) + '</a><p>' + esc(r.fonte) + (r.idioma === 'en' ? ', em inglês' : '') + (r.gratuito && r.gratuito !== 'sim' ? ' (' + esc(r.gratuito.replace(/^sim, /, '')) + ')' : '') + '. ' + esc(r.nota) + '</p></li>';
-        }).join('') + '</ul>'
+      var gratis = t.recursos.filter(function (r) { return !pago(r); }), pagos = t.recursos.filter(pago);
+      html += '<section class="bloco"><h2>Materiais gratuitos</h2>' + (gratis.length
+        ? listaRecursos(gratis)
         : '<p class="vazio">Ainda não temos materiais para este tópico. Conhece um bom e gratuito? Sugira no GitHub.</p>') + '</section>';
+      if (pagos.length) html += '<section class="bloco"><h2>Para ir além, se quiser investir</h2><p class="dica">Opcionais. Os materiais gratuitos acima bastam para concluir o tópico. Estes são pagos, acessíveis e bem avaliados.</p>' + listaRecursos(pagos) + '</section>';
       html += '<section class="bloco"><h2>Desafio</h2><p class="dica">Cada tentativa sorteia 3 de ' + t.quiz.length + ' perguntas. Acerte pelo menos 2 para concluir. Vale ' + XP.quiz + ' XP, e mais ' + XP.perfeito + ' se acertar tudo de primeira.</p><div id="quiz"></div></section>';
     }
     html += '<section class="bloco"><h2>Pergunta Ako</h2><p class="resumo-texto">' + fmt(t.pergunta_ako) + '</p>' +
@@ -780,6 +789,6 @@
       desenharLeque(document.getElementById('ramos-escolha'), false);
     });
   }).catch(function () {
-    app.innerHTML = '<div class="coluna"><div class="pagina-cab"><h1>Não foi possível carregar a trilha</h1><p>Confira sua conexão e recarregue a página. Se o problema continuar, avise no <a href="https://github.com/rizzygo/iniciativa-ako/issues">GitHub</a>.</p></div></div>';
+    app.innerHTML = '<div class="coluna"><div class="pagina-cab"><h1>Não foi possível carregar a trilha</h1><p>Confira sua conexão e recarregue a página. Se o problema continuar, avise no <a href="https://github.com/rizzygo/ako/issues">GitHub</a>.</p></div></div>';
   });
 })();

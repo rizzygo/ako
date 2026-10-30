@@ -45,3 +45,4 @@ details.exercicio[open] summary{margin-bottom:.6rem}
 .lista-materiais li{background:var(--superficie);border:1px solid var(--linha);border-left:6px solid var(--azul);border-radius:var(--raio-p);padding:1rem 1.1rem}
 .lista-materiais h2{font-size:1.2rem;margin:0}
 .lista-materiais p{color:var(--suave);margin-top:.3rem}
+.licao p code,.licao li code{white-space:normal;overflow-wrap:anywhere}
