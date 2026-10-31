@@ -39,21 +39,25 @@ main{display:block;outline:none}
 .casca{max-width:68rem;margin:0 auto;padding:0 16px}
 .coluna{max-width:44rem;margin:0 auto;padding:0 16px}
 
-/* faixa de volta para o site principal */
-.casa{background:var(--tinta);color:var(--fundo)}
-.casa-in{max-width:68rem;margin:0 auto;padding:.3rem 16px;font-size:.85rem}
-.casa a{color:inherit;text-decoration:none;font-weight:700}
-.casa a:hover{text-decoration:underline}
+/* faixa da família Rizzygo: igual no rizzygo.com.br e no Ako */
+.familia{background:#0B1B3A;font-family:var(--f-titulo)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .familia{background:#060D22;border-bottom:1px solid #26355E}}
+:root[data-theme="dark"] .familia{background:#060D22;border-bottom:1px solid #26355E}
+.familia-in{max-width:68rem;margin:0 auto;padding:.35rem 16px;display:flex;align-items:center;gap:.35rem}
+.familia-item{display:inline-flex;align-items:center;gap:.45rem;padding:.3rem .85rem;border-radius:999px;border:1px solid rgba(255,255,255,.28);color:#E8ECF6;text-decoration:none;font-weight:600;font-size:.88rem;line-height:1.2;transition:background-color .15s,color .15s}
+.familia-item:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5);color:#FFFFFF}
+.familia-item[aria-current="page"]{background:rgba(255,255,255,.14);border-color:transparent;color:#FFFFFF}
+.familia-item svg{width:16px;height:16px;flex:none}
 
 /* topo */
 .topo{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--fundo) 88%,transparent);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--linha)}
 .topo-in{max-width:68rem;margin:0 auto;padding:.6rem 16px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.marca{display:flex;align-items:center;gap:.5rem;white-space:nowrap;text-decoration:none;color:var(--tinta);font-family:var(--f-titulo);font-size:1.1rem}
-.marca svg{width:26px;height:26px}
+.marca{display:flex;align-items:center;gap:.5rem;white-space:nowrap;text-decoration:none;color:var(--tinta);font:700 1.2rem/1 var(--f-titulo);letter-spacing:-.02em}
+.marca svg{width:28px;height:28px}
 .marca b{font-weight:400;color:var(--suave)}
 .menu{display:flex;align-items:center;gap:1rem}
 .menu > a{color:var(--tinta);text-decoration:none;font-weight:700;font-size:.95rem}
-.menu > a[aria-current="page"]{color:var(--azul)}
+.menu > a[aria-current="page"]{color:var(--azul);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:.4em}
 .xp-pill{display:flex;align-items:center;gap:.5rem;background:var(--superficie);border:1px solid var(--linha);border-radius:999px;padding:.3rem .7rem .3rem .8rem}
 .xp-nivel{font-size:.85rem;white-space:nowrap}
 .xp-barra{width:56px;height:8px;border-radius:99px;background:var(--trilho);overflow:hidden}
@@ -252,4 +256,4 @@ textarea:focus{border-color:var(--azul);outline:none}
 .noscript{padding:2rem 16px;text-align:center}
 .carregando{padding:4rem 16px;text-align:center;color:var(--suave)}
 
-@media (max-width:420px){.menu{gap:.6rem}.marca{font-size:1rem}.xp-barra{width:36px}.xp-pill{padding:.25rem .55rem}.xp-nivel{font-size:.8rem}}
+@media (max-width:420px){.topo-in{gap:.5rem}.menu{gap:.5rem}.marca{font-size:1rem}.xp-barra{width:36px}.xp-pill{padding:.25rem .55rem}.xp-nivel{font-size:.8rem}}

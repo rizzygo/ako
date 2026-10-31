@@ -99,8 +99,15 @@ tr:last-child td{border-bottom:0}
 .fact{border-top:1px solid var(--line);padding-top:.9rem;display:flex;flex-direction:column;gap:.25rem}
 .fact .src{font-size:.88rem;color:var(--muted)}
 
-.casa{margin-bottom:1.5rem;font-size:.9rem}
-.casa a{font-weight:700}
+/* faixa da família Rizzygo: igual no rizzygo.com.br e no Ako */
+.familia{background:#0B1B3A;font-family:var(--f-display);position:relative;left:50%;width:100vw;transform:translateX(-50%);margin:-2.5rem 0 2.5rem}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .familia{background:#060D22;border-bottom:1px solid #26355E}}
+:root[data-theme="dark"] .familia{background:#060D22;border-bottom:1px solid #26355E}
+.familia-in{max-width:calc(46rem + 32px);margin:0 auto;padding:.35rem 16px;display:flex;align-items:center;gap:.35rem}
+.familia-item{display:inline-flex;align-items:center;gap:.45rem;padding:.3rem .85rem;border-radius:999px;border:1px solid rgba(255,255,255,.28);color:#E8ECF6;text-decoration:none;font-weight:600;font-size:.88rem;line-height:1.2;transition:background-color .15s,color .15s}
+.familia-item:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5);color:#FFFFFF}
+.familia-item[aria-current="page"]{background:rgba(255,255,255,.14);border-color:transparent;color:#FFFFFF}
+.familia-item svg{width:16px;height:16px;flex:none}
 
 footer{border-top:2px solid var(--ink);padding-top:1.5rem;display:flex;flex-direction:column;gap:.6rem}
 footer .sig{font-family:var(--f-display);font-weight:600;font-size:1.1rem}
@@ -111,9 +118,8 @@ footer .zy{color:var(--ink);font-weight:700}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
+<nav class="familia" aria-label="Sites da Rizzygo"><div class="familia-in"><a class="familia-item" href="https://rizzygo.com.br/" title="Site principal da Rizzygo"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/></svg>Rizzygo</a><a class="familia-item" href="https://ako.rizzygo.com.br/" aria-current="page">Ako</a></div></nav>
 <div class="wrap">
-
-<nav class="casa" aria-label="Rizzygo"><a href="https://rizzygo.com.br/"><span aria-hidden="true">←</span> Voltar para rizzygo.com.br</a></nav>
 
 <header>
   <div class="eyebrow"><span class="tag">Configuração em 5 minutos</span><span>Iniciativa Ako · Rizzygo</span></div>
