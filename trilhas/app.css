@@ -39,6 +39,12 @@ main{display:block;outline:none}
 .casca{max-width:68rem;margin:0 auto;padding:0 16px}
 .coluna{max-width:44rem;margin:0 auto;padding:0 16px}
 
+/* faixa de volta para o site principal */
+.casa{background:var(--tinta);color:var(--fundo)}
+.casa-in{max-width:68rem;margin:0 auto;padding:.3rem 16px;font-size:.85rem}
+.casa a{color:inherit;text-decoration:none;font-weight:700}
+.casa a:hover{text-decoration:underline}
+
 /* topo */
 .topo{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--fundo) 88%,transparent);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--linha)}
 .topo-in{max-width:68rem;margin:0 auto;padding:.6rem 16px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
