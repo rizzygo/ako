@@ -46,3 +46,4 @@ details.exercicio[open] summary{margin-bottom:.6rem}
 .lista-materiais h2{font-size:1.2rem;margin:0}
 .lista-materiais p{color:var(--suave);margin-top:.3rem}
 .licao p code,.licao li code{white-space:normal;overflow-wrap:anywhere}
+.licao .lista-materiais{padding-left:0}
