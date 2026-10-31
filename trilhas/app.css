@@ -257,3 +257,20 @@ textarea:focus{border-color:var(--azul);outline:none}
 .carregando{padding:4rem 16px;text-align:center;color:var(--suave)}
 
 @media (max-width:420px){.topo-in{gap:.5rem}.menu{gap:.5rem}.marca{font-size:1rem}.xp-barra{width:36px}.xp-pill{padding:.25rem .55rem}.xp-nivel{font-size:.8rem}}
+
+/* efeitos: iguais no rizzygo.com.br (estilo.css) */
+.hero{position:relative;isolation:isolate;overflow-x:clip}
+.hero::after{content:"";position:absolute;z-index:-1;inset:-10% -20% auto auto;width:min(70vw,720px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 40%,rgba(31,79,216,.2),transparent 60%),radial-gradient(circle at 70% 65%,rgba(245,165,36,.2),transparent 55%);filter:blur(40px);animation:aurora 18s ease-in-out infinite alternate;pointer-events:none}
+@keyframes aurora{0%{transform:translate(0,0) scale(1)}50%{transform:translate(-6%,8%) scale(1.08)}100%{transform:translate(4%,-4%) scale(.96)}}
+.btn{transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px -8px color-mix(in srgb,var(--azul) 70%,transparent)}
+.lista-materiais li,.lista-mapas a,.ramo label{transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+.lista-materiais li:hover,.lista-mapas a:hover{transform:translateY(-3px);box-shadow:0 18px 40px -22px rgba(11,27,58,.45)}
+.lista-materiais li:hover{border-color:color-mix(in srgb,var(--azul) 40%,var(--linha));border-left-color:var(--azul)}
+.js .revela{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i,0) * 80ms)}
+.js .revela.visivel{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .hero::after{animation:none}
+  .js .revela{opacity:1;transform:none;transition:none}
+  .btn:hover,.lista-materiais li:hover,.lista-mapas a:hover{transform:none}
+}
