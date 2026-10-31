@@ -31,6 +31,17 @@ curl -fsSL https://raw.githubusercontent.com/rizzygo/ako/main/skills/antes-de-ro
 
 Faça o commit da pasta para todo o time usar a mesma skill.
 
+### Pelo plugin favo-estudo, no Claude Code
+
+A mesma skill faz parte do plugin `favo-estudo`, nos [Favos](https://github.com/rizzygo/favos), junto com outras skills para estudar com IA:
+
+```bash
+claude plugin marketplace add rizzygo/favos
+claude plugin install favo-estudo@favos
+```
+
+Pelo plugin, a skill vale em todos os seus projetos e recebe as atualizações com `claude plugin update favo-estudo@favos`. Para desfazer, rode `claude plugin uninstall favo-estudo@favos`.
+
 ### Onde a skill fica em cada ferramenta
 
 Para instalar em todos os seus projetos de uma vez, ou na pasta própria da sua ferramenta, troque o caminho do comando por um destes:
