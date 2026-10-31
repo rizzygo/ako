@@ -1,5 +1,7 @@
 # Iniciativa Ako
 
+![A Zumi, abelha da Rizzygo All, acenando ao lado do texto "Rizzygo All: comunidade e conteúdo gratuito"](zumi/banner-rizzygo-all.png)
+
 Guias abertos e gratuitos para quem está começando em tecnologia e quer usar IA sem deixar de entender o que está fazendo.
 
 Ako é uma filosofia maori que se refere à relação de reciprocidade entre quem ensina e quem aprende: quem ensina também aprende, e quem aprende também ensina.
@@ -39,6 +41,10 @@ Um guia pode passar por três formatos.
 
 O site está em **https://ako.rizzygo.com.br**, no Cloudflare Pages. Cada commit na `main` publica uma versão nova sozinho, e cada pull request ganha um endereço de prévia para conferir antes do merge. Não há build: o Pages serve os arquivos deste repositório como estão, e `_redirects` e `_headers` ajustam a raiz e os cabeçalhos.
 
+## A Zumi, abelha da comunidade
+
+A Zumi é a mascote da Rizzygo All. Onde ela aparece, o conteúdo é gratuito e aberto a todos. As listras da barriga são o Z do logo da Rizzygo. As imagens usadas aqui ficam em [`zumi/`](zumi).
+
 ## Como ajudar a melhorar os guias
 
 Achou um erro, tem uma pergunta melhor ou quer adaptar um guia para outra ferramenta? Abra uma [issue](../../issues) (um tópico de conversa no GitHub) ou mande um pull request (uma proposta de alteração). O passo a passo está em [CONTRIBUTING.md](CONTRIBUTING.md).
@@ -47,7 +53,7 @@ Nunca contribuiu com um projeto no GitHub? Abrir sua primeira issue aqui é um b
 
 ## Licença CC BY 4.0
 
-Você pode usar, adaptar e compartilhar os conteúdos, inclusive no trabalho, desde que cite a Rizzygo como fonte. O texto completo está em [LICENSE](LICENSE).
+Você pode usar, adaptar e compartilhar os conteúdos, inclusive no trabalho, desde que cite a Rizzygo como fonte. O texto completo está em [LICENSE](LICENSE). O nome Rizzygo, o logo e a Zumi são marcas da Rizzygo e ficam fora dessa licença: use as imagens para falar da comunidade, sem alterar nem criar produtos com elas.
 
 ---
 
