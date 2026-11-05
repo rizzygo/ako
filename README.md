@@ -19,8 +19,8 @@ Cada conteúdo novo entra nesta tabela.
 | [Trilha Primeiros passos em TI](https://ako.rizzygo.com.br/trilhas/) ([conteúdo](trilhas)) | Montar seu roteiro de estudos e aprender a base que toda área usa, de como estudar até um primeiro projeto no GitHub. | 16 tópicos, no seu ritmo |
 | [Mapas das áreas da TI](https://ako.rizzygo.com.br/trilhas/mapas/) ([conteúdo](trilhas/dados/mapas.json)) | Ver, em grafo, o que estudar em cada área depois da trilha: infraestrutura e cloud, desenvolvimento, dados, QA, segurança e produto. | 6 mapas de área, de 16 a 23 tópicos cada, e um mapa da trilha |
 | [Lições em português](https://ako.rizzygo.com.br/trilhas/materiais/) ([conteúdo](trilhas/materiais)) | Aprender, com textos próprios do Ako, os tópicos da trilha em que o melhor material gratuito só existia em inglês ou era um texto solto. | 12 lições, de 40 minutos a 2 horas cada |
-| [Dicas antes de rodar](guias/dicas-antes-de-rodar-prompt) ([versão em página](https://ako.rizzygo.com.br/guias/dicas-antes-de-rodar-prompt/pagina.html)) | Configurar sua IA para explicar o que um comando muda, como desfazer e como conferir o resultado. | 5 a 10 minutos |
-| [Skill antes-de-rodar](skills/antes-de-rodar) | Fazer sua IA de código (Claude Code, GitHub Copilot, Cortex Code) confirmar o contexto, seguir guard rails contra alucinação e retrabalho e fechar toda mudança com "Antes de rodar". | 2 minutos para instalar |
+| [Favos](https://ako.rizzygo.com.br/favos/) ([código](https://github.com/rizzygo/favos)) | Ver e instalar as skills abertas para IA de código, cada uma na sua aba, com exemplos e botão de copiar. A primeira aba é o guia Dicas antes de rodar. | 2 minutos por skill |
+| [Dicas antes de rodar](guias/dicas-antes-de-rodar-prompt) ([versão em página](https://ako.rizzygo.com.br/favos/dicas-antes-de-rodar/)) | Configurar qualquer IA para explicar o que um comando muda, como desfazer e como conferir o resultado. | 5 a 10 minutos |
 
 ## Três ideias por trás dos guias: base, questionamento e mão de duas vias
 
@@ -38,7 +38,7 @@ Um guia pode passar por três formatos.
 2. **Instrução para IA:** texto pronto para colar no ChatGPT, no Claude, no Gemini ou no Copilot.
 3. **Skill ou plugin:** quando um guia funciona bem, ele vira um pacote instalável, e a IA passa a seguir o padrão sem você precisar lembrar.
 
-Os plugins ficam nos [Favos](https://github.com/rizzygo/favos), também abertos e gratuitos. A skill antes-de-rodar, que nasceu do guia Dicas antes de rodar, está no plugin `favo-estudo`.
+As skills ficam nos [Favos](https://github.com/rizzygo/favos), também abertos e gratuitos, e cada uma tem uma aba em [ako.rizzygo.com.br/favos](https://ako.rizzygo.com.br/favos/). A skill antes-de-rodar, que nasceu do guia Dicas antes de rodar, está no plugin `favo-estudo`. O código dela mora só nos Favos.
 
 ## Onde fica publicado
 

@@ -28,20 +28,20 @@ Ao contribuir, você concorda que sua contribuição fica sob a mesma licença d
 
 ## Onde cada arquivo fica
 
-Cada guia tem uma pasta própria dentro de `guias/`, e cada skill, dentro de `skills/`. O site das trilhas fica em `trilhas/`, e o [README da pasta](trilhas/README.md) explica como editar o conteúdo:
+Cada guia tem uma pasta própria dentro de `guias/`. As skills ficam no repositório [favos](https://github.com/rizzygo/favos), e a página de cada uma fica em `favos/`. O site das trilhas fica em `trilhas/`, e o [README da pasta](trilhas/README.md) explica como editar o conteúdo:
 
 ```
 guias/
   nome-do-guia/
     README.md       o guia em si
     instrucao.txt   o texto pronto para colar na IA, quando houver
-    pagina.html     a versão visual do guia, quando houver
 trilhas/
   dados/
     primeiros-passos.json   o conteúdo da trilha: tópicos, checklists, materiais e desafios
   validar.py                confere o formato do conteúdo antes do pull request
-skills/
+favos/
+  favos.css, favos.js   o template das páginas, o mesmo do guia Dicas antes de rodar
+  index.html            a lista das skills dos Favos
   nome-da-skill/
-    SKILL.md        as instruções que a IA segue
-    README.md       como instalar, exemplos e ideias de melhoria
+    index.html          a aba da skill: o que faz, como instalar e como testar
 ```

@@ -1,8 +1,11 @@
 <!doctype html>
 <html lang="pt-BR">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Dicas antes de rodar</title>
+<meta name="description" content="Configure sua IA em cerca de 5 minutos para terminar toda sugestão de comando com o que muda, como desfazer e como saber que deu certo.">
+<meta name="theme-color" content="#0B1B3A">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96">
@@ -12,117 +15,16 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
-<style>
-/* Layout: uma coluna de leitura (~44rem), passos 1-2-3 em sequência; blocos de instrução e terminal podem ser mais largos com rolagem própria */
-:root{
-  --bg:#F5F7FB; --surface:#FFFFFF; --ink:#0B1B3A; --muted:#4A5672; --line:#DCE2EE;
-  --blue:#1F4FD8; --blue-soft:#E7EDFC; --amber:#F5A524; --amber-ink:#0B1B3A;
-  --term-bg:#0B1B3A; --term-fg:#E8ECF6; --term-dim:#9AA8C7;
-  --f-display:"Outfit","Avenir Next","Segoe UI",system-ui,sans-serif;
-  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
-  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
-}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#081429; --surface:#0F1F3D; --ink:#E8ECF6; --muted:#A9B5CF; --line:#22355C;
-  --blue:#8AA8FF; --blue-soft:#16295080; --amber:#F5A524; --amber-ink:#0B1B3A;
-  --term-bg:#030B1A; --term-fg:#E8ECF6; --term-dim:#8D9BBA; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#081429; --surface:#0F1F3D; --ink:#E8ECF6; --muted:#A9B5CF; --line:#22355C;
-  --blue:#8AA8FF; --blue-soft:#16295080; --amber:#F5A524; --amber-ink:#0B1B3A;
-  --term-bg:#030B1A; --term-fg:#E8ECF6; --term-dim:#8D9BBA; color-scheme:dark}
-
-*{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:1.0625rem;line-height:1.65;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:2.5rem 4rem}
-.wrap{max-width:46rem;margin:0 auto;display:flex;flex-direction:column;gap:3rem}
-h1,h2,h3{font-family:var(--f-display);line-height:1.15;text-wrap:balance;margin:0}
-h1{font-size:clamp(2.4rem,7vw,3.6rem);font-weight:700;letter-spacing:-.02em}
-h2{font-size:1.6rem;font-weight:600}
-h3{font-size:1.1rem;font-weight:600}
-p{margin:0;max-width:65ch}
-a{color:var(--blue);text-underline-offset:3px}
-a:focus-visible,button:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:6px}
-code{font-family:var(--f-mono);font-size:.88em;background:var(--blue-soft);padding:.1em .35em;border-radius:4px}
-section{display:flex;flex-direction:column;gap:1rem}
-
-.eyebrow{font-family:var(--f-display);font-weight:600;font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
-.eyebrow .tag{background:var(--amber);color:var(--amber-ink);padding:.15rem .55rem;border-radius:999px;letter-spacing:.06em}
-header{display:flex;flex-direction:column;gap:1rem}
-.lead{font-size:1.2rem;color:var(--muted)}
-.lead strong{color:var(--ink)}
-
-.qs{display:grid;grid-template-columns:repeat(auto-fit,minmax(12.5rem,1fr));gap:.75rem;margin-top:.5rem}
-.q{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.35rem;min-width:0}
-.q .n{font-family:var(--f-mono);font-size:.8rem;color:var(--blue);font-weight:600}
-.q h3{font-size:1.15rem}
-.q p{font-size:.95rem;color:var(--muted)}
-
-.step-head{display:flex;gap:.9rem;align-items:baseline}
-.ex-label{font-size:1.05rem;margin-top:.75rem}
-.step-time{margin-left:auto;font-family:var(--f-mono);font-size:.8rem;color:var(--muted);white-space:nowrap}
-.step-n{font-family:var(--f-display);font-weight:700;font-size:1rem;color:var(--amber-ink);background:var(--amber);width:2rem;height:2rem;border-radius:50%;display:inline-grid;place-items:center;flex:none;transform:translateY(-.1rem)}
-
-.prompt{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.prompt-bar{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.6rem .9rem;border-bottom:1px solid var(--line);font-family:var(--f-mono);font-size:.8rem;color:var(--muted)}
-.prompt pre{margin:0;padding:1rem 1.1rem;font-family:var(--f-mono);font-size:.88rem;line-height:1.6;white-space:pre-wrap;word-break:break-word;color:var(--ink)}
-button.copy{font-family:var(--f-display);font-weight:600;font-size:.85rem;background:var(--blue);color:#fff;border:0;border-radius:8px;padding:.4rem .8rem;cursor:pointer}
-:root[data-theme="dark"] button.copy{color:#081429}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) button.copy{color:#081429}}
-button.copy[data-done]{background:var(--amber);color:var(--amber-ink)}
-
-.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
-table{border-collapse:collapse;width:100%;font-size:.97rem}
-td:first-child{white-space:nowrap;font-weight:700}
-th,td{text-align:left;padding:.7rem 1rem;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-family:var(--f-display);font-weight:600;font-size:.85rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
-tr:last-child td{border-bottom:0}
-.note{font-size:.93rem;color:var(--muted)}
-
-.chat{display:flex;flex-direction:column;gap:.75rem}
-.you{align-self:flex-end;max-width:85%;background:var(--blue);color:#fff;padding:.7rem 1rem;border-radius:14px 14px 4px 14px}
-:root[data-theme="dark"] .you{color:#081429}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .you{color:#081429}}
-.term{background:var(--term-bg);color:var(--term-fg);border-radius:12px;padding:1.1rem 1.2rem;font-family:var(--f-mono);font-size:.86rem;line-height:1.7;overflow-x:auto;min-width:0}
-.term .dim{color:var(--term-dim)}
-.term .cmd{color:#FFFFFF;font-weight:600}
-.term .label{display:inline-block;background:var(--amber);color:#0B1B3A;font-weight:600;padding:0 .5rem;border-radius:4px;margin:.6rem 0 .2rem}
-.term .k{color:#F5C46B;font-weight:600}
-.term p{max-width:none}
-
-.extras{display:flex;flex-direction:column;gap:.75rem}
-.extra{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:.9rem 1rem;display:grid;grid-template-columns:1fr auto;gap:.4rem 1rem;align-items:start}
-.extra h3{font-size:1rem}
-.extra pre{grid-column:1/-1;margin:0;font-family:var(--f-mono);font-size:.84rem;white-space:pre-wrap;word-break:break-word;color:var(--muted)}
-.extra button.copy{font-size:.78rem;padding:.3rem .65rem}
-
-.why{display:flex;flex-direction:column;gap:.9rem}
-.fact{border-top:1px solid var(--line);padding-top:.9rem;display:flex;flex-direction:column;gap:.25rem}
-.fact .src{font-size:.88rem;color:var(--muted)}
-
-/* faixa da família Rizzygo: igual no rizzygo.com.br e no Ako */
-.familia{background:#0B1B3A;font-family:var(--f-display);position:relative;left:50%;width:100vw;transform:translateX(-50%);margin:-2.5rem 0 2.5rem}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .familia{background:#060D22;border-bottom:1px solid #26355E}}
-:root[data-theme="dark"] .familia{background:#060D22;border-bottom:1px solid #26355E}
-.familia-in{max-width:calc(46rem + 32px);margin:0 auto;padding:.35rem 16px;display:flex;align-items:center;gap:.35rem}
-.familia-item{display:inline-flex;align-items:center;gap:.45rem;padding:.3rem .85rem;border-radius:999px;border:1px solid rgba(255,255,255,.28);color:#E8ECF6;text-decoration:none;font-weight:600;font-size:.88rem;line-height:1.2;transition:background-color .15s,color .15s}
-.familia-item:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5);color:#FFFFFF}
-.familia-item[aria-current="page"]{background:rgba(255,255,255,.14);border-color:transparent;color:#FFFFFF}
-.familia-item svg{width:16px;height:16px;flex:none}
-
-footer{border-top:2px solid var(--ink);padding-top:1.5rem;display:flex;flex-direction:column;gap:.6rem}
-footer .sig{font-family:var(--f-display);font-weight:600;font-size:1.1rem}
-footer p{color:var(--muted)}
-footer .zy{color:var(--ink);font-weight:700}
-
-@media (max-width:480px){body{font-size:1rem}.you{max-width:100%}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
-</style>
+<link rel="stylesheet" href="/favos/favos.css?v=2026110501">
+</head>
+<body>
 
 <nav class="familia" aria-label="Sites da Rizzygo"><div class="familia-in"><a class="familia-item" href="https://rizzygo.com.br/" title="Site principal da Rizzygo"><svg viewBox="0 0 64 64" width="16" height="16" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/></svg>Rizzygo</a><a class="familia-item" href="https://ako.rizzygo.com.br/" aria-current="page">Ako</a></div></nav>
+<nav class="abas" aria-label="Skills dos Favos"><div class="abas-in"><a class="aba aba-casa" href="/favos/">Favos</a><a class="aba" href="/favos/dicas-antes-de-rodar/" aria-current="page">Dicas antes de rodar</a><a class="aba" href="/favos/antes-de-rodar/">Antes de rodar</a><a class="aba" href="/favos/entender-antes/">Entender antes</a><a class="aba" href="/favos/estudar-junto/">Estudar junto</a><a class="aba" href="/favos/proximo-passo/">Próximo passo</a><a class="aba" href="/favos/carreira-em-y/">Carreira em Y</a></div></nav>
 <div class="wrap">
 
 <header>
-  <div class="eyebrow"><span class="tag">Configuração em 5 minutos</span><span>Iniciativa Ako · Rizzygo</span></div>
+  <div class="eyebrow"><span class="tag">Configuração em 5 minutos</span><span>Favos · Iniciativa Ako</span></div>
   <h1>Dicas antes de rodar</h1>
   <p class="lead">Em cerca de 5 minutos, você configura sua IA para terminar toda sugestão de comando com três respostas: <strong>o que muda</strong>, <strong>como desfazer</strong> e <strong>como saber que deu certo</strong>. Lendo tudo e adicionando as linhas extras, são uns 10 minutos.</p>
   <p>Você salva a instrução uma vez e ela vale para as próximas conversas. Funciona no ChatGPT, no Claude, no Gemini, no GitHub Copilot e em qualquer IA que aceite instruções personalizadas.</p>
@@ -225,20 +127,26 @@ Se faltar contexto para responder com segurança (sistema operacional, versão, 
 <section aria-labelledby="skill">
   <div class="step-head"><span class="step-n">+</span><h2 id="skill">Usa IA de código? Instale a skill antes-de-rodar</h2><span class="step-time">2 min</span></div>
   <p>No Claude Code, no GitHub Copilot e no Cortex Code, a skill substitui os passos 1 e 2. Além das três perguntas, ela faz a IA confirmar o contexto antes de mexer no projeto, avisar quando não confirmou que um comando existe e esperar seu OK antes de qualquer ação sem volta.</p>
-  <h3 class="ex-label">1. Instale no projeto</h3>
-  <p>Rode na raiz do projeto. A pasta <code>.claude/skills</code> funciona nas três ferramentas.</p>
+  <h3 class="ex-label">1. Instale</h3>
+  <p>No Claude Code, instale o plugin <code>favo-estudo</code>, dos Favos:</p>
+  <div class="prompt">
+    <div class="prompt-bar"><span>terminal</span><button class="copy" type="button" data-target="s-plugin">Copiar</button></div>
+<pre id="s-plugin">claude plugin marketplace add rizzygo/favos
+claude plugin install favo-estudo@favos</pre>
+  </div>
+  <p>No GitHub Copilot ou no Cortex Code, rode na raiz do projeto. A pasta <code>.claude/skills</code> funciona nas três ferramentas.</p>
   <div class="prompt">
     <div class="prompt-bar"><span>terminal</span><button class="copy" type="button" data-target="s-install">Copiar</button></div>
 <pre id="s-install">mkdir -p .claude/skills/antes-de-rodar
-curl -fsSL https://raw.githubusercontent.com/rizzygo/ako/main/skills/antes-de-rodar/SKILL.md \
+curl -fsSL https://raw.githubusercontent.com/rizzygo/favos/main/plugins/favo-estudo/skills/antes-de-rodar/SKILL.md \
   -o .claude/skills/antes-de-rodar/SKILL.md</pre>
   </div>
-  <p class="note">Faça o commit da pasta para todo o time usar a mesma skill. Para desfazer, rode <code>rm -r .claude/skills/antes-de-rodar</code>.</p>
+  <p class="note">Faça o commit da pasta para todo o time usar a mesma skill. Para desfazer, rode <code>claude plugin uninstall favo-estudo@favos</code> ou <code>rm -r .claude/skills/antes-de-rodar</code>.</p>
   <h3 class="ex-label">2. Confira se funcionou</h3>
   <p>Abra uma sessão nova da sua IA de código e peça, por exemplo:</p>
   <div class="chat"><div class="you">Como apago todos os arquivos .log deste projeto?</div></div>
-  <p>Funcionou se a resposta mostra o que seria apagado antes de apagar e termina com o "Antes de rodar" em quatro itens. O quarto é novo: <strong>o que não verifiquei</strong>, onde a IA separa o que conferiu do que está supondo. No Claude Code, você também pode chamar a skill pelo nome com <code>/antes-de-rodar</code>.</p>
-  <p>A <a href="https://github.com/rizzygo/ako/tree/main/skills/antes-de-rodar">página da skill</a> tem a pasta certa para instalar em todos os seus projetos, três exemplos e o resultado do teste com e sem a skill.</p>
+  <p>Funcionou se a resposta mostra o que seria apagado antes de apagar e termina com o "Antes de rodar" em quatro itens. O quarto é novo: <strong>o que não verifiquei</strong>, onde a IA separa o que conferiu do que está supondo. No Claude Code, você também pode chamar a skill pelo nome com <code>/favo-estudo:antes-de-rodar</code>.</p>
+  <p>A <a href="/favos/antes-de-rodar/">aba da skill</a> tem a pasta certa para instalar em todos os seus projetos, três exemplos e o resultado do teste com e sem a skill. As outras abas mostram as demais skills dos Favos.</p>
 </section>
 
 <section aria-labelledby="porque" class="why">
@@ -263,18 +171,6 @@ curl -fsSL https://raw.githubusercontent.com/rizzygo/ako/main/skills/antes-de-ro
 
 </div>
 
-<script>
-document.querySelectorAll('button.copy').forEach(function(btn){
-  btn.addEventListener('click', function(){
-    var el = document.getElementById(btn.dataset.target);
-    var text = el.innerText;
-    function done(){ var o = btn.textContent; btn.textContent = 'Copiado'; btn.setAttribute('data-done',''); setTimeout(function(){ btn.textContent = o; btn.removeAttribute('data-done'); }, 1800); }
-    function selectIt(){ var r = document.createRange(); r.selectNodeContents(el); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selecionado, use Ctrl+C'; setTimeout(function(){ btn.textContent = 'Copiar'; }, 2500); }
-    try {
-      if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(done, selectIt); }
-      else { selectIt(); }
-    } catch(e){ selectIt(); }
-  });
-});
-</script>
+<script src="/favos/favos.js?v=2026110501"></script>
+</body>
 </html>
