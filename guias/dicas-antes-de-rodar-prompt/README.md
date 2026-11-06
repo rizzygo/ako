@@ -4,7 +4,7 @@ Em cerca de 5 minutos, você configura sua IA para terminar toda sugestão de co
 
 Você salva a instrução uma vez e ela vale para as próximas conversas. Funciona no ChatGPT, no Claude, no Gemini, no GitHub Copilot e em qualquer IA que aceite instruções personalizadas.
 
-Prefere com visual e botão de copiar? Abra a [versão em página](https://ako.rizzygo.com.br/guias/dicas-antes-de-rodar-prompt/pagina.html).
+Prefere com visual e botão de copiar? Abra a [versão em página](https://ako.rizzygo.com.br/favos/dicas-antes-de-rodar/).
 
 ## As três perguntas que a IA vai responder
 
@@ -43,7 +43,7 @@ Cada ferramenta guarda instruções num lugar diferente. A tabela mostra onde co
 
 Os nomes dos menus mudam com frequência. Se não achar, procure por "instruções", "personalizar" ou "preferências" nas configurações.
 
-Usa Claude Code, GitHub Copilot ou Cortex Code? Instale a [skill antes-de-rodar](../../skills/antes-de-rodar). Ela já traz a instrução, com perguntas de contexto e guard rails contra alucinação.
+Usa Claude Code, GitHub Copilot ou Cortex Code? Instale a [skill antes-de-rodar](https://ako.rizzygo.com.br/favos/antes-de-rodar/), dos Favos. Ela já traz a instrução, com perguntas de contexto e guard rails contra alucinação.
 
 ## Passo 3: teste com uma pergunta do seu dia a dia (2 minutos)
 

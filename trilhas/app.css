@@ -257,6 +257,8 @@ textarea:focus{border-color:var(--azul);outline:none}
 .carregando{padding:4rem 16px;text-align:center;color:var(--suave)}
 
 @media (max-width:420px){.topo-in{gap:.5rem}.menu{gap:.5rem}.marca{font-size:1rem}.xp-barra{width:36px}.xp-pill{padding:.25rem .55rem}.xp-nivel{font-size:.8rem}}
+@media (max-width:440px){.menu > a{font-size:.9rem}.xp-barra{display:none}}
+@media (max-width:360px){.marca span{display:none}}
 
 /* efeitos: iguais no rizzygo.com.br (estilo.css) */
 .hero{position:relative;isolation:isolate;overflow-x:clip}
