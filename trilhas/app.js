@@ -485,6 +485,13 @@
     if (paraValidar(t) && !concluido(t)) html += '<div class="aviso">Você disse que já sabe este assunto. Faça o desafio: acertando, o checklist é marcado para você.</div>';
     html += '<section class="bloco"><h2>Em poucas palavras</h2><p class="resumo-texto">' + fmt(t.resumo) + '</p></section>';
     html += '<section class="bloco"><h2>O essencial</h2><ul class="essencial">' + t.essencial.map(function (x) { return '<li>' + fmt(x) + '</li>'; }).join('') + '</ul></section>';
+    if (!ramificacao(t)) {
+      html += '<section class="bloco"><h2>Estudar com IA</h2><p>Copie um prompt pronto e cole na IA que você usa, no computador ou no celular. Ela vai te ensinar perguntando, em vez de entregar a resposta pronta.</p>' +
+        '<p class="dica">O prompt leva só o conteúdo deste tópico, nada do seu progresso. O método vem da skill <a href="../favos/estudar-junto/">estudar-junto</a>, dos Favos.</p>' +
+        '<div class="acoes" style="margin-top:.8rem"><button class="btn" type="button" id="ia-copiar">Copiar prompt</button>' +
+        (navigator.share ? '<button class="btn btn-sec" type="button" id="ia-compartilhar">Enviar para um app de IA</button>' : '') + '</div>' +
+        '<p class="salvo" id="ia-msg" aria-live="polite"></p><textarea id="ia-texto" readonly hidden aria-label="Prompt para estudar com IA"></textarea></section>';
+    }
 
     if (ramificacao(t)) {
       html += '<section class="bloco"><h2>Escolha um caminho</h2><p class="dica">Sua escolha fica salva e pode mudar quando quiser.</p>' +
@@ -538,6 +545,7 @@
         atualizarEstadoTopico(t);
       });
       montarQuiz(t);
+      ligarEstudarComIA(t);
     }
     document.getElementById('salvar-reflexao').addEventListener('click', function () {
       var txt = document.getElementById('reflexao').value;
@@ -548,6 +556,60 @@
       else if (txt.trim().length) { msg.style.color = 'var(--suave)'; msg.textContent = 'Resposta salva. Escreva pelo menos uma ou duas frases (' + MIN_REFLEXAO + ' caracteres) para ganhar os ' + XP.reflexao + ' XP.'; }
       else { msg.style.color = 'var(--suave)'; msg.textContent = 'Resposta apagada.'; }
       atualizarEstadoTopico(t);
+    });
+  }
+  // Estudar com IA: junta o método da skill estudar-junto (dos Favos) com o conteúdo do tópico.
+  var PROMPT_URL = 'https://raw.githubusercontent.com/rizzygo/favos/main/prompts/estudar-junto.txt';
+  var PROMPT_RESERVA = 'Quero estudar um assunto com você. Siga o método da skill estudar-junto, dos Favos da Rizzygo ' +
+    '(https://github.com/rizzygo/favos/blob/main/plugins/favo-estudo/skills/estudar-junto/SKILL.md). ' +
+    'Antes de explicar, pergunte o que eu já sei e para que eu preciso. Explique uma ideia por vez, com um exemplo do dia a dia, ' +
+    'e depois de cada parte me faça uma pergunta que eu só respondo se entendi. Quando eu errar, pergunte o que me levou àquela resposta. ' +
+    'No fim, peça que eu explique com as minhas palavras e deixe um exercício de até 30 minutos. ' +
+    'Se eu pedir a resposta direta, dê. Nunca invente fonte, número ou nome de comando.\n\n=== O que eu quero estudar ===\n';
+  var promptMetodo = null;
+  function carregarMetodo() {
+    if (promptMetodo) return Promise.resolve(promptMetodo);
+    if (!window.fetch) return Promise.resolve(PROMPT_RESERVA);
+    return fetch(PROMPT_URL).then(function (r) { return r.ok ? r.text() : Promise.reject(r.status); })
+      .then(function (txt) { promptMetodo = txt; return txt; }, function () { return PROMPT_RESERVA; });
+  }
+  function semCrase(x) { return String(x).replace(/`/g, ''); }
+  function promptDoTopico(t, metodo) {
+    var base = 'https://ako.rizzygo.com.br/trilhas/';
+    var licao = (t.recursos || []).filter(function (r) { return /^\.\/materiais\//.test(r.url); })[0];
+    var linhas = [
+      'Tópico: ' + t.titulo + ' (trilha Primeiros passos em TI, da Rizzygo Ako)',
+      'Página do tópico: ' + base + '#/t/' + t.id,
+      '',
+      'Resumo: ' + semCrase(t.resumo),
+      '',
+      'O essencial:'
+    ].concat(t.essencial.map(function (x) { return '- ' + semCrase(x); }));
+    linhas.push('', 'Checklist de prática do tópico:');
+    linhas = linhas.concat(t.checklist.map(function (x) { return '- ' + semCrase(x); }));
+    if (licao) linhas.push('', 'Lição do Ako sobre o tópico: ' + base + licao.url.replace(/^\.\//, ''));
+    linhas.push('', 'Pergunta para pensar no fim: ' + semCrase(t.pergunta_ako), '', 'Comece me perguntando o que eu já sei sobre esse tópico.');
+    return metodo.replace(/\s*$/, '\n') + '\n' + linhas.join('\n') + '\n';
+  }
+  function ligarEstudarComIA(t) {
+    var msg = document.getElementById('ia-msg'), caixa = document.getElementById('ia-texto');
+    function mostrarTexto(txt) {
+      caixa.value = txt; caixa.hidden = false; caixa.focus(); caixa.select();
+      msg.style.color = 'var(--suave)'; msg.textContent = 'O navegador não deixou copiar. O prompt está selecionado abaixo: copie e cole na sua IA.';
+    }
+    // Baixa o método ao abrir o tópico: o clique precisa copiar na hora, senão o Safari bloqueia.
+    carregarMetodo();
+    function textoAgora() { return promptDoTopico(t, promptMetodo || PROMPT_RESERVA); }
+    document.getElementById('ia-copiar').addEventListener('click', function () {
+      var txt = textoAgora();
+      if (!navigator.clipboard || !navigator.clipboard.writeText) { mostrarTexto(txt); return; }
+      navigator.clipboard.writeText(txt).then(function () {
+        caixa.hidden = true; msg.style.color = ''; msg.textContent = 'Copiado. Cole no ChatGPT, no Claude, no Gemini ou na IA que você usa.';
+      }, function () { mostrarTexto(txt); });
+    });
+    var comp = document.getElementById('ia-compartilhar');
+    if (comp) comp.addEventListener('click', function () {
+      navigator.share({ title: 'Estudar ' + t.titulo + ' com IA', text: textoAgora() }).catch(function () {});
     });
   }
   function atualizarEstadoTopico(t) {
