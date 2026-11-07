@@ -12,6 +12,7 @@ A primeira trilha é **Primeiros passos em TI**: 16 tópicos em 6 etapas, do "co
 
 - **Sem cadastro:** o progresso fica salvo só no navegador de quem usa. Na página de conquistas dá para exportar e importar o progresso por arquivo.
 - **Sem build:** HTML, CSS e JavaScript puros. Todo o conteúdo fica num arquivo só, o `dados/primeiros-passos.json`.
+- **Estudar com IA:** cada tópico tem o botão Copiar prompt, que junta o método da skill [estudar-junto](https://github.com/rizzygo/favos/tree/main/plugins/favo-estudo/skills/estudar-junto) com o resumo, o essencial e o checklist do tópico. A pessoa cola no ChatGPT, no Claude, no Gemini ou na IA que usa. O método vem de `prompts/estudar-junto.txt` dos Favos, baixado ao abrir o tópico. Sem rede, o site usa um resumo do método. O prompt não leva nada do progresso.
 - **Desafios sorteados:** cada tópico tem um banco de 6 perguntas, e cada tentativa sorteia 3. Quem refaz o desafio não decora as respostas.
 - **Revisão rápida:** depois de começar dois tópicos, a pessoa pode fazer revisões com 5 perguntas sorteadas do que já estudou. A revisão não vale XP, mas três revisões com pelo menos 4 acertos dão a conquista Memória afiada.
 - **XP por prática:** cada tópico vale até 90 XP. São 20 pelo checklist completo, 30 pelo desafio (2 de 3 acertos), 10 por acertar tudo de primeira, 10 por responder à pergunta Ako e 20 por explicar o assunto para outra pessoa.
