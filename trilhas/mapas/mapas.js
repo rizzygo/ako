@@ -1,4 +1,4 @@
-/* Mapas das áreas da Iniciativa Ako, em grafo. HTML, CSS e JS puros, sem build.
+/* Mapas das áreas do Ako, em grafo. HTML, CSS e JS puros, sem build.
    O conteúdo fica em ../dados/mapas.json. O mapa de cada trilha sai do JSON dela (lista TRILHAS).
    O que a pessoa marca nos mapas fica só no navegador, em rizzygo-mapas-v1. O progresso da trilha é só lido. */
 (function () {

@@ -1,4 +1,4 @@
-# Iniciativa Ako
+# Ako
 
 ![A Zumi, abelha da Rizzygo All, acenando ao lado do texto "Rizzygo All: comunidade e conteúdo gratuito"](zumi/banner-rizzygo-all.png)
 
@@ -6,9 +6,9 @@ Guias abertos e gratuitos para quem está começando em tecnologia e quer usar I
 
 Ako é uma filosofia maori que se refere à relação de reciprocidade entre quem ensina e quem aprende: quem ensina também aprende, e quem aprende também ensina.
 
-A Iniciativa Ako é um dos pilares da [Rizzygo](https://github.com/rizzygo), comunidade para quem quer começar em tecnologia e para quem começou há pouco.
+O Ako é um projeto da Rizzygo All, a parte aberta e gratuita da [Rizzygo](https://github.com/rizzygo), feita para quem quer começar em tecnologia e para quem começou há pouco. A Rizzygo All também mantém os [Favos](https://github.com/rizzygo/favos), as skills abertas para IA de código.
 
-**Comece pela [Rizzygo Ako](https://ako.rizzygo.com.br/trilhas/), as trilhas de estudo da iniciativa:** responda quatro perguntas, receba seu roteiro de estudos em TI e avance com materiais gratuitos, desafios práticos e conquistas.
+**Comece pela [Rizzygo Ako](https://ako.rizzygo.com.br/trilhas/), as trilhas de estudo:** responda quatro perguntas, receba seu roteiro de estudos em TI e avance com materiais gratuitos, desafios práticos e conquistas.
 
 ## Trilhas, guias e skills publicados
 

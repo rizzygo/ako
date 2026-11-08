@@ -228,7 +228,7 @@
    "recursos": [
     {
      "titulo": "Platform Engineering: onde DevOps e SRE se encontram",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "./materiais/platform-engineering.html",
      "tipo": "lição",
      "idioma": "pt-BR",
@@ -368,7 +368,7 @@
    "recursos": [
     {
      "titulo": "Plataforma como produto: clientes, golden paths e portal",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "./materiais/plataforma-como-produto.html",
      "tipo": "lição",
      "idioma": "pt-BR",
@@ -1264,7 +1264,7 @@
    "recursos": [
     {
      "titulo": "SLI, SLO e error budget, com contas",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "./materiais/slo-e-error-budget.html",
      "tipo": "lição",
      "idioma": "pt-BR",
@@ -1394,7 +1394,7 @@
    "recursos": [
     {
      "titulo": "Incidentes e postmortem sem culpa",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "./materiais/incidentes-e-postmortem.html",
      "tipo": "lição",
      "idioma": "pt-BR",
@@ -1524,7 +1524,7 @@
    "recursos": [
     {
      "titulo": "Plataforma como produto: clientes, golden paths e portal",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "./materiais/plataforma-como-produto.html",
      "tipo": "lição",
      "idioma": "pt-BR",

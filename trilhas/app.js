@@ -1,4 +1,4 @@
-/* Rizzygo Ako: trilhas de estudo da Iniciativa Ako. HTML, CSS e JS puros, sem build.
+/* Rizzygo Ako: trilhas de estudo do Ako, da Rizzygo All. HTML, CSS e JS puros, sem build.
    Cada trilha tem um arquivo em dados/ e é escolhida pelo endereço: ?trilha=platform-engineering.
    Sem o parâmetro, abre a Primeiros passos em TI.
    O progresso fica só no navegador (localStorage), e a pessoa pode exportar e importar. */
@@ -293,7 +293,7 @@
       '<section class="secao"><div class="casca"><div class="ako"><div class="ako-palavra" aria-hidden="true">Ako</div><div>' +
       '<h2>Quem ensina também aprende</h2>' +
       '<p>Ako é uma filosofia maori que se refere à relação de reciprocidade entre quem ensina e quem aprende. Aqui, ela vira prática: cada tópico pede que você explique o que aprendeu para alguém, e quem já sabe ajuda a melhorar a trilha.</p>' +
-      '<p>Esta trilha faz parte da Iniciativa Ako, da Rizzygo. Todo o conteúdo é aberto e qualquer pessoa pode sugerir melhorias no <a href="https://github.com/rizzygo/ako">GitHub</a>.</p>' +
+      '<p>Esta trilha faz parte do Ako, projeto da Rizzygo All, a parte aberta e gratuita da Rizzygo. Todo o conteúdo é aberto e qualquer pessoa pode sugerir melhorias no <a href="https://github.com/rizzygo/ako">GitHub</a>.</p>' +
       '</div></div>' +
       '<div class="principios">' +
       '<div><h3>Sem passo a passo único</h3><p>O roteiro é um ponto de partida, não um trilho. Pule o que já sabe, volte quando precisar e questione o caminho.</p></div>' +
