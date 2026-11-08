@@ -134,6 +134,8 @@
        "id": "docker",
        "titulo": "Docker e contêineres",
        "resumo": "Um contêiner leva o programa junto com tudo de que ele precisa para rodar. Isso reduz o problema do \"na minha máquina funciona\".",
+       "topico": "containers",
+       "trilha": "platform-engineering",
        "pratica": "Rode `docker run --rm -p 8080:80 nginx` e abra http://localhost:8080. Depois pare o contêiner e confira que nada ficou rodando.",
        "recursos": [
         {
@@ -161,6 +163,8 @@
        "titulo": "Kubernetes, primeiros conceitos",
        "nivel": "opcional",
        "resumo": "Kubernetes organiza muitos contêineres em vários servidores. Para começar, entenda pod, deployment e service. O resto vem com o trabalho.",
+       "topico": "kubernetes",
+       "trilha": "platform-engineering",
        "recursos": [
         {
          "titulo": "Aprenda o básico do Kubernetes",
@@ -179,6 +183,8 @@
        "id": "ci-cd",
        "titulo": "CI/CD com GitHub Actions",
        "resumo": "Integração contínua testa cada mudança automaticamente. Entrega contínua publica o que passou nos testes. Juntas, tiram das mãos de uma pessoa só a publicação de sexta à noite.",
+       "topico": "ci-cd",
+       "trilha": "platform-engineering",
        "pratica": "Crie um workflow que roda um teste a cada pull request no seu projeto do GitHub.",
        "recursos": [
         {
@@ -193,6 +199,8 @@
        "id": "terraform",
        "titulo": "Infraestrutura como código",
        "resumo": "Com Terraform, você descreve a infraestrutura em arquivos e o comando `plan` mostra o que vai mudar antes de mudar. Dá para revisar a infraestrutura como se revisa código.",
+       "topico": "iac",
+       "trilha": "platform-engineering",
        "pratica": "Crie um bucket com Terraform, rode `terraform plan`, aplique com `terraform apply` e depois destrua tudo com `terraform destroy`.",
        "recursos": [
         {
@@ -207,7 +215,9 @@
        "id": "gitops",
        "titulo": "GitOps",
        "nivel": "opcional",
-       "resumo": "No GitOps, o repositório é a fonte da verdade: o que está na branch principal é o que está no ar. O próprio site do Ako é publicado assim, a cada merge na `main`."
+       "resumo": "No GitOps, o repositório é a fonte da verdade: o que está na branch principal é o que está no ar. O próprio site do Ako é publicado assim, a cada merge na `main`.",
+       "topico": "gitops",
+       "trilha": "platform-engineering"
       }
      ]
     },
@@ -218,6 +228,8 @@
        "id": "observabilidade",
        "titulo": "Logs, métricas e alertas",
        "resumo": "Logs contam o que aconteceu, métricas mostram tendência, e alertas avisam quando alguém precisa agir. Alerta que toca toda hora acaba ignorado.",
+       "topico": "observabilidade",
+       "trilha": "platform-engineering",
        "pratica": "Escolha um serviço seu e escreva a única métrica que mostraria que ele parou de funcionar para quem usa.",
        "recursos": [
         {
@@ -233,6 +245,8 @@
        "titulo": "SRE: SLO e incidentes",
        "nivel": "opcional",
        "resumo": "SRE, a engenharia de confiabilidade, trata a estabilidade do sistema como meta medida. Um SLO, a meta de confiabilidade, diz quanto de falha é aceitável, e o pós-incidente busca a causa sem caçar culpado.",
+       "topico": "slo",
+       "trilha": "platform-engineering",
        "recursos": [
         {
          "titulo": "Site Reliability Engineering (livro)",
