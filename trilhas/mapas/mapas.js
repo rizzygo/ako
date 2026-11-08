@@ -1,15 +1,20 @@
 /* Mapas das áreas da Iniciativa Ako, em grafo. HTML, CSS e JS puros, sem build.
-   O conteúdo fica em ../dados/mapas.json. O mapa da trilha Primeiros passos sai de ../dados/primeiros-passos.json.
+   O conteúdo fica em ../dados/mapas.json. O mapa de cada trilha sai do JSON dela (lista TRILHAS).
    O que a pessoa marca nos mapas fica só no navegador, em rizzygo-mapas-v1. O progresso da trilha é só lido. */
 (function () {
   'use strict';
 
   var CHAVE = 'rizzygo-mapas-v1';
-  var CHAVE_TRILHA = 'rizzygo-trilhas-v1';
+  /* A primeira é a Primeiros passos, que traz as áreas. As outras trilhas viram mapas próprios. */
+  var TRILHAS = [
+    { id: 'primeiros-passos', dados: '../dados/primeiros-passos.json', chave: 'rizzygo-trilhas-v1', q: '' },
+    { id: 'platform-engineering', dados: '../dados/platform-engineering.json', chave: 'rizzygo-trilha-platform-engineering-v1', q: '?trilha=platform-engineering' }
+  ];
   var app = document.getElementById('conteudo');
   var trilha = null, mapas = null, atual = null;
   var marcas = carregar(CHAVE, { versao: 1, nos: {} });
-  var progressoTrilha = carregar(CHAVE_TRILHA, { topicos: {} });
+  TRILHAS.forEach(function (x) { x.progresso = carregar(x.chave, { topicos: {} }); });
+  var progressoTrilha = TRILHAS[0].progresso;
 
   function carregar(chave, padrao) {
     try {
@@ -30,15 +35,22 @@
 
   /* ---------- trilha ---------- */
   function topico(id) { return trilha.topicos.filter(function (t) { return t.id === id; })[0]; }
+  /* De qual trilha vem o tópico de um nó: a Primeiros passos, ou a indicada em n.trilha. */
+  function fonte(n) { return (n && n.trilha && TRILHAS.filter(function (x) { return x.id === n.trilha; })[0]) || TRILHAS[0]; }
+  function topicoDo(n) {
+    if (!n.topico) return null;
+    var f = fonte(n);
+    return f.json ? f.json.topicos.filter(function (t) { return t.id === n.topico; })[0] : null;
+  }
   function area(id) { return trilha.areas.filter(function (a) { return a.id === id; })[0]; }
-  function topicoConcluido(t) {
-    var s = (progressoTrilha.topicos || {})[t.id];
+  function topicoConcluido(t, prog) {
+    var s = ((prog || progressoTrilha).topicos || {})[t.id];
     if (!s || !s.quiz || !s.quiz.aprovado) return false;
     for (var i = 0; i < (t.checklist || []).length; i++) if (!(s.check || [])[i]) return false;
     return true;
   }
-  function topicoIniciado(t) {
-    var s = (progressoTrilha.topicos || {})[t.id];
+  function topicoIniciado(t, prog) {
+    var s = ((prog || progressoTrilha).topicos || {})[t.id];
     return !!(s && ((s.check || []).some(Boolean) || s.quiz || (s.reflexao || '').length || s.ensinei));
   }
   function licaoDoTopico(t) {
@@ -50,16 +62,22 @@
     return m ? m[0].trim() : s;
   }
 
-  /* O mapa da trilha é montado a partir das etapas e tópicos dela. */
-  function mapaDaTrilha() {
-    var secoes = trilha.etapas.map(function (e) {
+  /* O mapa de cada trilha é montado a partir das etapas e tópicos dela. */
+  function mapaDaTrilha(f) {
+    f = f || TRILHAS[0];
+    var j = f.json;
+    var secoes = j.etapas.map(function (e) {
       return {
         titulo: e.titulo,
-        nos: trilha.topicos.filter(function (t) { return t.etapa === e.id && t.tipo !== 'ramificacao'; }).map(function (t) {
-          return { id: t.id, titulo: t.titulo, topico: t.id, resumo: primeiraFrase(t.resumo), daTrilha: true };
+        nos: j.topicos.filter(function (t) { return t.etapa === e.id && t.tipo !== 'ramificacao'; }).map(function (t) {
+          return { id: t.id, titulo: t.titulo, topico: t.id, trilha: f.id, resumo: primeiraFrase(t.resumo), daTrilha: true };
         })
       };
     });
+    if (f !== TRILHAS[0]) {
+      if (j.mapa_antes) secoes.unshift({ titulo: 'Antes de começar', nos: j.mapa_antes });
+      return { id: f.id, titulo: j.titulo, resumo: j.descricao, cor: j.cor || 'var(--azul)', secoes: secoes, trilha: true };
+    }
     secoes.push({
       titulo: 'Escolha seu próximo caminho',
       nos: mapas.map(function (m) {
@@ -70,7 +88,8 @@
     return { id: 'primeiros-passos', titulo: trilha.titulo, resumo: trilha.descricao, cor: 'var(--azul)', secoes: secoes, trilha: true };
   }
   function mapaPorId(id) {
-    if (id === 'primeiros-passos') return mapaDaTrilha();
+    var f = TRILHAS.filter(function (x) { return x.id === id && x.json; })[0];
+    if (f) return mapaDaTrilha(f);
     var m = mapas.filter(function (x) { return x.id === id; })[0];
     if (!m) return null;
     var a = area(m.area);
@@ -85,14 +104,14 @@
   function situacao(m, n) {
     if (n.mapa) return '';
     if (vemDaTrilha(m, n)) {
-      var t = topico(n.topico);
-      return topicoConcluido(t) ? 'feito' : (topicoIniciado(t) ? 'andamento' : '');
+      var t = topicoDo(n), prog = fonte(n).progresso;
+      return topicoConcluido(t, prog) ? 'feito' : (topicoIniciado(t, prog) ? 'andamento' : '');
     }
     return marcas.nos[chave(m, n)] || '';
   }
   /* Na trilha e na primeira seção de cada mapa, o tópico é o mesmo da trilha e o progresso vem dela. */
   function vemDaTrilha(m, n) {
-    return !!(n.topico && topico(n.topico) && (n.daTrilha || m.secoes[0].nos.indexOf(n) !== -1));
+    return !!(n.topico && topicoDo(n) && (n.daTrilha || m.secoes[0].nos.indexOf(n) !== -1));
   }
   function tipoDoNo(m, n) {
     if (n.mapa) return 'mapa-link';
@@ -108,9 +127,10 @@
       return '<li><a class="' + (extra || '') + '" href="#/' + m.id + '" style="--cor:' + esc(m.cor) + '"><h2>' + esc(m.titulo) + '</h2><p>' + esc(m.resumo) + '</p>' +
         '<span class="rodape-card"><span>' + n + ' tópicos</span><span>' + (feitos ? feitos + ' estudados' : 'Abrir o mapa') + '</span></span></a></li>';
     };
+    var outras = TRILHAS.slice(1).filter(function (x) { return x.json; }).map(function (x) { return card(mapaDaTrilha(x), 'destaque'); }).join('');
     app.innerHTML = '<div class="casca"><div class="mapas-cab"><a class="voltar" href="../#/trilha">Voltar para a trilha</a>' +
-      '<h1>Mapas das áreas da TI</h1><p class="lead">Cada mapa mostra, em ordem, o que estudar numa área: do que a trilha Primeiros passos já ensina até o nível de quem procura a primeira vaga. Clique num tópico para ver o resumo, um exercício e os materiais.</p></div>' +
-      '<ul class="lista-mapas">' + card(pp, 'destaque') + mapas.map(function (m) { return card(mapaPorId(m.id)); }).join('') + '</ul></div>';
+      '<h1>Mapas das áreas da TI</h1><p class="lead">Cada mapa mostra, em ordem, o que estudar numa área: do que a trilha Primeiros passos já ensina até o nível de quem procura a primeira vaga. As trilhas também têm o seu mapa, como a de Platform Engineering. Clique num tópico para ver o resumo, um exercício e os materiais.</p></div>' +
+      '<ul class="lista-mapas">' + card(pp, 'destaque') + outras + mapas.map(function (m) { return card(mapaPorId(m.id)); }).join('') + '</ul></div>';
     document.title = 'Mapas das áreas | Rizzygo Ako';
   }
 
@@ -119,7 +139,7 @@
     var html = '<div class="casca"><div class="mapas-cab"><a class="voltar" href="#/">Todos os mapas</a>' +
       '<h1>' + esc(m.titulo) + '</h1><p class="lead">' + esc(m.resumo) + '</p>' +
       '<div class="legenda" aria-label="Legenda"><span><i></i>Essencial</span><span><i class="l-opcional"></i>Opcional, para depois</span>' +
-      (m.trilha ? '' : '<span><i class="l-base"></i>Já está na trilha Primeiros passos</span>') +
+      (m.id === 'primeiros-passos' ? '' : '<span><i class="l-base"></i>Já está na trilha Primeiros passos</span>') +
       '<span><i class="l-feito"></i>Estudado</span></div>' +
       '<div class="progresso"><p id="progresso-txt"></p><div class="barra"><i id="progresso-barra"></i></div></div></div>' +
       '<div class="grafo" id="grafo" style="--cor:' + esc(m.cor) + '"><svg aria-hidden="true" id="linhas"></svg>';
@@ -133,8 +153,10 @@
       html += '<section class="bloco-mapa" data-secao="' + si + '"><h2 class="bloco-mapa-titulo">' + esc(s.titulo) + '<small>' + (si + 1) + ' de ' + m.secoes.length + '</small></h2>' +
         '<div class="lado esq">' + esq.map(botao).join('') + '</div><div class="lado dir">' + dir.map(botao).join('') + '</div></section>';
     });
-    html += '</div><p class="fim-grafo">' + (m.trilha
+    var fTrilha = TRILHAS.filter(function (x) { return x.id === m.id; })[0];
+    html += '</div><p class="fim-grafo">' + (m.id === 'primeiros-passos'
       ? 'A trilha termina na escolha de um caminho. Cada caminho tem o seu mapa.'
+      : fTrilha ? 'A trilha termina num projeto seu, publicado no GitHub. <a href="../' + fTrilha.q + '#/trilha">Abrir a trilha, com checklist e desafios</a>.'
       : 'Achou algo faltando ou sobrando neste mapa? <a href="https://github.com/rizzygo/ako/issues">Conte numa issue</a>.') + '</p></div>';
     app.innerHTML = html;
     document.title = m.titulo + ' | Mapas | Rizzygo Ako';
@@ -197,7 +219,7 @@
     var n = todosOsNos(atual).filter(function (x) { return x.id === id; })[0];
     if (!n) return;
     if (n.mapa) { location.hash = '#/' + n.mapa; return; }
-    var t = n.topico && topico(n.topico);
+    var t = topicoDo(n), f = fonte(n);
     var sit = situacao(atual, n);
     var etq = [];
     if (tipoDoNo(atual, n) === 'base') etq.push('<span class="etiqueta">Na trilha Primeiros passos</span>');
@@ -207,7 +229,7 @@
     if (n.pratica) html += '<div class="pratica"><strong>Para praticar</strong>' + fmt(n.pratica) + '</div>';
 
     var ako = [];
-    if (t) ako.push('<li><a href="../#/t/' + esc(t.id) + '">Tópico ' + esc(t.titulo) + ', com checklist e desafio</a></li>');
+    if (t) ako.push('<li><a href="../' + f.q + '#/t/' + esc(t.id) + '">Tópico ' + esc(t.titulo) + ', com checklist e desafio</a></li>');
     var licao = n.licao ? { titulo: 'Lição do Ako', url: '../materiais/' + n.licao } : (t && licaoDoTopico(t));
     if (licao) ako.push('<li><a href="' + esc(urlSegura(licao.url)) + '">Lição: ' + esc(licao.titulo) + '</a></li>');
     if (ako.length) html += '<h3>Aprender no Ako</h3><ul class="links-ako">' + ako.join('') + '</ul>';
@@ -253,7 +275,7 @@
   function semCrase(x) { return String(x).replace(/`/g, ''); }
   function promptDoNo(m, n) {
     var base = 'https://ako.rizzygo.com.br/trilhas/';
-    var t = n.topico && topico(n.topico);
+    var t = topicoDo(n), f = fonte(n);
     var licao = n.licao ? { url: './materiais/' + n.licao } : (t && licaoDoTopico(t));
     var linhas = [
       'Tópico: ' + n.titulo + ' (mapa ' + m.titulo + ', da Rizzygo Ako)',
@@ -262,7 +284,7 @@
       'Resumo: ' + semCrase(n.resumo)
     ];
     if (n.pratica) linhas.push('', 'Para praticar: ' + semCrase(n.pratica));
-    if (t) linhas.push('', 'Tópico da trilha com checklist e desafio: ' + base + '#/t/' + t.id);
+    if (t) linhas.push('', 'Tópico da trilha com checklist e desafio: ' + base + f.q + '#/t/' + t.id);
     if (licao) linhas.push('', 'Lição do Ako sobre o tópico: ' + base + licao.url.replace(/^(\.\.\/|\.\/)/, ''));
     linhas.push('', 'Comece me perguntando o que eu já sei sobre esse tópico.');
     return (promptMetodo || PROMPT_RESERVA).replace(/\s*$/, '\n') + '\n' + linhas.join('\n') + '\n';
@@ -324,11 +346,15 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(desenhar);
 
   Promise.all([
-    fetch('../dados/primeiros-passos.json').then(function (r) { return r.json(); }),
     fetch('../dados/mapas.json').then(function (r) { return r.json(); })
-  ]).then(function (res) {
-    trilha = res[0];
-    mapas = res[1].mapas;
+  ].concat(TRILHAS.map(function (x, i) {
+    // Se uma trilha extra falhar, os outros mapas abrem mesmo assim.
+    var p = fetch(x.dados).then(function (r) { return r.json(); });
+    return i === 0 ? p : p.catch(function () { return null; });
+  }))).then(function (res) {
+    mapas = res[0].mapas;
+    TRILHAS.forEach(function (x, i) { x.json = res[i + 1]; });
+    trilha = TRILHAS[0].json;
     rotear();
   }).catch(function () {
     app.innerHTML = '<div class="casca"><div class="mapas-cab"><h1>Não consegui carregar os mapas</h1><p class="lead">Confira a conexão e recarregue a página.</p></div></div>';

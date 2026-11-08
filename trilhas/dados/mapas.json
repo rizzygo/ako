@@ -249,6 +249,17 @@
        "resumo": "Na nuvem, todo recurso esquecido vira conta no fim do mês. Etiquetar recursos, desligar o que não usa e ler a fatura também é trabalho de infraestrutura."
       }
      ]
+    },
+    {
+     "titulo": "Depois da primeira vaga",
+     "nos": [
+      {
+       "id": "trilha-platform-engineering",
+       "titulo": "Trilha Platform Engineering",
+       "resumo": "Quando a base de infraestrutura estiver firme, a trilha Platform Engineering junta entrega contínua, confiabilidade e uma plataforma interna que os outros times usam sozinhos.",
+       "mapa": "platform-engineering"
+      }
+     ]
     }
    ]
   },

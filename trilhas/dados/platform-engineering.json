@@ -1,0 +1,2082 @@
+{
+ "id": "platform-engineering",
+ "titulo": "Platform Engineering",
+ "versao": 1,
+ "descricao": "Onde DevOps e SRE se encontram. Da base de contêineres e infraestrutura como código até golden paths, portal e métricas, para construir uma plataforma interna que os times usam sozinhos.",
+ "cor": "#4338CA",
+ "inicio": {
+  "titulo": "A plataforma que deixa o time entregar sem abrir ticket.",
+  "lead": "Platform Engineering junta a entrega contínua do DevOps com a confiabilidade do SRE e transforma as duas num produto interno. Nesta trilha você estuda a base técnica, a entrega e a medição, e constrói o seu primeiro golden path. Lições próprias em português e materiais gratuitos das grandes referências da área, parte deles em inglês.",
+  "mini_mapa": [
+   "Entender o papel",
+   "A base",
+   "Entregar",
+   "Manter no ar",
+   "Construir",
+   "Medir e evoluir"
+  ],
+  "mini_mapa_rotulo": "Mapa da trilha Platform Engineering: seis etapas, de entender o papel até medir e evoluir a plataforma",
+  "para_quem": [
+   "Para quem terminou a trilha Primeiros passos em TI e já se sente bem com terminal, Linux, redes e Git.",
+   "Para quem trabalha com infraestrutura, DevOps, SRE ou suporte e quer dar o próximo passo.",
+   "Para quem desenvolve e quer entender a plataforma que usa, ou ajudar a melhorá-la.",
+   "Vai precisar de um computador com Docker. Os exercícios rodam no seu computador ou em serviços gratuitos, como o GitHub, sem gastar com nuvem."
+  ]
+ },
+ "momentos": [
+  {
+   "id": "quero",
+   "titulo": "Estou chegando agora",
+   "detalhe": "Terminei a Primeiros passos ou estou montando a base de infraestrutura"
+  },
+  {
+   "id": "comecando",
+   "titulo": "Já trabalho com isso",
+   "detalhe": "Já atuo com infraestrutura, DevOps, SRE ou desenvolvimento"
+  }
+ ],
+ "ja_sei": [
+  {
+   "id": "docker",
+   "rotulo": "Já crio imagens com Dockerfile",
+   "topicos": [
+    "containers"
+   ]
+  },
+  {
+   "id": "kubernetes",
+   "rotulo": "Já fiz deploy no Kubernetes",
+   "topicos": [
+    "kubernetes"
+   ]
+  },
+  {
+   "id": "iac",
+   "rotulo": "Já usei Terraform ou OpenTofu",
+   "topicos": [
+    "iac"
+   ]
+  },
+  {
+   "id": "ci",
+   "rotulo": "Já montei um pipeline de CI",
+   "topicos": [
+    "ci-cd"
+   ]
+  },
+  {
+   "id": "observabilidade",
+   "rotulo": "Já montei dashboards e alertas",
+   "topicos": [
+    "observabilidade"
+   ]
+  }
+ ],
+ "mapa_antes": [
+  {
+   "id": "base-linux",
+   "titulo": "Linux",
+   "topico": "linux",
+   "resumo": "Contêineres são processos Linux. Permissões, processos e logs aparecem o tempo todo nesta trilha."
+  },
+  {
+   "id": "base-redes",
+   "titulo": "Redes",
+   "topico": "redes",
+   "resumo": "DNS, portas e HTTP explicam boa parte dos problemas entre serviços."
+  },
+  {
+   "id": "base-git",
+   "titulo": "Git e GitHub",
+   "topico": "git",
+   "resumo": "Na plataforma, tudo passa pelo Git: código, infraestrutura, políticas e deploy."
+  },
+  {
+   "id": "mapa-infra",
+   "titulo": "Mapa de Infraestrutura e cloud",
+   "resumo": "Se ainda não viu nuvem, contêineres e CI/CD, comece pelo mapa da área. Esta trilha aprofunda o que ele apresenta.",
+   "mapa": "infra"
+  }
+ ],
+ "etapas": [
+  {
+   "id": "entender",
+   "titulo": "Entender o papel",
+   "conquista": "Mapa na mão",
+   "descricao": "O que DevOps, SRE e Platform Engineering resolvem e por que a plataforma é um produto."
+  },
+  {
+   "id": "base",
+   "titulo": "A base técnica",
+   "conquista": "Fundação pronta",
+   "descricao": "Contêineres, Kubernetes e infraestrutura como código: o chão onde a plataforma é construída."
+  },
+  {
+   "id": "entrega",
+   "titulo": "Entregar sempre: o lado DevOps",
+   "conquista": "Esteira rodando",
+   "descricao": "Pipelines de CI/CD e GitOps para levar cada mudança até produção sem passo manual."
+  },
+  {
+   "id": "confiabilidade",
+   "titulo": "Manter no ar: o lado SRE",
+   "conquista": "Plantão tranquilo",
+   "descricao": "Observabilidade, metas de confiabilidade e incidentes tratados sem culpa."
+  },
+  {
+   "id": "plataforma",
+   "titulo": "Construir a plataforma",
+   "conquista": "Caminho dourado",
+   "descricao": "Golden paths, portal do desenvolvedor e guardrails que deixam o jeito seguro também ser o fácil."
+  },
+  {
+   "id": "evoluir",
+   "titulo": "Medir e evoluir",
+   "conquista": "Plataforma viva",
+   "descricao": "Métricas que mostram se a plataforma ajuda e um projeto seu, publicado no GitHub."
+  }
+ ],
+ "topicos": [
+  {
+   "id": "pe-o-que-e",
+   "etapa": "entender",
+   "titulo": "DevOps, SRE e Platform Engineering",
+   "horas": 3,
+   "resumo": "DevOps é a cultura de quem constrói também cuidar do que vai para produção. SRE (Site Reliability Engineering) mede a confiabilidade com metas e trata operação como problema de engenharia. Platform Engineering pega as duas ideias e entrega uma plataforma interna: um conjunto de ferramentas e caminhos prontos que os times de produto usam sozinhos, sem abrir ticket e sem virar especialista em infraestrutura.",
+   "essencial": [
+    "DevOps responde \"como entregar rápido e com frequência\". SRE responde \"como manter no ar e quanto de falha é aceitável\". A plataforma junta as duas respostas num produto que os outros times usam.",
+    "O cliente de quem trabalha com plataforma é o time de desenvolvimento. Se o time não usa a plataforma, ela falhou, por melhor que seja a tecnologia.",
+    "Self-service é o centro: o time cria um serviço, um banco ou um pipeline sozinho, em minutos, sem esperar outra pessoa.",
+    "Plataforma não é só Kubernetes. É qualquer coisa que tira carga cognitiva dos times: templates, pipelines prontos, observabilidade padrão, documentação.",
+    "Toil é o trabalho manual e repetitivo que cresce junto com o sistema. Automatizar toil é uma das primeiras entregas de um time de plataforma."
+   ],
+   "checklist": [
+    "Li a lição do Ako sobre Platform Engineering",
+    "Escrevi, com minhas palavras, a diferença entre DevOps, SRE e Platform Engineering em três frases",
+    "Listei cinco tarefas repetitivas que um time de desenvolvimento faz e que uma plataforma poderia automatizar",
+    "Li o CNCF Platforms White Paper até a parte sobre os atributos de uma plataforma"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Um time de desenvolvimento abre um ticket e espera uma semana para ganhar um banco de dados de teste. O que uma plataforma interna mudaria?",
+     "opcoes": [
+      "Contrataria mais pessoas para atender os tickets mais rápido",
+      "Deixaria o time criar o banco sozinho, por um caminho pronto e seguro",
+      "Proibiria bancos de teste para reduzir custo",
+      "Daria acesso de administrador da nuvem para todo mundo"
+     ],
+     "correta": 1,
+     "explicacao": "O centro da plataforma é o self-service com segurança embutida. Dar acesso total resolve a espera, mas cria risco; mais gente atendendo ticket não escala."
+    },
+    {
+     "pergunta": "Qual frase descreve melhor o SRE?",
+     "opcoes": [
+      "Um time que só atende chamados de suporte",
+      "Uma ferramenta de monitoramento",
+      "Tratar confiabilidade como engenharia, com metas medidas e automação",
+      "Outro nome para administrador de sistemas"
+     ],
+     "correta": 2,
+     "explicacao": "SRE usa metas como o SLO e automação para manter o sistema confiável. Monitoramento é uma das ferramentas, não a definição."
+    },
+    {
+     "pergunta": "A empresa montou uma plataforma tecnicamente impecável, mas os times continuam fazendo tudo do jeito antigo. O que provavelmente faltou?",
+     "opcoes": [
+      "Usar mais ferramentas da CNCF",
+      "Tratar a plataforma como produto, ouvindo quem vai usar",
+      "Obrigar todo mundo a migrar em um mês",
+      "Trocar de nuvem"
+     ],
+     "correta": 1,
+     "explicacao": "Plataforma é produto interno. Sem entender a dor dos times e sem facilitar a adoção, ninguém troca o jeito que já funciona."
+    },
+    {
+     "pergunta": "Toda semana alguém do time de infraestrutura cria usuários de banco à mão, seguindo um passo a passo. Como o SRE chama esse tipo de trabalho?",
+     "opcoes": [
+      "Toil",
+      "Incidente",
+      "Error budget",
+      "Deploy"
+     ],
+     "correta": 0,
+     "explicacao": "Toil é o trabalho manual, repetitivo e automatizável, que cresce junto com o serviço e não deixa valor duradouro."
+    },
+    {
+     "pergunta": "Qual é a relação entre DevOps e Platform Engineering?",
+     "opcoes": [
+      "Platform Engineering substitui o DevOps, que acabou",
+      "São a mesma coisa com nomes diferentes",
+      "Não têm relação nenhuma",
+      "Platform Engineering é um jeito de colocar as ideias do DevOps em prática em escala"
+     ],
+     "correta": 3,
+     "explicacao": "Quando muitos times precisam cuidar do próprio deploy, cada um reinventa a roda. A plataforma oferece o caminho pronto e mantém a cultura DevOps de cada time ser dono do que entrega."
+    },
+    {
+     "pergunta": "Um time de plataforma quer saber se está indo bem. Qual indicador faz mais sentido?",
+     "opcoes": [
+      "Quantas ferramentas novas o time instalou",
+      "Quantas horas extras o time fez",
+      "Quantos times usam a plataforma por vontade própria e quanto tempo economizam",
+      "Quantos tickets o time de plataforma fechou"
+     ],
+     "correta": 2,
+     "explicacao": "Adoção voluntária e tempo economizado mostram valor para o cliente interno. Fechar muitos tickets pode até indicar que o self-service não funciona."
+    }
+   ],
+   "pergunta_ako": "Pense num lugar onde você estudou ou trabalhou. Qual tarefa todo mundo repetia do mesmo jeito e ninguém tinha parado para automatizar? Por quê?",
+   "recursos": [
+    {
+     "titulo": "Platform Engineering: onde DevOps e SRE se encontram",
+     "fonte": "Iniciativa Ako",
+     "url": "./materiais/platform-engineering.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição em português do Ako: o problema que a plataforma resolve, os papéis de DevOps, SRE e plataforma, e um exercício para mapear o toil de um time."
+    },
+    {
+     "titulo": "CNCF Platforms White Paper",
+     "fonte": "CNCF, grupo TAG App Delivery",
+     "url": "https://tag-app-delivery.cncf.io/whitepapers/platforms/",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "O texto de referência da comunidade: por que empresas criam plataformas internas, o que um time de plataforma faz e como medir se deu certo.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Guia de engenharia de plataforma",
+     "fonte": "Microsoft Learn",
+     "url": "https://learn.microsoft.com/pt-br/platform-engineering/",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Guia em português, traduzido por máquina, com princípios, um modelo de capacidades e uma jornada para começar uma plataforma.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "What is platform engineering?",
+     "fonte": "platformengineering.org",
+     "url": "https://platformengineering.org/blog/what-is-platform-engineering",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Introdução ao conceito de Internal Developer Platform e de caminhos self-service. O site também vende cursos, que não são necessários.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Introduction to DevOps and Site Reliability Engineering (LFS162)",
+     "fonte": "Linux Foundation",
+     "url": "https://training.linuxfoundation.org/training/introduction-to-devops-and-site-reliability-engineering-lfs162/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, precisa criar conta",
+     "nota": "Curso de 10 a 12 horas sobre DevOps, contêineres, infraestrutura como código, CI/CD, observabilidade e SRE. Precisa criar conta.",
+     "verificado_em": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "plataforma-produto",
+   "etapa": "entender",
+   "titulo": "Plataforma como produto interno",
+   "horas": 3,
+   "resumo": "Uma plataforma só funciona quando é tratada como produto: tem clientes (os times de desenvolvimento), um problema claro para resolver, um roadmap e alguém que ouve feedback. No livro Team Topologies, o time de plataforma existe para reduzir a carga cognitiva dos times que entregam valor ao cliente final.",
+   "essencial": [
+    "Comece pela dor, não pela ferramenta. Converse com os times e descubra onde eles perdem mais tempo.",
+    "Carga cognitiva é quanto um time precisa saber para fazer o trabalho. A plataforma assume parte disso para o time focar no produto.",
+    "Thinnest Viable Platform (a menor plataforma que já ajuda) pode ser só uma página de documentação com o caminho recomendado. Comece pequeno.",
+    "No Team Topologies há quatro tipos de time: o alinhado ao fluxo de valor, o de plataforma, o habilitador e o de subsistema complicado.",
+    "Adoção opcional é um bom teste: se o time pode escolher e mesmo assim usa a plataforma, ela está entregando valor."
+   ],
+   "checklist": [
+    "Li a lição do Ako sobre plataforma como produto",
+    "Li a página de conceitos do Team Topologies e anotei os quatro tipos de time",
+    "Escrevi três perguntas para entrevistar um time sobre onde ele perde tempo",
+    "Defini a menor plataforma possível para resolver uma dor que eu conheço"
+   ],
+   "quiz": [
+    {
+     "pergunta": "O time de plataforma quer começar o trabalho. Qual é o melhor primeiro passo?",
+     "opcoes": [
+      "Escolher a ferramenta mais popular do momento",
+      "Entrevistar os times de desenvolvimento sobre onde perdem tempo",
+      "Montar um cluster Kubernetes para todo mundo",
+      "Escrever um documento de arquitetura de 50 páginas"
+     ],
+     "correta": 1,
+     "explicacao": "Produto começa pelo problema do cliente. A ferramenta vem depois, escolhida para resolver a dor que apareceu nas conversas."
+    },
+    {
+     "pergunta": "Um time de produto precisa conhecer Terraform, Kubernetes, Helm, três ferramentas de monitoramento e regras de rede para publicar um serviço. Qual é o problema?",
+     "opcoes": [
+      "Carga cognitiva alta demais para o time",
+      "Falta de testes automatizados",
+      "Falta de reuniões de alinhamento",
+      "Excesso de documentação"
+     ],
+     "correta": 0,
+     "explicacao": "Quando o time precisa dominar tudo isso, sobra pouca energia para o produto. Tirar essa carga é a razão de existir da plataforma."
+    },
+    {
+     "pergunta": "Qual opção é um exemplo de Thinnest Viable Platform?",
+     "opcoes": [
+      "Um portal completo com 40 plugins",
+      "Uma nuvem privada construída do zero",
+      "Uma página wiki com o passo a passo recomendado e um template de repositório",
+      "Contratar uma consultoria para definir tudo"
+     ],
+     "correta": 2,
+     "explicacao": "A menor plataforma viável já tira dúvida e retrabalho. Ela pode crescer depois, guiada pelo uso real."
+    },
+    {
+     "pergunta": "No Team Topologies, qual é o papel do time de plataforma?",
+     "opcoes": [
+      "Aprovar todo deploy dos outros times",
+      "Fazer o trabalho de infraestrutura no lugar dos outros times, por ticket",
+      "Cuidar só do suporte ao usuário final",
+      "Oferecer serviços internos self-service que aceleram os times de fluxo"
+     ],
+     "correta": 3,
+     "explicacao": "O time de plataforma oferece serviços que os outros consomem sozinhos, sem virar fila de aprovação."
+    },
+    {
+     "pergunta": "A plataforma lançou um novo pipeline e só 1 de 12 times adotou em três meses. O que fazer primeiro?",
+     "opcoes": [
+      "Tornar o pipeline obrigatório",
+      "Perguntar aos outros 11 times o que impede a adoção",
+      "Desistir da plataforma",
+      "Adicionar mais funcionalidades sem conversar com ninguém"
+     ],
+     "correta": 1,
+     "explicacao": "Baixa adoção é feedback. Antes de obrigar ou adicionar mais coisa, descubra o que está no caminho: migração difícil, falta de documentação ou falta de algo essencial."
+    },
+    {
+     "pergunta": "Quem é o cliente de um time de plataforma?",
+     "opcoes": [
+      "Os times internos que desenvolvem e operam os produtos",
+      "Só a diretoria de tecnologia",
+      "O fornecedor de nuvem",
+      "Os clientes finais que compram o produto da empresa"
+     ],
+     "correta": 0,
+     "explicacao": "O cliente direto são os times internos. Ao acelerar esses times, a plataforma ajuda indiretamente o cliente final."
+    }
+   ],
+   "pergunta_ako": "Se você fosse cliente de uma plataforma interna, o que faria você trocar o seu jeito atual pelo dela? E o que faria você desistir no primeiro dia?",
+   "recursos": [
+    {
+     "titulo": "Plataforma como produto: clientes, golden paths e portal",
+     "fonte": "Iniciativa Ako",
+     "url": "./materiais/plataforma-como-produto.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição em português do Ako: como descobrir a dor dos times, começar pela menor plataforma possível e medir a adoção."
+    },
+    {
+     "titulo": "Key concepts",
+     "fonte": "Team Topologies",
+     "url": "https://teamtopologies.com/key-concepts",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Os quatro tipos de time e os três modos de interação, entre eles o time de plataforma. A página é gratuita; os cursos ligados a ela são pagos.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "What I Talk About When I Talk About Platforms",
+     "fonte": "Evan Bottcher, no site de Martin Fowler",
+     "url": "https://martinfowler.com/articles/talk-about-platforms.html",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Artigo curto e muito citado que define plataforma como produto interno self-service.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Platform Engineering Maturity Model",
+     "fonte": "CNCF, grupo TAG App Delivery",
+     "url": "https://tag-app-delivery.cncf.io/whitepapers/platform-eng-maturity-model/",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Quatro níveis de maturidade em cinco aspectos, como investimento, adoção e medição. Bom para saber onde uma empresa está.",
+     "verificado_em": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "containers",
+   "etapa": "base",
+   "titulo": "Contêineres com Docker",
+   "horas": 5,
+   "resumo": "Um contêiner empacota a aplicação com tudo o que ela precisa para rodar: bibliotecas, configurações e o runtime da linguagem. A imagem é a receita, escrita num Dockerfile, e o contêiner é a imagem em execução. Para uma plataforma, contêineres são o formato padrão de entrega: todo time entrega do mesmo jeito, e a plataforma roda tudo do mesmo jeito.",
+   "essencial": [
+    "Imagem é o pacote imutável. Contêiner é um processo rodando a partir dela. Uma imagem pode virar vários contêineres.",
+    "O `Dockerfile` descreve, passo a passo, como montar a imagem. As instruções que mexem em arquivos, como `COPY` e `RUN`, viram camadas que o Docker reaproveita no próximo build.",
+    "Imagens pequenas sobem mais rápido e trazem menos pacotes que podem ter vulnerabilidades. Prefira imagens base enxutas e multi-stage build.",
+    "Nunca coloque senha ou token dentro da imagem. Configuração e segredo entram por variável de ambiente ou por um gerenciador de segredos.",
+    "Um registry, como o GitHub Container Registry, guarda as imagens para que o servidor baixe a versão certa."
+   ],
+   "checklist": [
+    "Instalei o Docker e rodei `docker run hello-world`",
+    "Escrevi um Dockerfile para uma aplicação pequena e fiz o build da imagem",
+    "Rodei o contêiner com uma porta exposta e abri a aplicação no navegador",
+    "Diminuí o tamanho da imagem trocando a imagem base ou usando multi-stage build"
+   ],
+   "quiz": [
+    {
+     "pergunta": "A aplicação funciona no seu computador e quebra no servidor por causa de uma versão diferente de biblioteca. Como o contêiner ajuda?",
+     "opcoes": [
+      "Ele deixa o servidor mais rápido",
+      "Ele leva a aplicação junto com as versões exatas das dependências",
+      "Ele corrige o código automaticamente",
+      "Ele dispensa o uso de testes"
+     ],
+     "correta": 1,
+     "explicacao": "A imagem carrega as dependências na versão certa. O que roda no seu computador roda igual no servidor."
+    },
+    {
+     "pergunta": "Qual é a diferença entre imagem e contêiner?",
+     "opcoes": [
+      "Não há diferença",
+      "O contêiner é o arquivo e a imagem é o processo",
+      "A imagem é o pacote imutável e o contêiner é a imagem em execução",
+      "A imagem só existe na nuvem"
+     ],
+     "correta": 2,
+     "explicacao": "Pense na imagem como a receita e no contêiner como o prato servido. De uma imagem saem vários contêineres."
+    },
+    {
+     "pergunta": "Alguém colocou `ENV DB_PASSWORD=segredo123` no Dockerfile e publicou a imagem. Qual é o risco?",
+     "opcoes": [
+      "Qualquer pessoa com acesso à imagem consegue ler a senha",
+      "Nenhum, porque a imagem é compactada",
+      "A imagem fica mais lenta",
+      "O banco de dados recusa a conexão"
+     ],
+     "correta": 0,
+     "explicacao": "As camadas da imagem podem ser inspecionadas por quem baixa. Segredo entra na hora de rodar, por variável de ambiente ou gerenciador de segredos, nunca no build."
+    },
+    {
+     "pergunta": "Toda mudança de uma linha no código faz o build reinstalar todas as dependências, e isso leva 5 minutos. O que provavelmente está errado no Dockerfile?",
+     "opcoes": [
+      "Falta a instrução EXPOSE",
+      "A imagem base é a errada",
+      "O contêiner está sem memória",
+      "O código é copiado antes de instalar as dependências, e o cache se perde"
+     ],
+     "correta": 3,
+     "explicacao": "O Docker reaproveita camadas que não mudaram. Copie primeiro só o arquivo de dependências, instale, e só depois copie o código."
+    },
+    {
+     "pergunta": "Para que serve um registry de contêineres?",
+     "opcoes": [
+      "Para guardar e distribuir imagens com versão",
+      "Para guardar logs dos contêineres",
+      "Para escrever o Dockerfile",
+      "Para monitorar a CPU"
+     ],
+     "correta": 0,
+     "explicacao": "O registry é o repositório das imagens. O pipeline publica lá, e o servidor ou o cluster baixa a versão certa."
+    },
+    {
+     "pergunta": "Por que contêineres são o formato preferido de uma plataforma interna?",
+     "opcoes": [
+      "Porque são obrigatórios em qualquer nuvem",
+      "Porque todos os times entregam no mesmo formato, e a plataforma roda tudo do mesmo jeito",
+      "Porque dispensam observabilidade",
+      "Porque deixam a aplicação sem bugs"
+     ],
+     "correta": 1,
+     "explicacao": "Um formato comum permite pipelines, segurança e deploy padronizados, sem um processo diferente para cada linguagem."
+    }
+   ],
+   "pergunta_ako": "O que muda na sua forma de pensar quando o servidor deixa de ser \"a máquina que eu configurei\" e vira \"o lugar que roda a minha imagem\"?",
+   "recursos": [
+    {
+     "titulo": "Get started",
+     "fonte": "Docker Docs",
+     "url": "https://docs.docker.com/get-started/",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Ponto de partida oficial: instalar o Docker, entender imagem e contêiner e conteinerizar uma aplicação.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Descomplicando o Docker",
+     "fonte": "LINUXtips, no GitHub",
+     "url": "https://github.com/badtuxx/DescomplicandoDocker",
+     "tipo": "livro",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Livro em português liberado de graça no GitHub pelo autor, em capítulos. A versão impressa é vendida à parte.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Introduction to DevOps and Site Reliability Engineering (LFS162)",
+     "fonte": "Linux Foundation",
+     "url": "https://training.linuxfoundation.org/training/introduction-to-devops-and-site-reliability-engineering-lfs162/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, precisa criar conta",
+     "nota": "Curso de 10 a 12 horas sobre DevOps, contêineres, infraestrutura como código, CI/CD, observabilidade e SRE. Precisa criar conta.",
+     "verificado_em": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "kubernetes",
+   "etapa": "base",
+   "titulo": "Kubernetes: o essencial",
+   "horas": 8,
+   "resumo": "Kubernetes é um orquestrador: você descreve em YAML o estado que quer, como \"três cópias desta imagem, acessíveis na porta 80\", e ele trabalha o tempo todo para manter esse estado. Se um contêiner cai, o Kubernetes sobe outro. Muitas plataformas internas usam o Kubernetes como base, mas escondem a complexidade dele dos times.",
+   "essencial": [
+    "Pod é a menor unidade: um ou mais contêineres que rodam juntos. Você quase nunca cria Pod direto.",
+    "Deployment diz quantas cópias do Pod quer e como trocar de versão sem derrubar o serviço.",
+    "Service dá um endereço fixo para um grupo de Pods, que nascem e morrem com IPs diferentes.",
+    "O Kubernetes é declarativo: você diz o que quer, não o passo a passo. Um loop de controle compara o desejado com o real e corrige a diferença.",
+    "Namespace separa recursos de times ou ambientes no mesmo cluster. É uma das peças que a plataforma usa para dar autonomia com limites."
+   ],
+   "checklist": [
+    "Criei um cluster local com kind",
+    "Fiz o deploy de uma aplicação com um Deployment e um Service",
+    "Apaguei um Pod com `kubectl delete pod` e vi o Kubernetes criar outro sozinho",
+    "Escalei o Deployment para três réplicas e atualizei a imagem para uma versão nova"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Você apagou um Pod de um Deployment com 3 réplicas. O que acontece?",
+     "opcoes": [
+      "O serviço fica com 2 réplicas para sempre",
+      "O cluster inteiro reinicia",
+      "O Kubernetes cria outro Pod para voltar a 3",
+      "O Deployment é apagado junto"
+     ],
+     "correta": 2,
+     "explicacao": "O controlador do Deployment compara o estado desejado (3) com o real (2) e cria um Pod novo. Esse loop de reconciliação é o coração do Kubernetes."
+    },
+    {
+     "pergunta": "Os Pods de uma API mudam de IP toda vez que reiniciam. Como os outros serviços encontram a API?",
+     "opcoes": [
+      "Por um Service, que dá um nome e um endereço fixo",
+      "Anotando os IPs numa planilha",
+      "Reiniciando todos os serviços juntos",
+      "Usando sempre o IP do primeiro Pod"
+     ],
+     "correta": 0,
+     "explicacao": "O Service seleciona os Pods por rótulo e mantém um endereço estável, mesmo com Pods entrando e saindo."
+    },
+    {
+     "pergunta": "O que significa dizer que o Kubernetes é declarativo?",
+     "opcoes": [
+      "Que ele só aceita comandos digitados um a um",
+      "Que você lista, em ordem, cada comando que ele deve executar",
+      "Que ele não precisa de configuração",
+      "Que você descreve o estado desejado e ele trabalha para chegar lá"
+     ],
+     "correta": 3,
+     "explicacao": "Você entrega o \"o quê\" em YAML. O \"como\" fica com os controladores, que corrigem o desvio o tempo todo."
+    },
+    {
+     "pergunta": "Dois times usam o mesmo cluster e um deles apagou sem querer um recurso do outro. Qual recurso ajuda a separar os dois?",
+     "opcoes": [
+      "ConfigMap",
+      "Namespaces com permissões por time",
+      "Mais réplicas",
+      "Uma imagem maior"
+     ],
+     "correta": 1,
+     "explicacao": "Namespace mais RBAC (controle de acesso por papel) limita o que cada time vê e pode mudar."
+    },
+    {
+     "pergunta": "Você precisa trocar a versão da aplicação sem derrubar o serviço. O que o Deployment faz por padrão?",
+     "opcoes": [
+      "Derruba tudo e sobe a versão nova",
+      "Pede aprovação manual para cada Pod",
+      "Troca os Pods aos poucos, sem derrubar todos ao mesmo tempo",
+      "Mantém as duas versões para sempre"
+     ],
+     "correta": 2,
+     "explicacao": "O rolling update padrão do Deployment substitui os Pods em etapas, e o serviço continua respondendo durante a troca."
+    },
+    {
+     "pergunta": "Por que muitas plataformas internas escondem o Kubernetes dos times de produto?",
+     "opcoes": [
+      "Porque o Kubernetes é pago",
+      "Porque ele só funciona com uma linguagem",
+      "Porque ele não aguenta muitos serviços",
+      "Porque ele é complexo, e o time de produto deveria se preocupar com o produto"
+     ],
+     "correta": 3,
+     "explicacao": "O Kubernetes é uma ótima base, mas cheia de detalhes. A plataforma oferece um caminho mais simples, com boas configurações já prontas."
+    }
+   ],
+   "pergunta_ako": "O Kubernetes corrige sozinho quando algo sai do estado desejado. Onde mais na sua vida um \"loop de reconciliação\" ajudaria?",
+   "recursos": [
+    {
+     "titulo": "Aprenda as noções básicas do Kubernetes",
+     "fonte": "Kubernetes",
+     "url": "https://kubernetes.io/pt-br/docs/tutorials/kubernetes-basics/",
+     "tipo": "tutorial",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Tutorial oficial em português: fazer deploy, escalar, atualizar e investigar uma aplicação num cluster.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Descomplicando o Kubernetes",
+     "fonte": "LINUXtips, no GitHub",
+     "url": "https://github.com/badtuxx/DescomplicandoKubernetes",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Curso aberto em português, organizado em dias, do primeiro cluster até Ingress, autoscaling e Network Policies.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "kind: Quick Start",
+     "fonte": "Kubernetes SIGs",
+     "url": "https://kind.sigs.k8s.io/docs/user/quick-start/",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Como criar um cluster Kubernetes no seu computador, dentro de contêineres Docker, para praticar sem pagar nuvem.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Introduction to Kubernetes (LFS158)",
+     "fonte": "Linux Foundation",
+     "url": "https://training.linuxfoundation.org/training/introduction-to-kubernetes/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, precisa criar conta",
+     "nota": "Curso de 15 a 20 horas sobre arquitetura, blocos do Kubernetes e Minikube, em 17 capítulos. Precisa criar conta.",
+     "verificado_em": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "iac",
+   "etapa": "base",
+   "titulo": "Infraestrutura como código",
+   "horas": 6,
+   "resumo": "Infraestrutura como código (IaC) é descrever redes, máquinas, bancos e permissões em arquivos de texto, versionados no Git, em vez de clicar no console da nuvem. Ferramentas como Terraform e OpenTofu leem esses arquivos, mostram o que vai mudar e aplicam a mudança. Para a plataforma, IaC é o que permite criar ambientes iguais, revisar mudanças em pull request e oferecer módulos prontos para os times.",
+   "essencial": [
+    "O fluxo básico é write, plan e apply: você escreve, confere o plano do que vai mudar e só então aplica.",
+    "O `plan` é o seu \"antes de rodar\": leia sempre, principalmente as linhas que destroem ou recriam recursos.",
+    "O state guarda o que a ferramenta criou. Ele fica num lugar compartilhado e protegido, porque pode conter dados sensíveis.",
+    "Módulos são blocos reutilizáveis, como \"um banco Postgres com backup e alertas\". São uma das formas mais simples de golden path.",
+    "Mudança feita à mão no console cria drift: o código diz uma coisa e a nuvem tem outra."
+   ],
+   "checklist": [
+    "Instalei o Terraform ou o OpenTofu e rodei `init`, `plan` e `apply` num exemplo local com Docker",
+    "Li um plan e identifiquei o que seria criado, alterado e destruído",
+    "Transformei um recurso repetido num módulo com variáveis",
+    "Destruí tudo com `destroy` e confirmei que nada ficou para trás"
+   ],
+   "quiz": [
+    {
+     "pergunta": "O plan mostra `-/+ destroy and then create replacement` no banco de produção. O que você faz?",
+     "opcoes": [
+      "Aplica, porque o plan sempre está certo",
+      "Para e entende por que o banco seria recriado antes de aplicar",
+      "Apaga o state para o aviso sumir",
+      "Roda o apply duas vezes"
+     ],
+     "correta": 1,
+     "explicacao": "Recriar um banco pode apagar dados. Descubra qual mudança forçou a recriação e ajuste o código antes de aplicar."
+    },
+    {
+     "pergunta": "Alguém aumentou a máquina pelo console da nuvem. No próximo plan, o Terraform quer voltar ao tamanho antigo. O que aconteceu?",
+     "opcoes": [
+      "Drift: a nuvem ficou diferente do código",
+      "Um bug do Terraform",
+      "O state foi apagado",
+      "A nuvem saiu do ar"
+     ],
+     "correta": 0,
+     "explicacao": "Mudança manual cria drift. O jeito certo é mudar no código, revisar em pull request e aplicar."
+    },
+    {
+     "pergunta": "Onde o state do Terraform deve ficar num time?",
+     "opcoes": [
+      "No computador de quem rodou por último",
+      "Num commit do repositório, junto com o código",
+      "Num backend remoto compartilhado, com acesso restrito e trava",
+      "Numa pasta compartilhada da rede"
+     ],
+     "correta": 2,
+     "explicacao": "Backend remoto evita que duas pessoas apliquem ao mesmo tempo e mantém o state, que pode ter segredos, longe do Git."
+    },
+    {
+     "pergunta": "Cinco times criam buckets de armazenamento, cada um de um jeito, e dois esqueceram a criptografia. Como a plataforma resolve?",
+     "opcoes": [
+      "Proibindo buckets",
+      "Fazendo uma reunião por mês sobre buckets",
+      "Pedindo para cada time revisar o próprio código sozinho",
+      "Oferecendo um módulo pronto com criptografia e boas configurações"
+     ],
+     "correta": 3,
+     "explicacao": "Um módulo bem feito transforma o jeito seguro no jeito fácil. É um golden path em forma de código."
+    },
+    {
+     "pergunta": "Por que manter a infraestrutura no Git ajuda o time?",
+     "opcoes": [
+      "Porque toda mudança fica revisável, com histórico e com volta fácil",
+      "Porque o Git deixa a nuvem mais barata",
+      "Porque dispensa conhecer a nuvem",
+      "Porque o Git aplica as mudanças sozinho"
+     ],
+     "correta": 0,
+     "explicacao": "Com IaC no Git, mudança de infraestrutura passa por pull request, revisão e histórico, como qualquer código."
+    },
+    {
+     "pergunta": "Qual é a relação entre Terraform e OpenTofu?",
+     "opcoes": [
+      "O OpenTofu é uma nuvem",
+      "O OpenTofu é uma alternativa aberta com o mesmo fluxo de trabalho do Terraform",
+      "O OpenTofu é a versão paga do Terraform",
+      "O OpenTofu substitui o Git"
+     ],
+     "correta": 1,
+     "explicacao": "O OpenTofu nasceu de um fork do Terraform e é mantido como projeto aberto. A linguagem e o fluxo de write, plan e apply são os mesmos."
+    }
+   ],
+   "pergunta_ako": "Clicar no console é mais rápido na primeira vez. Em que momento escrever código passa a valer mais a pena? Como você explicaria isso para alguém com pressa?",
+   "recursos": [
+    {
+     "titulo": "Terraform tutorials",
+     "fonte": "HashiCorp Developer",
+     "url": "https://developer.hashicorp.com/terraform/tutorials",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Trilhas oficiais de primeiros passos com Terraform em Docker, GCP, AWS e Azure. A trilha com Docker roda no seu computador, sem conta de nuvem.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Getting started",
+     "fonte": "OpenTofu",
+     "url": "https://opentofu.org/docs/intro/",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "O OpenTofu é a alternativa aberta ao Terraform, nascida de um fork dele, com o mesmo fluxo de write, plan e apply.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Introduction to DevOps and Site Reliability Engineering (LFS162)",
+     "fonte": "Linux Foundation",
+     "url": "https://training.linuxfoundation.org/training/introduction-to-devops-and-site-reliability-engineering-lfs162/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, precisa criar conta",
+     "nota": "Curso de 10 a 12 horas sobre DevOps, contêineres, infraestrutura como código, CI/CD, observabilidade e SRE. Precisa criar conta.",
+     "verificado_em": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "ci-cd",
+   "etapa": "entrega",
+   "titulo": "Pipelines de CI/CD",
+   "horas": 5,
+   "resumo": "CI (integração contínua) roda build e testes a cada mudança, para achar problema cedo. CD (entrega contínua) leva a mudança aprovada até produção de forma automática e repetível. Na plataforma, o pipeline vira produto: um pipeline padrão que qualquer time reaproveita, com testes, scan de segurança e deploy já configurados.",
+   "essencial": [
+    "Um pipeline é uma sequência de etapas que roda sozinha quando algo acontece, como um push ou um pull request.",
+    "Quebrou o build? A prioridade do time é consertar. Pipeline vermelho ignorado vira pipeline inútil.",
+    "Pipelines reutilizáveis (no GitHub Actions, os reusable workflows) deixam a plataforma oferecer o mesmo padrão para vários repositórios.",
+    "Segredos do pipeline ficam no cofre de segredos da ferramenta, nunca no arquivo do pipeline. Dê ao pipeline só a permissão de que ele precisa.",
+    "Deploys pequenos e frequentes são mais seguros que deploys grandes e raros, porque é mais fácil achar e desfazer o que deu errado."
+   ],
+   "checklist": [
+    "Criei um workflow no GitHub Actions que roda os testes a cada pull request",
+    "Fiz o pipeline falhar de propósito e corrigi",
+    "Adicionei uma etapa que faz o build da imagem de contêiner",
+    "Guardei um segredo nos secrets do repositório e usei no workflow sem expor no log"
+   ],
+   "quiz": [
+    {
+     "pergunta": "O time faz deploy uma vez por mês, com 200 mudanças juntas, e quase todo deploy dá problema. O que tende a ajudar?",
+     "opcoes": [
+      "Fazer deploy uma vez por trimestre, com mais cuidado",
+      "Deploys menores e mais frequentes, com testes automáticos",
+      "Mais pessoas aprovando o deploy",
+      "Desligar os testes para ganhar tempo"
+     ],
+     "correta": 1,
+     "explicacao": "Com poucas mudanças por vez, fica fácil achar a causa de um problema e desfazer. Esse é um dos achados centrais da pesquisa DORA."
+    },
+    {
+     "pergunta": "Qual é a diferença entre CI e CD?",
+     "opcoes": [
+      "CI integra e testa cada mudança; CD leva a mudança aprovada até produção de forma automática",
+      "São a mesma coisa",
+      "CI é para frontend e CD para backend",
+      "CI é manual e CD é automático"
+     ],
+     "correta": 0,
+     "explicacao": "CI cuida de \"a mudança funciona junto com o resto?\". CD cuida de \"como ela chega em produção do jeito seguro e repetível\"."
+    },
+    {
+     "pergunta": "Doze repositórios têm doze pipelines copiados e cada um ficou diferente. Como a plataforma pode ajudar?",
+     "opcoes": [
+      "Proibindo pipelines",
+      "Pedindo para cada time manter o seu",
+      "Oferecendo um pipeline reutilizável que os repositórios chamam",
+      "Juntando os doze repositórios num só"
+     ],
+     "correta": 2,
+     "explicacao": "Um workflow reutilizável centraliza a manutenção. Melhorou o padrão? Todos os repositórios recebem a melhoria."
+    },
+    {
+     "pergunta": "Um token de nuvem apareceu no log público do pipeline. O que fazer primeiro?",
+     "opcoes": [
+      "Apagar o log e seguir",
+      "Esperar para ver se alguém usou",
+      "Mudar o nome do token",
+      "Revogar o token na hora e criar outro, guardado nos secrets"
+     ],
+     "correta": 3,
+     "explicacao": "Token exposto deve ser considerado comprometido. Revogue primeiro, depois corrija o pipeline para usar o cofre de segredos."
+    },
+    {
+     "pergunta": "O build está vermelho há três dias e o time continua fazendo merge. Qual é o problema?",
+     "opcoes": [
+      "Nenhum, o vermelho é normal",
+      "O pipeline perdeu a função de avisar que algo quebrou",
+      "O pipeline é rápido demais",
+      "Falta mais uma etapa de teste"
+     ],
+     "correta": 1,
+     "explicacao": "Se o vermelho vira paisagem, ninguém percebe a próxima falha. A regra é parar e consertar o build."
+    },
+    {
+     "pergunta": "Por que o pipeline deve ter só as permissões de que precisa?",
+     "opcoes": [
+      "Porque permissão extra deixa o pipeline lento",
+      "Porque o GitHub cobra por permissão",
+      "Para limitar o estrago se o pipeline ou uma dependência dele for comprometida",
+      "Porque assim o pipeline dispensa testes"
+     ],
+     "correta": 2,
+     "explicacao": "Pipelines são alvo comum de ataque. Com o mínimo de permissão, um invasor consegue fazer bem menos. O OWASP lista isso entre os riscos principais de CI/CD."
+    }
+   ],
+   "pergunta_ako": "Se o seu pipeline pudesse impedir só um tipo de erro de chegar à produção, qual você escolheria? Por quê?",
+   "recursos": [
+    {
+     "titulo": "Documentação do GitHub Actions",
+     "fonte": "GitHub Docs",
+     "url": "https://docs.github.com/pt/actions",
+     "tipo": "documentação",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Em português: conceitos, tutoriais e referência para montar pipelines de CI/CD no próprio GitHub.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "OWASP Top 10 CI/CD Security Risks",
+     "fonte": "OWASP",
+     "url": "https://owasp.org/www-project-top-10-ci-cd-security-risks/",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Os dez riscos mais comuns em pipelines, como permissões demais, dependências envenenadas e segredos expostos.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Capabilities",
+     "fonte": "DORA, Google Cloud",
+     "url": "https://dora.dev/capabilities/",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Catálogo com cerca de 40 práticas que melhoram a entrega de software, uma página para cada, incluindo platform engineering.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Introduction to DevOps and Site Reliability Engineering (LFS162)",
+     "fonte": "Linux Foundation",
+     "url": "https://training.linuxfoundation.org/training/introduction-to-devops-and-site-reliability-engineering-lfs162/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, precisa criar conta",
+     "nota": "Curso de 10 a 12 horas sobre DevOps, contêineres, infraestrutura como código, CI/CD, observabilidade e SRE. Precisa criar conta.",
+     "verificado_em": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "gitops",
+   "etapa": "entrega",
+   "titulo": "GitOps",
+   "horas": 4,
+   "resumo": "GitOps usa o Git como fonte da verdade do que deve estar rodando. Um agente, como o Argo CD ou o Flux, fica dentro do cluster, olha o repositório e aplica sozinho o que mudou. Ninguém roda comando de deploy à mão: a mudança entra por pull request, e o agente corrige qualquer desvio entre o Git e o cluster.",
+   "essencial": [
+    "Os quatro princípios do OpenGitOps: declarativo, versionado e imutável, puxado automaticamente e reconciliado o tempo todo.",
+    "Puxar (pull) é diferente de empurrar (push): o agente dentro do cluster busca as mudanças, então o pipeline não precisa da chave do cluster.",
+    "Desfazer um deploy vira reverter um commit. O histórico do Git mostra quem mudou o quê e quando.",
+    "Com a reconciliação automática ligada (no Argo CD, auto-sync com self-heal), mudança feita à mão no cluster é desfeita pelo agente. Isso é intencional.",
+    "Na plataforma, GitOps é a base do self-service: o time abre um pull request e a plataforma faz o resto."
+   ],
+   "checklist": [
+    "Li os quatro princípios do OpenGitOps",
+    "Instalei o Argo CD num cluster local e fiz o deploy da aplicação de exemplo",
+    "Mudei o número de réplicas no Git e vi o Argo CD aplicar sozinho",
+    "Liguei o auto-sync com self-heal, mudei algo à mão no cluster e vi o Argo CD voltar ao que está no Git"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Alguém aumentou as réplicas à mão com `kubectl`, e minutos depois o número voltou ao anterior. Por quê?",
+     "opcoes": [
+      "O cluster está com defeito",
+      "O agente de GitOps reconciliou o cluster com o que está no Git",
+      "O kubectl desfaz as mudanças depois de um tempo",
+      "Faltou memória no cluster"
+     ],
+     "correta": 1,
+     "explicacao": "No GitOps, o Git manda. O agente vê o desvio e corrige. Para mudar de verdade, mude no repositório."
+    },
+    {
+     "pergunta": "Um deploy novo quebrou produção. Como se desfaz no GitOps?",
+     "opcoes": [
+      "Revertendo o commit no Git, e o agente aplica a versão anterior",
+      "Entrando no servidor e editando os arquivos",
+      "Apagando o cluster",
+      "Esperando o próximo deploy"
+     ],
+     "correta": 0,
+     "explicacao": "Como o Git é a fonte da verdade, voltar é reverter um commit. O histórico mostra exatamente o que mudou."
+    },
+    {
+     "pergunta": "Por que o modelo pull (o agente busca as mudanças) é considerado mais seguro que o push (o pipeline aplica)?",
+     "opcoes": [
+      "Porque é mais rápido",
+      "Porque não usa Git",
+      "Porque o pipeline não precisa guardar a credencial de acesso ao cluster",
+      "Porque dispensa revisão de código"
+     ],
+     "correta": 2,
+     "explicacao": "No pull, quem tem acesso ao cluster é o agente que mora nele. O pipeline só escreve no Git, e uma credencial poderosa a menos fica exposta."
+    },
+    {
+     "pergunta": "Qual destes não é um dos princípios do OpenGitOps?",
+     "opcoes": [
+      "Declarativo",
+      "Versionado e imutável",
+      "Reconciliado continuamente",
+      "Aprovado manualmente em cada servidor"
+     ],
+     "correta": 3,
+     "explicacao": "Os quatro princípios são declarativo, versionado e imutável, puxado automaticamente e reconciliado continuamente. A aprovação acontece no pull request, não servidor por servidor."
+    },
+    {
+     "pergunta": "Como o GitOps ajuda a plataforma a oferecer self-service?",
+     "opcoes": [
+      "O time pede um recurso abrindo um pull request, e o agente aplica depois da revisão",
+      "Cada time ganha acesso de administrador ao cluster",
+      "O time de plataforma aplica cada pedido à mão",
+      "Os times mandam e-mail com o YAML"
+     ],
+     "correta": 0,
+     "explicacao": "O pull request vira a interface: revisável, automática e com histórico."
+    },
+    {
+     "pergunta": "Quem pode ver o que está rodando em produção num time que usa GitOps?",
+     "opcoes": [
+      "Só quem tem acesso ao cluster",
+      "Só o time de plataforma, pelo painel do agente",
+      "Qualquer pessoa com acesso de leitura ao repositório",
+      "Só quem fez o último deploy"
+     ],
+     "correta": 2,
+     "explicacao": "O repositório descreve o estado desejado de produção. Ler o Git é ler o que deveria estar rodando, e o agente mostra se está igual."
+    }
+   ],
+   "pergunta_ako": "No GitOps, mudar à mão não funciona: o sistema desfaz. Isso parece controle demais ou proteção? Em que situação você ficaria do outro lado?",
+   "recursos": [
+    {
+     "titulo": "OpenGitOps",
+     "fonte": "OpenGitOps, da CNCF",
+     "url": "https://opengitops.dev/",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Os quatro princípios do GitOps na versão 1.0: declarativo, versionado, puxado automaticamente e reconciliado o tempo todo.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Getting Started",
+     "fonte": "Argo CD",
+     "url": "https://argo-cd.readthedocs.io/en/stable/getting_started/",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Instalar o Argo CD num cluster, criar uma aplicação de exemplo a partir de um repositório público e sincronizar.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "kind: Quick Start",
+     "fonte": "Kubernetes SIGs",
+     "url": "https://kind.sigs.k8s.io/docs/user/quick-start/",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Como criar um cluster Kubernetes no seu computador, dentro de contêineres Docker, para praticar sem pagar nuvem.",
+     "verificado_em": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "observabilidade",
+   "etapa": "confiabilidade",
+   "titulo": "Observabilidade: logs, métricas e traces",
+   "horas": 5,
+   "resumo": "Observabilidade é conseguir entender o que acontece dentro do sistema olhando para os dados que ele emite. Logs contam eventos, métricas mostram números ao longo do tempo e traces seguem uma requisição de serviço em serviço. A plataforma entrega isso pronto: todo serviço novo já nasce com logs organizados, métricas básicas e dashboards, sem cada time montar tudo do zero.",
+   "essencial": [
+    "Logs respondem \"o que aconteceu?\", métricas respondem \"quanto e com que frequência?\", traces respondem \"onde a requisição demorou?\".",
+    "Os quatro golden signals do livro de SRE do Google: latência, tráfego, erros e saturação. Comece por eles.",
+    "Alerte por sintoma que o usuário sente (\"o checkout está lento\"), não por causa interna (\"a CPU passou de 80%\").",
+    "OpenTelemetry é o padrão aberto para gerar e enviar esses dados, sem ficar preso a um fornecedor.",
+    "Log estruturado, em JSON com campos fixos, é muito mais fácil de pesquisar que texto solto."
+   ],
+   "checklist": [
+    "Li a introdução à observabilidade do OpenTelemetry, em português",
+    "Subi o Prometheus no meu computador e fiz uma consulta em PromQL",
+    "Montei um dashboard no Grafana com pelo menos dois dos quatro golden signals",
+    "Escrevi um alerta baseado num sintoma que o usuário percebe"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Usuários reclamam que a página demora, mas a CPU de todos os servidores está em 30%. Qual dado ajuda a achar onde está a demora?",
+     "opcoes": [
+      "O log de boot do servidor",
+      "Um trace da requisição, mostrando quanto tempo cada serviço levou",
+      "O uso de disco",
+      "O número de usuários cadastrados"
+     ],
+     "correta": 1,
+     "explicacao": "O trace segue a requisição de ponta a ponta e mostra qual serviço ou chamada consumiu o tempo."
+    },
+    {
+     "pergunta": "Qual alerta segue a recomendação de alertar por sintoma?",
+     "opcoes": [
+      "CPU acima de 80%",
+      "Memória acima de 70%",
+      "Mais de 2% das compras falhando nos últimos 5 minutos",
+      "Disco com 60% de uso"
+     ],
+     "correta": 2,
+     "explicacao": "A taxa de compras com erro é o que o usuário sente. CPU alta pode não afetar ninguém e gerar alarme à toa."
+    },
+    {
+     "pergunta": "Quais são os quatro golden signals do livro de SRE do Google?",
+     "opcoes": [
+      "Latência, tráfego, erros e saturação",
+      "CPU, memória, disco e rede",
+      "Logs, métricas, traces e alertas",
+      "Deploys, commits, bugs e tickets"
+     ],
+     "correta": 0,
+     "explicacao": "Latência, tráfego, erros e saturação dão uma visão boa da saúde de quase qualquer serviço voltado a usuários."
+    },
+    {
+     "pergunta": "O plantão recebe 40 alertas por noite e quase nenhum exige ação. O que tende a acontecer?",
+     "opcoes": [
+      "O time fica mais atento",
+      "Nada muda",
+      "O sistema fica mais rápido",
+      "As pessoas passam a ignorar alertas, inclusive os importantes"
+     ],
+     "correta": 3,
+     "explicacao": "Alerta que não exige ação vira ruído e cansa o plantão. Cada alerta precisa pedir uma ação clara."
+    },
+    {
+     "pergunta": "Por que uma plataforma adota OpenTelemetry em vez da biblioteca própria de um fornecedor?",
+     "opcoes": [
+      "Porque o OpenTelemetry é pago",
+      "Porque é um padrão aberto, e trocar de ferramenta de análise não exige reescrever a instrumentação",
+      "Porque dispensa logs",
+      "Porque só funciona em Kubernetes"
+     ],
+     "correta": 1,
+     "explicacao": "Com um padrão aberto, os serviços emitem dados num formato comum, e a plataforma escolhe ou troca o destino sem mexer no código dos times."
+    },
+    {
+     "pergunta": "Qual log é mais fácil de pesquisar quando há milhões de linhas?",
+     "opcoes": [
+      "Um log em JSON com campos como nivel, servico, id_pedido e mensagem",
+      "Um texto livre diferente em cada serviço",
+      "Um log só com a palavra ERRO",
+      "Um print com a data no fim"
+     ],
+     "correta": 0,
+     "explicacao": "Campos fixos permitem filtrar e agrupar, como \"todos os erros do serviço de pagamento para o pedido 123\"."
+    }
+   ],
+   "pergunta_ako": "Se você pudesse olhar só um número para saber se um serviço seu está bem para quem usa, qual seria? Por que esse e não outro?",
+   "recursos": [
+    {
+     "titulo": "Introdução à Observabilidade",
+     "fonte": "OpenTelemetry",
+     "url": "https://opentelemetry.io/pt/docs/concepts/observability-primer/",
+     "tipo": "documentação",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Em português: o que é observabilidade, logs, métricas, traces e spans, pela documentação oficial do OpenTelemetry.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Monitoring Distributed Systems",
+     "fonte": "Google, livro Site Reliability Engineering",
+     "url": "https://sre.google/sre-book/monitoring-distributed-systems/",
+     "tipo": "livro",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Capítulo 6: os quatro golden signals (latência, tráfego, erros e saturação) e como alertar por sintoma, não por causa.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Getting started",
+     "fonte": "Prometheus",
+     "url": "https://prometheus.io/docs/prometheus/latest/getting_started/",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Tutorial para instalar o Prometheus, coletar métricas dele mesmo e fazer as primeiras consultas em PromQL.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Grafana fundamentals",
+     "fonte": "Grafana Labs",
+     "url": "https://grafana.com/tutorials/grafana-fundamentals/",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Tutorial com uma aplicação de exemplo: explorar métricas e logs, montar um dashboard e criar um alerta. Precisa de Docker e Git.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Getting Started with OpenTelemetry (LFS148)",
+     "fonte": "Linux Foundation",
+     "url": "https://training.linuxfoundation.org/training/getting-started-with-opentelemetry-lfs148/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, precisa criar conta",
+     "nota": "Curso de 8 a 10 horas com laboratórios para instrumentar traces, métricas e logs e operar o Collector. Precisa criar conta.",
+     "verificado_em": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "slo",
+   "etapa": "confiabilidade",
+   "titulo": "SLI, SLO e error budget",
+   "horas": 4,
+   "resumo": "SLI é o indicador que você mede, como a porcentagem de requisições respondidas com sucesso em menos de 300 ms. SLO é a meta para esse indicador, como 99,5% em 30 dias. O error budget é a sobra: o quanto de falha a meta ainda permite. Com ele, produto e operação decidem juntos quando acelerar e quando parar para cuidar da confiabilidade.",
+   "essencial": [
+    "100% de disponibilidade não é meta: custa caro demais e o usuário nem percebe a diferença acima de certo ponto.",
+    "Um bom SLI mede a experiência do usuário: sucesso, latência, frescor dos dados. Não mede CPU.",
+    "Com SLO de 99,9% em 30 dias, o error budget é 0,1%, cerca de 43 minutos de falha total no mês.",
+    "Budget sobrando? Dá para arriscar mais, com deploys mais frequentes ou experimentos. Budget acabando? O foco vai para estabilidade.",
+    "SLA é contrato com cliente, com multa. O SLO interno fica mais apertado que o SLA, para avisar antes."
+   ],
+   "checklist": [
+    "Li a lição do Ako sobre SLO e error budget",
+    "Escolhi um serviço e escrevi um SLI de disponibilidade e um de latência para ele",
+    "Calculei o error budget em minutos para um SLO de 99,5% e outro de 99,9% em 30 dias",
+    "Escrevi uma política de error budget de três linhas: o que o time faz quando o budget acaba"
+   ],
+   "quiz": [
+    {
+     "pergunta": "O SLO de um serviço é 99,9% de requisições com sucesso em 30 dias. Quanto tempo de falha total isso permite, mais ou menos?",
+     "opcoes": [
+      "Cerca de 7 horas",
+      "Cerca de 43 minutos",
+      "Cerca de 4 minutos",
+      "Nenhum minuto"
+     ],
+     "correta": 1,
+     "explicacao": "30 dias têm 43.200 minutos. 0,1% disso dá 43,2 minutos."
+    },
+    {
+     "pergunta": "O error budget do mês acabou na segunda semana. O que uma política de error budget costuma pedir?",
+     "opcoes": [
+      "Ignorar e seguir com os lançamentos",
+      "Desligar os alertas até o mês virar",
+      "Pausar mudanças arriscadas e focar em confiabilidade até o budget voltar",
+      "Mudar o SLO para 90%"
+     ],
+     "correta": 2,
+     "explicacao": "O budget existe para equilibrar velocidade e estabilidade. Acabou? A prioridade passa a ser estabilidade, como combinado antes."
+    },
+    {
+     "pergunta": "Qual destes é um bom SLI?",
+     "opcoes": [
+      "Porcentagem de requisições de checkout respondidas com sucesso em menos de 500 ms",
+      "Uso médio de CPU do cluster",
+      "Número de pods rodando",
+      "Quantidade de commits por dia"
+     ],
+     "correta": 0,
+     "explicacao": "Um bom SLI mede o que o usuário sente. CPU e número de pods são causas internas, não experiência."
+    },
+    {
+     "pergunta": "A diretoria pede 100% de disponibilidade. Qual é o melhor argumento contra?",
+     "opcoes": [
+      "É impossível medir disponibilidade",
+      "Os servidores não deixam",
+      "Os usuários preferem um sistema que cai",
+      "O custo cresce muito a cada nove, e as redes e aparelhos dos usuários já falham mais que isso"
+     ],
+     "correta": 3,
+     "explicacao": "Cada nove a mais custa muito mais caro. Acima de certo ponto, a falha do Wi-Fi ou do celular do usuário é maior que a do seu serviço, e ele nem percebe a melhora."
+    },
+    {
+     "pergunta": "Qual é a diferença entre SLO e SLA?",
+     "opcoes": [
+      "São sinônimos",
+      "O SLO é uma meta interna; o SLA é um contrato com o cliente, com consequência se for quebrado",
+      "O SLA é interno e o SLO é externo",
+      "O SLO só vale para bancos de dados"
+     ],
+     "correta": 1,
+     "explicacao": "O SLA tem multa ou crédito. Por isso o SLO interno costuma ser mais apertado, para o time agir antes de quebrar o contrato."
+    },
+    {
+     "pergunta": "O serviço está com 99,99% de sucesso no mês, e o SLO é 99,5%. O que o error budget sugere?",
+     "opcoes": [
+      "Que o time pode arriscar mais, com deploys mais frequentes ou experimentos",
+      "Que é hora de congelar todas as mudanças",
+      "Que o SLO deve virar 100%",
+      "Que os alertas estão quebrados"
+     ],
+     "correta": 0,
+     "explicacao": "Sobrou muito budget. Dá para usar essa margem para entregar mais rápido, sem prejudicar o usuário além do combinado."
+    }
+   ],
+   "pergunta_ako": "Aceitar que um sistema pode falhar um pouco é desconfortável. O que muda numa equipe quando a falha deixa de ser tabu e vira um orçamento combinado?",
+   "recursos": [
+    {
+     "titulo": "SLI, SLO e error budget, com contas",
+     "fonte": "Iniciativa Ako",
+     "url": "./materiais/slo-e-error-budget.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição em português do Ako com as contas do error budget, exemplos de SLI e um modelo de política para o time."
+    },
+    {
+     "titulo": "Service Level Objectives",
+     "fonte": "Google, livro Site Reliability Engineering",
+     "url": "https://sre.google/sre-book/service-level-objectives/",
+     "tipo": "livro",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Capítulo 4: a diferença entre SLI, SLO e SLA, com um exemplo de meta de latência.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Implementing SLOs",
+     "fonte": "Google, The Site Reliability Workbook",
+     "url": "https://sre.google/workbook/implementing-slos/",
+     "tipo": "livro",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Capítulo prático sobre como escolher SLOs, calcular o error budget e escrever a política do que fazer quando ele acaba.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Livros de SRE do Google",
+     "fonte": "Google",
+     "url": "https://sre.google/books/",
+     "tipo": "livro",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Site Reliability Engineering, The Site Reliability Workbook e Building Secure and Reliable Systems para ler de graça online. A segunda edição é paga.",
+     "verificado_em": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "incidentes",
+   "etapa": "confiabilidade",
+   "titulo": "Incidentes e postmortem sem culpa",
+   "horas": 3,
+   "resumo": "Incidente é quando algo afeta os usuários e precisa de resposta agora. Uma boa resposta tem papéis claros, como quem coordena, quem investiga e quem comunica, e foca em restaurar o serviço antes de achar a causa. Depois vem o postmortem sem culpa: um texto que conta o que aconteceu e o que muda, sem caçar culpados, porque o problema quase sempre está no sistema, não na pessoa.",
+   "essencial": [
+    "Primeiro restaure, depois investigue. Desfazer o último deploy costuma ser o caminho mais rápido de volta.",
+    "Papéis separados evitam caos: quem coordena o incidente não é quem está digitando os comandos.",
+    "Comunique cedo e com frequência, mesmo sem a resposta: \"estamos investigando, próxima atualização em 30 minutos\".",
+    "Postmortem sem culpa pergunta \"o que no sistema deixou isso acontecer?\", não \"quem errou?\".",
+    "Cada postmortem termina com ações concretas, cada uma com dono e prazo. Sem isso, o mesmo incidente volta."
+   ],
+   "checklist": [
+    "Li a lição do Ako sobre incidentes e postmortem",
+    "Li o capítulo de cultura de postmortem do livro de SRE do Google",
+    "Escrevi um postmortem sem culpa de um problema real que vivi, mesmo fora do trabalho",
+    "Defini os três papéis principais de um incidente e o que cada um faz"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Produção caiu logo depois de um deploy. O que fazer primeiro?",
+     "opcoes": [
+      "Investigar a fundo a causa antes de mexer em qualquer coisa",
+      "Desfazer o deploy para restaurar o serviço e investigar depois",
+      "Esperar o próximo horário de deploy",
+      "Escrever o postmortem"
+     ],
+     "correta": 1,
+     "explicacao": "A prioridade é o usuário voltar a ser atendido. Com o serviço de pé, a investigação fica mais calma e mais precisa."
+    },
+    {
+     "pergunta": "No postmortem, qual pergunta segue a cultura sem culpa?",
+     "opcoes": [
+      "Quem rodou o comando errado?",
+      "Por que ninguém prestou atenção?",
+      "Quem vai ser advertido?",
+      "O que no processo ou nas ferramentas permitiu que um comando derrubasse produção?"
+     ],
+     "correta": 3,
+     "explicacao": "Se uma pessoa conseguiu derrubar produção com um comando, o sistema deixou. Corrigir o sistema evita a próxima vez, com qualquer pessoa."
+    },
+    {
+     "pergunta": "Durante o incidente, cinco pessoas digitam comandos ao mesmo tempo e ninguém sabe o que já foi tentado. O que falta?",
+     "opcoes": [
+      "Mais pessoas",
+      "Um coordenador do incidente, que organiza quem faz o quê e registra as ações",
+      "Desligar o chat",
+      "Mais monitoramento"
+     ],
+     "correta": 1,
+     "explicacao": "O coordenador não precisa resolver sozinho. Ele mantém a ordem, distribui tarefas e garante que alguém registre tudo."
+    },
+    {
+     "pergunta": "Os clientes estão sem acesso há 20 minutos e o time ainda não sabe a causa. O que comunicar?",
+     "opcoes": [
+      "Nada, até descobrir a causa",
+      "Que está tudo bem",
+      "Que estão investigando, o que já se sabe e quando sai a próxima atualização",
+      "Um pedido de desculpas com a causa inventada"
+     ],
+     "correta": 2,
+     "explicacao": "Silêncio gera ansiedade e boato. Uma atualização honesta com horário da próxima já ajuda muito."
+    },
+    {
+     "pergunta": "Um postmortem termina com a ação \"ter mais cuidado\". Qual é o problema?",
+     "opcoes": [
+      "Não é uma ação concreta, nem tem dono e prazo",
+      "Nenhum, é uma boa ação",
+      "O texto ficou curto demais",
+      "Ações não fazem parte de postmortem"
+     ],
+     "correta": 0,
+     "explicacao": "\"Ter mais cuidado\" não muda o sistema. Ação boa é algo como \"bloquear deploy sem teste no pipeline, dono Ana, até sexta\"."
+    },
+    {
+     "pergunta": "Por que a cultura sem culpa melhora a confiabilidade?",
+     "opcoes": [
+      "Porque ninguém precisa se preocupar com erros",
+      "Porque elimina a necessidade de postmortem",
+      "Porque erros deixam de acontecer",
+      "Porque as pessoas contam o que realmente aconteceu, e o time aprende com fatos"
+     ],
+     "correta": 3,
+     "explicacao": "Com medo de punição, as pessoas escondem detalhes. Sem esses detalhes, a causa real não aparece, e o problema volta."
+    }
+   ],
+   "pergunta_ako": "Lembre de um erro seu que alguém tratou com culpa, e de outro que alguém tratou com curiosidade. Com qual você aprendeu mais?",
+   "recursos": [
+    {
+     "titulo": "Incidentes e postmortem sem culpa",
+     "fonte": "Iniciativa Ako",
+     "url": "./materiais/incidentes-e-postmortem.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição em português do Ako: papéis num incidente, mensagens de status prontas e um modelo de postmortem."
+    },
+    {
+     "titulo": "Postmortem Culture: Learning from Failure",
+     "fonte": "Google, livro Site Reliability Engineering",
+     "url": "https://sre.google/sre-book/postmortem-culture/",
+     "tipo": "livro",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Capítulo 15: quando escrever um postmortem, o princípio de não culpar pessoas e como criar essa cultura.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Incident Response Documentation",
+     "fonte": "PagerDuty",
+     "url": "https://response.pagerduty.com/",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "O processo de resposta a incidentes que a PagerDuty usa, aberto: papéis, plantão, comunicação e postmortem.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "How to run a blameless postmortem",
+     "fonte": "Atlassian",
+     "url": "https://www.atlassian.com/incident-management/postmortem/blameless",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Como conduzir um postmortem sem culpados, com linha do tempo do incidente e donos para cada ação.",
+     "verificado_em": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "golden-paths",
+   "etapa": "plataforma",
+   "titulo": "Golden paths e templates",
+   "horas": 4,
+   "resumo": "Golden path é o jeito recomendado e com suporte de fazer algo, como \"criar uma API nova\". Ele já vem com repositório, pipeline, observabilidade e deploy configurados. O time não é obrigado a seguir, mas seguir é tão fácil que quase todo mundo escolhe. Na prática, golden paths começam como templates de repositório e módulos prontos.",
+   "essencial": [
+    "O caminho seguro precisa ser o caminho fácil. Se o golden path der mais trabalho que o atalho, ninguém usa.",
+    "Golden path é opinativo: escolhe uma linguagem, um banco e um jeito de fazer deploy, e explica o porquê.",
+    "Sair do caminho é permitido, mas quem sai assume a manutenção do que escolheu.",
+    "Um template de repositório no GitHub é o golden path mais simples: código base, pipeline e README prontos.",
+    "Golden path também envelhece. Alguém precisa ser dono dele e atualizar versões e boas práticas."
+   ],
+   "checklist": [
+    "Li a lição do Ako sobre plataforma como produto, na parte de golden paths",
+    "Criei um repositório template no GitHub com código base, pipeline de CI e README",
+    "Criei um repositório novo a partir do template e confirmei que o pipeline rodou de primeira",
+    "Escrevi no README do template o que ele decide pelo time e por quê"
+   ],
+   "quiz": [
+    {
+     "pergunta": "O golden path para criar uma API leva dois dias de configuração, e o atalho leva uma hora. O que acontece?",
+     "opcoes": [
+      "Todos seguem o golden path por obrigação",
+      "A maioria pega o atalho, e o golden path perde o sentido",
+      "Os dois caminhos somem",
+      "Nada, desde que exista documentação"
+     ],
+     "correta": 1,
+     "explicacao": "O golden path só funciona quando é o caminho mais fácil. O trabalho da plataforma é tornar o jeito certo também o jeito rápido."
+    },
+    {
+     "pergunta": "Um time quer usar um banco que o golden path não oferece. Qual postura combina com a ideia de golden path?",
+     "opcoes": [
+      "Proibir, sem exceção",
+      "Fingir que não viu",
+      "Permitir, deixando claro que o time assume a manutenção dessa escolha",
+      "Migrar a empresa toda para o banco novo"
+     ],
+     "correta": 2,
+     "explicacao": "Golden path é recomendação com suporte, não jaula. Quem sai do caminho pode, mas cuida do que escolheu. Se muitos times saírem pelo mesmo motivo, é sinal para a plataforma evoluir."
+    },
+    {
+     "pergunta": "Qual é o golden path mais simples de começar?",
+     "opcoes": [
+      "Um template de repositório com pipeline e README prontos",
+      "Um portal com dezenas de plugins",
+      "Uma nuvem própria",
+      "Um comitê que aprova cada projeto novo"
+     ],
+     "correta": 0,
+     "explicacao": "Um template já resolve o \"por onde eu começo\" e espalha boas práticas sem exigir ferramenta nova."
+    },
+    {
+     "pergunta": "O template foi criado há dois anos e ninguém mexeu desde então. Qual é o risco?",
+     "opcoes": [
+      "Nenhum, template não envelhece",
+      "O template fica mais rápido",
+      "Os times param de criar projetos",
+      "Projetos novos já nascem com versões antigas e práticas vencidas"
+     ],
+     "correta": 3,
+     "explicacao": "Golden path precisa de dono. Sem manutenção, ele espalha dívida técnica em cada projeto novo."
+    },
+    {
+     "pergunta": "Por que se diz que um golden path é opinativo?",
+     "opcoes": [
+      "Porque ele muda de opinião a cada versão",
+      "Porque ele já faz escolhas pelo time e explica os motivos",
+      "Porque cada time vota nas ferramentas",
+      "Porque ele aceita qualquer combinação de tecnologia"
+     ],
+     "correta": 1,
+     "explicacao": "Escolher por quem usa tira a fadiga de decidir tudo do zero. Explicar o porquê ajuda o time a confiar e a questionar quando fizer sentido."
+    },
+    {
+     "pergunta": "Como saber se um golden path está funcionando?",
+     "opcoes": [
+      "Medindo quantos projetos novos usam o caminho e quanto tempo levam até o primeiro deploy",
+      "Contando quantas páginas a documentação tem",
+      "Perguntando só ao time de plataforma",
+      "Vendo se ele usa a ferramenta mais nova"
+     ],
+     "correta": 0,
+     "explicacao": "Adoção e tempo até o primeiro deploy mostram se o caminho ajuda de verdade quem usa."
+    }
+   ],
+   "pergunta_ako": "Um caminho pronto tira liberdade ou tira peso? Onde fica a linha entre os dois para você?",
+   "recursos": [
+    {
+     "titulo": "Plataforma como produto: clientes, golden paths e portal",
+     "fonte": "Iniciativa Ako",
+     "url": "./materiais/plataforma-como-produto.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição em português do Ako, com a parte prática de como montar um golden path a partir de um template de repositório."
+    },
+    {
+     "titulo": "How We Use Golden Paths to Solve Fragmentation",
+     "fonte": "Spotify Engineering",
+     "url": "https://engineering.atspotify.com/2020/08/how-we-use-golden-paths-to-solve-fragmentation-in-our-software-ecosystem",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Texto que ajudou a popularizar o termo golden path: um caminho opinativo e com suporte para construir algo.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Criar um repositório de modelos",
+     "fonte": "GitHub Docs",
+     "url": "https://docs.github.com/pt/repositories/creating-and-managing-repositories/creating-a-template-repository",
+     "tipo": "documentação",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Como transformar um repositório em template para que outras pessoas criem projetos novos a partir dele.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Software Templates",
+     "fonte": "Backstage, projeto da CNCF",
+     "url": "https://backstage.io/docs/features/software-templates/",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Como os templates do Backstage criam um projeto novo a partir de um esqueleto e publicam no GitHub.",
+     "verificado_em": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "portal",
+   "etapa": "plataforma",
+   "titulo": "Portal do desenvolvedor",
+   "horas": 4,
+   "resumo": "O portal do desenvolvedor é a porta de entrada da plataforma: um site interno onde o time encontra os serviços que existem, quem é dono de cada um, a documentação e os botões para criar algo novo pelos golden paths. O Backstage, projeto da CNCF criado no Spotify, é uma das ferramentas abertas mais conhecidas para isso. Mas o portal é a vitrine, não a plataforma inteira.",
+   "essencial": [
+    "O catálogo de software responde \"que serviços existem, quem é dono e onde está a documentação?\".",
+    "Templates do portal criam um projeto novo pelo golden path com poucos cliques.",
+    "Documentação junto do código (no Backstage, TechDocs) fica mais atualizada que uma wiki solta.",
+    "Portal sem plataforma por trás é só uma página bonita. Primeiro os caminhos funcionam, depois vem a vitrine.",
+    "Um arquivo de descrição por repositório, como o `catalog-info.yaml`, mantém o catálogo atualizado pelo próprio time."
+   ],
+   "checklist": [
+    "Li a página \"What is Backstage?\" e anotei as três partes principais do portal",
+    "Listei os serviços de um projeto que conheço com dono, repositório e documentação de cada um",
+    "Escrevi um `catalog-info.yaml` para um repositório meu",
+    "Escrevi o que eu colocaria na primeira tela de um portal para um time novo na empresa"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Uma pessoa nova no time leva duas semanas para descobrir quem é dono de cada serviço. Qual parte do portal resolve isso?",
+     "opcoes": [
+      "O catálogo de software, com dono e documentação de cada serviço",
+      "Um dashboard de CPU",
+      "Um template de pipeline",
+      "Um canal de chat a mais"
+     ],
+     "correta": 0,
+     "explicacao": "O catálogo é o mapa da empresa: o que existe, quem cuida e onde ler mais."
+    },
+    {
+     "pergunta": "A empresa instalou o Backstage, mas criar um serviço novo continua exigindo três tickets manuais. Qual é o problema?",
+     "opcoes": [
+      "O Backstage está desatualizado",
+      "Faltam plugins",
+      "O portal está pronto, mas os caminhos por trás dele não estão automatizados",
+      "Os times não leram a documentação"
+     ],
+     "correta": 2,
+     "explicacao": "O portal é a vitrine. Se o processo por trás continua manual, o portal só mudou o lugar de onde sai o ticket."
+    },
+    {
+     "pergunta": "Por que manter um arquivo de descrição, como o `catalog-info.yaml`, dentro de cada repositório?",
+     "opcoes": [
+      "Porque o GitHub exige",
+      "Porque o próprio time atualiza junto com o código, e o catálogo não envelhece",
+      "Porque deixa o build mais rápido",
+      "Porque substitui o README"
+     ],
+     "correta": 1,
+     "explicacao": "Quando a informação mora com o código, quem muda o código atualiza a descrição. Planilha central costuma desatualizar."
+    },
+    {
+     "pergunta": "Qual afirmação sobre o Backstage é verdadeira?",
+     "opcoes": [
+      "É uma nuvem pública",
+      "É um sistema de monitoramento",
+      "Só funciona dentro do Spotify",
+      "É um framework aberto para montar portais do desenvolvedor, mantido na CNCF"
+     ],
+     "correta": 3,
+     "explicacao": "O Backstage nasceu no Spotify, foi aberto e hoje é um projeto da CNCF, com catálogo, templates, TechDocs e plugins."
+    },
+    {
+     "pergunta": "O time de plataforma tem pouco tempo. O que faz mais sentido entregar primeiro?",
+     "opcoes": [
+      "Um portal com 30 plugins",
+      "Um golden path que funciona de ponta a ponta para o caso mais comum",
+      "Um logotipo para o portal",
+      "Uma migração de todos os serviços antigos"
+     ],
+     "correta": 1,
+     "explicacao": "Valor vem do caminho funcionando. O portal pode vir depois, para dar acesso fácil ao que já funciona."
+    },
+    {
+     "pergunta": "Onde a documentação técnica tende a ficar mais atualizada?",
+     "opcoes": [
+      "Junto com o código, revisada no mesmo pull request",
+      "Num documento no computador de alguém",
+      "Numa wiki que ninguém revisa",
+      "Na memória de quem criou o serviço"
+     ],
+     "correta": 0,
+     "explicacao": "Docs as code: a documentação muda junto com o código e passa pela mesma revisão."
+    }
+   ],
+   "pergunta_ako": "Se você chegasse hoje numa empresa nova, qual seria a primeira pergunta que gostaria que um portal respondesse sozinho?",
+   "recursos": [
+    {
+     "titulo": "What is Backstage?",
+     "fonte": "Backstage, projeto da CNCF",
+     "url": "https://backstage.io/docs/overview/what-is-backstage",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "O que é o Backstage: catálogo de software, templates, TechDocs e plugins para montar um portal do desenvolvedor.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Software Templates",
+     "fonte": "Backstage, projeto da CNCF",
+     "url": "https://backstage.io/docs/features/software-templates/",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Como os templates do Backstage criam um projeto novo a partir de um esqueleto e publicam no GitHub.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "CNCF Platforms White Paper",
+     "fonte": "CNCF, grupo TAG App Delivery",
+     "url": "https://tag-app-delivery.cncf.io/whitepapers/platforms/",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "O texto de referência da comunidade: por que empresas criam plataformas internas, o que um time de plataforma faz e como medir se deu certo.",
+     "verificado_em": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "guardrails",
+   "etapa": "plataforma",
+   "titulo": "Guardrails: segurança e políticas como código",
+   "horas": 4,
+   "resumo": "Guardrails são proteções embutidas na plataforma que impedem os erros mais perigosos sem travar o time: contêiner rodando como root, bucket público, imagem sem procedência, segredo no código. Elas viram código, com ferramentas como OPA e Kyverno, e rodam automaticamente no pipeline e no cluster. Assim a segurança deixa de ser uma revisão no fim e passa a ser o padrão desde o começo.",
+   "essencial": [
+    "Guardrail é diferente de portão: em vez de esperar aprovação humana, a regra roda sozinha e explica o que corrigir.",
+    "Políticas como código ficam no Git, passam por revisão e têm testes, como qualquer código.",
+    "Comece em modo de auditoria (só avisa) e só depois bloqueie. Assim você descobre o impacto antes de travar o trabalho dos times.",
+    "Cadeia de fornecimento: saiba de onde veio cada imagem e dependência. O SLSA define níveis para isso.",
+    "Mínimo privilégio vale para pessoas, pipelines e serviços. Cada um com só o acesso de que precisa."
+   ],
+   "checklist": [
+    "Li a introdução do Kyverno ou do OPA",
+    "Escrevi uma política que proíbe contêineres rodando como root",
+    "Rodei a política em modo de auditoria e vi o que ela encontraria",
+    "Listei os três riscos do OWASP Top 10 de CI/CD que mais se aplicam a um projeto meu"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Toda mudança de infraestrutura precisa de aprovação do time de segurança, e a fila tem duas semanas. Como guardrails ajudam?",
+     "opcoes": [
+      "Eliminando a segurança",
+      "As regras mais comuns viram código e rodam sozinhas no pipeline, e a segurança revisa só o que é exceção",
+      "Contratando mais gente para aprovar",
+      "Fazendo aprovação por e-mail"
+     ],
+     "correta": 1,
+     "explicacao": "Regras automáticas resolvem o caso comum na hora. As pessoas de segurança ficam livres para olhar o que realmente precisa de análise."
+    },
+    {
+     "pergunta": "Você vai criar uma política nova que bloqueia imagens sem assinatura. Qual é o jeito mais seguro de lançar?",
+     "opcoes": [
+      "Bloquear em produção no primeiro dia",
+      "Mandar um e-mail e bloquear",
+      "Rodar primeiro em modo de auditoria, ver o que quebraria e combinar com os times",
+      "Não lançar"
+     ],
+     "correta": 2,
+     "explicacao": "Auditoria mostra o impacto real. Com os números na mão, dá para ajudar os times a se adequar antes de bloquear."
+    },
+    {
+     "pergunta": "Qual destes é um exemplo de guardrail?",
+     "opcoes": [
+      "Uma política no cluster que recusa contêineres rodando como root e explica como corrigir",
+      "Uma planilha de boas práticas",
+      "Uma reunião mensal de segurança",
+      "Uma senha compartilhada pelo time"
+     ],
+     "correta": 0,
+     "explicacao": "Guardrail é automático e acontece no fluxo de trabalho. Planilha e reunião ajudam, mas dependem de alguém lembrar."
+    },
+    {
+     "pergunta": "Um pipeline usa um token com permissão de administrador na nuvem inteira, mas só precisa publicar uma imagem. Qual princípio está sendo quebrado?",
+     "opcoes": [
+      "Infraestrutura como código",
+      "Observabilidade",
+      "Error budget",
+      "Mínimo privilégio"
+     ],
+     "correta": 3,
+     "explicacao": "Se esse token vazar, o estrago é a nuvem inteira. Com o mínimo de permissão, o invasor só conseguiria publicar uma imagem."
+    },
+    {
+     "pergunta": "Por que políticas de segurança devem morar no Git?",
+     "opcoes": [
+      "Porque assim ficam escondidas",
+      "Porque o Git criptografa tudo",
+      "Porque ganham revisão, histórico e testes, como qualquer código",
+      "Porque o cluster só lê arquivos do Git"
+     ],
+     "correta": 2,
+     "explicacao": "Política como código pode ser revisada, testada e revertida. Fica claro quem mudou a regra e por quê."
+    },
+    {
+     "pergunta": "Para que serve o SLSA?",
+     "opcoes": [
+      "Para medir a latência de APIs",
+      "Para definir níveis de garantia sobre a origem e a integridade do software que você publica",
+      "Para criar dashboards",
+      "Para escrever testes de unidade"
+     ],
+     "correta": 1,
+     "explicacao": "O SLSA ajuda a responder \"esta imagem veio mesmo do nosso código, pelo nosso pipeline?\". Isso protege contra dependências e builds adulterados."
+    }
+   ],
+   "pergunta_ako": "Uma regra que bloqueia sem explicar gera raiva. Uma que explica gera aprendizado. Como você escreveria a mensagem de erro de uma política para alguém que está começando?",
+   "recursos": [
+    {
+     "titulo": "Introduction",
+     "fonte": "Kyverno",
+     "url": "https://kyverno.io/docs/introduction/",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Motor de políticas para Kubernetes escritas em YAML: validar, alterar e gerar recursos antes que entrem no cluster.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Open Policy Agent",
+     "fonte": "OPA, projeto da CNCF",
+     "url": "https://www.openpolicyagent.org/docs/latest/",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Introdução ao OPA e à linguagem Rego, com exemplos interativos de políticas como código.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "SLSA",
+     "fonte": "OpenSSF",
+     "url": "https://slsa.dev/",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Níveis de segurança para a cadeia de fornecimento de software, com um guia para gerar a procedência (provenance) do que você publica.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "OWASP Top 10 CI/CD Security Risks",
+     "fonte": "OWASP",
+     "url": "https://owasp.org/www-project-top-10-ci-cd-security-risks/",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Os dez riscos mais comuns em pipelines, como permissões demais, dependências envenenadas e segredos expostos.",
+     "verificado_em": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "metricas",
+   "etapa": "evoluir",
+   "titulo": "Medir a plataforma: DORA e experiência do dev",
+   "horas": 3,
+   "resumo": "Uma plataforma precisa provar que ajuda. As métricas do DORA medem a entrega de software: com que frequência o time faz deploy, quanto tempo uma mudança leva até produção, quantas mudanças dão problema e quanto tempo leva para recuperar. O framework SPACE lembra que produtividade também é satisfação, colaboração e fluxo. Junte números com conversas: pesquisa com os times diz o que os números não contam.",
+   "essencial": [
+    "As métricas clássicas do DORA: frequência de deploy, lead time de mudança, taxa de falha de mudança e tempo de recuperação. A versão atual acrescenta a taxa de retrabalho de deploy.",
+    "Velocidade e estabilidade andam juntas. Os times com melhor desempenho no DORA são rápidos e estáveis ao mesmo tempo.",
+    "Não use métrica para comparar pessoas. Métrica vira meta e deixa de medir: é a Lei de Goodhart.",
+    "O SPACE tem cinco dimensões: satisfação e bem-estar, desempenho, atividade, comunicação e colaboração, eficiência e fluxo.",
+    "Para a plataforma, meça também adoção e tempo até o primeiro deploy de um serviço novo."
+   ],
+   "checklist": [
+    "Fiz o DORA Quick Check pensando num time que conheço",
+    "Escrevi como eu mediria cada métrica do DORA num projeto meu no GitHub",
+    "Li o artigo do SPACE e anotei as cinco dimensões",
+    "Escrevi uma pesquisa de cinco perguntas para saber o que os times acham da plataforma"
+   ],
+   "quiz": [
+    {
+     "pergunta": "A gestão quer ranquear desenvolvedores por número de commits. Qual é o problema?",
+     "opcoes": [
+      "Nenhum, commit é uma boa medida",
+      "As pessoas vão otimizar o número, com commits menores e sem valor, e a métrica deixa de medir",
+      "O Git não conta commits",
+      "Commits só valem para backend"
+     ],
+     "correta": 1,
+     "explicacao": "Quando a métrica vira meta, as pessoas mexem no número, não no resultado. O SPACE e o próprio DORA alertam contra medir pessoas assim."
+    },
+    {
+     "pergunta": "Qual destas é uma métrica do DORA?",
+     "opcoes": [
+      "Linhas de código por dia",
+      "Horas trabalhadas",
+      "Lead time de mudança: do commit até produção",
+      "Número de reuniões"
+     ],
+     "correta": 2,
+     "explicacao": "Lead time de mudança mede quanto tempo uma mudança leva para chegar a quem usa."
+    },
+    {
+     "pergunta": "Um time aumentou muito a frequência de deploy, mas a taxa de falha de mudança também subiu. Como ler isso?",
+     "opcoes": [
+      "Ficou mais rápido, mas perdeu estabilidade. Vale olhar testes e tamanho das mudanças",
+      "Está ótimo, só velocidade importa",
+      "Deve parar de fazer deploy",
+      "As métricas estão erradas"
+     ],
+     "correta": 0,
+     "explicacao": "O DORA mostra que é possível ser rápido e estável. Se um sobe e o outro piora, há algo a ajustar no processo."
+    },
+    {
+     "pergunta": "Os números da plataforma estão ótimos, mas os times reclamam muito dela. O que fazer?",
+     "opcoes": [
+      "Ignorar as reclamações",
+      "Mostrar os números para os times",
+      "Desligar a plataforma",
+      "Conversar e pesquisar com os times para entender o que os números não mostram"
+     ],
+     "correta": 3,
+     "explicacao": "Satisfação é uma dimensão do SPACE. Número bom com time insatisfeito costuma indicar atrito que a métrica não capta."
+    },
+    {
+     "pergunta": "Qual métrica mostra se um golden path está ajudando quem cria um serviço novo?",
+     "opcoes": [
+      "Tempo até o primeiro deploy em produção de um serviço novo",
+      "Quantidade de servidores",
+      "Número de alertas por mês",
+      "Tamanho do repositório"
+     ],
+     "correta": 0,
+     "explicacao": "Se o caminho está bom, um serviço novo chega a produção em horas, não em semanas."
+    },
+    {
+     "pergunta": "Qual é a ideia central do SPACE?",
+     "opcoes": [
+      "Produtividade é só velocidade",
+      "Produtividade se mede só com atividade, como commits e pull requests",
+      "Produtividade tem várias dimensões, e uma métrica sozinha não conta a história",
+      "Produtividade não se mede"
+     ],
+     "correta": 2,
+     "explicacao": "O SPACE propõe olhar satisfação, desempenho, atividade, colaboração e fluxo juntos, sempre com mais de uma métrica."
+    }
+   ],
+   "pergunta_ako": "Que número diria a você, de verdade, que um time está trabalhando melhor? E o que esse número não conseguiria mostrar?",
+   "recursos": [
+    {
+     "titulo": "DORA's software delivery performance metrics",
+     "fonte": "DORA, Google Cloud",
+     "url": "https://dora.dev/guides/dora-metrics-four-keys/",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "As métricas de entrega do DORA explicadas pela fonte, com a versão atual de cinco métricas.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "DORA Quick Check",
+     "fonte": "DORA, Google Cloud",
+     "url": "https://dora.dev/quickcheck/",
+     "tipo": "ferramenta",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Cinco perguntas que medem a entrega de um time em menos de um minuto. As respostas não ficam guardadas.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "The SPACE of Developer Productivity",
+     "fonte": "ACM Queue",
+     "url": "https://queue.acm.org/detail.cfm?id=3454124",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "O artigo que propôs o SPACE, cinco dimensões para medir produtividade sem reduzir tudo a número de commits.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Capabilities",
+     "fonte": "DORA, Google Cloud",
+     "url": "https://dora.dev/capabilities/",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Catálogo com cerca de 40 práticas que melhoram a entrega de software, uma página para cada, incluindo platform engineering.",
+     "verificado_em": "2026-11-08"
+    }
+   ]
+  },
+  {
+   "id": "projeto-plataforma",
+   "etapa": "evoluir",
+   "titulo": "Projeto: sua mini plataforma no GitHub",
+   "horas": 8,
+   "resumo": "Hora de juntar tudo num projeto seu, publicado no GitHub. A mini plataforma é um repositório template que qualquer pessoa usa para criar um serviço novo com Dockerfile, pipeline de CI, manifestos de Kubernetes, um SLO escrito e um README que explica as escolhas. É pequeno, mas mostra o que um time de plataforma faz: transformar o jeito certo no jeito fácil.",
+   "essencial": [
+    "Comece com escopo pequeno: um tipo de serviço, uma linguagem, um caminho. Faça funcionar de ponta a ponta antes de crescer.",
+    "O README é o produto: diz para quem é, o que o template decide, como usar em cinco minutos e como sair do caminho.",
+    "Teste com outra pessoa. Peça para alguém criar um serviço a partir do seu template sem a sua ajuda e anote onde travou.",
+    "Inclua o \"antes de rodar\" em cada comando do README: o que muda, como desfazer e como conferir.",
+    "Esse repositório vira portfólio: mostra contêiner, CI/CD, Kubernetes, confiabilidade e pensamento de produto num só lugar."
+   ],
+   "checklist": [
+    "Criei um repositório template com Dockerfile, workflow de CI e manifestos de Kubernetes",
+    "Escrevi no README um SLO de exemplo e uma política de error budget",
+    "Pedi para outra pessoa usar o template e corrigi o que travou",
+    "Publiquei o link do projeto e expliquei as escolhas num post ou para alguém"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Você tem um fim de semana para o projeto. Qual escopo faz mais sentido?",
+     "opcoes": [
+      "Templates para cinco linguagens",
+      "Um template de uma linguagem que funcione de ponta a ponta",
+      "Um portal completo com Backstage",
+      "Uma nuvem própria"
+     ],
+     "correta": 1,
+     "explicacao": "Um caminho funcionando vale mais que cinco pela metade. Depois de pronto, dá para crescer guiado pelo uso."
+    },
+    {
+     "pergunta": "Quem testou seu template travou no passo de configurar segredos. O que fazer?",
+     "opcoes": [
+      "Dizer que a pessoa leu errado",
+      "Remover o passo dos segredos",
+      "Melhorar o README e, se possível, automatizar esse passo",
+      "Ignorar, porque com você funciona"
+     ],
+     "correta": 2,
+     "explicacao": "Toda trava de quem usa é feedback de produto. Documente melhor ou automatize, que é o trabalho de quem faz plataforma."
+    },
+    {
+     "pergunta": "O que o README do template deve explicar primeiro?",
+     "opcoes": [
+      "Para quem é e como criar um serviço em poucos minutos",
+      "A história de cada ferramenta",
+      "A lista completa de comandos do Docker",
+      "Os planos futuros do projeto"
+     ],
+     "correta": 0,
+     "explicacao": "Quem chega quer saber se serve para ele e como começar. Detalhes vêm depois."
+    },
+    {
+     "pergunta": "Por que incluir um SLO no template, se o serviço ainda nem existe?",
+     "opcoes": [
+      "Porque o GitHub exige",
+      "Porque deixa o build mais rápido",
+      "Porque substitui os testes",
+      "Porque todo serviço já nasce com uma meta de confiabilidade combinada"
+     ],
+     "correta": 3,
+     "explicacao": "Confiabilidade combinada desde o começo é parte do golden path. O time ajusta a meta depois, mas não começa do zero."
+    },
+    {
+     "pergunta": "Qual é o melhor sinal de que o seu template funciona?",
+     "opcoes": [
+      "Alguém criou um serviço com ele, sem sua ajuda, e chegou ao deploy",
+      "O repositório tem muitas estrelas",
+      "O README é muito longo",
+      "Você usou a ferramenta mais nova"
+     ],
+     "correta": 0,
+     "explicacao": "Self-service de verdade é a pessoa conseguir sozinha. Esse é o teste mais honesto de uma plataforma."
+    },
+    {
+     "pergunta": "Como esse projeto ajuda na busca por uma vaga de Platform Engineer?",
+     "opcoes": [
+      "Não ajuda, só certificado conta",
+      "Mostra num lugar só que você domina contêiner, CI/CD, Kubernetes, confiabilidade e pensa como produto",
+      "Substitui a entrevista técnica",
+      "Garante a vaga"
+     ],
+     "correta": 1,
+     "explicacao": "Um projeto público que outra pessoa conseguiu usar é uma prova concreta do que você sabe fazer. É um ótimo assunto para a entrevista."
+    }
+   ],
+   "pergunta_ako": "Quem testou o seu template e travou em algum ponto: o que essa trava ensinou sobre o seu jeito de explicar as coisas?",
+   "recursos": [
+    {
+     "titulo": "Criar um repositório de modelos",
+     "fonte": "GitHub Docs",
+     "url": "https://docs.github.com/pt/repositories/creating-and-managing-repositories/creating-a-template-repository",
+     "tipo": "documentação",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Como transformar um repositório em template para que outras pessoas criem projetos novos a partir dele.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Documentação do GitHub Actions",
+     "fonte": "GitHub Docs",
+     "url": "https://docs.github.com/pt/actions",
+     "tipo": "documentação",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Em português: conceitos, tutoriais e referência para montar pipelines de CI/CD no próprio GitHub.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "kind: Quick Start",
+     "fonte": "Kubernetes SIGs",
+     "url": "https://kind.sigs.k8s.io/docs/user/quick-start/",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Como criar um cluster Kubernetes no seu computador, dentro de contêineres Docker, para praticar sem pagar nuvem.",
+     "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "CNCF Platforms White Paper",
+     "fonte": "CNCF, grupo TAG App Delivery",
+     "url": "https://tag-app-delivery.cncf.io/whitepapers/platforms/",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "O texto de referência da comunidade: por que empresas criam plataformas internas, o que um time de plataforma faz e como medir se deu certo.",
+     "verificado_em": "2026-11-08"
+    }
+   ]
+  }
+ ],
+ "areas": []
+}

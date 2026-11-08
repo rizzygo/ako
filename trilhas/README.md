@@ -8,6 +8,19 @@ Acesse em **https://ako.rizzygo.com.br/trilhas/**
 
 A primeira trilha é **Primeiros passos em TI**: 16 tópicos em 6 etapas, do "como estudar" até um primeiro projeto publicado no GitHub. No fim, a trilha se divide em seis caminhos: infraestrutura e cloud, desenvolvimento, dados, QA, segurança e produto.
 
+A segunda trilha é **Platform Engineering**: 15 tópicos em 6 etapas, para quem já tem a base de infraestrutura. Ela mostra onde DevOps e SRE se encontram e termina com uma mini plataforma publicada no GitHub. Acesse em **https://ako.rizzygo.com.br/trilhas/?trilha=platform-engineering**
+
+## Mais de uma trilha
+
+Cada trilha tem um arquivo em `dados/` e abre pelo parâmetro `?trilha=` no endereço. Sem o parâmetro, abre a Primeiros passos. O progresso de cada trilha fica numa chave própria do navegador (`rizzygo-trilhas-v1` para a Primeiros passos, `rizzygo-trilha-platform-engineering-v1` para a Platform Engineering) e é exportado em arquivo próprio.
+
+Para criar uma trilha nova:
+
+1. Crie `dados/<id>.json` com os mesmos campos da Primeiros passos e `"areas": []`. Só a Primeiros passos tem áreas.
+2. Campos opcionais da trilha: `inicio` (título, texto, rótulos do mini mapa e a lista "Para quem é"), `momentos` e `ja_sei` (as perguntas de Montar meu roteiro), `cor` e `mapa_antes` (os nós da primeira seção do mapa, que podem apontar para tópicos da Primeiros passos ou para um mapa de área).
+3. Registre a trilha na lista `TRILHAS` de `app.js` e de `mapas/mapas.js`, e em `OUTRAS_TRILHAS` do `validar.py`. O mapa da trilha sai sozinho das etapas e tópicos.
+4. Se a trilha continua uma área, ponha `"trilha"` e `"trilha_nome"` na área da Primeiros passos. O tópico Escolha seu próximo caminho passa a mostrar o link.
+
 ## Como o site funciona
 
 - **Sem cadastro:** o progresso fica salvo só no navegador de quem usa. Na página de conquistas dá para exportar e importar o progresso por arquivo.
@@ -53,6 +66,10 @@ A Iniciativa Ako escreve lições próprias em português, na pasta [materiais](
 | [Segurança digital no dia a dia](materiais/seguranca-digital.html) | Segurança digital básica |
 | [Comunicação no trabalho de tecnologia](materiais/comunicacao-no-trabalho.html) | Comunicação e trabalho em equipe |
 | [Seu primeiro projeto no GitHub, do zero ao link](materiais/primeiro-projeto.html) | Seu primeiro projeto no GitHub |
+| [Platform Engineering: onde DevOps e SRE se encontram](materiais/platform-engineering.html) | DevOps, SRE e Platform Engineering |
+| [Plataforma como produto: clientes, golden paths e portal](materiais/plataforma-como-produto.html) | Plataforma como produto interno e Golden paths |
+| [SLI, SLO e error budget, com contas](materiais/slo-e-error-budget.html) | SLI, SLO e error budget |
+| [Incidentes e postmortem sem culpa](materiais/incidentes-e-postmortem.html) | Incidentes e postmortem sem culpa |
 
 ## Materiais pagos, sempre opcionais
 

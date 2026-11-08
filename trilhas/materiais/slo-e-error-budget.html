@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SLI, SLO e error budget, com contas | Rizzygo Ako</title>
+<meta name="description" content="Lição em português sobre SLI, SLO, SLA e error budget: como escolher indicadores que medem o usuário, calcular o orçamento de falha em minutos e escrever uma política de error budget para o time.">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0B1B3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="../app.css?v=2026110501">
+<link rel="stylesheet" href="materiais.css?v=2026103102">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<nav class="familia" aria-label="Sites da Rizzygo"><div class="familia-in"><a class="familia-item" href="https://rizzygo.com.br/" title="Site principal da Rizzygo"><svg viewBox="0 0 64 64" width="16" height="16" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/></svg>Rizzygo</a><a class="familia-item" href="https://ako.rizzygo.com.br/" aria-current="page">Ako</a></div></nav>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="../#/" aria-label="Rizzygo Ako, início"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="var(--azul)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/></svg><span>Rizzygo <b>Ako</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="../?trilha=platform-engineering#/trilha">Trilha</a><a href="../mapas/#/platform-engineering">Mapas</a><a href="./">Materiais</a><a href="/favos/">Favos</a></nav>
+</div></header>
+
+
+<main id="conteudo" class="licao">
+<div class="licao-cab">
+  <a class="voltar" href="../?trilha=platform-engineering#/t/slo">Voltar para o tópico SLI, SLO e error budget</a>
+  <h1>SLI, SLO e error budget, com contas</h1>
+  <p class="lead">"O sistema nunca pode cair" parece boa meta, mas trava o time e custa uma fortuna. Esta lição mostra como combinar quanto de falha é aceitável, com contas que você faz no papel.</p>
+  <div class="ficha"><span class="etiqueta">Cerca de 50 minutos</span><span class="etiqueta">Trilha Platform Engineering</span><span class="etiqueta ambar">Material gratuito em português</span></div>
+</div>
+<nav class="indice" aria-label="Nesta lição">
+  <h2>Nesta lição</h2>
+  <ol>
+    <li><a href="#porque">Por que não 100%</a></li>
+    <li><a href="#sli">SLI: o que medir</a></li>
+    <li><a href="#slo">SLO: a meta</a></li>
+    <li><a href="#contas">Error budget: as contas</a></li>
+    <li><a href="#politica">A política do error budget</a></li>
+    <li><a href="#sla">SLA: o contrato com o cliente</a></li>
+    <li><a href="#missao">Missão final</a></li>
+  </ol>
+</nav>
+<section id="porque">
+  <h2>1. Por que não 100%</h2>
+  <p>Cada "nove" a mais na disponibilidade (99%, 99,9%, 99,99%) custa muito mais caro que o anterior: mais redundância, mais testes, mudanças mais lentas. E, acima de certo ponto, o usuário nem percebe. O Wi-Fi da casa dele e o celular dele costumam falhar mais que o seu serviço.</p>
+  <p>Por isso o SRE troca "nunca cair" por uma meta combinada. O que sobra da meta vira um orçamento para mudar e experimentar.</p>
+</section>
+
+<section id="sli">
+  <h2>2. SLI: o que medir</h2>
+  <p>SLI (Service Level Indicator) é o indicador. Ele deve medir o que o usuário sente. O formato mais útil é uma proporção:</p>
+  <div class="saida"><small>SLI como proporção:</small><pre>SLI = eventos bons / eventos válidos
+
+Exemplo de disponibilidade:
+  requisições com resposta de sucesso / todas as requisições
+
+Exemplo de latência:
+  requisições respondidas em menos de 300 ms / todas as requisições</pre></div>
+  <p>Exemplos de bons SLIs: compras concluídas com sucesso, páginas carregadas em menos de 2 segundos, dados do painel atualizados há menos de 10 minutos. CPU, memória e número de pods não são SLIs: são causas internas, que podem ou não afetar alguém.</p>
+</section>
+
+<section id="slo">
+  <h2>3. SLO: a meta</h2>
+  <p>SLO (Service Level Objective) é a meta para o SLI, sempre numa janela de tempo. Por exemplo: "99,5% das requisições de checkout com sucesso, medido em 30 dias corridos".</p>
+  <p>Para escolher o primeiro SLO, olhe o histórico do serviço e pergunte ao time de produto quanto de falha os usuários aceitam. Comece com uma meta que o serviço já cumpre na maior parte do tempo. Dá para apertar depois.</p>
+</section>
+
+<section id="contas">
+  <h2>4. Error budget: as contas</h2>
+  <p>O error budget é 100% menos o SLO. Em 30 dias há 43.200 minutos. Veja quanto de falha total cada meta permite:</p>
+  <div class="tabela"><table>
+    <thead><tr><th>SLO em 30 dias</th><th>Error budget</th><th>Minutos de falha total</th></tr></thead>
+    <tbody>
+      <tr><td>99%</td><td>1%</td><td>432 minutos (7 horas e 12 minutos)</td></tr>
+      <tr><td>99,5%</td><td>0,5%</td><td>216 minutos (3 horas e 36 minutos)</td></tr>
+      <tr><td>99,9%</td><td>0,1%</td><td>43,2 minutos</td></tr>
+      <tr><td>99,99%</td><td>0,01%</td><td>4,32 minutos</td></tr>
+    </tbody>
+  </table></div>
+  <p>Na prática, falha raramente é total. Se o serviço recebe 1 milhão de requisições no mês e o SLO é 99,9%, o budget é de 1.000 requisições com erro, não importa se vieram todas juntas ou espalhadas.</p>
+</section>
+
+<section id="politica">
+  <h2>5. A política do error budget</h2>
+  <p>O budget só funciona se o time combinar antes o que fazer com ele. Um modelo simples:</p>
+  <div class="saida"><small>Política de error budget de exemplo:</small><pre>1. Budget acima de 50%: deploys normais, experimentos liberados.
+2. Budget entre 0% e 50%: deploys continuam, mas toda mudança arriscada
+   precisa de plano de volta testado.
+3. Budget esgotado: só entram correções de confiabilidade e de segurança
+   até a janela recuperar. Produto e engenharia revisam juntos as causas.</pre></div>
+  <p>Produto e operação decidem juntos, com um número na mesa, e não no grito.</p>
+</section>
+
+<section id="sla">
+  <h2>6. SLA: o contrato com o cliente</h2>
+  <p>SLA (Service Level Agreement) é um contrato com o cliente, com consequência se for quebrado, como crédito ou multa. O SLA fica mais folgado que o SLO interno. Assim o time percebe o problema e age bem antes de quebrar o contrato.</p>
+</section>
+
+<section id="missao">
+  <h2>7. Missão final</h2>
+  <details class="exercicio"><summary>1. Escreva dois SLIs</summary>
+    <p>Escolha um serviço que você usa todo dia, como um app de banco. Escreva um SLI de disponibilidade e um de latência no formato "eventos bons / eventos válidos".</p>
+  </details>
+  <details class="exercicio"><summary>2. Faça as contas</summary>
+    <p>Calcule o error budget em minutos para um SLO de 99,95% em 30 dias. Depois, para o mesmo SLO numa janela de 7 dias.</p>
+  </details>
+  <details class="exercicio"><summary>3. Escreva a política</summary>
+    <p>Adapte o modelo da parte 5 para o seu serviço e coloque no repositório template do projeto final, num arquivo <code>SLO.md</code>.</p>
+  </details>
+  <div class="faca"><strong>Para fixar</strong>Explique para alguém por que ter error budget sobrando é uma boa notícia para quem quer lançar coisas novas. Depois, marque no tópico que você ensinou alguém.</div>
+  <div class="proximo"><a class="btn" href="../?trilha=platform-engineering#/t/slo">Voltar para o tópico e fazer o desafio</a><a class="btn btn-sec" href="incidentes-e-postmortem.html">Próxima lição: incidentes e postmortem</a></div>
+</section>
+
+<div class="credito">
+  <p>Lição baseada no capítulo <a href="https://sre.google/sre-book/service-level-objectives/">Service Level Objectives</a> do livro de SRE do Google e no capítulo <a href="https://sre.google/workbook/implementing-slos/">Implementing SLOs</a> do The Site Reliability Workbook. As contas usam meses de 30 dias. O texto e os exemplos são próprios, escritos em português pela Iniciativa Ako, da Rizzygo.</p>
+  <p>Conteúdo aberto sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR">CC BY 4.0</a>. Viu um erro? <a href="https://github.com/rizzygo/ako/issues">Abra uma issue</a>.</p>
+</div>
+</main>
+<footer class="rodape"><div class="rodape-in"><p><strong>Iniciativa Ako</strong>, da <a href="https://rizzygo.com.br/">Rizzygo</a>.</p><p class="credo">Sou Zy: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="materiais.js?v=2026103102"></script>
+<script src="../efeitos.js?v=2026103102" defer></script>
+</body>
+</html>

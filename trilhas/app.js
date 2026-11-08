@@ -1,11 +1,25 @@
 /* Rizzygo Ako: trilhas de estudo da Iniciativa Ako. HTML, CSS e JS puros, sem build.
-   O conteúdo da trilha fica em dados/primeiros-passos.json.
+   Cada trilha tem um arquivo em dados/ e é escolhida pelo endereço: ?trilha=platform-engineering.
+   Sem o parâmetro, abre a Primeiros passos em TI.
    O progresso fica só no navegador (localStorage), e a pessoa pode exportar e importar. */
 (function () {
   'use strict';
 
-  var URL_DADOS = 'dados/primeiros-passos.json';
-  var CHAVE = 'rizzygo-trilhas-v1';
+  /* Cada trilha guarda o progresso numa chave própria do localStorage. */
+  var TRILHAS = [
+    { id: 'primeiros-passos', dados: 'dados/primeiros-passos.json', chave: 'rizzygo-trilhas-v1', titulo: 'Primeiros passos em TI',
+      resumo: 'Do como estudar até um primeiro projeto publicado no GitHub. Para quem está começando do zero.' },
+    { id: 'platform-engineering', dados: 'dados/platform-engineering.json', chave: 'rizzygo-trilha-platform-engineering-v1', titulo: 'Platform Engineering',
+      resumo: 'Onde DevOps e SRE se encontram: contêineres, entrega contínua, confiabilidade e uma plataforma que os times usam sem abrir ticket.' }
+  ];
+  var TRILHA = (function () {
+    var m = location.search.match(/[?&]trilha=([a-z0-9-]+)/);
+    var achada = m && TRILHAS.filter(function (t) { return t.id === m[1]; })[0];
+    return achada || TRILHAS[0];
+  })();
+  var Q = TRILHA === TRILHAS[0] ? '' : '?trilha=' + TRILHA.id;
+  var URL_DADOS = TRILHA.dados;
+  var CHAVE = TRILHA.chave;
   var XP = { checklist: 20, quiz: 30, perfeito: 10, reflexao: 10, ensinei: 20, escolha: 20 };
   var MIN_REFLEXAO = 40;
   var NIVEIS = [
@@ -63,6 +77,7 @@
   }
 
   /* ---------- regras ---------- */
+  function jaSeiDef() { return dados.ja_sei || JA_SEI; }
   function topico(id) { return dados.topicos.filter(function (t) { return t.id === id; })[0]; }
   function etapa(id) { return dados.etapas.filter(function (e) { return e.id === id; })[0]; }
   function topicosDa(etapaId) { return dados.topicos.filter(function (t) { return t.etapa === etapaId; }); }
@@ -86,7 +101,7 @@
   function paraValidar(t) {
     if (!estado.perfil) return false;
     return (estado.perfil.jaSei || []).some(function (j) {
-      var item = JA_SEI.filter(function (x) { return x.id === j; })[0];
+      var item = jaSeiDef().filter(function (x) { return x.id === j; })[0];
       return item && item.topicos.indexOf(t.id) !== -1;
     });
   }
@@ -135,7 +150,7 @@
       { id: 'questionador', nome: 'Questionador', desc: 'Respondeu a cinco perguntas Ako com suas palavras.', ok: function () { return contarTopicos(function (t) { var s = estado.topicos[t.id]; return s && (s.reflexao || '').trim().length >= MIN_REFLEXAO; }) >= 5; } },
       { id: 'memoria', nome: 'Memória afiada', desc: 'Fez três revisões rápidas com pelo menos 4 acertos de 5.', ok: function () { return estado.revisoes.filter(function (r) { return r.acertos >= 4; }).length >= 3; } },
       { id: 'constancia', nome: 'Constância', desc: 'Estudou em cinco dias diferentes.', ok: function () { return estado.dias.length >= 5; } },
-      { id: 'trilha', nome: 'Trilha completa', desc: 'Concluiu todos os tópicos de Primeiros passos em TI.', ok: function () { return dados.topicos.every(concluido); } }
+      { id: 'trilha', nome: 'Trilha completa', desc: 'Concluiu todos os tópicos de ' + dados.titulo + '.', ok: function () { return dados.topicos.every(concluido); } }
     );
     return lista;
   }
@@ -214,6 +229,7 @@
     else if (rota === 'revisao') { viewRevisao(); titulo = 'Revisão rápida | ' + titulo; }
     else if (rota === 'conquistas') { viewConquistas(); titulo = 'Conquistas | ' + titulo; }
     else viewInicio();
+    if (Q && rota !== 'trilha') titulo = titulo.replace(/Rizzygo Ako$/, dados.titulo + ' | Rizzygo Ako');
     document.title = titulo;
   }
   function trocarPagina() {
@@ -224,19 +240,22 @@
 
   /* ---------- início ---------- */
   function miniMapa() {
-    var curtos = ['Aprender a aprender', 'O computador', 'A internet', 'Lógica e código', 'Responsabilidade', 'Mão na massa'];
+    var ini = dados.inicio || {};
+    var curtos = ini.mini_mapa || ['Aprender a aprender', 'O computador', 'A internet', 'Lógica e código', 'Responsabilidade', 'Mão na massa'];
     var prox = proximoTopico();
     var etapaAtual = prox ? dados.etapas.map(function (e) { return e.id; }).indexOf(prox.etapa) : -1;
-    var x = 40, ys = [34, 80, 126, 172, 218, 264];
-    var s = '<svg class="mini-mapa" viewBox="0 0 330 430" role="img" aria-label="Mapa da trilha: seis etapas que terminam em seis caminhos, um para cada área da TI">';
+    var x = 40, ys = dados.etapas.map(function (e, i) { return 34 + i * 46; });
+    var yFim = ys[ys.length - 1], comAreas = dados.areas.length > 0;
+    var alt = comAreas ? yFim + 58 + dados.areas.length * 22 : yFim + 40;
+    var s = '<svg class="mini-mapa" viewBox="0 0 330 ' + alt + '" role="img" aria-label="' + esc(ini.mini_mapa_rotulo || 'Mapa da trilha: seis etapas que terminam em seis caminhos, um para cada área da TI') + '">';
     dados.etapas.forEach(function (e, i) {
       var feita = topicosDa(e.id).every(concluido);
       if (i < ys.length - 1) s += '<line x1="' + x + '" y1="' + ys[i] + '" x2="' + x + '" y2="' + ys[i + 1] + '" stroke="' + (feita ? 'var(--ambar)' : 'var(--trilho)') + '" stroke-width="7" stroke-linecap="round"/>';
     });
-    s += '<line x1="' + x + '" y1="264" x2="' + x + '" y2="300" stroke="var(--trilho)" stroke-width="7" stroke-linecap="round"/>';
+    if (comAreas) s += '<line x1="' + x + '" y1="' + yFim + '" x2="' + x + '" y2="' + (yFim + 36) + '" stroke="var(--trilho)" stroke-width="7" stroke-linecap="round"/>';
     dados.areas.forEach(function (a, i) {
-      var y = 300 + i * 22, ex = 128;
-      s += '<path d="M' + x + ' 296 C' + x + ' ' + (y + 4) + ' ' + (x + 6) + ' ' + y + ' ' + (x + 40) + ' ' + y + ' L' + ex + ' ' + y + '" stroke="' + a.cor + '" stroke-width="5" fill="none" stroke-linecap="round"/>';
+      var y = yFim + 36 + i * 22, ex = 128;
+      s += '<path d="M' + x + ' ' + (yFim + 32) + ' C' + x + ' ' + (y + 4) + ' ' + (x + 6) + ' ' + y + ' ' + (x + 40) + ' ' + y + ' L' + ex + ' ' + y + '" stroke="' + a.cor + '" stroke-width="5" fill="none" stroke-linecap="round"/>';
       s += '<circle cx="' + ex + '" cy="' + y + '" r="5" fill="var(--superficie)" stroke="' + a.cor + '" stroke-width="3"/>';
       s += '<text x="' + (ex + 14) + '" y="' + (y + 4) + '" class="rot-suave">' + esc(a.nome) + '</text>';
     });
@@ -255,11 +274,17 @@
     var cta = estado.perfil
       ? '<a class="btn" href="#/t/' + (prox ? prox.id : dados.topicos[0].id) + '">Continuar de onde parei</a>' + (revisaoLiberada() ? '<a class="btn btn-sec" href="#/revisao">Revisão rápida</a>' : '<a class="btn btn-sec" href="#/roteiro">Ver meu roteiro</a>')
       : '<a class="btn" href="#/montar">Montar meu roteiro</a><a class="btn btn-sec" href="#/trilha">Ver a trilha completa</a>';
+    var ini = dados.inicio || {};
+    var outras = TRILHAS.filter(function (t) { return t !== TRILHA; }).map(function (t) {
+      return '<li><a href="./' + (t === TRILHAS[0] ? '' : '?trilha=' + t.id) + '#/"><h3>' + esc(t.titulo) + '</h3><p>' + esc(t.resumo) + '</p></a></li>';
+    }).join('');
     app.innerHTML =
       '<section class="hero"><div class="casca hero-grade"><div>' +
-      '<h1>Sua trilha em TI, montada com você.</h1>' +
-      '<p class="lead">Responda quatro perguntas e receba um roteiro de estudos em português. Estude com materiais gratuitos, resolva desafios do dia a dia e ganhe conquistas pelo caminho.</p>' +
+      (ini.chapeu ? '<p class="chapeu">' + esc(ini.chapeu) + '</p>' : '') +
+      '<h1>' + esc(ini.titulo || 'Sua trilha em TI, montada com você.') + '</h1>' +
+      '<p class="lead">' + fmt(ini.lead || 'Responda quatro perguntas e receba um roteiro de estudos em português. Estude com materiais gratuitos, resolva desafios do dia a dia e ganhe conquistas pelo caminho.') + '</p>' +
       '<div class="acoes">' + cta + '</div></div>' + miniMapa() + '</div></section>' +
+      (ini.para_quem ? '<section class="secao"><div class="casca"><h2>Para quem é esta trilha</h2><ul class="para-quem">' + ini.para_quem.map(function (x) { return '<li>' + fmt(x) + '</li>'; }).join('') + '</ul></div></section>' : '') +
       '<section class="secao"><div class="casca"><h2>Como funciona</h2><ol class="passos">' +
       '<li><h3>Monte seu roteiro</h3><p>Conte seu momento, quanto tempo tem por semana e o que já sabe. O roteiro mostra por onde começar e quanto tempo cada etapa leva.</p></li>' +
       '<li><h3>Estude e resolva</h3><p>Cada tópico tem o essencial explicado, materiais gratuitos e um desafio com problemas que aparecem no trabalho.</p></li>' +
@@ -274,7 +299,8 @@
       '<div><h3>Sem passo a passo único</h3><p>O roteiro é um ponto de partida, não um trilho. Pule o que já sabe, volte quando precisar e questione o caminho.</p></div>' +
       '<div><h3>De graça, de verdade</h3><p>Todo tópico dá para concluir só com materiais gratuitos. Quando vale a pena, indicamos também opções pagas e acessíveis, sempre separadas. E sempre dizemos quando um material está em inglês.</p></div>' +
       '<div><h3>Entender antes de rodar</h3><p>A IA ajuda muito, mas quem responde pelo que roda é você. A trilha treina a base para usar a IA com segurança.</p></div>' +
-      '</div></div></section>';
+      '</div></div></section>' +
+      (outras ? '<section class="secao"><div class="casca"><h2>Outras trilhas do Ako</h2><ul class="outras-trilhas">' + outras + '</ul></div></section>' : '');
   }
 
   /* ---------- materiais ---------- */
@@ -294,20 +320,23 @@
     var p = estado.perfil || { interesses: [], jaSei: [] };
     var areas = dados.areas.map(function (a) { return escolha('checkbox', 'interesses', a.id, a.nome, a.descricao, p.interesses.indexOf(a.id) !== -1); }).join('') +
       escolha('checkbox', 'interesses', 'nao-sei', 'Ainda não sei', 'Tudo bem. A trilha ajuda a descobrir.', p.interesses.indexOf('nao-sei') !== -1);
-    var jaSei = JA_SEI.map(function (j) { return escolha('checkbox', 'jaSei', j.id, j.rotulo, '', p.jaSei.indexOf(j.id) !== -1); }).join('');
+    var momentos = dados.momentos || [
+      { id: 'quero', titulo: 'Quero começar', detalhe: 'Ainda não estudo nem trabalho com TI' },
+      { id: 'comecando', titulo: 'Estou começando', detalhe: 'Já estudo ou trabalho com TI há pouco tempo' }
+    ];
+    var jaSei = jaSeiDef().map(function (j) { return escolha('checkbox', 'jaSei', j.id, j.rotulo, '', p.jaSei.indexOf(j.id) !== -1); }).join('');
     app.innerHTML =
-      '<div class="coluna"><div class="pagina-cab"><h1>Monte seu roteiro</h1><p>Quatro perguntas, uns dois minutos. Dá para mudar as respostas quando quiser.</p></div>' +
+      '<div class="coluna"><div class="pagina-cab"><h1>Monte seu roteiro</h1><p>' + (dados.areas.length ? 'Quatro' : 'Três') + ' perguntas, uns dois minutos. Dá para mudar as respostas quando quiser.</p></div>' +
       '<form class="form-montar" id="form-montar" novalidate>' +
       '<fieldset><legend>Qual é o seu momento?</legend><div class="opcoes-escolha duas">' +
-      escolha('radio', 'momento', 'quero', 'Quero começar', 'Ainda não estudo nem trabalho com TI', p.momento === 'quero') +
-      escolha('radio', 'momento', 'comecando', 'Estou começando', 'Já estudo ou trabalho com TI há pouco tempo', p.momento === 'comecando') +
+      momentos.map(function (m) { return escolha('radio', 'momento', m.id, m.titulo, m.detalhe, p.momento === m.id); }).join('') +
       '</div></fieldset>' +
       '<fieldset><legend>Quanto tempo você tem por semana?</legend><p class="dica">Seja realista. Pouco tempo toda semana rende mais que muito tempo de vez em quando.</p><div class="opcoes-escolha tres">' +
       escolha('radio', 'horas', '3', 'Até 3 horas', 'Uns 25 minutos por dia', String(p.horas) === '3') +
       escolha('radio', 'horas', '5', 'De 4 a 6 horas', 'Uns 45 minutos por dia', String(p.horas) === '5') +
       escolha('radio', 'horas', '8', '7 horas ou mais', 'Uma hora ou mais por dia', String(p.horas) === '8') +
       '</div></fieldset>' +
-      '<fieldset><legend>O que mais te atrai?</legend><p class="dica">Marque quantas quiser. Os tópicos que mais ajudam nesses caminhos ficam destacados.</p><div class="opcoes-escolha duas">' + areas + '</div></fieldset>' +
+      (dados.areas.length ? '<fieldset><legend>O que mais te atrai?</legend><p class="dica">Marque quantas quiser. Os tópicos que mais ajudam nesses caminhos ficam destacados.</p><div class="opcoes-escolha duas">' + areas + '</div></fieldset>' : '') +
       '<fieldset><legend>O que você já sabe?</legend><p class="dica">Os tópicos que você marcar viram desafios para validar. Acertou, conta como concluído.</p><div class="opcoes-escolha duas">' + jaSei + '</div></fieldset>' +
       '<p class="erro-form" id="erro-form" role="alert"></p>' +
       '<div class="acoes"><button class="btn" type="submit">Montar meu roteiro</button></div>' +
@@ -357,7 +386,7 @@
     var interesses = (p.interesses || []).filter(function (i) { return i !== 'nao-sei'; }).map(areaPorId).filter(Boolean);
     var caminhoTxt = interesses.length
       ? '<p>Caminhos que você marcou: ' + interesses.map(function (a) { return '<strong>' + esc(a.nome) + '</strong>'; }).join(', ') + '. Os tópicos que mais ajudam neles aparecem com a etiqueta "Para o seu caminho".</p>'
-      : '<p>Você ainda não escolheu um caminho, e tudo bem. A primeira etapa apresenta as áreas da TI, e o fim da trilha ajuda a decidir.</p>';
+      : (dados.areas.length ? '<p>Você ainda não escolheu um caminho, e tudo bem. A primeira etapa apresenta as áreas da TI, e o fim da trilha ajuda a decidir.</p>' : '');
     var prox = proximoTopico();
     app.innerHTML =
       '<div class="coluna"><div class="pagina-cab"><h1>Seu roteiro</h1><p>' + (p.momento === 'quero' ? 'Para quem está chegando: comece pela primeira etapa, com calma, e siga a ordem.' : 'Para quem já começou: valide com os desafios o que você já sabe e foque no que falta.') + '</p></div>' +
@@ -497,9 +526,10 @@
       html += '<section class="bloco"><h2>Escolha um caminho</h2><p class="dica">Sua escolha fica salva e pode mudar quando quiser.</p>' +
         '<div class="ramos" id="ramos-escolha" style="margin-left:0;padding-top:1.6rem;--ramos-esq:96px">' + dados.areas.map(function (a) {
           return '<div class="ramo" data-area="' + a.id + '" style="--cor:' + a.cor + '"><input type="radio" name="caminho" id="c-' + a.id + '" value="' + a.id + '"' + (estado.caminho === a.id ? ' checked' : '') + '>' +
-            '<label for="c-' + a.id + '"><h3>' + esc(a.nome) + '</h3><p>' + esc(a.descricao) + '</p><div class="meta"><a href="' + urlSegura('./' + a.mapa) + '">Mapa da área no Ako</a><span>em português</span></div></label></div>';
+            '<label for="c-' + a.id + '"><h3>' + esc(a.nome) + '</h3><p>' + esc(a.descricao) + '</p><div class="meta"><a href="' + urlSegura('./' + a.mapa) + '">Mapa da área no Ako</a>' +
+            (a.trilha ? '<a href="' + urlSegura('./?trilha=' + a.trilha + '#/') + '">Trilha ' + esc(a.trilha_nome || a.trilha) + '</a>' : '') + '<span>em português</span></div></label></div>';
         }).join('') + '</div>' +
-        '<p>As próximas trilhas em português ainda estão sendo construídas. Quer ajudar a criar a da sua área? <a href="https://github.com/rizzygo/ako/issues">Abra uma issue no GitHub</a>.</p></section>';
+        '<p>Algumas áreas já têm uma trilha completa no Ako, com checklist e desafios. As outras ainda estão sendo construídas. Quer ajudar a criar a da sua área? <a href="https://github.com/rizzygo/ako/issues">Abra uma issue no GitHub</a>.</p></section>';
     } else {
       html += '<section class="bloco"><h2>Pratique</h2><p class="dica">Marque o que você já fez. O checklist completo vale ' + XP.checklist + ' XP.</p><ul class="checklist" id="checklist">' +
         t.checklist.map(function (c, i) { return '<li><label><input type="checkbox" data-i="' + i + '"' + (s.check[i] ? ' checked' : '') + '><span>' + fmt(c) + '</span></label></li>'; }).join('') + '</ul></section>';
@@ -578,8 +608,8 @@
     var base = 'https://ako.rizzygo.com.br/trilhas/';
     var licao = (t.recursos || []).filter(function (r) { return /^\.\/materiais\//.test(r.url); })[0];
     var linhas = [
-      'Tópico: ' + t.titulo + ' (trilha Primeiros passos em TI, da Rizzygo Ako)',
-      'Página do tópico: ' + base + '#/t/' + t.id,
+      'Tópico: ' + t.titulo + ' (trilha ' + dados.titulo + ', da Rizzygo Ako)',
+      'Página do tópico: ' + base + Q + '#/t/' + t.id,
       '',
       'Resumo: ' + semCrase(t.resumo),
       '',
@@ -768,7 +798,7 @@
       '<section class="bloco"><h2>Revisão rápida</h2><p>Cinco perguntas sorteadas dos tópicos que você já estudou. Não vale XP, mas três revisões com pelo menos 4 acertos dão a conquista Memória afiada.</p><div class="acoes" style="margin-top:.8rem">' + (revisaoLiberada() ? '<a class="btn btn-sec" href="#/revisao">Fazer uma revisão rápida</a>' : '<span class="dica">Comece pelo menos dois tópicos para liberar a revisão.</span>') + '</div></section>' +
       '<section class="bloco"><h2>Conquistas</h2><ul class="selos">' + selos + '</ul></section>' +
       '<section class="bloco"><h2>Seus dados</h2><div class="dados-acoes">' +
-      '<p>O progresso fica só neste navegador. Para levar para outro aparelho, exporte aqui e importe lá.</p>' +
+      '<p>O progresso fica só neste navegador. Para levar para outro aparelho, exporte aqui e importe lá. Cada trilha tem o seu progresso e o seu arquivo: este é o da trilha ' + esc(dados.titulo) + '.</p>' +
       '<div class="acoes"><button class="btn btn-sec" type="button" id="exportar">Exportar progresso</button>' +
       '<label class="btn btn-sec" for="importar" tabindex="0">Importar progresso</label><input type="file" id="importar" accept="application/json,.json" hidden></div>' +
       '<p class="salvo" id="dados-msg" aria-live="polite"></p>' +
@@ -778,7 +808,7 @@
       var blob = new Blob([JSON.stringify(estado, null, 1)], { type: 'application/json' });
       var a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'progresso-trilhas-rizzygo-' + hoje() + '.json';
+      a.download = 'progresso-' + TRILHA.id + '-rizzygo-' + hoje() + '.json';
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
       document.getElementById('dados-msg').textContent = 'Arquivo exportado. Guarde-o para importar em outro aparelho.';
@@ -836,6 +866,10 @@
   });
   window.addEventListener('hashchange', trocarPagina);
 
+  if (Q) {
+    var linkMapa = document.querySelector('.menu a[href="mapas/"]');
+    if (linkMapa) linkMapa.setAttribute('href', 'mapas/#/' + TRILHA.id);
+  }
   app.innerHTML = '<p class="carregando">Carregando a trilha...</p>';
   fetch(URL_DADOS).then(function (r) {
     if (!r.ok) throw new Error(r.status);
