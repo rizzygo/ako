@@ -74,3 +74,5 @@ dialog.painel::backdrop{background:rgba(11,27,58,.45)}
 .estado-no button[aria-pressed="true"]{border-color:var(--azul);background:var(--azul);color:var(--azul-tinta)}
 .painel .nota-estado{font-size:.88rem;color:var(--suave);margin-top:.5rem}
 .no.mapa-link .marca-no{display:none}
+.painel .ia-acoes{margin-top:.6rem}
+.painel #ia-texto{margin-top:.6rem}

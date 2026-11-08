@@ -220,6 +220,11 @@
       }).join('') + '</ul>';
     }
 
+    html += '<h3>Estudar com IA</h3><p>Copie um prompt pronto e cole na IA que você usa. Ela vai te ensinar perguntando, em vez de entregar a resposta pronta. O prompt leva só este tópico, nada do seu progresso.</p>' +
+      '<div class="estado-no ia-acoes"><button type="button" data-ia="copiar">Copiar prompt</button>' +
+      (navigator.share ? '<button type="button" data-ia="enviar">Enviar para um app de IA</button>' : '') + '</div>' +
+      '<p class="nota-estado" id="ia-msg" aria-live="polite"></p><textarea id="ia-texto" readonly hidden aria-label="Prompt para estudar com IA"></textarea>';
+
     html += '<h3>Como você está neste tópico?</h3>';
     if (vemDaTrilha(atual, n)) {
       html += '<p>' + (sit === 'feito' ? 'Você concluiu este tópico na trilha.' : sit === 'andamento' ? 'Você já começou este tópico na trilha.' : 'Você ainda não começou este tópico.') + '</p>' +
@@ -235,10 +240,53 @@
     painel.dataset.no = n.id;
     if (painel.showModal) painel.showModal(); else painel.setAttribute('open', '');
   }
+  // Estudar com IA: junta o método da skill estudar-junto (dos Favos) com o conteúdo do nó.
+  var PROMPT_URL = 'https://raw.githubusercontent.com/rizzygo/favos/main/prompts/estudar-junto.txt';
+  var PROMPT_RESERVA = 'Quero estudar um assunto com você. Siga o método da skill estudar-junto, dos Favos da Rizzygo ' +
+    '(https://github.com/rizzygo/favos/blob/main/plugins/favo-estudo/skills/estudar-junto/SKILL.md). ' +
+    'Antes de explicar, pergunte o que eu já sei e para que eu preciso. Explique uma ideia por vez, com um exemplo do dia a dia, ' +
+    'e depois de cada parte me faça uma pergunta que eu só respondo se entendi. Quando eu errar, pergunte o que me levou àquela resposta. ' +
+    'No fim, peça que eu explique com as minhas palavras e deixe um exercício de até 30 minutos. ' +
+    'Se eu pedir a resposta direta, dê. Nunca invente fonte, número ou nome de comando.\n\n=== O que eu quero estudar ===\n';
+  var promptMetodo = null;
+  if (window.fetch) fetch(PROMPT_URL).then(function (r) { return r.ok ? r.text() : null; }).then(function (txt) { if (txt) promptMetodo = txt; }, function () {});
+  function semCrase(x) { return String(x).replace(/`/g, ''); }
+  function promptDoNo(m, n) {
+    var base = 'https://ako.rizzygo.com.br/trilhas/';
+    var t = n.topico && topico(n.topico);
+    var licao = n.licao ? { url: './materiais/' + n.licao } : (t && licaoDoTopico(t));
+    var linhas = [
+      'Tópico: ' + n.titulo + ' (mapa ' + m.titulo + ', da Rizzygo Ako)',
+      'Página do mapa: ' + base + 'mapas/#/' + m.id,
+      '',
+      'Resumo: ' + semCrase(n.resumo)
+    ];
+    if (n.pratica) linhas.push('', 'Para praticar: ' + semCrase(n.pratica));
+    if (t) linhas.push('', 'Tópico da trilha com checklist e desafio: ' + base + '#/t/' + t.id);
+    if (licao) linhas.push('', 'Lição do Ako sobre o tópico: ' + base + licao.url.replace(/^(\.\.\/|\.\/)/, ''));
+    linhas.push('', 'Comece me perguntando o que eu já sei sobre esse tópico.');
+    return (promptMetodo || PROMPT_RESERVA).replace(/\s*$/, '\n') + '\n' + linhas.join('\n') + '\n';
+  }
+  function estudarComIA(acao) {
+    var n = todosOsNos(atual).filter(function (x) { return x.id === painel.dataset.no; })[0];
+    if (!n) return;
+    var txt = promptDoNo(atual, n), msg = painel.querySelector('#ia-msg'), caixa = painel.querySelector('#ia-texto');
+    if (acao === 'enviar') { navigator.share({ title: 'Estudar ' + n.titulo + ' com IA', text: txt }).catch(function () {}); return; }
+    function mostrar() {
+      caixa.value = txt; caixa.hidden = false; caixa.focus(); caixa.select();
+      msg.textContent = 'O navegador não deixou copiar. O prompt está selecionado abaixo: copie e cole na sua IA.';
+    }
+    if (!navigator.clipboard || !navigator.clipboard.writeText) { mostrar(); return; }
+    navigator.clipboard.writeText(txt).then(function () {
+      caixa.hidden = true; msg.textContent = 'Copiado. Cole no ChatGPT, no Claude, no Gemini ou na IA que você usa.';
+    }, mostrar);
+  }
   function fecharPainel() { if (painel.close) painel.close(); else painel.removeAttribute('open'); }
 
   painel.addEventListener('click', function (ev) {
     if (ev.target === painel || ev.target.closest('[data-fechar]')) { fecharPainel(); return; }
+    var ia = ev.target.closest('[data-ia]');
+    if (ia) { estudarComIA(ia.dataset.ia); return; }
     var b = ev.target.closest('[data-estado]');
     if (!b) return;
     var n = todosOsNos(atual).filter(function (x) { return x.id === painel.dataset.no; })[0];
