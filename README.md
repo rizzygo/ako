@@ -43,7 +43,7 @@ As skills ficam nos [Favos](https://github.com/rizzygo/favos), também abertos e
 
 ## Onde fica publicado
 
-O site está em **https://ako.rizzygo.com.br**, no Cloudflare Pages. Cada commit na `main` publica uma versão nova sozinho, e cada pull request ganha um endereço de prévia para conferir antes do merge. Não há build: o Pages serve os arquivos deste repositório como estão, e `_redirects` e `_headers` ajustam a raiz e os cabeçalhos.
+O site está em **https://ako.rizzygo.com.br**, no Cloudflare Pages. Cada commit na `main` publica uma versão nova sozinho, e cada pull request ganha um endereço de prévia para conferir antes do merge. Não há build: o Pages serve os arquivos deste repositório como estão, e `_redirects` e `_headers` cuidam dos endereços antigos e dos cabeçalhos. A página inicial fica em `index.html`, na raiz.
 
 ## A Zumi, abelha da comunidade
 
