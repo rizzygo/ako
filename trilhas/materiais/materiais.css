@@ -47,3 +47,11 @@ details.exercicio[open] summary{margin-bottom:.6rem}
 .lista-materiais p{color:var(--suave);margin-top:.3rem}
 .licao p code,.licao li code{white-space:normal;overflow-wrap:anywhere}
 .licao .lista-materiais{padding-left:0}
+/* Lista de lições (index.html) em cartões do design system. */
+.hero-fina{padding:2.5rem 0 1.5rem}
+.hero-fina h1{font-size:var(--t-pagina);max-width:none}
+.secao-lista{padding:1.5rem 0 2rem}
+.secao-lista .cartao h3{font-size:1.15rem}
+.secao-lista .cartao .etiquetas{margin-top:auto;padding-top:.3rem}
+.secao-lista .cartao .etiquetas li{font-size:.8rem;padding:.2rem .6rem;background:var(--fundo)}
+.lista-acoes{margin-top:2rem}
