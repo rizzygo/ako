@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ako.rizzygo.com.br/sitemap.xml
