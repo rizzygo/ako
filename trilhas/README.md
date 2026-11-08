@@ -21,7 +21,7 @@ A primeira trilha é **Primeiros passos em TI**: 16 tópicos em 6 etapas, do "co
 
 Em [mapas](https://ako.rizzygo.com.br/trilhas/mapas/) ficam os mapas em grafo de cada caminho do fim da trilha: infraestrutura e cloud, desenvolvimento, dados, QA, segurança e produto. Há também um mapa da própria trilha Primeiros passos. Cada mapa vai do que a trilha já ensina até o nível de quem procura a primeira vaga na área, sem descer para assuntos avançados.
 
-Clicando num tópico, a pessoa vê um resumo, um exercício, os links para o tópico e para a lição do Ako, e materiais gratuitos. Ela pode marcar o tópico como "Estudando" ou "Já estudei". Nos tópicos que já existem na trilha, o progresso vem da própria trilha.
+Clicando num tópico, a pessoa vê um resumo, um exercício, os links para o tópico e para a lição do Ako, e materiais gratuitos. Ela pode marcar o tópico como "Estudando" ou "Já estudei". O painel também tem o botão Copiar prompt, de Estudar com IA, com o resumo e o exercício do nó. Nos tópicos que já existem na trilha, o progresso vem da própria trilha.
 
 O conteúdo fica em `dados/mapas.json`, um mapa por área, dividido em seções:
 
