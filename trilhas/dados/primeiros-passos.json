@@ -2017,7 +2017,9 @@
    "nome": "Infraestrutura e cloud",
    "cor": "#1F4FD8",
    "descricao": "Servidores, redes, Linux, nuvem (com foco em GCP na Rizzygo), automação e observabilidade.",
-   "mapa": "mapas/#/infra"
+   "mapa": "mapas/#/infra",
+   "trilha": "platform-engineering",
+   "trilha_nome": "Platform Engineering"
   },
   {
    "id": "dev",

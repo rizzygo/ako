@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Incidentes e postmortem sem culpa | Rizzygo Ako</title>
+<meta name="description" content="Lição em português sobre resposta a incidentes e postmortem sem culpa: papéis, restaurar antes de investigar, mensagens de status prontas, linha do tempo e um modelo de postmortem com ações, donos e prazos.">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0B1B3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="../app.css?v=2026110501">
+<link rel="stylesheet" href="materiais.css?v=2026103102">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<nav class="familia" aria-label="Sites da Rizzygo"><div class="familia-in"><a class="familia-item" href="https://rizzygo.com.br/" title="Site principal da Rizzygo"><svg viewBox="0 0 64 64" width="16" height="16" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/></svg>Rizzygo</a><a class="familia-item" href="https://ako.rizzygo.com.br/" aria-current="page">Ako</a></div></nav>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="../#/" aria-label="Rizzygo Ako, início"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="var(--azul)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/></svg><span>Rizzygo <b>Ako</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="../?trilha=platform-engineering#/trilha">Trilha</a><a href="../mapas/#/platform-engineering">Mapas</a><a href="./">Materiais</a><a href="/favos/">Favos</a></nav>
+</div></header>
+
+
+<main id="conteudo" class="licao">
+<div class="licao-cab">
+  <a class="voltar" href="../?trilha=platform-engineering#/t/incidentes">Voltar para o tópico Incidentes e postmortem sem culpa</a>
+  <h1>Incidentes e postmortem sem culpa</h1>
+  <p class="lead">Produção caiu, o chat explodiu e cinco pessoas digitam comandos ao mesmo tempo. Esta lição mostra como organizar a resposta, comunicar sem pânico e aprender com a falha sem procurar culpado.</p>
+  <div class="ficha"><span class="etiqueta">Cerca de 40 minutos</span><span class="etiqueta">Trilha Platform Engineering</span><span class="etiqueta ambar">Material gratuito em português</span></div>
+</div>
+<nav class="indice" aria-label="Nesta lição">
+  <h2>Nesta lição</h2>
+  <ol>
+    <li><a href="#incidente">O que é um incidente</a></li>
+    <li><a href="#restaurar">Primeiro restaurar, depois entender</a></li>
+    <li><a href="#papeis">Três papéis que evitam o caos</a></li>
+    <li><a href="#comunicar">Comunicar sem a resposta</a></li>
+    <li><a href="#postmortem">Postmortem sem culpa</a></li>
+    <li><a href="#modelo">Um modelo para copiar</a></li>
+    <li><a href="#missao">Missão final</a></li>
+  </ol>
+</nav>
+<section id="incidente">
+  <h2>1. O que é um incidente</h2>
+  <p>Incidente é qualquer problema que afeta os usuários e pede resposta agora: o site fora do ar, pagamentos falhando, dados errados na tela. Um bom sinal para abrir um incidente é o error budget sendo gasto rápido demais. Na dúvida, abra. Fechar um incidente que era alarme falso custa pouco.</p>
+</section>
+
+<section id="restaurar">
+  <h2>2. Primeiro restaurar, depois entender</h2>
+  <p>Durante o incidente, o objetivo é o usuário voltar a ser atendido. A investigação da causa vem depois, com calma. Caminhos rápidos para restaurar:</p>
+  <ul>
+    <li>desfazer o último deploy ou reverter o último commit, no GitOps;</li>
+    <li>desligar a funcionalidade nova por uma <em>feature flag</em>;</li>
+    <li>mandar o tráfego para outra região ou réplica saudável.</li>
+  </ul>
+  <p>Anote tudo o que for feito, com horário. Essas anotações viram a linha do tempo do postmortem.</p>
+</section>
+
+<section id="papeis">
+  <h2>3. Três papéis que evitam o caos</h2>
+  <p>A <a href="https://response.pagerduty.com/">documentação aberta de resposta a incidentes da PagerDuty</a> descreve vários papéis. Para começar, três bastam:</p>
+  <ul>
+    <li><strong>Coordenação.</strong> Organiza a resposta, decide prioridades, distribui tarefas. Não digita comando.</li>
+    <li><strong>Investigação.</strong> Uma ou mais pessoas que mexem no sistema, sempre avisando antes no canal do incidente.</li>
+    <li><strong>Comunicação.</strong> Atualiza clientes, suporte e liderança, para que quem investiga não seja interrompido.</li>
+  </ul>
+  <p>Num time pequeno, uma pessoa pode acumular dois papéis. O importante é todo mundo saber quem coordena.</p>
+</section>
+
+<section id="comunicar">
+  <h2>4. Comunicar sem a resposta</h2>
+  <p>Silêncio gera ansiedade e boato. Uma mensagem honesta, mesmo sem a causa, já ajuda. Modelos para adaptar:</p>
+  <div class="saida"><small>Primeira mensagem:</small><pre>Estamos investigando falhas no pagamento desde as 14h10.
+Parte dos clientes não consegue concluir compras.
+Próxima atualização até as 14h40.</pre></div>
+  <div class="saida"><small>Atualização:</small><pre>Identificamos que o problema começou após uma mudança das 14h05
+e estamos revertendo. Próxima atualização até as 15h.</pre></div>
+  <div class="saida"><small>Encerramento:</small><pre>O pagamento voltou ao normal às 14h52. Vamos publicar o que aconteceu
+e o que muda nos próximos dias.</pre></div>
+</section>
+
+<section id="postmortem">
+  <h2>5. Postmortem sem culpa</h2>
+  <p>Postmortem é o texto que conta o que aconteceu, por que aconteceu e o que muda. O <a href="https://sre.google/sre-book/postmortem-culture/">livro de SRE do Google</a> insiste num ponto: ele é <strong>sem culpa</strong>. Parte do princípio de que todas as pessoas agiram com boa intenção, com a informação que tinham.</p>
+  <p>A troca de pergunta é o que importa:</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Em vez de</th><th>Pergunte</th></tr></thead>
+    <tbody>
+      <tr><td>Quem rodou o comando errado?</td><td>O que permitiu que um comando derrubasse produção?</td></tr>
+      <tr><td>Por que ninguém viu?</td><td>Que sinal teria mostrado o problema antes?</td></tr>
+      <tr><td>Quem vai ser cobrado?</td><td>O que muda para isso não acontecer de novo, com qualquer pessoa?</td></tr>
+    </tbody>
+  </table></div>
+  <p>Com medo de punição, as pessoas escondem detalhes, e a causa real não aparece. Sem culpa, o time aprende com fatos.</p>
+</section>
+
+<section id="modelo">
+  <h2>6. Um modelo para copiar</h2>
+  <div class="saida"><small>Modelo de postmortem:</small><pre># Postmortem: [título curto]
+Data: | Duração: | Severidade:
+
+## Resumo
+Duas ou três frases: o que os usuários sentiram e por quanto tempo.
+
+## Impacto
+Quantos usuários, quais funções, quanto do error budget foi gasto.
+
+## Linha do tempo
+14h05 mudança X entra em produção
+14h10 alerta de taxa de erro no checkout
+14h12 incidente aberto, coordenação com Ana
+14h48 reversão concluída
+14h52 serviço normal
+
+## O que contribuiu
+Fatores do sistema e do processo, não pessoas.
+
+## O que funcionou bem
+
+## Ações
+| Ação | Dono | Prazo |
+| Bloquear deploy sem teste de integração no pipeline | Ana | 20/11 |</pre></div>
+  <p>Ação boa é concreta e tem dono e prazo. "Ter mais cuidado" não é ação: não muda nada no sistema.</p>
+</section>
+
+<section id="missao">
+  <h2>7. Missão final</h2>
+  <details class="exercicio"><summary>1. Escreva um postmortem de verdade</summary>
+    <p>Escolha um problema real que você viveu, mesmo fora da tecnologia, como um trabalho entregue atrasado. Preencha o modelo da parte 6 sem culpar ninguém, nem você.</p>
+  </details>
+  <details class="exercicio"><summary>2. Simule um incidente</summary>
+    <p>Com duas ou três pessoas, escolham um cenário ("o site da loja caiu na Black Friday") e dividam os três papéis. Em 15 minutos, escrevam as mensagens de status e a linha do tempo.</p>
+  </details>
+  <div class="faca"><strong>Para fixar</strong>Explique para alguém por que a pergunta "quem errou?" deixa o sistema menos confiável. Depois, marque no tópico que você ensinou alguém.</div>
+  <div class="proximo"><a class="btn" href="../?trilha=platform-engineering#/t/incidentes">Voltar para o tópico e fazer o desafio</a><a class="btn btn-sec" href="../?trilha=platform-engineering#/trilha">Ver a trilha Platform Engineering</a></div>
+</section>
+
+<div class="credito">
+  <p>Lição baseada no capítulo <a href="https://sre.google/sre-book/postmortem-culture/">Postmortem Culture</a> do livro de SRE do Google, na <a href="https://response.pagerduty.com/">documentação de resposta a incidentes da PagerDuty</a> e no guia de <a href="https://www.atlassian.com/incident-management/postmortem/blameless">postmortem sem culpa da Atlassian</a>. Os horários e nomes do modelo são fictícios. O texto e os exemplos são próprios, escritos em português pela Iniciativa Ako, da Rizzygo.</p>
+  <p>Conteúdo aberto sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR">CC BY 4.0</a>. Viu um erro? <a href="https://github.com/rizzygo/ako/issues">Abra uma issue</a>.</p>
+</div>
+</main>
+<footer class="rodape"><div class="rodape-in"><p><strong>Iniciativa Ako</strong>, da <a href="https://rizzygo.com.br/">Rizzygo</a>.</p><p class="credo">Sou Zy: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="materiais.js?v=2026103102"></script>
+<script src="../efeitos.js?v=2026103102" defer></script>
+</body>
+</html>

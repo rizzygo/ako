@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Platform Engineering: onde DevOps e SRE se encontram | Rizzygo Ako</title>
+<meta name="description" content="Lição em português sobre Platform Engineering: o problema que a plataforma interna resolve, a diferença entre DevOps, SRE e time de plataforma, toil, self-service e um exercício para mapear a dor de um time.">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0B1B3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="../app.css?v=2026110501">
+<link rel="stylesheet" href="materiais.css?v=2026103102">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<nav class="familia" aria-label="Sites da Rizzygo"><div class="familia-in"><a class="familia-item" href="https://rizzygo.com.br/" title="Site principal da Rizzygo"><svg viewBox="0 0 64 64" width="16" height="16" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/></svg>Rizzygo</a><a class="familia-item" href="https://ako.rizzygo.com.br/" aria-current="page">Ako</a></div></nav>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="../#/" aria-label="Rizzygo Ako, início"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="var(--azul)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/></svg><span>Rizzygo <b>Ako</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="../?trilha=platform-engineering#/trilha">Trilha</a><a href="../mapas/#/platform-engineering">Mapas</a><a href="./">Materiais</a><a href="/favos/">Favos</a></nav>
+</div></header>
+
+
+<main id="conteudo" class="licao">
+<div class="licao-cab">
+  <a class="voltar" href="../?trilha=platform-engineering#/t/pe-o-que-e">Voltar para o tópico DevOps, SRE e Platform Engineering</a>
+  <h1>Platform Engineering: onde DevOps e SRE se encontram</h1>
+  <p class="lead">Dez times, dez jeitos de fazer deploy e uma fila de tickets que não para de crescer. Esta lição mostra por que as empresas criaram times de plataforma e onde esse trabalho encaixa entre DevOps e SRE.</p>
+  <div class="ficha"><span class="etiqueta">Cerca de 45 minutos</span><span class="etiqueta">Trilha Platform Engineering</span><span class="etiqueta ambar">Material gratuito em português</span></div>
+</div>
+<nav class="indice" aria-label="Nesta lição">
+  <h2>Nesta lição</h2>
+  <ol>
+    <li><a href="#problema">O problema: cada time reinventa a roda</a></li>
+    <li><a href="#devops">DevOps: quem constrói também opera</a></li>
+    <li><a href="#sre">SRE: confiabilidade com meta</a></li>
+    <li><a href="#plataforma">Platform Engineering: as duas ideias viram produto</a></li>
+    <li><a href="#toil">Toil: o primeiro alvo</a></li>
+    <li><a href="#papel">O que faz quem trabalha com plataforma</a></li>
+    <li><a href="#missao">Missão final</a></li>
+  </ol>
+</nav>
+<section id="problema">
+  <h2>1. O problema: cada time reinventa a roda</h2>
+  <p>Uma empresa tem dez times de desenvolvimento. Cada um escolheu seu jeito de empacotar a aplicação, seu pipeline, seu monitoramento e seu passo a passo de deploy. Funciona, até que:</p>
+  <ul>
+    <li>uma falha de segurança aparece numa biblioteca e ninguém sabe quais dos dez jeitos usam essa biblioteca;</li>
+    <li>uma pessoa troca de time e precisa reaprender tudo do zero;</li>
+    <li>para criar um banco de teste, o time abre um ticket e espera uma semana.</li>
+  </ul>
+  <p>O time não está errado. Ele só tem coisa demais para saber. Isso tem nome: <strong>carga cognitiva</strong>, o quanto uma pessoa precisa manter na cabeça para fazer o trabalho. Quando a carga é alta, sobra pouca energia para o produto.</p>
+</section>
+
+<section id="devops">
+  <h2>2. DevOps: quem constrói também opera</h2>
+  <p>Antes do DevOps, um time escrevia o código e outro colocava em produção. Os dois tinham metas opostas: um queria mudar rápido, o outro queria que nada mudasse. O DevOps propôs juntar os dois lados: o time que constrói também cuida do que roda, com automação para entregar mudanças pequenas e frequentes.</p>
+  <p>DevOps é, antes de tudo, cultura e prática. Não é cargo nem ferramenta. A pesquisa do <a href="https://dora.dev/capabilities/">DORA</a> mostra que times que entregam em lotes pequenos, com testes automáticos e deploy automatizado, são ao mesmo tempo mais rápidos e mais estáveis.</p>
+</section>
+
+<section id="sre">
+  <h2>3. SRE: confiabilidade com meta</h2>
+  <p>O SRE (Site Reliability Engineering) nasceu no Google com uma pergunta simples: e se a operação fosse tratada como problema de engenharia? Em vez de "o sistema nunca pode cair", o SRE combina uma meta, o <strong>SLO</strong>, e aceita um pouco de falha, o <strong>error budget</strong>. Se a meta está sendo cumprida com folga, o time pode arriscar mais. Se não, a prioridade passa a ser estabilidade.</p>
+  <p>O SRE também mede o trabalho repetitivo e procura automatizá-lo. O toil aparece na parte 5 desta lição. O SLO e o error budget ficam para a etapa "Manter no ar" da trilha.</p>
+</section>
+
+<section id="plataforma">
+  <h2>4. Platform Engineering: as duas ideias viram produto</h2>
+  <p>Quando cada time precisa cuidar do próprio deploy e da própria confiabilidade, cada um monta tudo sozinho. Platform Engineering resolve isso com uma <strong>plataforma interna</strong>: um conjunto de ferramentas, serviços e caminhos prontos que os times usam por conta própria.</p>
+  <div class="tabela"><table>
+    <thead><tr><th></th><th>Pergunta principal</th><th>Entrega típica</th></tr></thead>
+    <tbody>
+      <tr><td>DevOps</td><td>Como entregar rápido e com frequência?</td><td>Pipeline, deploy automatizado, cultura de dono</td></tr>
+      <tr><td>SRE</td><td>Como manter no ar e quanto de falha é aceitável?</td><td>SLO, error budget, resposta a incidentes</td></tr>
+      <tr><td>Platform Engineering</td><td>Como cada time faz isso sozinho, sem reinventar?</td><td>Golden paths, self-service, portal</td></tr>
+    </tbody>
+  </table></div>
+  <p>Três ideias definem uma boa plataforma:</p>
+  <ul>
+    <li><strong>Self-service.</strong> O time cria um serviço, um banco ou um ambiente sozinho, em minutos, sem esperar outra pessoa.</li>
+    <li><strong>Caminhos prontos.</strong> O jeito recomendado já vem com segurança, observabilidade e deploy configurados. São os <em>golden paths</em>.</li>
+    <li><strong>Produto interno.</strong> A plataforma tem clientes, os times de desenvolvimento, e só existe porque ajuda esses clientes. O <a href="https://tag-app-delivery.cncf.io/whitepapers/platforms/">white paper de plataformas da CNCF</a> trata isso como ponto central.</li>
+  </ul>
+  <div class="cuidado"><strong>Plataforma não é sinônimo de Kubernetes.</strong> Muitas plataformas usam Kubernetes por baixo, mas uma página de documentação com o caminho recomendado e um template de repositório já são uma plataforma. O que importa é tirar carga dos times.</div>
+</section>
+
+<section id="toil">
+  <h2>5. Toil: o primeiro alvo</h2>
+  <p>O livro de SRE do Google chama de <strong>toil</strong> o trabalho que é manual, repetitivo, automatizável, tático (reage ao que aparece), sem valor duradouro e que cresce junto com o serviço. Exemplos que você vai reconhecer:</p>
+  <ul>
+    <li>criar usuário de banco à mão, toda semana, seguindo uma lista;</li>
+    <li>renovar certificado copiando arquivos entre servidores;</li>
+    <li>responder no chat, pela décima vez, "como eu faço deploy?".</li>
+  </ul>
+  <p>Mapear e automatizar o toil é uma das primeiras entregas de um time de plataforma, porque libera tempo de todo mundo e mostra valor rápido.</p>
+</section>
+
+<section id="papel">
+  <h2>6. O que faz quem trabalha com plataforma</h2>
+  <p>No dia a dia, quem trabalha com plataforma:</p>
+  <ul>
+    <li>conversa com os times para descobrir onde eles perdem tempo;</li>
+    <li>escreve infraestrutura como código, pipelines e módulos reutilizáveis;</li>
+    <li>mantém a base que roda tudo, como clusters, registries e observabilidade;</li>
+    <li>escreve documentação e templates que outra pessoa entende sem ajuda;</li>
+    <li>mede se a plataforma está ajudando, com números e com conversas.</li>
+  </ul>
+  <p>Repare que a lista mistura técnica, produto e comunicação. Por isso esta trilha mistura as duas coisas.</p>
+</section>
+
+<section id="missao">
+  <h2>7. Missão final</h2>
+  <details class="exercicio"><summary>1. Mapeie o toil de um time</summary>
+    <p>Pense num time que você conhece, de trabalho, faculdade ou projeto pessoal. Liste cinco tarefas repetitivas. Para cada uma, anote quantas vezes por mês acontece, quanto tempo leva e o que precisaria existir para ela sumir.</p>
+  </details>
+  <details class="exercicio"><summary>2. Explique em três frases</summary>
+    <p>Escreva a diferença entre DevOps, SRE e Platform Engineering em três frases, uma para cada, sem usar o nome de nenhuma ferramenta.</p>
+  </details>
+  <div class="faca"><strong>Para fixar</strong>Explique para alguém por que uma empresa com um time de plataforma ainda precisa da cultura DevOps em cada time. Depois, marque no tópico que você ensinou alguém.</div>
+  <div class="proximo"><a class="btn" href="../?trilha=platform-engineering#/t/pe-o-que-e">Voltar para o tópico e fazer o desafio</a><a class="btn btn-sec" href="plataforma-como-produto.html">Próxima lição: plataforma como produto</a></div>
+</section>
+
+<div class="credito">
+  <p>Lição baseada no <a href="https://tag-app-delivery.cncf.io/whitepapers/platforms/">CNCF Platforms White Paper</a>, no capítulo <a href="https://sre.google/sre-book/eliminating-toil/">Eliminating Toil</a> do livro de SRE do Google e no catálogo de práticas do <a href="https://dora.dev/capabilities/">DORA</a>. O texto e os exemplos são próprios, escritos em português pela Iniciativa Ako, da Rizzygo.</p>
+  <p>Conteúdo aberto sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR">CC BY 4.0</a>. Viu um erro? <a href="https://github.com/rizzygo/ako/issues">Abra uma issue</a>.</p>
+</div>
+</main>
+<footer class="rodape"><div class="rodape-in"><p><strong>Iniciativa Ako</strong>, da <a href="https://rizzygo.com.br/">Rizzygo</a>.</p><p class="credo">Sou Zy: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="materiais.js?v=2026103102"></script>
+<script src="../efeitos.js?v=2026103102" defer></script>
+</body>
+</html>

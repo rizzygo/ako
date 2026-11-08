@@ -288,3 +288,13 @@ textarea:focus{border-color:var(--azul);outline:none}
   .js .revela{opacity:1;transform:none;transition:none}
   .btn:hover,.lista-materiais li:hover,.lista-mapas a:hover{transform:none}
 }
+
+/* Mais de uma trilha: "Para quem é" e "Outras trilhas" na página inicial de cada trilha. */
+.chapeu{font-family:var(--f-titulo);font-weight:700;color:var(--azul);margin-bottom:.6rem}
+.para-quem{margin:1rem 0 0;padding-left:1.2rem;display:grid;gap:.5rem;max-width:44rem}
+.outras-trilhas{list-style:none;margin:1rem 0 0;padding:0;display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(17rem,1fr))}
+.outras-trilhas a{display:block;height:100%;background:var(--superficie);border:1px solid var(--linha);border-top:6px solid var(--azul);border-radius:var(--raio);padding:1.1rem 1.2rem;color:var(--tinta);text-decoration:none;transition:transform .2s,border-color .2s}
+.outras-trilhas a:hover{border-color:var(--azul);transform:translateY(-2px)}
+.outras-trilhas h3{font-size:1.2rem;margin-bottom:.35rem}
+.outras-trilhas p{color:var(--suave);font-size:.95rem}
+@media (prefers-reduced-motion:reduce){.outras-trilhas a{transition:none}.outras-trilhas a:hover{transform:none}}

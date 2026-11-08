@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plataforma como produto: clientes, golden paths e portal | Rizzygo Ako</title>
+<meta name="description" content="Lição em português sobre tratar a plataforma interna como produto: descobrir a dor dos times, carga cognitiva, a menor plataforma viável, golden paths com template de repositório, portal do desenvolvedor e adoção.">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0B1B3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="../app.css?v=2026110501">
+<link rel="stylesheet" href="materiais.css?v=2026103102">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<nav class="familia" aria-label="Sites da Rizzygo"><div class="familia-in"><a class="familia-item" href="https://rizzygo.com.br/" title="Site principal da Rizzygo"><svg viewBox="0 0 64 64" width="16" height="16" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/></svg>Rizzygo</a><a class="familia-item" href="https://ako.rizzygo.com.br/" aria-current="page">Ako</a></div></nav>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="../#/" aria-label="Rizzygo Ako, início"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="var(--azul)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/></svg><span>Rizzygo <b>Ako</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="../?trilha=platform-engineering#/trilha">Trilha</a><a href="../mapas/#/platform-engineering">Mapas</a><a href="./">Materiais</a><a href="/favos/">Favos</a></nav>
+</div></header>
+
+
+<main id="conteudo" class="licao">
+<div class="licao-cab">
+  <a class="voltar" href="../?trilha=platform-engineering#/t/plataforma-produto">Voltar para o tópico Plataforma como produto interno</a>
+  <h1>Plataforma como produto: clientes, golden paths e portal</h1>
+  <p class="lead">A tecnologia pode ser perfeita e mesmo assim ninguém usar. Esta lição mostra como pensar a plataforma como produto, do primeiro papo com os times até o primeiro golden path publicado.</p>
+  <div class="ficha"><span class="etiqueta">Cerca de 1 hora</span><span class="etiqueta">Trilha Platform Engineering</span><span class="etiqueta ambar">Material gratuito em português</span></div>
+</div>
+<nav class="indice" aria-label="Nesta lição">
+  <h2>Nesta lição</h2>
+  <ol>
+    <li><a href="#cliente">Quem é o cliente</a></li>
+    <li><a href="#dor">Comece pela dor</a></li>
+    <li><a href="#menor">A menor plataforma que já ajuda</a></li>
+    <li><a href="#golden">Golden paths</a></li>
+    <li><a href="#template">Seu primeiro golden path em um template</a></li>
+    <li><a href="#portal">Portal: a vitrine, não a loja</a></li>
+    <li><a href="#adocao">Adoção e feedback</a></li>
+    <li><a href="#missao">Missão final</a></li>
+  </ol>
+</nav>
+<section id="cliente">
+  <h2>1. Quem é o cliente</h2>
+  <p>O cliente da plataforma são os times internos que constroem e operam os produtos da empresa. No livro <a href="https://teamtopologies.com/key-concepts">Team Topologies</a>, eles são os <strong>times alinhados ao fluxo de valor</strong>. O time de plataforma existe para que esses times entreguem mais rápido e com menos esforço.</p>
+  <p>Isso muda o jeito de trabalhar. Em vez de "o que é tecnicamente melhor?", a pergunta passa a ser "o que tira mais peso de quem usa?".</p>
+</section>
+
+<section id="dor">
+  <h2>2. Comece pela dor</h2>
+  <p>Antes de escolher ferramenta, converse. Três perguntas que funcionam bem numa entrevista com um time:</p>
+  <ol>
+    <li>Qual foi a última coisa que fez você esperar por outra pessoa ou outro time?</li>
+    <li>Se você pudesse apagar um passo do seu caminho até produção, qual seria?</li>
+    <li>O que uma pessoa nova no time leva mais tempo para aprender?</li>
+  </ol>
+  <p>Anote as respostas com as palavras do time. Depois de quatro ou cinco conversas, as dores repetidas aparecem sozinhas.</p>
+</section>
+
+<section id="menor">
+  <h2>3. A menor plataforma que já ajuda</h2>
+  <p>O Team Topologies chama de <strong>Thinnest Viable Platform</strong> a menor plataforma que já resolve um problema real. Pode ser:</p>
+  <ul>
+    <li>uma página com o caminho recomendado para colocar um serviço no ar;</li>
+    <li>um template de repositório com pipeline pronto;</li>
+    <li>um módulo de infraestrutura como código para o banco mais usado.</li>
+  </ul>
+  <p>Começar pequeno tem duas vantagens: entrega valor em semanas, não em meses, e deixa o uso real guiar o que vem depois.</p>
+</section>
+
+<section id="golden">
+  <h2>4. Golden paths</h2>
+  <p>O termo ficou conhecido num <a href="https://engineering.atspotify.com/2020/08/how-we-use-golden-paths-to-solve-fragmentation-in-our-software-ecosystem">texto do time de engenharia do Spotify</a>: um golden path é o caminho recomendado e com suporte para construir algo. Na prática, um golden path que funciona tem quatro características:</p>
+  <ul>
+    <li><strong>É opinativo.</strong> Já escolhe linguagem, banco e jeito de fazer deploy, e explica o porquê.</li>
+    <li><strong>É o caminho fácil.</strong> Se der mais trabalho que o atalho, ninguém usa.</li>
+    <li><strong>É opcional.</strong> Quem sai do caminho pode, mas assume a manutenção do que escolheu.</li>
+    <li><strong>Tem dono.</strong> Alguém atualiza versões e práticas. Golden path abandonado espalha dívida técnica.</li>
+  </ul>
+</section>
+
+<section id="template">
+  <h2>5. Seu primeiro golden path em um template</h2>
+  <p>No GitHub, qualquer repositório pode virar template, e cada repositório criado a partir dele começa com os mesmos arquivos e um histórico próprio. A <a href="https://docs.github.com/pt/repositories/creating-and-managing-repositories/creating-a-template-repository">documentação do GitHub</a> mostra onde marcar a opção. Um bom template de serviço tem:</p>
+  <div class="saida"><small>Estrutura de exemplo:</small><pre>meu-template/
+  README.md              para quem é, como usar em 5 minutos, o que o template decide
+  Dockerfile             imagem enxuta, sem segredo dentro
+  .github/workflows/
+    ci.yml               testes e build da imagem a cada pull request
+  k8s/
+    deployment.yaml      réplicas, limites de CPU e memória, probes
+    service.yaml
+  SLO.md                 meta de confiabilidade inicial e política de error budget</pre></div>
+  <p>Teste com outra pessoa. Peça para alguém criar um serviço a partir do template sem a sua ajuda e anote cada lugar onde ela travou. Cada trava é um item do seu roadmap.</p>
+</section>
+
+<section id="portal">
+  <h2>6. Portal: a vitrine, não a loja</h2>
+  <p>Quando a plataforma cresce, fica difícil achar o que existe. O portal do desenvolvedor resolve isso com um catálogo de serviços (o que existe e quem é dono), documentação junto do código e botões para criar algo novo pelos golden paths. O <a href="https://backstage.io/docs/overview/what-is-backstage">Backstage</a>, projeto aberto da CNCF, é uma das ferramentas mais conhecidas para isso.</p>
+  <div class="cuidado"><strong>Cuidado com a ordem.</strong> Portal sem caminhos automatizados por trás é só uma página bonita que abre ticket. Primeiro o golden path funciona de ponta a ponta. Depois ele ganha vitrine.</div>
+</section>
+
+<section id="adocao">
+  <h2>7. Adoção e feedback</h2>
+  <p>Um bom sinal de que a plataforma entrega valor é a adoção voluntária: o time pode escolher e mesmo assim usa. Acompanhe:</p>
+  <ul>
+    <li>quantos serviços novos nascem pelo golden path;</li>
+    <li>quanto tempo um serviço novo leva até o primeiro deploy em produção;</li>
+    <li>o que os times dizem numa pesquisa curta, a cada trimestre.</li>
+  </ul>
+  <p>Adoção baixa não é motivo para obrigar. É feedback: pergunte o que está no caminho.</p>
+</section>
+
+<section id="missao">
+  <h2>8. Missão final</h2>
+  <details class="exercicio"><summary>1. Entreviste alguém</summary>
+    <p>Faça as três perguntas da parte 2 para uma pessoa que desenvolve software. Escreva a maior dor dela em uma frase.</p>
+  </details>
+  <details class="exercicio"><summary>2. Desenhe a menor plataforma</summary>
+    <p>Para a dor que você anotou, descreva a menor coisa que resolveria. Ela precisa caber em uma semana de trabalho.</p>
+  </details>
+  <details class="exercicio"><summary>3. Publique um template</summary>
+    <p>Crie um repositório template com a estrutura da parte 5, mesmo que com uma aplicação "olá, mundo". Você vai usá-lo no projeto final da trilha.</p>
+  </details>
+  <div class="faca"><strong>Para fixar</strong>Explique para alguém por que um golden path precisa ser o caminho fácil, e não só o caminho certo. Depois, marque no tópico que você ensinou alguém.</div>
+  <div class="proximo"><a class="btn" href="../?trilha=platform-engineering#/t/plataforma-produto">Voltar para o tópico e fazer o desafio</a><a class="btn btn-sec" href="../?trilha=platform-engineering#/t/golden-paths">Ir para o tópico Golden paths</a></div>
+</section>
+
+<div class="credito">
+  <p>Lição baseada nos <a href="https://teamtopologies.com/key-concepts">conceitos do Team Topologies</a>, no artigo <a href="https://martinfowler.com/articles/talk-about-platforms.html">What I Talk About When I Talk About Platforms</a>, no texto de golden paths do Spotify Engineering e na documentação do Backstage e do GitHub. O texto e os exemplos são próprios, escritos em português pela Iniciativa Ako, da Rizzygo.</p>
+  <p>Conteúdo aberto sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR">CC BY 4.0</a>. Viu um erro? <a href="https://github.com/rizzygo/ako/issues">Abra uma issue</a>.</p>
+</div>
+</main>
+<footer class="rodape"><div class="rodape-in"><p><strong>Iniciativa Ako</strong>, da <a href="https://rizzygo.com.br/">Rizzygo</a>.</p><p class="credo">Sou Zy: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="materiais.js?v=2026103102"></script>
+<script src="../efeitos.js?v=2026103102" defer></script>
+</body>
+</html>
