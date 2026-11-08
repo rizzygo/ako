@@ -1,0 +1,37 @@
+/* Página inicial do Ako. Usa os componentes de /ds/rizzygo.css; aqui fica só o que é desta página. */
+.hero{padding:3rem 0 2.5rem}
+.hero h1{font-size:clamp(2.2rem,5.4vw,3.5rem);max-width:17ch}
+.hero .lead{max-width:34rem}
+.inicio-garantias{margin-top:1.4rem}
+.inicio-garantias li{background:transparent}
+
+/* prévia do roteiro, ao lado do título */
+.roteiro-previa{position:relative;margin:0;justify-self:center;width:min(100%,400px);background:var(--superficie);border:1px solid var(--linha);border-radius:var(--raio);padding:1.4rem 1.4rem 1.2rem;box-shadow:var(--sombra-2)}
+.roteiro-previa::before{content:"";position:absolute;inset:0;transform:translate(16px,16px);background:var(--azul-claro);border-radius:var(--raio);z-index:-1}
+.roteiro-zumi{flex:none;margin:-.4rem -.3rem 0 0}
+.roteiro-zumi img{width:96px;height:96px}
+.roteiro-previa figcaption{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1rem}
+.roteiro-previa figcaption > span{display:grid;gap:.15rem;padding-top:.6rem}
+.roteiro-previa figcaption strong{font:700 1.25rem var(--f-titulo)}
+.roteiro-previa ol{list-style:none;margin:0;padding:0;display:grid;gap:.5rem}
+.roteiro-previa li{position:relative;display:flex;align-items:center;gap:.7rem;padding:.6rem .75rem;border:1px solid var(--linha);border-radius:var(--raio-p);background:var(--fundo);font-size:.95rem}
+.roteiro-previa li::before{content:"";width:14px;height:14px;flex:none;border-radius:50%;border:2px solid var(--trilho);background:var(--superficie)}
+.roteiro-previa li span{flex:1}
+.roteiro-previa li small{color:var(--suave);font-size:.82rem;white-space:nowrap}
+.roteiro-previa li.feito::before{background:var(--ambar);border-color:var(--ambar)}
+.roteiro-previa li.feito span{color:var(--suave)}
+.roteiro-previa li.agora{border-color:var(--azul);background:var(--azul-claro);font-weight:700}
+.roteiro-previa li.agora::before{border-color:var(--azul);box-shadow:0 0 0 4px color-mix(in srgb,var(--azul) 22%,transparent)}
+.roteiro-previa li.resto{border-style:dashed;background:transparent;color:var(--suave)}
+.roteiro-previa li.resto::before{display:none}
+
+/* blocos */
+.cartao .etiquetas{margin-top:.2rem}
+.cartao .etiquetas li{font-size:.8rem;padding:.2rem .6rem;background:var(--fundo)}
+.secao-fina{padding-top:0}
+.passos h3{font-size:var(--t-sub)}
+.chamada{margin-top:1rem}
+.chamada img{width:112px;height:112px}
+.inicio-nome{color:var(--suave);margin:2.5rem 0 0;max-width:44rem}
+.inicio-nome strong{color:var(--tinta);font-family:var(--f-titulo)}
+@media (max-width:859px){.roteiro-previa{margin-top:.5rem}}

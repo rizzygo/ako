@@ -22,19 +22,15 @@
 <meta property="og:image:alt" content="Rizzygo Ako: trilhas gratuitas de TI, com a Zumi, abelha da Rizzygo All">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://ako.rizzygo.com.br/">
-<style>
-.inicio-ako{position:relative}
-.inicio-zumi{display:block;width:96px;height:auto;margin-bottom:.8rem}
-.inicio-ako .proximo{margin-top:1.4rem}
-.licao>h2{margin-top:2.2rem}
-.inicio-numeros,.inicio-nome{color:var(--suave);margin-top:1.2rem}
-</style>
+
 <meta name="theme-color" content="#0B1B3A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
-<link rel="stylesheet" href="/trilhas/app.css?v=2026110801">
-<link rel="stylesheet" href="/trilhas/materiais/materiais.css?v=2026103102">
+<link rel="stylesheet" href="/ds/rizzygo.css?v=2026110801">
+<link rel="stylesheet" href="/trilhas/app.css?v=2026110802">
+<link rel="stylesheet" href="/inicio.css?v=2026110801">
+
 </head>
 <body>
 <a class="pular" href="#conteudo">Pular para o conteúdo</a>
@@ -43,30 +39,73 @@
   <a class="marca" href="/" aria-label="Rizzygo Ako, início"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="var(--azul)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/></svg><span>Rizzygo <b>Ako</b></span></a>
   <nav class="menu" aria-label="Principal"><a href="/trilhas/#/trilha">Trilha</a><a href="/trilhas/mapas/">Mapas</a><a href="/trilhas/materiais/">Materiais</a><a href="/favos/">Favos</a></nav>
 </div></header>
-<main id="conteudo" class="licao">
-  <div class="licao-cab inicio-ako">
-    <img class="inicio-zumi" src="/zumi/abelha-ola.png" width="120" height="120" alt="A Zumi, abelha da Rizzygo All, dando oi">
+<main id="conteudo">
+<section class="hero"><div class="casca hero-grade">
+  <div>
+    <p class="sobretitulo">Trilhas gratuitas de TI, em português</p>
     <h1>Não sabe por onde começar em TI? O Ako monta o roteiro com você.</h1>
-    <p class="lead">Responda quatro perguntas e receba um roteiro de estudo em português, com materiais gratuitos e perguntas para conferir o que aprendeu. Não precisa de cadastro: o progresso fica no seu navegador.</p>
-    <div class="proximo"><a class="btn" href="/trilhas/">Montar meu roteiro</a><a class="btn btn-sec" href="/trilhas/?trilha=platform-engineering">Já tenho a base</a></div>
+    <p class="lead">Responda quatro perguntas e receba um roteiro de estudo com materiais gratuitos e perguntas para conferir o que aprendeu.</p>
+    <div class="acoes"><a class="btn" href="/trilhas/">Montar meu roteiro <span aria-hidden="true">→</span></a><a class="btn btn-sec" href="/trilhas/?trilha=platform-engineering">Já tenho a base</a></div>
+    <ul class="etiquetas inicio-garantias" aria-label="Como funciona o acesso"><li>Gratuito</li><li>Sem cadastro</li><li>Progresso salvo no seu navegador</li></ul>
   </div>
-  <h2>Duas trilhas</h2>
-  <ul class="lista-materiais">
-    <li><h2><a href="/trilhas/">Primeiros passos em TI</a></h2><p>Para quem está começando. São 16 tópicos, de como estudar até o primeiro projeto no GitHub e a escolha do próximo caminho.</p></li>
-    <li><h2><a href="/trilhas/?trilha=platform-engineering">Platform Engineering</a></h2><p>Para quem já tem a base e quer ir para DevOps, SRE e plataforma. São 15 tópicos, de contêineres e Kubernetes a SLO, incidentes e uma mini plataforma no GitHub.</p></li>
+  <figure class="roteiro-previa" aria-label="Exemplo de roteiro da trilha Primeiros passos em TI">
+    <figcaption><span><span class="cartao-rotulo">Exemplo de roteiro</span><strong>Primeiros passos em TI</strong></span><picture class="roteiro-zumi"><source srcset="/zumi/abelha-ola-fundo-escuro.png" media="(prefers-color-scheme: dark)"><img src="/zumi/abelha-ola.png" width="96" height="96" alt="A Zumi, abelha da Rizzygo All, dando oi"></picture></figcaption>
+    <ol>
+      <li class="feito"><span>Como estudar tecnologia</span><small>3 h</small></li>
+      <li class="agora"><span>As áreas da TI e as carreiras</span><small>2 h</small></li>
+      <li><span>Inglês para ler documentação</span><small>3 h</small></li>
+      <li><span>Terminal: a linha de comando</span><small>4 h</small></li>
+      <li class="resto"><span>e mais 12 tópicos, até o primeiro projeto no GitHub</span></li>
+    </ol>
+  </figure>
+</div></section>
+
+<section class="casca" aria-label="O Ako em números">
+  <ul class="numeros">
+    <li><b>2</b><span>trilhas, do zero à plataforma</span></li>
+    <li><b>180</b><span>perguntas de desafio</span></li>
+    <li><b>76</b><span>materiais gratuitos de outras fontes</span></li>
+    <li><b>16</b><span>lições escritas em português</span></li>
   </ul>
-  <p class="inicio-numeros">Juntas, as trilhas têm 180 perguntas de desafio, 76 materiais gratuitos de outras fontes e 16 lições escritas em português.</p>
-  <h2>Mais para estudar</h2>
-  <ul class="lista-materiais">
-    <li><h2><a href="/trilhas/mapas/">Mapas das áreas</a></h2><p>O que estudar em seis caminhos: infraestrutura e cloud, desenvolvimento, dados, QA, segurança e produto.</p></li>
-    <li><h2><a href="/trilhas/materiais/">Lições em português</a></h2><p>Lições práticas para os tópicos em que o melhor material gratuito só existia em inglês.</p></li>
-    <li><h2><a href="/favos/">Favos: estudar com IA</a></h2><p>Skills abertas que fazem a IA explicar antes de você rodar um comando e pedir a explicação de volta.</p></li>
-    <li><h2><a href="https://chat.whatsapp.com/CYpmolVr7a08Gqmj782yFi">Comunidade no WhatsApp</a></h2><p>Um grupo por trilha para tirar dúvida e mostrar o que fez. É gratuita, e pergunta básica é bem-vinda.</p></li>
+</section>
+
+<section class="secao"><div class="casca">
+  <div class="secao-cab"><h2>Escolha sua trilha</h2><p>Está chegando agora? Comece pela primeira. Já terminou a Primeiros passos ou já trabalha com infraestrutura, DevOps, SRE ou desenvolvimento? Vá para a segunda.</p></div>
+  <ul class="cartoes dois">
+    <li class="cartao destaque"><span class="cartao-rotulo">Para quem está começando</span><h3><a href="/trilhas/">Primeiros passos em TI</a></h3><p>De como estudar até o primeiro projeto no GitHub e a escolha do próximo caminho.</p><ul class="etiquetas"><li>16 tópicos</li><li>No seu ritmo</li></ul><span class="mais">Montar meu roteiro <span aria-hidden="true">→</span></span></li>
+    <li class="cartao destaque ambar"><span class="cartao-rotulo">Para quem já tem a base</span><h3><a href="/trilhas/?trilha=platform-engineering">Platform Engineering</a></h3><p>DevOps, SRE e plataforma: contêineres, Kubernetes, CI/CD, GitOps, SLO, incidentes e uma mini plataforma no GitHub.</p><ul class="etiquetas"><li>15 tópicos</li><li>Cerca de 69 horas</li></ul><span class="mais">Abrir a trilha <span aria-hidden="true">→</span></span></li>
   </ul>
-  <p class="inicio-nome">Ako é uma filosofia maori sobre a reciprocidade entre quem ensina e quem aprende. Por isso, explicar um tópico para alguém também conta como progresso.</p>
+</div></section>
+
+<section class="secao secao-fina"><div class="casca">
+  <div class="secao-cab"><h2>Como funciona</h2></div>
+  <ol class="passos">
+    <li><h3>Responda quatro perguntas</h3><p>O Ako monta o roteiro com o que faz sentido para o seu momento.</p></li>
+    <li><h3>Estude com material gratuito</h3><p>Cada tópico indica o que ler ou assistir. Onde só havia material em inglês, tem lição em português.</p></li>
+    <li><h3>Confira o que aprendeu</h3><p>Perguntas de desafio fecham cada tópico. Explicar o tópico para alguém também conta como progresso.</p></li>
+  </ol>
+</div></section>
+
+<section class="secao"><div class="casca">
+  <div class="secao-cab"><h2>Mais para estudar</h2></div>
+  <ul class="cartoes">
+    <li class="cartao"><span class="cartao-icone" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></svg></span><h3><a href="/trilhas/mapas/">Mapas das áreas</a></h3><p>O que estudar em seis caminhos: infraestrutura e cloud, desenvolvimento, dados, QA, segurança e produto.</p><span class="mais">Ver os mapas <span aria-hidden="true">→</span></span></li>
+    <li class="cartao"><span class="cartao-icone" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M8 7h6M8 11h6"/></svg></span><h3><a href="/trilhas/materiais/">Lições em português</a></h3><p>Lições práticas para os tópicos em que o melhor material gratuito só existia em inglês.</p><span class="mais">Ler as lições <span aria-hidden="true">→</span></span></li>
+    <li class="cartao"><span class="cartao-icone ambar" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.5l8 4.6v9.8l-8 4.6-8-4.6V7.1z"/><path d="M9 12l2 2 4-4"/></svg></span><h3><a href="/favos/">Favos: estudar com IA</a></h3><p>Skills abertas que fazem a IA explicar antes de você rodar um comando e pedir a explicação de volta.</p><span class="mais">Ver as skills <span aria-hidden="true">→</span></span></li>
+  </ul>
+</div></section>
+
+<section class="casca">
+  <div class="chamada noite">
+    <img src="/zumi/abelha-ola-fundo-escuro.png" width="112" height="112" alt="">
+    <div><h2>Estude junto na Comunidade Rizzygo</h2><p>Um grupo no WhatsApp por trilha, para tirar dúvida e mostrar o que fez. É gratuita, e pergunta básica é bem-vinda.</p></div>
+    <a class="btn btn-claro" href="https://chat.whatsapp.com/CYpmolVr7a08Gqmj782yFi">Entrar na comunidade</a>
+  </div>
+  <p class="inicio-nome"><strong>Por que Ako?</strong> Ako é uma filosofia maori sobre a reciprocidade entre quem ensina e quem aprende: quem ensina também aprende, e quem aprende também ensina.</p>
+</section>
 </main>
 <footer class="rodape"><div class="rodape-in"><p><strong>Ako</strong>, da Rizzygo All, a parte aberta e gratuita da <a href="https://rizzygo.com.br/">Rizzygo</a>.</p><p>Estude junto na <a href="https://chat.whatsapp.com/CYpmolVr7a08Gqmj782yFi">comunidade gratuita no WhatsApp</a>.</p><p class="credo"><a href="https://rizzygo.com.br/conceito#o-nome">Sou Zy</a>: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
-<script src="../efeitos.js?v=2026103102" defer></script>
+<script src="/trilhas/efeitos.js?v=2026110801" defer></script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "65a6fb651cf942a695482421e9de912b"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

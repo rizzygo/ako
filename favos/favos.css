@@ -1,21 +1,15 @@
 /* Favos no Ako: mesmo template do guia Dicas antes de rodar.
    Uma coluna de leitura (~46rem), passos em sequência; blocos de instrução e terminal com rolagem própria. */
+/* Os nomes abaixo são apelidos dos tokens do design system (/ds/rizzygo.css), carregado antes. */
 :root{
-  --bg:#F5F7FB; --surface:#FFFFFF; --ink:#0B1B3A; --muted:#4A5672; --line:#DCE2EE;
-  --blue:#1F4FD8; --blue-soft:#E7EDFC; --amber:#F5A524; --amber-ink:#0B1B3A;
+  --bg:var(--fundo); --surface:var(--superficie); --ink:var(--tinta); --muted:var(--suave); --line:var(--linha);
+  --blue:var(--azul); --blue-soft:var(--azul-claro); --amber:var(--marca-ambar); --amber-ink:#0B1B3A;
   --term-bg:#0B1B3A; --term-fg:#E8ECF6; --term-dim:#9AA8C7;
-  --f-display:"Outfit","Avenir Next","Segoe UI",system-ui,sans-serif;
-  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-display:var(--f-titulo); --f-body:var(--f-texto);
   --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#081429; --surface:#0F1F3D; --ink:#E8ECF6; --muted:#A9B5CF; --line:#22355C;
-  --blue:#8AA8FF; --blue-soft:#16295080; --amber:#F5A524; --amber-ink:#0B1B3A;
-  --term-bg:#030B1A; --term-fg:#E8ECF6; --term-dim:#8D9BBA; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#081429; --surface:#0F1F3D; --ink:#E8ECF6; --muted:#A9B5CF; --line:#22355C;
-  --blue:#8AA8FF; --blue-soft:#16295080; --amber:#F5A524; --amber-ink:#0B1B3A;
-  --term-bg:#030B1A; --term-fg:#E8ECF6; --term-dim:#8D9BBA; color-scheme:dark}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--term-bg:#030B1A; --term-dim:#8D9BBA}}
+:root[data-theme="dark"]{--term-bg:#030B1A; --term-dim:#8D9BBA}
 
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:1.0625rem;line-height:1.65;
