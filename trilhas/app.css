@@ -1,57 +1,10 @@
-:root{
-  --fundo:#F5F7FB; --superficie:#FFFFFF; --tinta:#0B1B3A; --suave:#4A5672; --linha:#DCE2EE;
-  --azul:#1F4FD8; --azul-claro:#E7EDFC; --azul-tinta:#FFFFFF;
-  --ambar:#F5A524; --ambar-claro:#FEF3DD; --ambar-tinta:#0B1B3A;
-  --trilho:#C9D2E4; --certo:#16855A; --certo-claro:#E3F4EC; --erro:#C93A3A; --erro-claro:#FBE9E9;
-  --f-titulo:"Outfit","Avenir Next","Segoe UI",system-ui,sans-serif;
-  --f-texto:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
-  --f-mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
-  --raio:14px; --raio-p:8px;
-  color-scheme:light;
-}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --fundo:#0A1430; --superficie:#121F42; --tinta:#E8ECF6; --suave:#A9B4CF; --linha:#26355E;
-  --azul:#7EA2FF; --azul-claro:#1B2B57; --azul-tinta:#081429;
-  --ambar:#F7B547; --ambar-claro:#3A2E14; --ambar-tinta:#081429;
-  --trilho:#2E3F6B; --certo:#4CC38A; --certo-claro:#123526; --erro:#FF8A8A; --erro-claro:#3B1A1F;
-  color-scheme:dark;
-}}
-:root[data-theme="dark"]{
-  --fundo:#0A1430; --superficie:#121F42; --tinta:#E8ECF6; --suave:#A9B4CF; --linha:#26355E;
-  --azul:#7EA2FF; --azul-claro:#1B2B57; --azul-tinta:#081429;
-  --ambar:#F7B547; --ambar-claro:#3A2E14; --ambar-tinta:#081429;
-  --trilho:#2E3F6B; --certo:#4CC38A; --certo-claro:#123526; --erro:#FF8A8A; --erro-claro:#3B1A1F;
-  color-scheme:dark;
-}
-
-*,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--fundo);color:var(--tinta);font-family:var(--f-texto);font-size:1.0625rem;line-height:1.6}
-h1,h2,h3{font-family:var(--f-titulo);line-height:1.15;margin:0;letter-spacing:-.01em}
-p{margin:0}
-a{color:var(--azul);text-underline-offset:.18em}
-a:hover{text-decoration-thickness:2px}
-:focus-visible{outline:3px solid var(--ambar);outline-offset:2px;border-radius:4px}
+/* Rizzygo Ako. Tokens, base e componentes comuns vêm de /ds/rizzygo.css, carregado antes deste arquivo. */
 code{font-family:var(--f-mono);font-size:.9em;white-space:nowrap;background:var(--azul-claro);padding:.08em .35em;border-radius:5px}
-.pular{position:absolute;left:-999px;top:0;background:var(--tinta);color:var(--fundo);padding:.5rem 1rem;z-index:20}
-.pular:focus{left:1rem}
-main{display:block;outline:none}
-.casca{max-width:68rem;margin:0 auto;padding:0 16px}
 .coluna{max-width:44rem;margin:0 auto;padding:0 16px}
 
-/* faixa da família Rizzygo: igual no rizzygo.com.br e no Ako */
-.familia{background:#0B1B3A;font-family:var(--f-titulo)}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .familia{background:#060D22;border-bottom:1px solid #26355E}}
-:root[data-theme="dark"] .familia{background:#060D22;border-bottom:1px solid #26355E}
-.familia-in{max-width:68rem;margin:0 auto;padding:.35rem 16px;display:flex;align-items:center;gap:.35rem}
-.familia-item{display:inline-flex;align-items:center;gap:.45rem;padding:.3rem .85rem;border-radius:999px;border:1px solid rgba(255,255,255,.28);color:#E8ECF6;text-decoration:none;font-weight:600;font-size:.88rem;line-height:1.2;transition:background-color .15s,color .15s}
-.familia-item:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5);color:#FFFFFF}
-.familia-item[aria-current="page"]{background:rgba(255,255,255,.14);border-color:transparent;color:#FFFFFF}
-.familia-item svg{width:16px;height:16px;flex:none}
 
 /* topo */
-.topo{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--fundo) 88%,transparent);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--linha)}
-.topo-in{max-width:68rem;margin:0 auto;padding:.6rem 16px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.topo-in{max-width:var(--largura);margin:0 auto;padding:.6rem 16px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
 .marca{display:flex;align-items:center;gap:.5rem;white-space:nowrap;text-decoration:none;color:var(--tinta);font:700 1.2rem/1 var(--f-titulo);letter-spacing:-.02em}
 .marca svg{width:28px;height:28px}
 .marca b{font-weight:400;color:var(--suave)}
@@ -64,13 +17,8 @@ main{display:block;outline:none}
 .xp-barra i{display:block;height:100%;width:0;background:var(--ambar);border-radius:99px;transition:width .5s ease}
 
 /* botões */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;font:700 1rem/1.2 var(--f-texto);padding:.8rem 1.25rem;border-radius:var(--raio-p);border:2px solid var(--azul);background:var(--azul);color:var(--azul-tinta);text-decoration:none;cursor:pointer}
-.btn:hover{filter:brightness(1.08)}
-.btn-sec{background:transparent;color:var(--azul)}
 .btn-perigo{border-color:var(--erro);background:transparent;color:var(--erro)}
 .btn-perigo.armado{background:var(--erro);color:var(--superficie)}
-.btn[disabled]{opacity:.5;cursor:not-allowed}
-.acoes{display:flex;flex-wrap:wrap;gap:.75rem}
 
 /* início */
 .hero{padding:3.5rem 0 2.5rem}
@@ -250,8 +198,9 @@ textarea:focus{border-color:var(--azul);outline:none}
 @media (prefers-reduced-motion:reduce){.toast{transition:none}}
 
 /* rodapé */
-.rodape{border-top:1px solid var(--linha);margin-top:3rem}
-.rodape-in{max-width:68rem;margin:0 auto;padding:1.5rem 16px 2.5rem;display:grid;gap:.5rem;color:var(--suave);font-size:.92rem}
+.rodape{margin-top:4rem}
+.rodape-in{padding:2rem 16px 2.5rem;gap:.5rem;font-size:var(--t-pequeno)}
+.rodape-in strong{color:#FFFFFF}
 .credo{font-style:italic}
 .noscript{padding:2rem 16px;text-align:center}
 .carregando{padding:4rem 16px;text-align:center;color:var(--suave)}
@@ -264,8 +213,6 @@ textarea:focus{border-color:var(--azul);outline:none}
 .hero{position:relative;isolation:isolate;overflow-x:clip}
 .hero::after{content:"";position:absolute;z-index:-1;inset:-10% -20% auto auto;width:min(70vw,720px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 40%,rgba(31,79,216,.2),transparent 60%),radial-gradient(circle at 70% 65%,rgba(245,165,36,.2),transparent 55%);filter:blur(40px);animation:aurora 18s ease-in-out infinite alternate;pointer-events:none}
 @keyframes aurora{0%{transform:translate(0,0) scale(1)}50%{transform:translate(-6%,8%) scale(1.08)}100%{transform:translate(4%,-4%) scale(.96)}}
-.btn{transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
-.btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px -8px color-mix(in srgb,var(--azul) 70%,transparent)}
 .lista-materiais li,.lista-mapas a,.ramo label{transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
 .lista-materiais li:hover,.lista-mapas a:hover{transform:translateY(-3px);box-shadow:0 18px 40px -22px rgba(11,27,58,.45)}
 .lista-materiais li:hover{border-color:color-mix(in srgb,var(--azul) 40%,var(--linha));border-left-color:var(--azul)}

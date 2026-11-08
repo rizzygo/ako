@@ -6,6 +6,7 @@
   document.documentElement.classList.add('js');
 
   var GRUPOS = ['.passos > li', '.principios > div', '.ako', '.lista-materiais > li', '.lista-mapas > li',
+    '.cartoes > li', '.numeros > li', '.chamada', '.roteiro-previa',
     '.licao section', '.ramo', '.secao h2'];
 
   var obs = new IntersectionObserver(function (entradas) {
@@ -63,7 +64,7 @@
       h1.setAttribute('data-quebrado', '');
       quebrar(h1);
     });
-    document.querySelectorAll('.lista-materiais > li, .lista-mapas a').forEach(function (el) {
+    document.querySelectorAll('.lista-materiais > li, .lista-mapas a, .cartao').forEach(function (el) {
       if (!el.classList.contains('luz')) acender(el);
     });
     medir();
