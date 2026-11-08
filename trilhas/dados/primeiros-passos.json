@@ -133,7 +133,7 @@
    "recursos": [
     {
      "titulo": "Como estudar tecnologia",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "./materiais/como-estudar.html",
      "tipo": "artigo",
      "idioma": "pt-BR",
@@ -245,7 +245,7 @@
    "recursos": [
     {
      "titulo": "As áreas da TI e o que cada pessoa faz",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "./materiais/areas-da-ti.html",
      "tipo": "artigo",
      "idioma": "pt-BR",
@@ -364,7 +364,7 @@
    "recursos": [
     {
      "titulo": "Inglês para ler documentação",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "./materiais/ingles-para-ti.html",
      "tipo": "artigo",
      "idioma": "pt-BR",
@@ -612,7 +612,7 @@
    "recursos": [
     {
      "titulo": "Linha de comando para iniciantes",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "./materiais/linha-de-comando.html",
      "tipo": "artigo",
      "idioma": "pt-BR",
@@ -646,7 +646,7 @@
      "tipo": "artigo",
      "idioma": "en",
      "gratuito": "sim",
-     "nota": "Tutorial oficial sobre abrir o terminal, navegar por pastas, mexer em arquivos, usar pipes, man e sudo com segurança. A lição da Iniciativa Ako acima cobre o mesmo assunto em português.",
+     "nota": "Tutorial oficial sobre abrir o terminal, navegar por pastas, mexer em arquivos, usar pipes, man e sudo com segurança. A lição do Ako acima cobre o mesmo assunto em português.",
      "verificado_em": "2026-10-17"
     }
    ]
@@ -746,7 +746,7 @@
    "recursos": [
     {
      "titulo": "Linux básico, na prática",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "./materiais/linux-basico.html",
      "tipo": "artigo",
      "idioma": "pt-BR",
@@ -780,7 +780,7 @@
      "tipo": "curso",
      "idioma": "en",
      "gratuito": "sim",
-     "nota": "Lições curtas e laboratórios no navegador, de linha de comando a permissões e processos, sem precisar de cadastro. A lição da Iniciativa Ako acima cobre o mesmo assunto em português.",
+     "nota": "Lições curtas e laboratórios no navegador, de linha de comando a permissões e processos, sem precisar de cadastro. A lição do Ako acima cobre o mesmo assunto em português.",
      "verificado_em": "2026-10-17"
     },
     {
@@ -888,7 +888,7 @@
    "recursos": [
     {
      "titulo": "Redes na prática: IP, DNS e portas",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "./materiais/redes-na-pratica.html",
      "tipo": "artigo",
      "idioma": "pt-BR",
@@ -1031,7 +1031,7 @@
    "recursos": [
     {
      "titulo": "Como a web funciona, do clique à página",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "./materiais/como-a-web-funciona.html",
      "tipo": "artigo",
      "idioma": "pt-BR",
@@ -1427,7 +1427,7 @@
    "recursos": [
     {
      "titulo": "Primeiros passos no GitHub",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "./materiais/primeiros-passos-github.html",
      "tipo": "artigo",
      "idioma": "pt-BR",
@@ -1461,7 +1461,7 @@
      "tipo": "curso",
      "idioma": "en",
      "gratuito": "sim",
-     "nota": "Exercício guiado de menos de uma hora: criar branch, fazer commit, abrir e aceitar um pull request. A lição da Iniciativa Ako acima cobre o mesmo assunto em português.",
+     "nota": "Exercício guiado de menos de uma hora: criar branch, fazer commit, abrir e aceitar um pull request. A lição do Ako acima cobre o mesmo assunto em português.",
      "verificado_em": "2026-10-17"
     }
    ]
@@ -1557,7 +1557,7 @@
    "recursos": [
     {
      "titulo": "IA com responsabilidade, no estudo e no trabalho",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "./materiais/ia-com-responsabilidade.html",
      "tipo": "artigo",
      "idioma": "pt-BR",
@@ -1566,7 +1566,7 @@
     },
     {
      "titulo": "Dicas antes de rodar",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "../favos/dicas-antes-de-rodar/",
      "tipo": "artigo",
      "idioma": "pt-BR",
@@ -1575,7 +1575,7 @@
     },
     {
      "titulo": "Skill antes-de-rodar",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "../favos/antes-de-rodar/",
      "tipo": "ferramenta",
      "idioma": "pt-BR",
@@ -1725,7 +1725,7 @@
    "recursos": [
     {
      "titulo": "Segurança digital no dia a dia",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "./materiais/seguranca-digital.html",
      "tipo": "artigo",
      "idioma": "pt-BR",
@@ -1866,7 +1866,7 @@
    "recursos": [
     {
      "titulo": "Comunicação no trabalho de tecnologia",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "./materiais/comunicacao-no-trabalho.html",
      "tipo": "artigo",
      "idioma": "pt-BR",
@@ -1976,7 +1976,7 @@
    "recursos": [
     {
      "titulo": "Seu primeiro projeto no GitHub, do zero ao link",
-     "fonte": "Iniciativa Ako",
+     "fonte": "Ako",
      "url": "./materiais/primeiro-projeto.html",
      "tipo": "artigo",
      "idioma": "pt-BR",

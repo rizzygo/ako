@@ -1,4 +1,4 @@
-# Como contribuir com a Iniciativa Ako
+# Como contribuir com o Ako
 
 Obrigado por querer melhorar os guias. Toda contribuição conta, da correção de uma vírgula a um guia novo.
 

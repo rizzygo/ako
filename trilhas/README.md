@@ -1,6 +1,6 @@
 # Rizzygo Ako
 
-As trilhas de estudo da Iniciativa Ako, da Rizzygo.
+As trilhas de estudo do Ako, projeto da Rizzygo All, a parte aberta e gratuita da Rizzygo.
 
 Um site para montar seu roteiro de estudos em TI, em português e de graça. Ele mostra por onde começar, indica materiais gratuitos, traz desafios com problemas do dia a dia e dá XP e conquistas conforme você pratica.
 
@@ -50,7 +50,7 @@ O conteúdo fica em `dados/mapas.json`, um mapa por área, dividido em seções:
 
 ## Materiais em português
 
-A Iniciativa Ako escreve lições próprias em português, na pasta [materiais](materiais), para os tópicos em que o melhor material gratuito só existia em inglês ou era um texto solto de blog. Elas são textos originais, não traduções, e dão crédito aos materiais que serviram de base.
+O Ako escreve lições próprias em português, na pasta [materiais](materiais), para os tópicos em que o melhor material gratuito só existia em inglês ou era um texto solto de blog. Elas são textos originais, não traduções, e dão crédito aos materiais que serviram de base.
 
 | Lição | Tópico |
 |---|---|
