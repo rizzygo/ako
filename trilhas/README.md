@@ -24,6 +24,7 @@ Para criar uma trilha nova:
 ## Como o site funciona
 
 - **Sem cadastro:** o progresso fica salvo só no navegador de quem usa. Na página de conquistas dá para exportar e importar o progresso por arquivo.
+- **Contagem de visitas sem cookie:** toda página HTML do site (trilhas, materiais, mapas e Favos) carrega o script do Cloudflare Web Analytics antes do `</body>`. Ele conta visitas sem cookie e sem dado pessoal. Página nova copia o mesmo trecho.
 - **Sem build:** HTML, CSS e JavaScript puros. Todo o conteúdo fica num arquivo só, o `dados/primeiros-passos.json`.
 - **Estudar com IA:** cada tópico tem o botão Copiar prompt, que junta o método da skill [estudar-junto](https://github.com/rizzygo/favos/tree/main/plugins/favo-estudo/skills/estudar-junto) com o resumo, o essencial e o checklist do tópico. A pessoa cola no ChatGPT, no Claude, no Gemini ou na IA que usa. O método vem de `prompts/estudar-junto.txt` dos Favos, baixado ao abrir o tópico. Sem rede, o site usa um resumo do método. O prompt não leva nada do progresso.
 - **Desafios sorteados:** cada tópico tem um banco de 6 perguntas, e cada tentativa sorteia 3. Quem refaz o desafio não decora as respostas.
