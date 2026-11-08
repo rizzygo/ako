@@ -10,11 +10,11 @@ const zumi = (nome) => 'data:image/png;base64,' + fs.readFileSync(path.join(raiz
 
 const IMAGENS = [
   { arquivo: 'ako.png', rotulo: 'Rizzygo Ako', titulo: 'Sua trilha em TI, montada com você.',
-    apoio: 'Primeiros passos em TI e Platform Engineering. Em português, gratuito e sem cadastro.', zumi: 'abelha-estudando.png' },
+    apoio: 'Primeiros passos em TI e Platform Engineering. Em português, gratuito e sem cadastro.', zumi: 'abelha-estudando-fundo-escuro.png' },
   { arquivo: 'favos.png', rotulo: 'Favos', titulo: 'Skills abertas para a sua IA de código.',
-    apoio: 'A IA explica antes de mudar, ensina perguntando e segue as trilhas do Ako.', zumi: 'abelha-pensando.png' },
+    apoio: 'A IA explica antes de mudar, ensina perguntando e segue as trilhas do Ako.', zumi: 'abelha-ideia-fundo-escuro.png' },
   { arquivo: 'licoes.png', rotulo: 'Lições do Ako', titulo: 'Lições práticas em português.',
-    apoio: 'Terminal, Linux, redes, Git, IA, SRE e plataforma, com exercícios.', zumi: 'abelha-ola.png' },
+    apoio: 'Terminal, Linux, redes, Git, IA, SRE e plataforma, com exercícios.', zumi: 'abelha-ola-fundo-escuro.png' },
 ];
 
 const html = (i) => `<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">

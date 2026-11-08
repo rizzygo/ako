@@ -47,7 +47,7 @@ O site está em **https://ako.rizzygo.com.br**, no Cloudflare Pages. Cada commit
 
 ## A Zumi, abelha da comunidade
 
-A Zumi é a mascote da Rizzygo All. Onde ela aparece, o conteúdo é gratuito e aberto a todos. As listras da barriga são o Z do logo da Rizzygo. As imagens usadas aqui ficam em [`zumi/`](zumi).
+A Zumi é a mascote da Rizzygo All: uma abelha peluda, fofa e sem ferrão. Onde ela aparece, o conteúdo é gratuito e aberto a todos. As listras da barriga são o Z do logo da Rizzygo. As imagens usadas aqui ficam em [`zumi/`](zumi).
 
 ## Como ajudar a melhorar os guias
 
