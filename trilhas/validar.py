@@ -120,8 +120,11 @@ for mapa in m.get("mapas", []):
                     erro(onde, f"falta o campo {campo}")
             if no.get("nivel", "essencial") not in ("essencial", "opcional"):
                 erro(onde, "'nivel' deve ser essencial ou opcional")
-            if "topico" in no and no["topico"] not in ids:
-                erro(onde, f"tópico da trilha {no['topico']} não existe")
+            if "trilha" in no and no["trilha"] not in extras:
+                erro(onde, f"trilha {no['trilha']} não existe")
+            ids_do_no = extras[no["trilha"]][0] if no.get("trilha") in extras else ids
+            if "topico" in no and no["topico"] not in ids_do_no:
+                erro(onde, f"tópico {no['topico']} não existe na trilha {no.get('trilha', 'primeiros-passos')}")
             if "licao" in no and no["licao"] not in licoes:
                 erro(onde, f"lição {no['licao']} não existe em materiais/")
             if "mapa" in no and no["mapa"] not in ids_mapas_e_trilhas:

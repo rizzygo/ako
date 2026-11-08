@@ -229,7 +229,8 @@
     if (n.pratica) html += '<div class="pratica"><strong>Para praticar</strong>' + fmt(n.pratica) + '</div>';
 
     var ako = [];
-    if (t) ako.push('<li><a href="../' + f.q + '#/t/' + esc(t.id) + '">Tópico ' + esc(t.titulo) + ', com checklist e desafio</a></li>');
+    var naTrilha = f !== TRILHAS[0] && f.json ? 'Na trilha ' + f.json.titulo + ': tópico ' : 'Tópico ';
+    if (t) ako.push('<li><a href="../' + f.q + '#/t/' + esc(t.id) + '">' + esc(naTrilha) + esc(t.titulo) + ', com checklist e desafio</a></li>');
     var licao = n.licao ? { titulo: 'Lição do Ako', url: '../materiais/' + n.licao } : (t && licaoDoTopico(t));
     if (licao) ako.push('<li><a href="' + esc(urlSegura(licao.url)) + '">Lição: ' + esc(licao.titulo) + '</a></li>');
     if (ako.length) html += '<h3>Aprender no Ako</h3><ul class="links-ako">' + ako.join('') + '</ul>';
