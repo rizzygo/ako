@@ -1025,6 +1025,20 @@
     abrirNuvem().then(function () { falar('Pronto. Sua rotina agora tem uma cópia na sua conta.', 'comemorando', true); }, function () { });
   });
 
+  // Passo a passo do atalho: mostra o do sistema da pessoa e deixa trocar.
+  (function () {
+    var bA = $('so-android'), bI = $('so-iphone');
+    if (!bA || !bI) return;
+    function mostrar(ios) {
+      bA.setAttribute('aria-pressed', String(!ios)); bI.setAttribute('aria-pressed', String(ios));
+      $('passos-android').hidden = ios; $('passos-iphone').hidden = !ios;
+    }
+    var ua = navigator.userAgent || '';
+    mostrar(/iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1));
+    bA.addEventListener('click', function () { mostrar(false); });
+    bI.addEventListener('click', function () { mostrar(true); });
+  })();
+
   // instalar (Android e computador)
   var pedidoInstalar = null;
   window.addEventListener('beforeinstallprompt', function (e) {
