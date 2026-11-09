@@ -474,3 +474,14 @@ textarea{width:100%;resize:vertical}
 .guia-zumi.apagada::after{display:none}
 .titulo-atual.apagado #titulo-ic{filter:grayscale(1);opacity:.6}
 .titulo-atual.apagado .barra i{background:var(--suave)}
+
+/* Por que a rotina muda o seu futuro */
+.habito{display:grid;gap:1rem;padding:1.25rem;border-radius:var(--raio);background:linear-gradient(135deg,var(--ambar-claro),var(--superficie) 70%);border:1px solid color-mix(in srgb,var(--ambar) 40%,var(--linha))}
+.habito-cab h2{font-size:1.3rem;font-weight:700}
+.habito-cab p{color:var(--suave);margin-top:.3rem}
+.habito-lista{list-style:none;margin:0;padding:0;display:grid;gap:.7rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr))}
+.habito-lista li{display:grid;grid-template-columns:auto 1fr;gap:.15rem .6rem;align-items:start;background:var(--superficie);border:1px solid var(--linha);border-radius:14px;padding:.8rem .9rem}
+.habito-lista span{grid-row:span 2;font-size:1.4rem;line-height:1.2}
+.habito-lista strong{font-family:var(--f-titulo)}
+.habito-lista small{color:var(--suave);font-size:.88rem;line-height:1.45}
+.habito .nota{margin:0}
