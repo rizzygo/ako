@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rotina com a Zumi: foco, pausa e lazer no mesmo dia</title>
+<meta name="description" content="Timer de foco para trabalho e estudo, lembretes de água, respiração e pausa sem tela, checks de exercício e títulos que sobem com os pontos. Gratuito, sem cadastro.">
+<meta property="og:title" content="Rotina com a Zumi">
+<meta property="og:description" content="Timer de foco, lembretes de água, respiração e pausa sem tela, checks de exercício e títulos. Gratuito, sem cadastro.">
+<meta property="og:url" content="https://ako.rizzygo.com.br/rotina/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rizzygo Ako">
+<meta property="og:locale" content="pt_BR">
+<link rel="canonical" href="https://ako.rizzygo.com.br/rotina/">
+<meta name="theme-color" content="#0B1B3A">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/rotina/manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Rotina">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="/ds/rizzygo.css?v=2026110801">
+<link rel="stylesheet" href="/rotina/rotina.css?v=2026110910">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<nav class="familia" aria-label="Sites da Rizzygo"><div class="familia-in"><a class="familia-item" href="https://rizzygo.com.br/" title="Site principal da Rizzygo"><svg viewBox="0 0 64 64" width="16" height="16" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/></svg>Rizzygo</a><a class="familia-item" href="https://ako.rizzygo.com.br/" aria-current="page"><img src="/zumi/abelha-mini.png" width="18" height="18" alt="">Ako</a></div></nav>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="/" aria-label="Rizzygo Ako, início"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="var(--azul)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/></svg><span>Rizzygo <b>Ako</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="/trilhas/">Trilhas</a><a href="/favos/">Favos</a><a href="/rotina/" aria-current="page">Rotina</a></nav>
+</div></header>
+
+<main id="conteudo" class="casca rotina">
+
+<!-- Zumi e título atual -->
+<section class="guia" aria-label="A Zumi e o seu título">
+  <picture class="guia-zumi"><source id="zumi-escuro" srcset="/zumi/abelha-ola-fundo-escuro.png" media="(prefers-color-scheme: dark)"><img id="zumi-img" src="/zumi/abelha-ola.png" width="112" height="112" alt="A Zumi, abelha da Rizzygo All"></picture>
+  <div class="guia-texto">
+    <h1>Rotina com a Zumi</h1>
+    <p class="fala" id="fala" aria-live="polite">Oi! Eu sou a Zumi. Escolha um bloco e vamos começar.</p>
+    <div class="titulo-atual">
+      <span class="cartao-rotulo">Seu título</span>
+      <strong id="titulo-nome">Primeiro zumbido</strong>
+      <div class="barra" aria-hidden="true"><i id="titulo-barra"></i></div>
+      <span class="titulo-meta" id="titulo-meta">0 pontos</span>
+    </div>
+  </div>
+  <nav class="atalhos-topo" aria-label="Mais"><a href="#/evolucao" data-ir="evolucao">📈 Evolução</a><a href="#/ajustes" data-ir="ajustes">⚙️ Ajustes</a></nav>
+  <ul class="resumo" aria-label="Resumo de hoje">
+    <li><b id="r-pontos">0</b><span>pontos hoje</span></li>
+    <li><b id="r-foco">0</b><span>min de foco</span></li>
+    <li><b id="r-sequencia">0</b><span>dias seguidos</span></li>
+  </ul>
+</section>
+
+<nav class="abas-app" aria-label="Partes da rotina"><a href="#/" data-ir="hoje"><span aria-hidden="true">🏠</span>Hoje</a><a href="#/foco" data-ir="foco"><span aria-hidden="true">⏱️</span>Foco</a><a href="#/tarefas" data-ir="tarefas"><span aria-hidden="true">✅</span>Tarefas</a><a href="#/bem-estar" data-ir="bem-estar"><span aria-hidden="true">💧</span>Bem-estar</a><a href="#/metas" data-ir="metas"><span aria-hidden="true">🎯</span>Metas</a><a href="#/evolucao" data-ir="evolucao" class="so-largo"><span aria-hidden="true">📈</span>Evolução</a><a href="#/ajustes" data-ir="ajustes" class="so-largo"><span aria-hidden="true">⚙️</span>Ajustes</a></nav>
+
+<div class="aba" data-aba="hoje" id="aba-hoje">
+<h2 class="oculto">Hoje</h2>
+<!-- Painel de hoje -->
+<section class="painel-hoje" aria-label="Painel de hoje">
+  <div class="fechar-dia" id="h-fechar" hidden><span>🌙 Hora de fechar o dia: reflexão e lista de amanhã.</span><a class="btn btn-claro" href="#fim-do-dia" id="h-fechar-ir">Fechar o dia</a></div>
+  <div class="metas-aviso" id="h-metas" hidden><span id="h-metas-txt"></span> <a href="#/metas">Revisar as metas</a></div>
+  <div class="cartoes-hoje">
+    <article class="mini">
+      <h2>Bloco de agora</h2>
+      <p class="mini-tempo"><span id="h-fase">Foco</span><b id="h-tempo">25:00</b><small id="h-modo">Estudo</small></p>
+      <div class="acoes"><button type="button" class="btn" id="h-iniciar">Começar</button><a class="btn btn-sec" href="#/foco">Abrir o foco</a></div>
+    </article>
+    <article class="mini">
+      <h2>Prioridades de hoje</h2>
+      <ul class="tarefas" id="h-tarefas"></ul>
+      <p class="nota" id="h-tarefas-vazio">Nada na lista ainda.</p>
+      <a class="mais-link" href="#/tarefas" id="h-tarefas-mais">Ver todas as tarefas</a>
+    </article>
+    <article class="mini">
+      <h2><span aria-hidden="true">💧</span> Água hoje</h2>
+      <div class="niveis" id="h-agua" role="radiogroup" aria-label="Como foi a água hoje"></div>
+      <p class="nota" id="h-agua-txt"></p>
+    </article>
+    <article class="mini">
+      <h2>Uma pausa agora</h2>
+      <div class="checks">
+        <button type="button" class="check" data-acao="respirar"><span class="ic" aria-hidden="true">🌬️</span><span><strong>Respirar 1 minuto</strong><small>+5 pontos</small></span></button>
+        <button type="button" class="check" data-acao="semTela"><span class="ic" aria-hidden="true">🌳</span><span><strong>Tempo sem tela</strong><small>De 5 minutos a 2 horas</small></span></button>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- Fim do dia -->
+<section class="painel" aria-labelledby="t-reflexao" id="fim-do-dia">
+  <h2 id="t-reflexao">Fim do dia</h2>
+  <p class="pergunta" id="pergunta">O que deu certo hoje?</p>
+  <p class="nota">Pense longe da tela. Escreva aqui ou num caderno.</p>
+  <label class="oculto" for="reflexao">Sua resposta</label>
+  <textarea id="reflexao" rows="3" placeholder="Escreva aqui, se quiser"></textarea>
+  <div class="acoes">
+    <button type="button" class="btn" id="b-refletir">Salvar reflexão</button>
+    <button type="button" class="btn btn-sec" id="b-papel">Respondi no papel</button>
+  </div>
+  <p class="nota" id="reflexao-estado"></p>
+  <p class="nota">Depois, revise as tarefas e monte a lista de amanhã em <a href="#/tarefas">Tarefas</a>.</p>
+</section>
+</div>
+
+<div class="aba" data-aba="foco" id="aba-foco">
+<h2 class="oculto">Foco</h2>
+<!-- Timer -->
+<section class="painel painel-timer" aria-labelledby="t-timer">
+  <h2 id="t-timer">Bloco de agora</h2>
+  <div class="modos" role="radiogroup" aria-label="Tipo de bloco">
+    <button type="button" class="modo" role="radio" data-modo="trabalho">Trabalho</button>
+    <button type="button" class="modo" role="radio" data-modo="estudo">Estudo</button>
+    <button type="button" class="modo" role="radio" data-modo="lazer">Lazer</button>
+  </div>
+  <div class="relogio" id="relogio">
+    <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="trilho" cx="60" cy="60" r="54"/><circle class="arco" id="arco" cx="60" cy="60" r="54"/></svg>
+    <div class="relogio-in">
+      <span class="fase" id="fase">Foco</span>
+      <span class="tempo" id="tempo" role="timer" aria-live="off">25:00</span>
+      <span class="ciclo" id="ciclo">Bloco 1 de 4</span>
+    </div>
+  </div>
+  <div class="acoes centro">
+    <button type="button" class="btn" id="b-iniciar">Começar</button>
+    <button type="button" class="btn btn-sec" id="b-pular">Pular</button>
+    <button type="button" class="btn btn-sec" id="b-zerar">Zerar</button>
+  </div>
+  <details class="ajustes">
+    <summary>Ajustar os tempos</summary>
+    <div class="campos">
+      <label>Trabalho, foco <span><input type="number" min="5" max="180" step="5" data-cfg="trabalho.foco"> min</span></label>
+      <label>Trabalho, pausa <span><input type="number" min="1" max="60" data-cfg="trabalho.pausa"> min</span></label>
+      <label>Estudo, foco <span><input type="number" min="5" max="180" step="5" data-cfg="estudo.foco"> min</span></label>
+      <label>Estudo, pausa <span><input type="number" min="1" max="60" data-cfg="estudo.pausa"> min</span></label>
+      <label>Pausa longa <span><input type="number" min="5" max="60" data-cfg="pausaLonga"> min</span></label>
+      <label>Blocos até a pausa longa <span><input type="number" min="2" max="8" data-cfg="ciclos"></span></label>
+      <label>Lazer <span><input type="number" min="10" max="240" step="5" data-cfg="lazer.foco"> min</span></label>
+    </div>
+    <p class="nota">O lazer também é um bloco. Ele conta pontos, porque descansar faz parte da rotina.</p>
+  </details>
+</section>
+</div>
+
+<div class="aba" data-aba="tarefas" id="aba-tarefas">
+<h2 class="oculto">Tarefas</h2>
+<div class="grade">
+<!-- Tarefas e rotinas -->
+<section class="painel" aria-labelledby="t-tarefas">
+  <h2 id="t-tarefas">Tarefas de hoje</h2>
+  <p class="nota" id="tarefas-resumo">Tarefa some quando você conclui. Rotina volta todo dia.</p>
+  <ul class="tarefas" id="tarefas"></ul>
+  <form class="nova-tarefa" id="nova-tarefa">
+    <label class="oculto" for="tarefa-txt">Nova tarefa</label>
+    <input type="text" id="tarefa-txt" maxlength="80" placeholder="O que precisa sair hoje?" required>
+    <div class="nova-opcoes">
+      <label class="opcao"><input type="checkbox" id="tarefa-prio"> Prioridade</label>
+      <label class="opcao"><input type="checkbox" id="tarefa-rotina"> Repetir todo dia</label>
+      <button type="submit" class="btn">Adicionar</button>
+    </div>
+  </form>
+</section>
+
+<!-- Revisão do dia -->
+<section class="painel" aria-labelledby="t-revisao" id="revisao">
+  <h2 id="t-revisao">Revisão do dia</h2>
+  <p id="revisao-resumo"></p>
+  <ul class="pendentes" id="pendentes"></ul>
+  <h3>Para amanhã</h3>
+  <ul class="tarefas amanha" id="amanha"></ul>
+  <form class="nova-tarefa" id="nova-amanha">
+    <label class="oculto" for="amanha-txt">Tarefa para amanhã</label>
+    <input type="text" id="amanha-txt" maxlength="80" placeholder="O que fica para amanhã?" required>
+    <div class="nova-opcoes">
+      <label class="opcao"><input type="checkbox" id="amanha-prio"> Prioridade</label>
+      <button type="submit" class="btn btn-sec">Pôr na lista de amanhã</button>
+    </div>
+  </form>
+</section>
+</div>
+</div>
+
+<div class="aba" data-aba="bem-estar" id="aba-bem-estar">
+<h2 class="oculto">Bem-estar</h2>
+<!-- Checks do dia -->
+<section class="painel" aria-labelledby="t-hoje">
+  <h2 id="t-hoje">Corpo e cabeça</h2>
+  <div class="agua">
+    <div class="agua-hoje">
+      <strong class="agua-titulo"><span class="ic" aria-hidden="true">💧</span>Água hoje</strong>
+      <div class="niveis" id="agua-hoje" role="radiogroup" aria-label="Como foi a água hoje"></div>
+    </div>
+    <p class="nota" id="agua-falta">Marque como foi. Bom vale 10 pontos e Excelente vale 20.</p>
+    <details class="ajustes">
+      <summary>Histórico e média da água</summary>
+      <ul class="numeros-agua">
+        <li><b id="agua-media7">-</b><span id="agua-media7-txt">média dos últimos 7 dias</span></li>
+        <li><b id="agua-media30">-</b><span id="agua-media30-txt">média dos últimos 30 dias</span></li>
+      </ul>
+      <p class="nota">Esqueceu de marcar? Corrija qualquer um dos últimos 7 dias. Marcar a água num dia sem atividade tira a perda de 10 pontos dele.</p>
+      <ol class="historico-agua" id="historico-agua"></ol>
+    </details>
+  </div>
+  <div class="checks">
+    <button type="button" class="check" data-acao="respirar"><span class="ic" aria-hidden="true">🌬️</span><span><strong>Respirar 1 minuto</strong><small id="c-respirar">+5 pontos</small></span></button>
+    <button type="button" class="check" data-acao="semTela"><span class="ic" aria-hidden="true">🌳</span><span><strong>Tempo sem tela</strong><small id="c-semTela">De 5 minutos a 2 horas</small></span></button>
+  </div>
+  <h3>Exercício</h3>
+  <div class="checks">
+    <button type="button" class="check" data-ex="academia" aria-pressed="false"><span class="ic" aria-hidden="true">🏋️</span><span><strong>Academia</strong><small>+20 pontos</small></span></button>
+    <button type="button" class="check" data-ex="corrida" aria-pressed="false"><span class="ic" aria-hidden="true">🏃</span><span><strong>Corrida</strong><small>+20 pontos</small></span></button>
+    <button type="button" class="check" data-ex="aerobico" aria-pressed="false"><span class="ic" aria-hidden="true">🚴</span><span><strong>Aeróbico</strong><small>+20 pontos</small></span></button>
+  </div>
+</section>
+</div>
+
+<div class="aba" data-aba="metas" id="aba-metas">
+<h2 class="oculto">Metas</h2>
+<!-- Metas do ano -->
+<section class="painel" aria-labelledby="t-metas" id="metas-secao">
+  <h2 id="t-metas">Metas de <span id="metas-ano"></span></h2>
+  <p class="nota">Poucas metas, revisadas a cada trimestre. No fim de cada trimestre a Zumi pergunta como cada uma está.</p>
+  <p class="metas-aviso" id="metas-aviso" hidden></p>
+  <ul class="metas" id="metas"></ul>
+  <form class="nova-tarefa" id="nova-meta">
+    <label class="oculto" for="meta-txt">Nova meta</label>
+    <input type="text" id="meta-txt" maxlength="90" placeholder="Ex.: Tirar uma certificação de cloud" required>
+    <div class="nova-opcoes"><button type="submit" class="btn btn-sec">Adicionar meta</button></div>
+  </form>
+  <label class="chave"><input type="checkbox" data-cfg="lembrarMetas"><span>Lembrar da revisão no fim de cada trimestre</span></label>
+</section>
+</div>
+
+<div class="aba" data-aba="evolucao" id="aba-evolucao">
+<h2 class="oculto">Evolução</h2>
+<!-- Semana e títulos -->
+<section class="painel largo" aria-labelledby="t-semana">
+  <h2 id="t-semana">Sua semana</h2>
+  <ol class="semana" id="semana"></ol>
+</section>
+
+<section class="painel largo" aria-labelledby="t-titulos">
+  <h2 id="t-titulos">Títulos da colmeia</h2>
+  <p class="nota">Cada ação vale pontos, e o título sobe com eles. O dia fecha sozinho às 23h59 e guarda os pontos e o nível da água. Dia sem nenhuma atividade tira 10 pontos, mas o título conquistado fica.</p>
+  <ol class="titulos" id="titulos"></ol>
+  <details class="ajustes">
+    <summary>Quanto vale cada ação</summary>
+    <ul class="valores">
+      <li>Bloco de trabalho, estudo ou lazer concluído: <b>10</b></li>
+      <li>Água do dia marcada como Bom: <b>10</b>. Como Excelente: <b>20</b></li>
+      <li>Respirar 1 minuto: <b>5</b> (até 6 vezes por dia)</li>
+      <li>Tempo sem tela: <b>5</b> (5 min), <b>8</b> (10 min), <b>10</b> (15 min), <b>15</b> (30 min), <b>25</b> (1 hora), <b>40</b> (2 horas), até 60 por dia</li>
+      <li>Dia sem nenhuma atividade: <b>−10</b> (conta no máximo 7 dias seguidos). O título conquistado não cai. Depois de mais de 7 dias parados, a Zumi pergunta se você quer zerar e começar de novo.</li>
+      <li>Academia, corrida ou aeróbico: <b>20</b> cada, uma vez por dia</li>
+      <li>Reflexão do fim do dia: <b>10</b></li>
+      <li>Tarefa ou rotina concluída: <b>3</b>, prioridade vale <b>5</b> (até 40 pontos por dia)</li>
+      <li>Revisão trimestral de uma meta: <b>10</b> (até 5 metas)</li>
+    </ul>
+  </details>
+</section>
+</div>
+
+<div class="aba" data-aba="ajustes" id="aba-ajustes">
+<h2 class="oculto">Ajustes</h2>
+<!-- Lembretes -->
+<section class="painel" aria-labelledby="t-lembretes">
+  <h2 id="t-lembretes">Lembretes</h2>
+  <p class="nota">A Zumi avisa no horário. Para o aviso aparecer com o app em segundo plano, ative as notificações.</p>
+  <ul class="lembretes">
+    <li><label class="chave"><input type="checkbox" data-lem="agua"><span>Beber água</span></label><span class="cada">a cada <input type="number" min="15" max="240" step="5" data-lem-min="agua"> min</span><small data-lem-prox="agua"></small></li>
+    <li><label class="chave"><input type="checkbox" data-lem="respirar"><span>Respirar</span></label><span class="cada">a cada <input type="number" min="15" max="240" step="5" data-lem-min="respirar"> min</span><small data-lem-prox="respirar"></small></li>
+    <li><label class="chave"><input type="checkbox" data-lem="semTela"><span>Pausa sem tela</span></label><span class="cada">a cada <input type="number" min="30" max="480" step="10" data-lem-min="semTela"> min</span><small data-lem-prox="semTela"></small></li>
+  </ul>
+  <h3>Seus lembretes</h3>
+  <ul class="lembretes" id="meus"></ul>
+  <form class="novo" id="novo">
+    <label>Lembrar de <span><input type="text" id="novo-nome" maxlength="40" placeholder="Tomar o remédio" required></span></label>
+    <div class="novo-tipo" role="radiogroup" aria-label="Quando lembrar">
+      <label><input type="radio" name="novo-tipo" value="hora" checked> No horário</label>
+      <label><input type="radio" name="novo-tipo" value="intervalo"> A cada</label>
+    </div>
+    <label class="novo-hora">Horário <span><input type="time" id="novo-hora" value="08:00"></span></label>
+    <label class="novo-intervalo" hidden>A cada <span><input type="number" id="novo-min" min="15" max="480" step="5" value="120"> min</span></label>
+    <button type="submit" class="btn btn-sec">Adicionar lembrete</button>
+  </form>
+  <p class="nota">Lembrete no horário toca todo dia, mesmo fora do intervalo de avisos abaixo.</p>
+  <div class="campos dois">
+    <label>Avisar a partir de <span><input type="time" data-cfg="inicio"></span></label>
+    <label>Até <span><input type="time" data-cfg="fim"></span></label>
+  </div>
+  <label class="chave"><input type="checkbox" data-cfg="som"><span>Som no fim do bloco</span></label>
+  <div class="acoes">
+    <button type="button" class="btn btn-sec" id="b-notif">Ativar notificações</button>
+  </div>
+  <p class="nota" id="notif-estado"></p>
+</section>
+
+<section class="painel largo instalar" aria-labelledby="t-instalar">
+  <h2 id="t-instalar">Leve a rotina no celular</h2>
+  <p>Instale o app na tela inicial. No Android, abra o menu do navegador e toque em <strong>Instalar app</strong>. No iPhone, toque em <strong>Compartilhar</strong> e depois em <strong>Adicionar à Tela de Início</strong>; só assim o iPhone libera as notificações.</p>
+  <p class="nota">Seus dados ficam só neste aparelho. Não pedimos cadastro. <button type="button" class="link" id="b-apagar">Apagar meus dados</button></p>
+</section>
+</div>
+
+</main>
+
+<!-- Respiração guiada e pausa sem tela -->
+<div class="sobre" id="sobre" hidden>
+  <div class="sobre-caixa" role="dialog" aria-modal="true" aria-labelledby="sobre-titulo">
+    <h2 id="sobre-titulo">Respirar</h2>
+    <div class="escolha" id="escolha" hidden>
+      <p>Quanto tempo longe da tela?</p>
+      <div class="chips" id="chips-tempo" role="radiogroup" aria-label="Tempo sem tela"></div>
+      <p>Para quê? <small>(opcional)</small></p>
+      <div class="chips" id="chips-para" role="radiogroup" aria-label="Para que vai usar o tempo"></div>
+      <div class="acoes centro"><button type="button" class="btn btn-claro" id="escolha-ir">Começar</button><button type="button" class="btn btn-sec" id="escolha-fechar">Agora não</button></div>
+    </div>
+    <div class="bolha" id="bolha" aria-hidden="true"></div>
+    <p class="sobre-guia" id="sobre-guia" aria-live="polite">Inspire</p>
+    <p class="sobre-tempo" id="sobre-tempo">1:00</p>
+    <div class="acoes centro" id="sobre-acoes"><button type="button" class="btn btn-claro" id="sobre-voltei" hidden>Voltei antes</button><button type="button" class="btn btn-sec" id="sobre-fechar">Parar</button></div>
+  </div>
+</div>
+
+<div class="aviso recomeco" id="recomeco" role="dialog" aria-labelledby="recomeco-txt" hidden>
+  <picture><source srcset="/zumi/abelha-ola-fundo-escuro.png" media="(prefers-color-scheme: dark)"><img src="/zumi/abelha-ola.png" width="56" height="56" alt=""></picture>
+  <p id="recomeco-txt"></p>
+  <div class="aviso-bt"><button type="button" class="btn" id="recomeco-zerar">Zerar e começar de novo</button><button type="button" class="btn btn-sec" id="recomeco-seguir">Continuar de onde parei</button></div>
+  <p class="nota">Zerar apaga pontos, títulos e histórico. Metas, tarefas, lembretes e ajustes ficam.</p>
+</div>
+
+<div class="aviso" id="aviso" role="status" hidden>
+  <img src="/zumi/abelha-ideia.png" width="56" height="56" alt="">
+  <p id="aviso-txt"></p>
+  <div class="aviso-bt"><button type="button" class="btn" id="aviso-sim">Feito</button><button type="button" class="btn btn-sec" id="aviso-depois">Daqui a 10 min</button></div>
+</div>
+
+<footer class="rodape"><div class="rodape-in"><p><strong>Rotina com a Zumi</strong>, do Ako, da Rizzygo All, a parte aberta e gratuita da <a href="https://rizzygo.com.br/">Rizzygo</a>.</p><p>Os lembretes ajudam a criar hábito. Eles não substituem orientação de profissional de saúde.</p><div class="contribua"><p><strong>Contribuição voluntária.</strong> O Ako é gratuito e vai continuar assim. Você decide se quer contribuir, com qualquer valor, para agradecer, manter e ajudar o Ako a evoluir.</p><p class="contribua-pix"><span class="contribua-dados"><span>Chave Pix (CNPJ): <code>57.778.554/0001-31</code></span><span>Nome: Ru Technology</span></span> <button type="button" class="contribua-copiar" data-pix="57778554000131" hidden>Copiar chave Pix</button></p></div><p class="credo"><a href="https://rizzygo.com.br/conceito#o-nome">Sou Zy</a>: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="/rotina/rotina.js?v=2026110909" defer></script>
+<script src="/contribua.js?v=2026110901" defer></script>
+</body>
+</html>

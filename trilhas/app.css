@@ -245,3 +245,14 @@ textarea:focus{border-color:var(--azul);outline:none}
 .outras-trilhas h3{font-size:1.2rem;margin-bottom:.35rem}
 .outras-trilhas p{color:var(--suave);font-size:.95rem}
 @media (prefers-reduced-motion:reduce){.outras-trilhas a{transition:none}.outras-trilhas a:hover{transform:none}}
+
+/* Contribuição voluntária (rodapé) */
+.contribua{display:grid;gap:.6rem;max-width:44rem;padding:1rem 1.15rem;border:1px solid rgba(245,165,36,.45);border-radius:var(--raio-p)}
+.contribua p{margin:0}
+.contribua-dados{display:grid;gap:.25rem}
+.contribua strong{color:#FFFFFF}
+.contribua-pix{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem .9rem}
+.contribua code{font:700 1rem var(--f-mono);color:#FFFFFF;background:rgba(255,255,255,.08);padding:.1rem .4rem;border-radius:6px;white-space:nowrap}
+.contribua-copiar{font:700 .95rem var(--f-texto);color:var(--ambar-tinta);background:var(--ambar);border:0;border-radius:var(--raio-p);padding:.5rem .9rem;cursor:pointer;min-height:44px}
+.contribua-copiar:hover{filter:brightness(1.06)}
+.contribua-copiar:focus-visible{outline:3px solid #FFFFFF;outline-offset:2px}
