@@ -197,6 +197,11 @@ textarea{width:100%;resize:vertical}
 .status-bt.parada:hover,.status-bt.parada[aria-pressed="true"]{border-color:var(--erro)}
 .status-bt.concluida:hover,.status-bt.concluida[aria-pressed="true"]{border-color:var(--azul)}
 .meta-acoes{display:flex;gap:1rem;justify-content:flex-end;font-size:.92rem}
+.anos{display:flex;gap:.4rem;overflow-x:auto;scrollbar-width:none;padding:.15rem 0 .2rem;margin:.1rem 0 .3rem}
+.anos button{flex:none;font:700 .92rem var(--f-texto);border:1.5px solid var(--linha);background:var(--superficie);color:var(--tinta);border-radius:999px;padding:.35rem .8rem;cursor:pointer;display:inline-flex;align-items:center;gap:.35rem}
+.anos button:hover{border-color:var(--azul)}
+.anos button[aria-pressed="true"]{background:var(--azul);border-color:var(--azul);color:var(--azul-tinta,#fff)}
+.anos button small{font-size:.75rem;font-weight:700;background:var(--ambar);color:#0B1B3A;border-radius:999px;padding:0 .4rem;line-height:1.4}
 .metas-aviso{font-weight:700;background:var(--ambar-claro);border-left:4px solid var(--ambar);border-radius:8px;padding:.6rem .8rem}
 .metas-aviso[hidden]{display:none}
 .grade > .painel:last-child:nth-child(odd){grid-column:1/-1}

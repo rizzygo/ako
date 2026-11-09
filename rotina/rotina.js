@@ -997,14 +997,40 @@
     falar(falas[status] + (nova ? ' +10' : ''), status === 'concluida' ? 'comemorando' : 'ideia', status === 'concluida');
   }
   var abertas = {};
+  // Ano das metas: do atual até 2033 (sempre pelo menos 5 anos à frente), para planejar os próximos anos.
+  var ULTIMO_ANO = 2033, anoMetas = new Date().getFullYear();
+  function anosMetas() {
+    var atual = new Date().getFullYear(), fim = Math.max(ULTIMO_ANO, atual + 5), out = [];
+    S.metas.forEach(function (m) { if (m.ano < atual && out.indexOf(m.ano) === -1 && !m.checkins.fim) out.push(m.ano); });
+    for (var a = atual; a <= fim; a++) out.push(a);
+    return out.sort();
+  }
+  function renderAnos() {
+    var box = $('metas-anos'); box.innerHTML = '';
+    anosMetas().forEach(function (a) {
+      var n = S.metas.filter(function (m) { return m.ano === a; }).length;
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = a;
+      b.setAttribute('aria-pressed', String(a === anoMetas));
+      b.setAttribute('aria-label', a + (n ? ', ' + n + (n === 1 ? ' meta' : ' metas') : ', sem metas'));
+      if (n) { var c = document.createElement('small'); c.textContent = n; c.setAttribute('aria-hidden', 'true'); b.appendChild(c); }
+      b.addEventListener('click', function () { anoMetas = a; abertas = {}; renderMetas(); });
+      box.appendChild(b);
+    });
+  }
   function renderMetas() {
     var d = new Date(), ano = d.getFullYear(), tAtual = trimestre(d), pend = metasPendentes();
-    $('metas-ano').textContent = ano;
+    var futuro = anoMetas > ano;
+    $('metas-ano').textContent = anoMetas;
+    renderAnos();
+    $('metas-nota').textContent = futuro
+      ? 'Planeje com calma. As revisões por trimestre começam quando ' + anoMetas + ' chegar.'
+      : 'Poucas metas, revisadas a cada trimestre. No fim de cada trimestre a Zumi pergunta como cada uma está.';
+    $('meta-txt').placeholder = futuro ? 'Ex.: Virar especialista em plataforma' : 'Ex.: Tirar uma certificação de cloud';
     var aviso = $('metas-aviso');
     aviso.hidden = !pend.length;
     aviso.textContent = pend.length ? 'Hora da revisão: ' + pend.length + (pend.length === 1 ? ' meta espera' : ' metas esperam') + ' a sua resposta.' : '';
     var ul = $('metas'); ul.innerHTML = '';
-    S.metas.filter(function (m) { return m.ano === ano || pend.some(function (p) { return p.meta === m; }); }).forEach(function (m) {
+    S.metas.filter(function (m) { return m.ano === anoMetas || (anoMetas === ano && pend.some(function (p) { return p.meta === m; })); }).forEach(function (m) {
       var li = document.createElement('li'); li.className = 'meta' + (m.checkins.fim ? ' concluida' : '');
       var topo = document.createElement('div'); topo.className = 'meta-topo';
       var nome = document.createElement('strong'); nome.textContent = m.texto; topo.appendChild(nome);
@@ -1048,9 +1074,12 @@
   $('nova-meta').addEventListener('submit', function (e) {
     e.preventDefault();
     var txt = $('meta-txt').value.trim(); if (!txt) return;
-    S.metas.push({ id: novoId('g'), texto: txt, ano: new Date().getFullYear(), criada: chaveDia(), checkins: {} });
+    S.metas.push({ id: novoId('g'), texto: txt, ano: anoMetas, criada: chaveDia(), checkins: {} });
     $('meta-txt').value = ''; salvar(); render();
-    falar(S.metas.length > 5 ? 'Meta anotada. Dica: com mais de cinco metas, o foco se espalha.' : 'Meta anotada. No fim do trimestre eu pergunto como ela está.', 'ideia', true);
+    var doAno = S.metas.filter(function (m) { return m.ano === anoMetas; }).length;
+    falar(doAno > 5 ? 'Meta anotada. Dica: com mais de cinco metas no mesmo ano, o foco se espalha.'
+      : anoMetas > new Date().getFullYear() ? 'Meta de ' + anoMetas + ' anotada. Quando o ano chegar, eu pergunto como ela está a cada trimestre.'
+      : 'Meta anotada. No fim do trimestre eu pergunto como ela está.', 'ideia', true);
   });
 
   // ---------- Painel Hoje ----------
