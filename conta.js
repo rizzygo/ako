@@ -120,39 +120,60 @@
   css.textContent =
     '.conta-entrar{margin-left:auto;cursor:pointer;font:inherit;font-weight:700;font-size:.88rem;background:#F5A524;border-color:#F5A524;color:#0B1B3A}' +
     '.conta-entrar[hidden],.conta-sair[hidden]{display:none}.conta-sair{margin-left:auto;cursor:pointer;font:inherit;font-weight:600;font-size:.88rem;background:transparent}.conta-entrar:hover{background:#FFC048;border-color:#FFC048;color:#0B1B3A}' +
-    '.conta-dialogo{max-width:30rem;width:calc(100% - 32px);border:0;border-radius:12px;padding:1.4rem 1.4rem 1.2rem;background:#FFFFFF;color:#0B1B3A;font-family:"Atkinson Hyperlegible",system-ui,sans-serif;line-height:1.5;box-shadow:0 20px 50px rgba(11,27,58,.35)}' +
-    '.conta-dialogo::backdrop{background:rgba(11,27,58,.55)}' +
-    '.conta-dialogo h2{font-family:Outfit,system-ui,sans-serif;font-size:1.35rem;line-height:1.25;margin:0 0 .6rem}' +
-    '.conta-dialogo p,.conta-dialogo ul{margin:0 0 .7rem}.conta-dialogo ul{padding-left:1.2rem}' +
-    '.conta-dialogo .suave{color:#4A5672;font-size:.95rem}.conta-dialogo a{color:#1F4FD8}' +
-    '.conta-aceite{display:flex;gap:.55rem;align-items:flex-start;background:#F5F7FB;border-radius:8px;padding:.7rem .8rem;margin:.2rem 0 .6rem;cursor:pointer}' +
-    '.conta-aceite input{width:1.15rem;height:1.15rem;margin-top:.2rem;flex:none;accent-color:#1F4FD8}' +
-    '.conta-dialogo{max-height:calc(100vh - 32px);overflow:auto}' +
-    '.conta-msg{min-height:1.2em;color:#B42318;font-size:.95rem}.conta-msg.ok{color:#14794A}' +
-    '.conta-dialogo > .conta-google{width:100%}' +
-    '.conta-ou{display:flex;align-items:center;gap:.6rem;color:#4A5672;font-size:.9rem;margin:.9rem 0 .5rem}.conta-ou::before,.conta-ou::after{content:"";flex:1;border-top:1px solid rgba(74,86,114,.3)}' +
-    '.conta-dialogo fieldset{border:0;padding:0;margin:0;min-width:0}.conta-dialogo fieldset:disabled{opacity:.5}' +
-    '.conta-dialogo label[for]{display:block;font-weight:700;font-size:.95rem;margin:.5rem 0 .2rem}' +
-    '.conta-dialogo input[type=email],.conta-dialogo input[type=password],.conta-dialogo input[type=text]{width:100%;box-sizing:border-box;font:1rem "Atkinson Hyperlegible",system-ui,sans-serif;padding:.6rem .7rem;border:1px solid #AEB9D3;border-radius:8px;background:#FFFFFF;color:#0B1B3A}' +
-    '.conta-senha{display:flex;gap:.4rem}.conta-senha button{font:700 .9rem "Atkinson Hyperlegible",system-ui,sans-serif;border:1px solid #AEB9D3;border-radius:8px;background:transparent;color:inherit;padding:0 .7rem;cursor:pointer}' +
-    '.conta-forca{display:flex;gap:4px;margin:.45rem 0 .1rem}.conta-forca i{flex:1;height:6px;border-radius:3px;background:rgba(74,86,114,.2)}' +
+    '.conta-dialogo{--c-fundo:#FFFFFF;--c-tinta:#0B1B3A;--c-suave:#4A5672;--c-linha:#D8DEEA;--c-campo:#F5F7FB;--c-azul:#1F4FD8;--c-azul-claro:#EAF0FF;--c-erro:#B42318;--c-erro-fundo:#FDECEA;--c-ok:#14794A;--c-ok-fundo:#E6F5EC;' +
+    'max-width:26rem;width:calc(100% - 24px);max-height:calc(100vh - 24px);overflow:auto;border:0;border-radius:20px;padding:0;background:var(--c-fundo);color:var(--c-tinta);font-family:"Atkinson Hyperlegible",system-ui,sans-serif;line-height:1.5;box-shadow:0 24px 64px -12px rgba(11,27,58,.45),0 0 0 1px rgba(11,27,58,.06)}' +
+    '.conta-dialogo[open]{animation:conta-entra .22s cubic-bezier(.2,.9,.3,1.2)}' +
+    '@keyframes conta-entra{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}' +
+    '@media (prefers-reduced-motion:reduce){.conta-dialogo[open]{animation:none}}' +
+    '.conta-dialogo::backdrop{background:rgba(11,27,58,.5);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}' +
+    '.conta-dialogo [hidden]{display:none !important}' +
+    '.conta-corpo{padding:1.6rem 1.5rem 1.3rem;position:relative}' +
+    '.conta-fechar{position:absolute;top:.8rem;right:.8rem;width:2.2rem;height:2.2rem;border-radius:50%;border:0;background:var(--c-campo);color:var(--c-suave);font-size:1.3rem;line-height:1;cursor:pointer;display:grid;place-items:center}' +
+    '.conta-fechar:hover{background:var(--c-linha);color:var(--c-tinta)}' +
+    '.conta-cab{display:flex;align-items:center;gap:.8rem;margin:0 2.2rem .9rem 0}.conta-cab picture{flex:none;display:block}.conta-cab img{width:52px;height:52px;display:block}' +
+    '.conta-dialogo h2{font:700 1.3rem/1.2 Outfit,system-ui,sans-serif;letter-spacing:-.01em;margin:0}' +
+    '.conta-dialogo p{margin:0}.conta-dialogo a{color:var(--c-azul)}' +
+    '.conta-sub{color:var(--c-suave);font-size:.95rem;margin-bottom:.8rem !important}' +
+    '.conta-chips{display:flex;flex-wrap:wrap;gap:.4rem;list-style:none;margin:0 0 1rem;padding:0}' +
+    '.conta-chips li{display:inline-flex;align-items:center;gap:.3rem;background:var(--c-azul-claro);color:var(--c-azul);border-radius:999px;padding:.25rem .7rem;font-size:.85rem;font-weight:700}' +
+    '.conta-chips li::before{content:"✓";font-size:.8rem}' +
+    '.conta-aceite{display:flex;gap:.65rem;align-items:flex-start;border:1.5px solid var(--c-linha);border-radius:14px;padding:.75rem .85rem;margin-bottom:1rem;cursor:pointer;font-size:.95rem;transition:border-color .15s,background-color .15s}' +
+    '.conta-aceite:has(input:checked){border-color:var(--c-azul);background:var(--c-azul-claro)}' +
+    '.conta-aceite input{width:1.2rem;height:1.2rem;margin-top:.15rem;flex:none;accent-color:var(--c-azul);cursor:pointer}' +
+    '.conta-msg{border-radius:10px;font-size:.92rem}.conta-msg:not(:empty){padding:.55rem .75rem;margin-bottom:.8rem !important;background:var(--c-erro-fundo);color:var(--c-erro)}.conta-msg.ok:not(:empty){background:var(--c-ok-fundo);color:var(--c-ok)}' +
+    '.conta-dialogo button{font-family:"Atkinson Hyperlegible",system-ui,sans-serif;cursor:pointer}' +
+    '.conta-dialogo button:disabled{cursor:not-allowed}' +
+    '.conta-google{display:flex;align-items:center;justify-content:center;gap:.7rem;width:100%;min-height:3rem;border-radius:999px;border:1.5px solid var(--c-linha);background:var(--c-fundo);color:var(--c-tinta);font-weight:700;font-size:1rem;transition:background-color .15s,border-color .15s,box-shadow .15s}' +
+    '.conta-google:not(:disabled):hover{border-color:#AEB9D3;box-shadow:0 2px 8px rgba(11,27,58,.1)}.conta-google:disabled,.conta-dialogo fieldset:disabled{opacity:.45}' +
+    '.conta-google svg{width:20px;height:20px;flex:none}' +
+    '.conta-ou{display:flex;align-items:center;gap:.7rem;color:var(--c-suave);font-size:.85rem;margin:1rem 0 !important}.conta-ou::before,.conta-ou::after{content:"";flex:1;border-top:1px solid var(--c-linha)}' +
+    '.conta-dialogo fieldset{border:0;padding:0;margin:0;min-width:0}' +
+    '.conta-modos{display:grid;grid-template-columns:1fr 1fr;background:var(--c-campo);border-radius:999px;padding:4px;margin-bottom:.9rem}' +
+    '.conta-modos button{border:0;border-radius:999px;background:transparent;color:var(--c-suave);font-weight:700;font-size:.92rem;padding:.45rem}' +
+    '.conta-modos button[aria-pressed="true"]{background:var(--c-fundo);color:var(--c-tinta);box-shadow:0 1px 4px rgba(11,27,58,.15)}' +
+    '.conta-dialogo label[for]{display:block;font-weight:700;font-size:.88rem;margin:0 0 .3rem}' +
+    '.conta-campo{margin-bottom:.8rem}' +
+    '.conta-dialogo input[type=email],.conta-dialogo input[type=password],.conta-dialogo input[type=text]{width:100%;box-sizing:border-box;min-height:3rem;font:1rem "Atkinson Hyperlegible",system-ui,sans-serif;padding:.65rem .9rem;border:1.5px solid var(--c-linha);border-radius:12px;background:var(--c-campo);color:var(--c-tinta);transition:border-color .15s,box-shadow .15s,background-color .15s}' +
+    '.conta-dialogo input:focus{outline:none;border-color:var(--c-azul);background:var(--c-fundo);box-shadow:0 0 0 4px rgba(31,79,216,.18)}' +
+    '.conta-senha{position:relative}.conta-senha input{padding-right:5.2rem !important}' +
+    '.conta-senha button{position:absolute;right:.45rem;top:50%;transform:translateY(-50%);border:0;background:transparent;color:var(--c-azul);font-weight:700;font-size:.85rem;padding:.4rem .55rem;border-radius:8px}' +
+    '.conta-forca{display:flex;gap:4px;margin:.5rem 0 .25rem}.conta-forca i{flex:1;height:5px;border-radius:3px;background:var(--c-linha);transition:background-color .2s}' +
     '.conta-forca[data-nivel="0"] i:nth-child(1){background:#B42318}' +
     '.conta-forca[data-nivel="1"] i:nth-child(1){background:#D9480F}' +
     '.conta-forca[data-nivel="2"] i:nth-child(-n+2){background:#B87400}' +
     '.conta-forca[data-nivel="3"] i{background:#14794A}' +
-    '.conta-forca-txt{font-size:.88rem;color:#4A5672;margin:.2rem 0 .6rem !important}' +
-    '.conta-link{background:none;border:0 !important;color:#1F4FD8;text-decoration:underline;padding:.65rem .3rem !important;font-weight:600 !important}' +
-    '.conta-rodape{text-align:right;margin-top:.4rem}' +
-    '.conta-acoes{display:flex;flex-wrap:wrap;gap:.6rem}' +
-    '.conta-dialogo button.conta-google,.conta-dialogo button.conta-nao{font:700 1rem "Atkinson Hyperlegible",system-ui,sans-serif;border-radius:8px;padding:.65rem 1.1rem;cursor:pointer;border:2px solid #1F4FD8}' +
-    '.conta-dialogo button.conta-link{font:600 1rem "Atkinson Hyperlegible",system-ui,sans-serif;cursor:pointer}' +
-    '.conta-google{background:#1F4FD8;color:#FFFFFF}.conta-google:disabled{opacity:.45;cursor:not-allowed}' +
-    '.conta-nao{background:transparent;color:#1F4FD8}' +
+    '.conta-forca-txt{font-size:.85rem;color:var(--c-suave);margin:.3rem 0 0 !important}' +
+    '.conta-esqueci-linha{text-align:right;margin:-.35rem 0 .6rem !important}' +
+    '.conta-link{background:none;border:0;color:var(--c-azul);font-weight:700;font-size:.88rem;padding:.2rem 0}' +
+    '.conta-link:hover{text-decoration:underline}' +
+    '.conta-enviar{width:100%;min-height:3rem;border:0;border-radius:999px;background:var(--c-azul);color:#FFFFFF;font-weight:700;font-size:1rem;margin-top:.2rem;transition:filter .15s,transform .15s}' +
+    '.conta-enviar:not(:disabled):hover{filter:brightness(1.08);transform:translateY(-1px)}' +
+    '.conta-nota{font-size:.8rem;color:var(--c-suave);margin-top:1rem !important;padding-top:.9rem;border-top:1px solid var(--c-linha)}' +
+    '@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .conta-dialogo{--c-fundo:#111D3A;--c-tinta:#E8ECF6;--c-suave:#AEB9D3;--c-linha:#2C3B63;--c-campo:#0B1B3A;--c-azul:#8FB0FF;--c-azul-claro:#1A2A55;--c-erro:#FFB4AB;--c-erro-fundo:#3B1A1A;--c-ok:#7DDBA8;--c-ok-fundo:#123323}:root:not([data-theme="light"]) .conta-enviar{color:#0B1B3A}}' +
+    ':root[data-theme="dark"] .conta-dialogo{--c-fundo:#111D3A;--c-tinta:#E8ECF6;--c-suave:#AEB9D3;--c-linha:#2C3B63;--c-campo:#0B1B3A;--c-azul:#8FB0FF;--c-azul-claro:#1A2A55;--c-erro:#FFB4AB;--c-erro-fundo:#3B1A1A;--c-ok:#7DDBA8;--c-ok-fundo:#123323}:root[data-theme="dark"] .conta-enviar{color:#0B1B3A}' +
     '.conta-toast{position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%);z-index:60;max-width:calc(100% - 32px);background:#0B1B3A;color:#FFFFFF;padding:.75rem 1.1rem;border-radius:10px;font-family:"Atkinson Hyperlegible",system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25)}' +
     '.conta-painel{border:1px solid rgba(31,79,216,.25);border-radius:10px;padding:.9rem 1rem;margin:1rem 0}' +
     '.conta-painel p{margin:0 0 .6rem}.conta-painel .acoes{margin-top:.4rem}' +
-    '@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .conta-dialogo{background:#111D3A;color:#E8ECF6}:root:not([data-theme="light"]) .conta-dialogo .suave{color:#AEB9D3}:root:not([data-theme="light"]) .conta-dialogo a{color:#8FB0FF}:root:not([data-theme="light"]) .conta-aceite{background:#1A284B}:root:not([data-theme="light"]) .conta-nao{color:#8FB0FF;border-color:#8FB0FF}:root:not([data-theme="light"]) .conta-msg{color:#FF9B8F}:root:not([data-theme="light"]) .conta-msg.ok{color:#7DDBA8}:root:not([data-theme="light"]) .conta-dialogo input[type=email],:root:not([data-theme="light"]) .conta-dialogo input[type=password],:root:not([data-theme="light"]) .conta-dialogo input[type=text]{background:#0B1B3A;color:#E8ECF6;border-color:#3A4A72}:root:not([data-theme="light"]) .conta-link{color:#8FB0FF}:root:not([data-theme="light"]) .conta-ou,:root:not([data-theme="light"]) .conta-forca-txt{color:#AEB9D3}}' +
-    ':root[data-theme="dark"] .conta-dialogo{background:#111D3A;color:#E8ECF6}:root[data-theme="dark"] .conta-dialogo .suave{color:#AEB9D3}:root[data-theme="dark"] .conta-aceite{background:#1A284B}' +
     '@media (max-width:380px){.conta-entrar{padding-left:.6rem;padding-right:.6rem}}';
   document.head.appendChild(css);
 
@@ -187,25 +208,32 @@
   dlg.className = 'conta-dialogo';
   dlg.id = 'conta-dialogo';
   dlg.setAttribute('aria-labelledby', 'conta-titulo');
+  var G = '<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>';
   dlg.innerHTML =
-    '<h2 id="conta-titulo">Salve seu progresso e continue de qualquer aparelho</h2>' +
-    '<p>Ao entrar, o Ako guarda uma cópia do seu roteiro de estudo, do progresso nas trilhas, do que você marcou nos mapas e da Rotina com a Zumi.</p>' +
-    '<p class="suave">Lembretes de saúde e reflexões da Rotina só vão para a conta se você ligar nos Ajustes da Rotina. Não entrar também vale: tudo continua funcionando, salvo só neste navegador.</p>' +
+    '<div class="conta-corpo">' +
+    '<button type="button" class="conta-fechar" id="conta-nao" aria-label="Fechar, agora não">×</button>' +
+    '<div class="conta-cab"><picture><source srcset="/zumi/abelha-ola-fundo-escuro.png" media="(prefers-color-scheme: dark)"><img src="/zumi/abelha-ola.png" width="52" height="52" alt=""></picture><h2 id="conta-titulo">Continue de qualquer aparelho</h2></div>' +
+    '<p class="conta-sub">Entre e o Ako guarda uma cópia do seu progresso na sua conta.</p>' +
+    '<ul class="conta-chips" aria-label="O que fica salvo"><li>Roteiro</li><li>Trilhas</li><li>Mapas</li><li>Rotina</li></ul>' +
     '<label class="conta-aceite"><input type="checkbox" id="conta-aceite"><span>Li a <a href="/privacidade/" target="_blank" rel="noopener">política de privacidade</a> e aceito guardar meu progresso na minha conta.</span></label>' +
     '<p class="conta-msg" id="conta-msg" role="alert"></p>' +
-    '<button type="button" class="conta-google" id="conta-google" disabled>Entrar com Google</button>' +
-    '<p class="conta-ou"><span>ou com e-mail e senha</span></p>' +
+    '<button type="button" class="conta-google" id="conta-google" disabled>' + G + '<span>Continuar com Google</span></button>' +
+    '<p class="conta-ou">ou com e-mail</p>' +
     '<form id="conta-form" novalidate><fieldset id="conta-campos" disabled>' +
-    '<label for="conta-email">E-mail</label><input type="email" id="conta-email" autocomplete="email" inputmode="email" required>' +
-    '<label for="conta-senha">Senha</label><div class="conta-senha"><input type="password" id="conta-senha" autocomplete="current-password" minlength="8" required aria-describedby="conta-forca-txt"><button type="button" id="conta-ver" aria-pressed="false">Mostrar</button></div>' +
-    '<div class="conta-forca" id="conta-forca" data-nivel="0" hidden><i></i><i></i><i></i></div><p class="conta-forca-txt" id="conta-forca-txt" aria-live="polite">Para criar conta: pelo menos 8 caracteres.</p>' +
-    '<div class="conta-acoes"><button type="submit" class="conta-google" id="conta-entrar-email">Entrar</button><button type="button" class="conta-nao" id="conta-criar">Criar conta</button><button type="button" class="conta-link" id="conta-esqueci">Esqueci a senha</button></div>' +
+    '<div class="conta-modos" role="group" aria-label="Já tem conta?"><button type="button" id="conta-modo-entrar" aria-pressed="true">Entrar</button><button type="button" id="conta-modo-criar" aria-pressed="false">Criar conta</button></div>' +
+    '<div class="conta-campo"><label for="conta-email">E-mail</label><input type="email" id="conta-email" autocomplete="email" inputmode="email" placeholder="voce@exemplo.com" required></div>' +
+    '<div class="conta-campo"><label for="conta-senha">Senha</label><div class="conta-senha"><input type="password" id="conta-senha" autocomplete="current-password" required aria-describedby="conta-forca-txt"><button type="button" id="conta-ver" aria-pressed="false">Mostrar</button></div>' +
+    '<div class="conta-forca" id="conta-forca" data-nivel="0" hidden><i></i><i></i><i></i></div><p class="conta-forca-txt" id="conta-forca-txt" aria-live="polite" hidden></p></div>' +
+    '<p class="conta-esqueci-linha" id="conta-esqueci-linha"><button type="button" class="conta-link" id="conta-esqueci">Esqueci a senha</button></p>' +
+    '<button type="submit" class="conta-enviar" id="conta-enviar">Entrar</button>' +
     '</fieldset></form>' +
-    '<div class="conta-rodape"><button type="button" class="conta-link" id="conta-nao">Agora não</button></div>';
+    '<p class="conta-nota">Não quer entrar? Tudo continua funcionando, salvo só neste navegador. Lembretes de saúde e reflexões da Rotina só vão para a conta se você ligar nos Ajustes da Rotina.</p>' +
+    '</div>';
   document.body.appendChild(dlg);
   function q(id) { return dlg.querySelector('#' + id); }
   var aceite = q('conta-aceite'), google = q('conta-google'), msg = q('conta-msg'), campos = q('conta-campos');
   var email = q('conta-email'), senha = q('conta-senha'), forcaBox = q('conta-forca'), forcaTxt = q('conta-forca-txt');
+  var enviar = q('conta-enviar'), criando = false;
 
   function abrir() {
     msg.textContent = ''; msg.classList.remove('ok');
@@ -218,12 +246,13 @@
   q('conta-nao').addEventListener('click', fechar);
   dlg.addEventListener('click', function (ev) { if (ev.target === dlg) fechar(); });
   // O módulo carrega no aceite, para a janela do Google abrir direto no clique (sem bloqueio de pop-up).
+  var rotuloGoogle = google.querySelector('span');
   aceite.addEventListener('change', function () {
     if (!aceite.checked) { pronto(); return; }
     avisar('');
-    google.textContent = 'Preparando...';
-    carregar().then(function () { google.textContent = 'Entrar com Google'; pronto(); }, function () {
-      google.textContent = 'Entrar com Google';
+    rotuloGoogle.textContent = 'Preparando...';
+    carregar().then(function () { rotuloGoogle.textContent = 'Continuar com Google'; pronto(); }, function () {
+      rotuloGoogle.textContent = 'Continuar com Google';
       avisar('Não deu para conectar agora. Confira a internet e tente de novo.');
     });
   });
@@ -238,6 +267,19 @@
   }
   google.addEventListener('click', function () { if (mod && aceite.checked) tentar(mod.entrarGoogle()); });
 
+  /* Entrar ou criar conta: o mesmo formulário, muda o botão, a dica da senha e o "Esqueci a senha". */
+  function modo(criar) {
+    criando = criar;
+    q('conta-modo-entrar').setAttribute('aria-pressed', String(!criar));
+    q('conta-modo-criar').setAttribute('aria-pressed', String(criar));
+    enviar.textContent = criar ? 'Criar conta' : 'Entrar';
+    senha.setAttribute('autocomplete', criar ? 'new-password' : 'current-password');
+    q('conta-esqueci-linha').hidden = criar;
+    avisar(''); mostrarForca();
+  }
+  q('conta-modo-entrar').addEventListener('click', function () { modo(false); });
+  q('conta-modo-criar').addEventListener('click', function () { modo(true); });
+
   /* Nível da senha: só um aviso. A regra é ter pelo menos 8 caracteres; o resto fica a critério da pessoa. */
   function forca(s) {
     if (s.length < 8) return { n: 0, txt: 'Curta: para criar conta, use pelo menos 8 caracteres.' };
@@ -251,7 +293,9 @@
     return { n: 3, txt: 'Senha forte.' };
   }
   function mostrarForca() {
-    if (!senha.value) { forcaBox.hidden = true; forcaTxt.textContent = 'Para criar conta: pelo menos 8 caracteres.'; return; }
+    if (!criando) { forcaBox.hidden = true; forcaTxt.hidden = true; return; }
+    forcaTxt.hidden = false;
+    if (!senha.value) { forcaBox.hidden = true; forcaTxt.textContent = 'Use pelo menos 8 caracteres.'; return; }
     var f = forca(senha.value);
     forcaBox.hidden = false; forcaBox.setAttribute('data-nivel', f.n); forcaTxt.textContent = f.txt;
   }
@@ -269,13 +313,13 @@
   q('conta-form').addEventListener('submit', function (ev) {
     ev.preventDefault();
     if (!mod || !aceite.checked || !emailOk()) return;
-    if (!senha.value) { avisar('Digite a senha.'); senha.focus(); return; }
-    tentar(mod.entrarEmail(email.value.trim(), senha.value));
-  });
-  q('conta-criar').addEventListener('click', function () {
-    if (!mod || !aceite.checked || !emailOk()) return;
-    if (senha.value.length < 8) { avisar('Para criar conta, a senha precisa de pelo menos 8 caracteres.'); senha.focus(); return; }
-    tentar(mod.criarContaEmail(email.value.trim(), senha.value));
+    if (criando) {
+      if (senha.value.length < 8) { avisar('Para criar conta, a senha precisa de pelo menos 8 caracteres.'); senha.focus(); return; }
+      tentar(mod.criarContaEmail(email.value.trim(), senha.value));
+    } else {
+      if (!senha.value) { avisar('Digite a senha.'); senha.focus(); return; }
+      tentar(mod.entrarEmail(email.value.trim(), senha.value));
+    }
   });
   q('conta-esqueci').addEventListener('click', function () {
     if (!mod || !emailOk()) return;
