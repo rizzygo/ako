@@ -6,6 +6,20 @@ Um app gratuito para manter o foco no trabalho e no estudo sem largar o lazer, a
 
 Quem trabalha e estuda emenda um bloco no outro. A água fica para depois, o corpo trava, o lazer vira culpa e o dia termina sem saber o que deu certo.
 
+## As abas do app
+
+O app fica dividido em abas, para não ficar tudo numa página só. No celular, a barra fica embaixo; no computador, fica abaixo da Zumi. Cada aba tem endereço próprio (`#/foco`, `#/metas`), então o botão voltar funciona.
+
+| Aba | O que mostra |
+| --- | --- |
+| Hoje | O painel do dia: o bloco que está rodando, até 3 tarefas (prioridades primeiro), a água de hoje, atalhos para respirar e para o tempo sem tela, o aviso de revisão das metas e, depois das 18h, o convite para fechar o dia. A reflexão fica aqui. |
+| Foco | O timer completo e os ajustes de tempo. |
+| Tarefas | Tarefas e rotinas, a revisão do dia e a lista de amanhã. |
+| Bem-estar | Água com histórico, respiração, tempo sem tela e exercícios. |
+| Metas | As metas do ano e os trimestres. |
+| Evolução | A semana e os títulos. No celular, abre pelo atalho na Zumi. |
+| Ajustes | Lembretes, notificações, instalar e apagar dados. No celular, abre pelo atalho na Zumi. |
+
 ## O que o app faz no dia
 
 | Parte | Como funciona |

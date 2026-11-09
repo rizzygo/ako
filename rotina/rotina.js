@@ -326,6 +326,9 @@
     el.fase.textContent = t.modo === 'lazer' ? 'Lazer' : t.fase === 'foco' ? 'Foco' : (t.ciclo % S.config.ciclos === 0 ? 'Pausa longa' : 'Pausa');
     el.ciclo.textContent = t.modo === 'lazer' ? 'Sem culpa' : 'Bloco ' + t.ciclo + ' de ' + S.config.ciclos;
     el.iniciar.textContent = t.rodando ? 'Pausar' : (t.restante != null ? 'Continuar' : 'Começar');
+    $('h-tempo').textContent = mmss(s); $('h-fase').textContent = el.fase.textContent;
+    $('h-modo').textContent = { trabalho: 'Trabalho', estudo: 'Estudo', lazer: 'Lazer' }[t.modo];
+    $('h-iniciar').textContent = el.iniciar.textContent;
     document.querySelectorAll('.modo').forEach(function (b) { b.setAttribute('aria-checked', String(b.dataset.modo === t.modo)); });
     document.title = (t.rodando ? mmss(s) + ' · ' : '') + 'Rotina com a Zumi';
   }
@@ -597,8 +600,8 @@
     // checks
     $('c-respirar').textContent = d.respirar ? d.respirar + 'x hoje · +5' : '+5 pontos';
     $('c-semTela').textContent = d.semTelaMin ? d.semTelaMin + ' min hoje · +' + Math.min(d.semTelaPts, 60) : 'De 5 minutos a 2 horas';
-    document.querySelector('[data-acao="respirar"]').setAttribute('aria-pressed', String(d.respirar > 0));
-    document.querySelector('[data-acao="semTela"]').setAttribute('aria-pressed', String(d.semTelaMin > 0 || d.semTela > 0));
+    document.querySelectorAll('[data-acao="respirar"]').forEach(function (b) { b.setAttribute('aria-pressed', String(d.respirar > 0)); });
+    document.querySelectorAll('[data-acao="semTela"]').forEach(function (b) { b.setAttribute('aria-pressed', String(d.semTelaMin > 0 || d.semTela > 0)); });
     document.querySelectorAll('[data-ex]').forEach(function (b) { b.setAttribute('aria-pressed', String(!!d.ex[b.dataset.ex])); });
 
     // reflexão
@@ -632,7 +635,7 @@
       el.titulos.appendChild(li);
     });
     renderLembretes();
-    renderTarefas(); renderMetas();
+    renderTarefas(); renderMetas(); renderHoje();
   }
 
   // ---------- Configurações nos campos ----------
@@ -686,7 +689,7 @@
     if (k === 'agua') { falar('Boa! No fim do dia, marque como foi a água.', 'ola'); }
     else if (k === 'respirar') abrirSobre(k);
     else if (k === 'semTela') escolherTela();
-    else if (k === 'metas') { $('metas-secao').scrollIntoView({ behavior: 'smooth' }); }
+    else if (k === 'metas') { irPara('metas'); }
     else if (info && info.meu) { mudar(function (d) { d.meus++; }); falar('Feito: ' + info.meu.nome + '. +2', 'comemorando', true); }
   });
   $('recomeco-zerar').addEventListener('click', function () {
@@ -796,7 +799,7 @@
     var x = document.createElement('button'); x.type = 'button'; x.className = 'tirar-bt'; x.textContent = '×';
     x.setAttribute('aria-label', 'Remover: ' + t.texto);
     x.addEventListener('click', function () { S.tarefas = S.tarefas.filter(function (y) { return y.id !== t.id; }); salvar(); render(); });
-    li.appendChild(x);
+    if (!opcoes.curta) li.appendChild(x);
     return li;
   }
   function renderTarefas() {
@@ -928,6 +931,41 @@
     $('meta-txt').value = ''; salvar(); render();
     falar(S.metas.length > 5 ? 'Meta anotada. Dica: com mais de cinco metas, o foco se espalha.' : 'Meta anotada. No fim do trimestre eu pergunto como ela está.', 'ideia', true);
   });
+
+  // ---------- Painel Hoje ----------
+  function renderHoje() {
+    // até 3 itens: prioridades primeiro, depois o resto, sem os já feitos
+    var lista = visiveisHoje().filter(function (t) { return !feitaHoje(t); }), ul = $('h-tarefas'); ul.innerHTML = '';
+    lista.slice(0, 3).forEach(function (t) { ul.appendChild(linhaTarefa(t, { curta: true })); });
+    var todas = visiveisHoje().length;
+    $('h-tarefas-vazio').hidden = lista.length > 0;
+    $('h-tarefas-vazio').textContent = todas ? 'Tudo feito por hoje. Boa!' : 'Nada na lista ainda.';
+    $('h-tarefas-mais').textContent = todas ? 'Ver todas as tarefas (' + todas + ')' : 'Adicionar tarefas';
+    botoesNivel($('h-agua'), chaveDia());
+    var nv = nivelAgua(dia());
+    $('h-agua-txt').textContent = nv ? 'Marcado como ' + NIVEIS[nv] + (PONTOS_AGUA[nv] ? '. +' + PONTOS_AGUA[nv] : '.') : 'Bom vale 10 pontos e Excelente vale 20.';
+    var pend = metasPendentes();
+    $('h-metas').hidden = !pend.length;
+    $('h-metas-txt').textContent = pend.length ? 'Fim de trimestre: ' + pend.length + (pend.length === 1 ? ' meta espera' : ' metas esperam') + ' a sua revisão.' : '';
+    var d = dia();
+    $('h-fechar').hidden = new Date().getHours() < 18 || !!(d.reflexao || d.papel);
+  }
+  $('h-iniciar').addEventListener('click', function () { el.iniciar.click(); });
+
+  // ---------- Abas ----------
+  var ABAS = ['hoje', 'foco', 'tarefas', 'bem-estar', 'metas', 'evolucao', 'ajustes'];
+  function abaDaUrl() { var h = location.hash.replace(/^#\/?/, ''); return ABAS.indexOf(h) >= 0 ? h : 'hoje'; }
+  function mostrarAba(rolar) {
+    if (location.hash && location.hash.indexOf('#/') !== 0) return; // âncoras comuns (#conteudo, #fim-do-dia) não trocam de aba
+    var a = abaDaUrl();
+    document.querySelectorAll('.aba').forEach(function (s) { s.hidden = s.dataset.aba !== a; });
+    document.body.dataset.aba = a;
+    document.querySelectorAll('[data-ir]').forEach(function (l) { if (l.dataset.ir === a) l.setAttribute('aria-current', 'page'); else l.removeAttribute('aria-current'); });
+    if (rolar) { var nav = document.querySelector('.abas-app'); if (nav.getBoundingClientRect().top < 0) window.scrollTo({ top: 0 }); }
+  }
+  function irPara(a) { location.hash = a === 'hoje' ? '#/' : '#/' + a; }
+  window.addEventListener('hashchange', function () { mostrarAba(true); });
+  mostrarAba(false);
 
   // ---------- Relógio central ----------
   var ultimoDia = chaveDia();
