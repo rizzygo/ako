@@ -3,14 +3,7 @@ code{font-family:var(--f-mono);font-size:.9em;white-space:nowrap;background:var(
 .coluna{max-width:44rem;margin:0 auto;padding:0 16px}
 
 
-/* topo */
-.topo-in{max-width:var(--largura);margin:0 auto;padding:.6rem 16px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.marca{display:flex;align-items:center;gap:.5rem;white-space:nowrap;text-decoration:none;color:var(--tinta);font:700 1.2rem/1 var(--f-titulo);letter-spacing:-.02em}
-.marca svg{width:28px;height:28px}
-.marca b{font-weight:400;color:var(--suave)}
-.menu{display:flex;align-items:center;gap:1rem}
-.menu > a{color:var(--tinta);text-decoration:none;font-weight:700;font-size:.95rem}
-.menu > a[aria-current="page"]{color:var(--azul);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:.4em}
+/* topo: marca e menu ficam em /topo.css, igual em todas as páginas */
 .xp-pill{display:flex;align-items:center;gap:.5rem;background:var(--superficie);border:1px solid var(--linha);border-radius:999px;padding:.3rem .7rem .3rem .8rem}
 .xp-nivel{font-size:.85rem;white-space:nowrap}
 .xp-barra{width:56px;height:8px;border-radius:99px;background:var(--trilho);overflow:hidden}
@@ -205,9 +198,8 @@ textarea:focus{border-color:var(--azul);outline:none}
 .noscript{padding:2rem 16px;text-align:center}
 .carregando{padding:4rem 16px;text-align:center;color:var(--suave)}
 
-@media (max-width:420px){.topo-in{gap:.5rem}.menu{gap:.5rem}.marca{font-size:1rem}.xp-barra{width:36px}.xp-pill{padding:.25rem .55rem}.xp-nivel{font-size:.8rem}}
-@media (max-width:440px){.menu > a{font-size:.9rem}.xp-barra{display:none}}
-@media (max-width:360px){.marca span{display:none}}
+@media (max-width:420px){.xp-barra{width:36px}.xp-pill{padding:.25rem .55rem}.xp-nivel{font-size:.8rem}}
+@media (max-width:440px){.xp-barra{display:none}}
 
 /* efeitos: iguais no rizzygo.com.br (estilo.css) */
 .hero{position:relative;isolation:isolate;overflow-x:clip}
@@ -256,5 +248,4 @@ textarea:focus{border-color:var(--azul);outline:none}
 .contribua-copiar{font:700 .95rem var(--f-texto);color:var(--ambar-tinta);background:var(--ambar);border:0;border-radius:var(--raio-p);padding:.5rem .9rem;cursor:pointer;min-height:44px}
 .contribua-copiar:hover{filter:brightness(1.06)}
 .contribua-copiar:focus-visible{outline:3px solid #FFFFFF;outline-offset:2px}
-@media (max-width:560px){.topo-in{flex-wrap:wrap;row-gap:.35rem}.menu{width:100%;gap:1.1rem;overflow-x:auto;scrollbar-width:none;padding-bottom:.3rem}.menu .xp-pill{margin-left:auto}}
 .texto-legal{max-width:44rem}.texto-legal h2{font-size:var(--t-secao);margin:2.2rem 0 .7rem}.texto-legal h2:first-child{margin-top:0}.texto-legal p,.texto-legal ul{margin:.7rem 0;line-height:1.6}.texto-legal ul{padding-left:1.3rem}.texto-legal li{margin:.35rem 0}

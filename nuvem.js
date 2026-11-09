@@ -1,11 +1,12 @@
-// Nuvem do Ako: login com Google e cópia do progresso no Firestore (projeto rizzygo-webapp).
+// Nuvem do Ako: login com Google ou com e-mail e senha e cópia do progresso no Firestore (projeto rizzygo-webapp).
 // Opcional: só carrega quando a pessoa pede para entrar (botão do topo em /conta.js ou Ajustes da Rotina)
 // ou já tinha entrado antes. Uma conta só para todos os apps do Ako.
 // O aparelho continua sendo a fonte do dia a dia; a nuvem guarda uma cópia por app em
 // users/<uid>/apps/<app>, com os dados como texto JSON. Detalhes em /privacidade/.
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
 import {
-  getAuth, GoogleAuthProvider, signInWithPopup, reauthenticateWithPopup, onAuthStateChanged, signOut, deleteUser
+  getAuth, GoogleAuthProvider, EmailAuthProvider, signInWithPopup, reauthenticateWithPopup, reauthenticateWithCredential,
+  signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged, signOut, deleteUser
 } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
 import {
   getFirestore, doc, getDoc, setDoc, deleteDoc, serverTimestamp
@@ -42,30 +43,64 @@ const dados = (u) => u && { nome: u.displayName, email: u.email };
 // A conta caiu (saiu em outra aba, sessão expirou): o aparelho para de sincronizar.
 // Toda entrada ou saída vira o evento 'rizzygo-conta' na página, para o topo e a Rotina se ajustarem.
 let ultimoUid;
-onAuthStateChanged(auth, (u) => {
-  if (!u && !pedindo) marcarConta(false);
+function anunciar(u) {
   const uid = u ? u.uid : null;
   if (ultimoUid !== undefined && uid !== ultimoUid) window.dispatchEvent(new CustomEvent('rizzygo-conta', { detail: { usuario: dados(u) } }));
   ultimoUid = uid;
+}
+onAuthStateChanged(auth, (u) => {
+  if (pedindo) return; // quem anuncia a entrada é entrarCom
+  if (!u) marcarConta(false);
+  anunciar(u);
 });
 
 // Avisa a página sempre que a conta muda: cb({ nome, email }) ou cb(null).
 export function aoMudarConta(cb) { onAuthStateChanged(auth, (u) => cb(dados(u))); }
 
-// Login com o Google. Só chamar depois do aceite da política de privacidade.
-export async function entrarGoogle() {
+const ERROS = {
+  'auth/popup-blocked': 'O navegador bloqueou a janela do Google. Libere pop-ups para este site e tente de novo.',
+  'auth/popup-closed-by-user': 'A janela do Google foi fechada antes de terminar.',
+  'auth/cancelled-popup-request': 'A janela do Google foi fechada antes de terminar.',
+  'auth/invalid-credential': 'E-mail ou senha não conferem. Confira e tente de novo, ou crie uma conta.',
+  'auth/wrong-password': 'E-mail ou senha não conferem. Confira e tente de novo, ou crie uma conta.',
+  'auth/user-not-found': 'E-mail ou senha não conferem. Confira e tente de novo, ou crie uma conta.',
+  'auth/invalid-email': 'Esse e-mail não parece válido. Confira se digitou certo.',
+  'auth/missing-password': 'Digite a senha.',
+  'auth/email-already-in-use': 'Esse e-mail já tem conta no Ako. Use Entrar, ou Esqueci a senha.',
+  'auth/weak-password': 'A senha precisa de pelo menos 8 caracteres.',
+  'auth/password-does-not-meet-requirements': 'A senha precisa de pelo menos 8 caracteres.',
+  'auth/too-many-requests': 'Muitas tentativas seguidas. Espere alguns minutos e tente de novo.',
+  'auth/network-request-failed': 'Sem conexão agora. Confira a internet e tente de novo.',
+  'auth/operation-not-allowed': 'Esse jeito de entrar não está ligado agora. Tente pelo Google.'
+};
+const erro = (e, padrao) => new Error((e && ERROS[e.code]) || padrao);
+
+// Login. Só chamar depois do aceite da política de privacidade.
+async function entrarCom(fazer, padrao) {
   pedindo = true; marcarConta(true);
   try {
-    const r = await signInWithPopup(auth, new GoogleAuthProvider());
+    const r = await fazer();
     pedindo = false;
+    if (ultimoUid === undefined) ultimoUid = null;
+    anunciar(r.user);
     for (const i of instancias) i.ligar();
     return dados(r.user);
   } catch (e) {
     pedindo = false; marcarConta(false);
-    throw new Error(e && e.code === 'auth/popup-blocked' ? 'O navegador bloqueou a janela do Google. Libere pop-ups para este site e tente de novo.'
-      : e && (e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request') ? 'A janela do Google foi fechada antes de terminar.'
-      : 'Não deu para entrar com o Google agora.');
+    throw erro(e, padrao);
   }
+}
+export const entrarGoogle = () => entrarCom(() => signInWithPopup(auth, new GoogleAuthProvider()), 'Não deu para entrar com o Google agora.');
+export const entrarEmail = (email, senha) => entrarCom(() => signInWithEmailAndPassword(auth, email, senha), 'Não deu para entrar agora. Tente de novo.');
+export const criarContaEmail = (email, senha) => entrarCom(() => createUserWithEmailAndPassword(auth, email, senha), 'Não deu para criar a conta agora. Tente de novo.');
+export async function redefinirSenha(email) {
+  auth.languageCode = 'pt';
+  try { await sendPasswordResetEmail(auth, email); } catch (e) { if (e && e.code !== 'auth/user-not-found') throw erro(e, 'Não deu para enviar o e-mail agora.'); }
+}
+// Entrou com e-mail e senha (e não com o Google)?
+export function contaComSenha() {
+  const u = auth.currentUser;
+  return !!(u && u.providerData.some((p) => p.providerId === 'password') && !u.providerData.some((p) => p.providerId === 'google.com'));
 }
 
 // Envia o que falta, desliga a sincronização deste aparelho e sai. Os dados do aparelho ficam.
@@ -76,7 +111,8 @@ export async function sairDaConta() {
 }
 
 // Apaga os documentos de todos os apps do Ako e a conta. Os dados do aparelho ficam.
-export async function apagarConta() {
+// pedirSenha() é chamada só quando o Firebase pede login recente de quem entrou com e-mail e senha.
+export async function apagarConta(pedirSenha) {
   const u = auth.currentUser;
   if (!u) return false;
   const apagar = async () => {
@@ -84,7 +120,13 @@ export async function apagarConta() {
     await deleteUser(u);
   };
   try { await apagar(); } catch (e) {
-    if (e && e.code === 'auth/requires-recent-login') { await reauthenticateWithPopup(u, new GoogleAuthProvider()); await apagar(); } else throw e;
+    if (!e || e.code !== 'auth/requires-recent-login') throw e;
+    if (contaComSenha()) {
+      const senha = pedirSenha && await pedirSenha();
+      if (!senha) return false;
+      try { await reauthenticateWithCredential(u, EmailAuthProvider.credential(u.email, senha)); } catch (e2) { throw erro(e2, 'Senha não confere.'); }
+    } else await reauthenticateWithPopup(u, new GoogleAuthProvider());
+    await apagar();
   }
   for (const i of instancias) i.esquecer();
   marcarConta(false);
@@ -181,7 +223,7 @@ export function criar(cfg) {
     puxar() { if (usuario && meta.ligado) puxar(false).catch(() => {}); },
     async mudarAceites(aceites) { meta.aceites = aceites; meta.ultimo = null; cfg.salvarMeta(meta); await enviar(true); },
     async sair() { await sairDaConta(); avisa(); },
-    async apagarConta() { const ok = await apagarConta(); avisa(); return ok; }
+    async apagarConta(pedirSenha) { const ok = await apagarConta(pedirSenha); avisa(); return ok; }
   };
   instancias.push(inst);
   return inst;

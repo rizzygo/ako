@@ -1,5 +1,5 @@
 /* Conta do Ako: botão "Entrar" na faixa do topo de todas as páginas.
-   Entrar é opcional e pede o aceite da política de privacidade antes do login com o Google.
+   Entrar é opcional e pede o aceite da política de privacidade antes do login (Google ou e-mail e senha).
    Depois de entrar, o botão some e trilhas, roteiro e mapas passam a ter uma cópia na conta
    (a Rotina sincroniza pela própria página, com /nuvem.js). Quem não entra segue com tudo no navegador. */
 (function () {
@@ -127,15 +127,31 @@
     '.conta-dialogo .suave{color:#4A5672;font-size:.95rem}.conta-dialogo a{color:#1F4FD8}' +
     '.conta-aceite{display:flex;gap:.55rem;align-items:flex-start;background:#F5F7FB;border-radius:8px;padding:.7rem .8rem;margin:.2rem 0 .6rem;cursor:pointer}' +
     '.conta-aceite input{width:1.15rem;height:1.15rem;margin-top:.2rem;flex:none;accent-color:#1F4FD8}' +
-    '.conta-msg{min-height:1.2em;color:#B42318;font-size:.95rem}' +
+    '.conta-dialogo{max-height:calc(100vh - 32px);overflow:auto}' +
+    '.conta-msg{min-height:1.2em;color:#B42318;font-size:.95rem}.conta-msg.ok{color:#14794A}' +
+    '.conta-dialogo > .conta-google{width:100%}' +
+    '.conta-ou{display:flex;align-items:center;gap:.6rem;color:#4A5672;font-size:.9rem;margin:.9rem 0 .5rem}.conta-ou::before,.conta-ou::after{content:"";flex:1;border-top:1px solid rgba(74,86,114,.3)}' +
+    '.conta-dialogo fieldset{border:0;padding:0;margin:0;min-width:0}.conta-dialogo fieldset:disabled{opacity:.5}' +
+    '.conta-dialogo label[for]{display:block;font-weight:700;font-size:.95rem;margin:.5rem 0 .2rem}' +
+    '.conta-dialogo input[type=email],.conta-dialogo input[type=password],.conta-dialogo input[type=text]{width:100%;box-sizing:border-box;font:1rem "Atkinson Hyperlegible",system-ui,sans-serif;padding:.6rem .7rem;border:1px solid #AEB9D3;border-radius:8px;background:#FFFFFF;color:#0B1B3A}' +
+    '.conta-senha{display:flex;gap:.4rem}.conta-senha button{font:700 .9rem "Atkinson Hyperlegible",system-ui,sans-serif;border:1px solid #AEB9D3;border-radius:8px;background:transparent;color:inherit;padding:0 .7rem;cursor:pointer}' +
+    '.conta-forca{display:flex;gap:4px;margin:.45rem 0 .1rem}.conta-forca i{flex:1;height:6px;border-radius:3px;background:rgba(74,86,114,.2)}' +
+    '.conta-forca[data-nivel="0"] i:nth-child(1){background:#B42318}' +
+    '.conta-forca[data-nivel="1"] i:nth-child(1){background:#D9480F}' +
+    '.conta-forca[data-nivel="2"] i:nth-child(-n+2){background:#B87400}' +
+    '.conta-forca[data-nivel="3"] i{background:#14794A}' +
+    '.conta-forca-txt{font-size:.88rem;color:#4A5672;margin:.2rem 0 .6rem !important}' +
+    '.conta-link{background:none;border:0 !important;color:#1F4FD8;text-decoration:underline;padding:.65rem .3rem !important;font-weight:600 !important}' +
+    '.conta-rodape{text-align:right;margin-top:.4rem}' +
     '.conta-acoes{display:flex;flex-wrap:wrap;gap:.6rem}' +
-    '.conta-acoes button{font:700 1rem "Atkinson Hyperlegible",system-ui,sans-serif;border-radius:8px;padding:.65rem 1.1rem;cursor:pointer;border:2px solid #1F4FD8}' +
+    '.conta-dialogo button.conta-google,.conta-dialogo button.conta-nao{font:700 1rem "Atkinson Hyperlegible",system-ui,sans-serif;border-radius:8px;padding:.65rem 1.1rem;cursor:pointer;border:2px solid #1F4FD8}' +
+    '.conta-dialogo button.conta-link{font:600 1rem "Atkinson Hyperlegible",system-ui,sans-serif;cursor:pointer}' +
     '.conta-google{background:#1F4FD8;color:#FFFFFF}.conta-google:disabled{opacity:.45;cursor:not-allowed}' +
     '.conta-nao{background:transparent;color:#1F4FD8}' +
     '.conta-toast{position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%);z-index:60;max-width:calc(100% - 32px);background:#0B1B3A;color:#FFFFFF;padding:.75rem 1.1rem;border-radius:10px;font-family:"Atkinson Hyperlegible",system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25)}' +
     '.conta-painel{border:1px solid rgba(31,79,216,.25);border-radius:10px;padding:.9rem 1rem;margin:1rem 0}' +
     '.conta-painel p{margin:0 0 .6rem}.conta-painel .acoes{margin-top:.4rem}' +
-    '@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .conta-dialogo{background:#111D3A;color:#E8ECF6}:root:not([data-theme="light"]) .conta-dialogo .suave{color:#AEB9D3}:root:not([data-theme="light"]) .conta-dialogo a{color:#8FB0FF}:root:not([data-theme="light"]) .conta-aceite{background:#1A284B}:root:not([data-theme="light"]) .conta-nao{color:#8FB0FF;border-color:#8FB0FF}:root:not([data-theme="light"]) .conta-msg{color:#FF9B8F}}' +
+    '@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .conta-dialogo{background:#111D3A;color:#E8ECF6}:root:not([data-theme="light"]) .conta-dialogo .suave{color:#AEB9D3}:root:not([data-theme="light"]) .conta-dialogo a{color:#8FB0FF}:root:not([data-theme="light"]) .conta-aceite{background:#1A284B}:root:not([data-theme="light"]) .conta-nao{color:#8FB0FF;border-color:#8FB0FF}:root:not([data-theme="light"]) .conta-msg{color:#FF9B8F}:root:not([data-theme="light"]) .conta-msg.ok{color:#7DDBA8}:root:not([data-theme="light"]) .conta-dialogo input[type=email],:root:not([data-theme="light"]) .conta-dialogo input[type=password],:root:not([data-theme="light"]) .conta-dialogo input[type=text]{background:#0B1B3A;color:#E8ECF6;border-color:#3A4A72}:root:not([data-theme="light"]) .conta-link{color:#8FB0FF}:root:not([data-theme="light"]) .conta-ou,:root:not([data-theme="light"]) .conta-forca-txt{color:#AEB9D3}}' +
     ':root[data-theme="dark"] .conta-dialogo{background:#111D3A;color:#E8ECF6}:root[data-theme="dark"] .conta-dialogo .suave{color:#AEB9D3}:root[data-theme="dark"] .conta-aceite{background:#1A284B}' +
     '@media (max-width:380px){.conta-entrar{padding-left:.6rem;padding-right:.6rem}}';
   document.head.appendChild(css);
@@ -146,7 +162,7 @@
   botao.className = 'familia-item conta-entrar';
   botao.id = 'conta-entrar';
   botao.textContent = 'Entrar';
-  botao.title = 'Entre com o Google para salvar seu progresso e continuar em qualquer aparelho';
+  botao.title = 'Entre para salvar seu progresso e continuar em qualquer aparelho';
   botao.hidden = ligada(); // quem já entrou não vê o botão nem por um instante
   var faixa = document.querySelector('.familia-in');
   if (faixa) faixa.appendChild(botao);
@@ -159,41 +175,99 @@
   dlg.setAttribute('aria-labelledby', 'conta-titulo');
   dlg.innerHTML =
     '<h2 id="conta-titulo">Salve seu progresso e continue de qualquer aparelho</h2>' +
-    '<p>Entre com a sua conta Google e o Ako guarda uma cópia de:</p>' +
-    '<ul><li>seu roteiro de estudo e as respostas das quatro perguntas;</li><li>o progresso nas trilhas: checklists, desafios e respostas da pergunta Ako;</li><li>o que você marcou nos mapas das áreas;</li><li>a Rotina com a Zumi.</li></ul>' +
+    '<p>Ao entrar, o Ako guarda uma cópia do seu roteiro de estudo, do progresso nas trilhas, do que você marcou nos mapas e da Rotina com a Zumi.</p>' +
     '<p class="suave">Lembretes de saúde e reflexões da Rotina só vão para a conta se você ligar nos Ajustes da Rotina. Não entrar também vale: tudo continua funcionando, salvo só neste navegador.</p>' +
     '<label class="conta-aceite"><input type="checkbox" id="conta-aceite"><span>Li a <a href="/privacidade/" target="_blank" rel="noopener">política de privacidade</a> e aceito guardar meu progresso na minha conta.</span></label>' +
     '<p class="conta-msg" id="conta-msg" role="alert"></p>' +
-    '<div class="conta-acoes"><button type="button" class="conta-google" id="conta-google" disabled>Entrar com Google</button><button type="button" class="conta-nao" id="conta-nao">Agora não</button></div>';
+    '<button type="button" class="conta-google" id="conta-google" disabled>Entrar com Google</button>' +
+    '<p class="conta-ou"><span>ou com e-mail e senha</span></p>' +
+    '<form id="conta-form" novalidate><fieldset id="conta-campos" disabled>' +
+    '<label for="conta-email">E-mail</label><input type="email" id="conta-email" autocomplete="email" inputmode="email" required>' +
+    '<label for="conta-senha">Senha</label><div class="conta-senha"><input type="password" id="conta-senha" autocomplete="current-password" minlength="8" required aria-describedby="conta-forca-txt"><button type="button" id="conta-ver" aria-pressed="false">Mostrar</button></div>' +
+    '<div class="conta-forca" id="conta-forca" data-nivel="0" hidden><i></i><i></i><i></i></div><p class="conta-forca-txt" id="conta-forca-txt" aria-live="polite">Para criar conta: pelo menos 8 caracteres.</p>' +
+    '<div class="conta-acoes"><button type="submit" class="conta-google" id="conta-entrar-email">Entrar</button><button type="button" class="conta-nao" id="conta-criar">Criar conta</button><button type="button" class="conta-link" id="conta-esqueci">Esqueci a senha</button></div>' +
+    '</fieldset></form>' +
+    '<div class="conta-rodape"><button type="button" class="conta-link" id="conta-nao">Agora não</button></div>';
   document.body.appendChild(dlg);
-  var aceite = dlg.querySelector('#conta-aceite'), google = dlg.querySelector('#conta-google'), msg = dlg.querySelector('#conta-msg');
+  function q(id) { return dlg.querySelector('#' + id); }
+  var aceite = q('conta-aceite'), google = q('conta-google'), msg = q('conta-msg'), campos = q('conta-campos');
+  var email = q('conta-email'), senha = q('conta-senha'), forcaBox = q('conta-forca'), forcaTxt = q('conta-forca-txt');
 
   function abrir() {
-    msg.textContent = '';
+    msg.textContent = ''; msg.classList.remove('ok');
     if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
     aceite.focus();
   }
   function fechar() { if (dlg.close) dlg.close(); else dlg.removeAttribute('open'); }
-  dlg.querySelector('#conta-nao').addEventListener('click', fechar);
+  function avisar(t, bom) { msg.textContent = t; msg.classList.toggle('ok', !!bom); }
+  function pronto() { google.disabled = campos.disabled = !(mod && aceite.checked); }
+  q('conta-nao').addEventListener('click', fechar);
   dlg.addEventListener('click', function (ev) { if (ev.target === dlg) fechar(); });
   // O módulo carrega no aceite, para a janela do Google abrir direto no clique (sem bloqueio de pop-up).
   aceite.addEventListener('change', function () {
-    if (!aceite.checked) { google.disabled = true; return; }
-    msg.textContent = '';
+    if (!aceite.checked) { pronto(); return; }
+    avisar('');
     google.textContent = 'Preparando...';
-    carregar().then(function () { google.textContent = 'Entrar com Google'; google.disabled = !aceite.checked; }, function () {
+    carregar().then(function () { google.textContent = 'Entrar com Google'; pronto(); }, function () {
       google.textContent = 'Entrar com Google';
-      msg.textContent = 'Não deu para conectar agora. Confira a internet e tente de novo.';
+      avisar('Não deu para conectar agora. Confira a internet e tente de novo.');
     });
   });
-  google.addEventListener('click', function () {
-    if (!mod || !aceite.checked) return;
-    google.disabled = true; msg.textContent = '';
-    mod.entrarGoogle().then(function (u) {
-      fechar();
-      aceite.checked = false; google.disabled = true;
-      toast('Pronto' + (u && u.nome ? ', ' + u.nome.split(' ')[0] : '') + '. Seu progresso agora fica salvo na sua conta.');
-    }, function (e) { msg.textContent = e.message; google.disabled = false; });
+  function entrou(u) {
+    fechar();
+    aceite.checked = false; senha.value = ''; mostrarForca(); pronto();
+    toast('Pronto' + (u && u.nome ? ', ' + u.nome.split(' ')[0] : '') + '. Seu progresso agora fica salvo na sua conta.');
+  }
+  function tentar(promessa) {
+    google.disabled = campos.disabled = true; avisar('');
+    promessa.then(entrou, function (e) { avisar(e.message); pronto(); });
+  }
+  google.addEventListener('click', function () { if (mod && aceite.checked) tentar(mod.entrarGoogle()); });
+
+  /* Nível da senha: só um aviso. A regra é ter pelo menos 8 caracteres; o resto fica a critério da pessoa. */
+  function forca(s) {
+    if (s.length < 8) return { n: 0, txt: 'Curta: para criar conta, use pelo menos 8 caracteres.' };
+    var p = 0;
+    if (s.length >= 12) p++;
+    if (/[a-z]/.test(s) && /[A-Z]/.test(s)) p++;
+    if (/\d/.test(s)) p++;
+    if (/[^A-Za-z0-9]/.test(s)) p++;
+    if (p <= 1) return { n: 1, txt: 'Senha fraca. Dá para usar, mas fica mais segura com 12 caracteres ou mais, misturando letras, números e símbolos.' };
+    if (p <= 2) return { n: 2, txt: 'Senha média. Mais caracteres ou um símbolo deixam ela forte.' };
+    return { n: 3, txt: 'Senha forte.' };
+  }
+  function mostrarForca() {
+    if (!senha.value) { forcaBox.hidden = true; forcaTxt.textContent = 'Para criar conta: pelo menos 8 caracteres.'; return; }
+    var f = forca(senha.value);
+    forcaBox.hidden = false; forcaBox.setAttribute('data-nivel', f.n); forcaTxt.textContent = f.txt;
+  }
+  senha.addEventListener('input', function () { mostrarForca(); if (!msg.classList.contains('ok')) avisar(''); });
+  email.addEventListener('input', function () { avisar(''); });
+  q('conta-ver').addEventListener('click', function () {
+    var ver = senha.type === 'password';
+    senha.type = ver ? 'text' : 'password';
+    this.textContent = ver ? 'Esconder' : 'Mostrar'; this.setAttribute('aria-pressed', String(ver));
+  });
+  function emailOk() {
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) return true;
+    avisar('Digite o seu e-mail.'); email.focus(); return false;
+  }
+  q('conta-form').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (!mod || !aceite.checked || !emailOk()) return;
+    if (!senha.value) { avisar('Digite a senha.'); senha.focus(); return; }
+    tentar(mod.entrarEmail(email.value.trim(), senha.value));
+  });
+  q('conta-criar').addEventListener('click', function () {
+    if (!mod || !aceite.checked || !emailOk()) return;
+    if (senha.value.length < 8) { avisar('Para criar conta, a senha precisa de pelo menos 8 caracteres.'); senha.focus(); return; }
+    tentar(mod.criarContaEmail(email.value.trim(), senha.value));
+  });
+  q('conta-esqueci').addEventListener('click', function () {
+    if (!mod || !emailOk()) return;
+    mod.redefinirSenha(email.value.trim()).then(function () {
+      avisar('Se esse e-mail tiver conta no Ako, chega um link para criar uma senha nova. Olhe também o spam.', true);
+    }, function (e) { avisar(e.message); });
   });
 
   /* ---------- aviso rápido ---------- */
@@ -218,9 +292,9 @@
           '<p class="conta-msg" data-conta-msg role="alert"></p>';
     }
     return roteiro
-      ? '<p><strong>Seu roteiro está salvo só neste navegador.</strong> Quer abrir no celular ou em outro computador? Entre com a sua conta Google e ele vai junto, com todo o progresso.</p>' +
+      ? '<p><strong>Seu roteiro está salvo só neste navegador.</strong> Quer abrir no celular ou em outro computador? Entre com Google ou com e-mail e ele vai junto, com todo o progresso.</p>' +
         '<div class="acoes"><button class="btn" type="button" data-conta="entrar">Salvar meu roteiro na conta</button></div>'
-      : '<p>Seu progresso está salvo só neste navegador. Entre com a sua conta Google para guardar uma cópia e continuar em qualquer aparelho.</p>' +
+      : '<p>Seu progresso está salvo só neste navegador. Entre com Google ou com e-mail para guardar uma cópia e continuar em qualquer aparelho.</p>' +
         '<div class="acoes"><button class="btn" type="button" data-conta="entrar">Entrar para salvar</button></div>';
   }
   function desenhar() {
@@ -245,10 +319,12 @@
     } else if (acao === 'apagar' && mod) {
       if (!confirm('Apagar sua conta e todos os dados do Ako na nuvem? O progresso deste navegador continua aqui. Não tem como desfazer.')) return;
       b.disabled = true;
-      mod.apagarConta().then(function () { usuario = null; desenhar(); toast('Conta e dados da nuvem apagados. O progresso segue neste navegador.'); },
-        function () { b.disabled = false; if (aviso) aviso.textContent = 'Não deu para apagar agora. Tente de novo em instantes.'; });
+      mod.apagarConta(pedirSenha).then(function (ok) { b.disabled = false; if (!ok) return; usuario = null; desenhar(); toast('Conta e dados da nuvem apagados. O progresso segue neste navegador.'); },
+        function (e) { b.disabled = false; if (aviso) aviso.textContent = (e && e.message && /Senha/.test(e.message)) ? e.message : 'Não deu para apagar agora. Tente de novo em instantes.'; });
     }
   });
+
+  function pedirSenha() { return Promise.resolve(window.prompt('Por segurança, digite a sua senha do Ako para apagar a conta:')); }
 
   /* ---------- sincronização enquanto a página está aberta ---------- */
   // Entrou por outro lugar (Ajustes da Rotina): trilhas e mapas ligam junto.
@@ -258,7 +334,7 @@
     Object.keys(apps).forEach(function (k) { if (document.hidden) apps[k].agora(); else apps[k].puxar(); });
   });
 
-  window.AkoConta = { abrir: abrir, desenhar: desenhar, entrou: function () { return !!usuario; } };
+  window.AkoConta = { abrir: abrir, pedirSenha: pedirSenha, desenhar: desenhar, entrou: function () { return !!usuario; } };
   desenhar();
   if (ligada()) carregar().catch(function () { /* sem internet: segue no navegador */ });
 })();

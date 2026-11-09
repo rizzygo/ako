@@ -1,0 +1,24 @@
+/* Topo do Ako: marca e menu iguais em todas as páginas (início, trilhas, mapas, materiais, Favos, Rotina, privacidade).
+   Carregado por último, depois do CSS de cada parte. O resto do topo (fundo, sticky) vem de /ds/rizzygo.css. */
+.topo{display:block}
+.topo-in{max-width:var(--largura);margin:0 auto;padding:.6rem 16px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.marca{display:flex;align-items:center;gap:.5rem;white-space:nowrap;text-decoration:none;color:var(--tinta);font:700 1.2rem/1 var(--f-titulo);letter-spacing:-.02em;margin-right:0}
+.marca svg{width:28px;height:28px}
+.marca b{font-weight:400;color:var(--suave)}
+.menu{display:flex;align-items:center;gap:1rem}
+.menu > a{color:var(--tinta);text-decoration:none;font-weight:700;font-size:.95rem;white-space:nowrap}
+.menu > a:hover{color:var(--azul)}
+.menu > a[aria-current="page"]{color:var(--azul);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:.4em}
+.familia-in{max-width:var(--largura)}
+/* Nível e XP das trilhas: só na página das trilhas, sem mudar a altura do topo */
+.menu .xp-pill{padding-top:.12rem;padding-bottom:.12rem}
+@media (max-width:560px){
+  .topo-in{flex-wrap:wrap;row-gap:.35rem;gap:.5rem}
+  .menu{width:100%;gap:1.1rem;overflow-x:auto;scrollbar-width:none;padding-bottom:.3rem}
+  .topo-in{position:relative}
+  .menu .xp-pill{position:absolute;right:16px;top:.55rem}
+}
+@media (max-width:440px){.menu > a{font-size:.9rem}}
+@media (max-width:420px){.menu{gap:.9rem}.marca{font-size:1.1rem}}
+/* Favos: a página é uma coluna estreita com padding no body; topo e faixas ocupam a largura toda. */
+.favos-topo{margin:-2.5rem calc(50% - 50vw) 2.5rem;width:100vw}

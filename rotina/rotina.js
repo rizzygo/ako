@@ -1,6 +1,6 @@
 // Rotina com a Zumi: timer de blocos, lembretes, checks, pontos e títulos.
 // Tudo fica no localStorage deste aparelho (chave rizzygo-rotina-v1). Sem login e sem servidor.
-// Quem quiser liga a cópia na nuvem em Ajustes (login com Google, /nuvem.js); o aparelho segue sendo a fonte.
+// Quem quiser liga a cópia na nuvem pelo botão Entrar do topo ou em Ajustes (/conta.js e /nuvem.js); o aparelho segue sendo a fonte.
 (function () {
   'use strict';
 
@@ -830,13 +830,11 @@
     return carregandoNuvem;
   }
   function aceitesTela() { return { saude: $('nuvem-saude').checked, reflexoes: $('nuvem-reflexoes').checked }; }
-  // O módulo do Google só carrega depois do aceite; assim o clique em "Entrar" abre a janela sem bloqueio.
-  $('nuvem-aceite').addEventListener('change', function () { if (this.checked) abrirNuvem(); });
+  // Entrar abre a mesma janela do topo (/conta.js): aceite, Google ou e-mail e senha. As caixas daqui valem para a Rotina.
   $('nuvem-entrar').addEventListener('click', function () {
-    if (!$('nuvem-aceite').checked) { $('nuvem-estado').textContent = 'Para salvar na nuvem, marque que leu e aceita a política de privacidade.'; $('nuvem-aceite').focus(); return; }
-    if (!nuvem) { $('nuvem-estado').textContent = 'Preparando a conexão. Toque de novo em um instante.'; abrirNuvem(); return; }
-    $('nuvem-estado').textContent = 'Abrindo a janela do Google...';
-    nuvem.entrar(aceitesTela()).then(function (ok) { if (ok) falar('Pronto. Sua rotina agora tem uma cópia na nuvem.', 'comemorando', true); });
+    metaNuvem.aceites = aceitesTela(); salvarMeta();
+    if (window.AkoConta) window.AkoConta.abrir();
+    else $('nuvem-estado').textContent = 'Recarregue a página e tente de novo.';
   });
   ['nuvem-saude', 'nuvem-reflexoes'].forEach(function (id) {
     $(id).addEventListener('change', function () {
@@ -857,14 +855,17 @@
   });
   $('nuvem-apagar').addEventListener('click', function () {
     if (!nuvem || !confirm('Apagar sua conta e todos os dados do Ako na nuvem? A rotina deste aparelho continua aqui. Não tem como desfazer.')) return;
-    nuvem.apagarConta().then(function () { falar('Conta e dados da nuvem apagados. A rotina segue neste aparelho.', 'ola', true); })
-      .catch(function () { $('nuvem-estado').textContent = 'Não deu para apagar agora. Tente de novo em instantes.'; });
+    nuvem.apagarConta(window.AkoConta && window.AkoConta.pedirSenha).then(function (ok) { if (ok) falar('Conta e dados da nuvem apagados. A rotina segue neste aparelho.', 'ola', true); })
+      .catch(function (e) { $('nuvem-estado').textContent = e && /Senha/.test(e.message || '') ? e.message : 'Não deu para apagar agora. Tente de novo em instantes.'; });
   });
   mostrarNuvem(null);
   function contaLigada() { try { var c = JSON.parse(localStorage.getItem('rizzygo-conta-v1') || 'null'); return !!(c && c.ligado); } catch (e) { return false; } }
   if (metaNuvem.ligado || contaLigada()) abrirNuvem();
   // Entrou pelo botão do topo (/conta.js): a Rotina liga junto, com os mesmos cuidados de saúde e reflexões.
-  window.addEventListener('rizzygo-conta', function (ev) { if (ev.detail && ev.detail.usuario) abrirNuvem(); });
+  window.addEventListener('rizzygo-conta', function (ev) {
+    if (!ev.detail || !ev.detail.usuario) return;
+    abrirNuvem().then(function () { falar('Pronto. Sua rotina agora tem uma cópia na sua conta.', 'comemorando', true); }, function () { });
+  });
 
   // instalar (Android e computador)
   var pedidoInstalar = null;
