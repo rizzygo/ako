@@ -230,3 +230,16 @@ textarea{width:100%;resize:vertical}
 .chip[aria-checked="true"]{background:#F7B547;border-color:#F7B547;color:#0B1B3A}
 .nivel.parado{background:var(--fundo);color:var(--suave)}
 .historico-agua li{grid-template-columns:1fr auto 7.5rem}
+
+/* Água por nível (sem copos) */
+.agua-hoje{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem 1rem;background:var(--fundo);border-radius:12px;padding:.75rem}
+.niveis{display:flex;gap:.35rem;flex-wrap:wrap}
+.nivel-bt{font:700 .95rem var(--f-texto);border:2px solid var(--linha);background:var(--superficie);color:var(--tinta);border-radius:999px;padding:.45rem .9rem;cursor:pointer}
+.niveis.pequenos .nivel-bt{font-size:.85rem;padding:.25rem .65rem}
+.nivel-bt.ruim[aria-checked="true"]{background:var(--erro-claro);border-color:var(--erro);color:var(--erro)}
+.nivel-bt.bom[aria-checked="true"]{background:var(--azul-claro);border-color:var(--azul);color:var(--azul)}
+.nivel-bt.excelente[aria-checked="true"]{background:var(--certo-claro);border-color:var(--certo);color:var(--certo)}
+.historico-agua li{grid-template-columns:1fr auto}
+.dia-nome small{display:block;font-size:.78rem;color:var(--erro)}
+.aviso.recomeco{border-color:var(--azul);z-index:55}
+.aviso.recomeco .nota{grid-column:1/-1}
