@@ -361,3 +361,7 @@ textarea{width:100%;resize:vertical}
 .sons{display:flex;gap:.4rem}
 .som-fim .ouvir{padding:.4rem .9rem;margin-left:auto}
 .tempos #nota-pausa{margin-top:.6rem}
+.sons-ajuste{display:grid;gap:.6rem}
+.sons-ajuste .nota{margin:0}
+.sons-linha{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem}
+.sons-linha .ouvir{padding:.4rem .9rem}

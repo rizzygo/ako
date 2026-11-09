@@ -51,7 +51,7 @@
         lazer: { foco: 60 },
         pausaLonga: 15, ciclos: 4,
         pausas: { trabalho: true, estudo: true }, somTipo: 'zumi',
-        inicio: '08:00', fim: '22:00', som: true, lembrarMetas: true,
+        inicio: '08:00', fim: '22:00', som: true, somLembretes: true, lembrarMetas: true,
         lembretes: { agua: { on: true, min: 45 }, respirar: { on: true, min: 90 }, semTela: { on: true, min: 120 } }
       },
       meus: [], tarefas: [], metas: [],
@@ -250,14 +250,16 @@
       o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + p[2] + 0.05);
     });
   }
-  function tocar(forcar) {
-    if (!S.config.som && !forcar) return;
+  // tipo 'lembrete' usa a chave própria e um som mais curto; forcar toca mesmo desligado (botão Ouvir).
+  function tocar(forcar, tipo) {
+    var lembrete = tipo === 'lembrete';
+    if (!forcar && !(lembrete ? S.config.somLembretes : S.config.som)) return;
     try {
       audio = audio || new (window.AudioContext || window.webkitAudioContext)();
       if (audio.state === 'suspended') audio.resume();
       var t = audio.currentTime + 0.05;
-      if (S.config.somTipo !== 'sino') { zumbido(audio, t, 0.7); t += 0.75; }
-      sino(audio, t, 1046.5); sino(audio, t + 0.45, 784, 0.8);
+      if (S.config.somTipo !== 'sino') { zumbido(audio, t, lembrete ? 0.4 : 0.7); t += lembrete ? 0.45 : 0.75; }
+      sino(audio, t, 1046.5); if (!lembrete) sino(audio, t + 0.45, 784, 0.8);
     } catch (e) { /* sem áudio */ }
     if (navigator.vibrate && !forcar) navigator.vibrate([120, 80, 120]);
   }
@@ -382,7 +384,7 @@
     if (!info) return;
     fila.push(chave);
     notificar('Zumi lembrando', info.nome, 'lem-' + chave);
-    tocar();
+    tocar(false, 'lembrete');
     mostrarAviso();
   }
   function mostrarAviso() {
@@ -714,6 +716,7 @@
     b.addEventListener('click', function () { S.config.somTipo = b.dataset.som; salvar(); estadoTempos(); tocar(true); });
   });
   $('b-ouvir').addEventListener('click', function () { tocar(true); });
+  $('b-ouvir-lem').addEventListener('click', function () { tocar(true, 'lembrete'); });
   function estadoTempos() {
     ['trabalho', 'estudo'].forEach(function (m) {
       var on = !!S.config.pausas[m], cx = document.querySelector('[data-modo-cfg="' + m + '"] .linha-tempo:nth-of-type(2)');
