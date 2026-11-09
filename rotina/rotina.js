@@ -54,7 +54,7 @@
         inicio: '08:00', fim: '22:00', som: true, somLembretes: true, lembrarMetas: true,
         lembretes: { agua: { on: true, min: 45 }, respirar: { on: true, min: 90 }, semTela: { on: true, min: 120 } }
       },
-      meus: [], tarefas: [], metas: [],
+      meus: [], tarefas: [], metas: [], diario: {},
       timer: { modo: 'estudo', fase: 'foco', ciclo: 1, rodando: false, fimEm: null, restante: null },
       proximos: {}, adiados: {}, tocados: {},
       dias: {}, pontosAntigos: 0,
@@ -71,7 +71,7 @@
     s.config = Object.assign({}, p.config, s.config || {});
     s.config.lembretes = Object.assign({}, p.config.lembretes, s.config.lembretes || {});
     s.config.pausas = Object.assign({}, p.config.pausas, s.config.pausas || {});
-    ['meus', 'tarefas', 'metas', 'proximos', 'adiados', 'tocados', 'dias', 'timer'].forEach(function (k) { if (!s[k]) s[k] = p[k]; });
+    ['meus', 'tarefas', 'metas', 'diario', 'proximos', 'adiados', 'tocados', 'dias', 'timer'].forEach(function (k) { if (!s[k]) s[k] = p[k]; });
     if (typeof s.pontosAntigos !== 'number') s.pontosAntigos = 0;
     if (!s.criadoEm) s.criadoEm = Object.keys(s.dias).sort()[0] || chaveDia();
     if (typeof s.melhor !== 'number') s.melhor = 0;
@@ -96,7 +96,13 @@
   // Guarda só os últimos 60 dias; os pontos dos mais antigos continuam somando.
   function podar() {
     var ks = Object.keys(S.dias).sort();
-    while (ks.length > 60) { var k = ks.shift(); S.pontosAntigos += pontosDia(S.dias[k]); delete S.dias[k]; }
+    while (ks.length > 60) {
+      var k = ks.shift(), d = S.dias[k];
+      S.pontosAntigos += pontosDia(d);
+      // o histórico pessoal (como foi o dia) fica guardado mesmo depois dos 60 dias
+      if (d.humor || d.reflexao || d.papel) S.diario[k] = { humor: d.humor || 0, texto: d.reflexao || '', papel: !!d.papel };
+      delete S.dias[k];
+    }
   }
 
   // ---------- Pontos ----------
@@ -118,7 +124,7 @@
     return 10 * ((b.trabalho || 0) + (b.estudo || 0) + (b.lazer || 0)) +
       (PONTOS_AGUA[nivelAgua(d)] || 0) + 5 * Math.min(d.respirar || 0, 6) +
       (d.semTelaPts != null ? Math.min(d.semTelaPts, 60) : 5 * Math.min(d.semTela || 0, 4)) +
-      20 * ex + ((d.reflexao || d.papel || d.refOculta) ? 10 : 0) + 2 * Math.min(d.meus || 0, 10) +
+      20 * ex + ((d.reflexao || d.papel || d.refOculta || d.humor) ? 10 : 0) + 2 * Math.min(d.meus || 0, 10) +
       Math.min(d.tarefasPts || 0, 40) + Math.min(d.metasPts || 0, 50);
   }
   function total() {
@@ -127,7 +133,7 @@
   function indiceTitulo(p) { var i = 0; TITULOS.forEach(function (t, j) { if (p >= t[0]) i = j; }); return i; }
   // O título conquistado não cai, mesmo que os pontos diminuam.
   function tituloAtual() { var i = indiceTitulo(total()); if (i > S.melhor) S.melhor = i; return S.melhor; }
-  function ativo(d) { return !!d && (pontosBrutos(d) > 0 || !!nivelAgua(d) || !!d.reflexao || !!d.refOculta); }
+  function ativo(d) { return !!d && (pontosBrutos(d) > 0 || !!nivelAgua(d) || !!d.reflexao || !!d.refOculta || !!d.humor); }
 
   // Fecha os dias que já passaram: guarda pontos e nível da água; dia sem atividade perde 10 pontos.
   function fecharDias() {
@@ -415,7 +421,7 @@
       if (m.tipo === 'intervalo') {
         if (!S.proximos[m.id]) agendar(m.id, m.min);
         else if (agora >= S.proximos[m.id]) { agendar(m.id, m.min); if (noHorario(d)) disparar(m.id); }
-      } else {
+      } else if (!m.semana || m.semana.indexOf(d.getDay()) >= 0) {
         var alvo = new Date(d); var p = m.hora.split(':'); alvo.setHours(+p[0], +p[1], 0, 0);
         // toca uma vez por dia; se o app abriu até 2 horas depois do horário, ainda avisa
         if (agora >= alvo.getTime() && agora - alvo.getTime() < 120 * MIN && S.tocados[m.id] !== hoje) { S.tocados[m.id] = hoje; disparar(m.id); }
@@ -439,7 +445,7 @@
       var sp = document.createElement('span'); sp.textContent = m.nome;
       lab.appendChild(cb); lab.appendChild(sp);
       var quando = document.createElement('span'); quando.className = 'cada';
-      quando.textContent = m.tipo === 'hora' ? 'todo dia às ' + m.hora : 'a cada ' + m.min + ' min';
+      quando.textContent = m.tipo === 'hora' ? textoDias(m.semana) + ' às ' + m.hora : 'a cada ' + m.min + ' min';
       var tirar = document.createElement('button'); tirar.type = 'button'; tirar.className = 'link perigo tirar'; tirar.textContent = 'Remover';
       tirar.setAttribute('aria-label', 'Remover o lembrete ' + m.nome);
       tirar.addEventListener('click', function () { S.meus = S.meus.filter(function (x) { return x.id !== m.id; }); delete S.proximos[m.id]; delete S.adiados[m.id]; salvar(); renderMeus(); });
@@ -639,7 +645,10 @@
     var hojeN = Math.floor(new Date(chaveDia() + 'T12:00').getTime() / 86400000);
     el.pergunta.textContent = PERGUNTAS[hojeN % PERGUNTAS.length];
     if (document.activeElement !== el.reflexao) el.reflexao.value = d.reflexao || '';
-    el.refEstado.textContent = d.reflexao ? 'Reflexão de hoje salva. +10' : d.papel ? 'Respondida no papel. +10' : '';
+    el.refEstado.textContent = d.reflexao ? 'Salvo no seu histórico. +10' : d.papel ? 'Respondido no papel. +10' : d.humor ? 'Marcado como ' + HUMORES[d.humor][1] + '. +10' : '';
+    document.querySelectorAll('[data-humor]').forEach(function (b) { b.setAttribute('aria-checked', String(+b.dataset.humor === (d.humor || 0))); });
+    renderAmanhaFim();
+    if (!$('historico').hidden) renderHistorico();
 
     // semana
     el.semana.innerHTML = '';
@@ -789,9 +798,34 @@
 
   $('b-refletir').addEventListener('click', function () {
     var txt = el.reflexao.value.trim();
-    if (!txt) { el.refEstado.textContent = 'Escreva uma linha ou toque em "Respondi no papel".'; el.reflexao.focus(); return; }
+    if (!txt && !dia().humor) { el.refEstado.textContent = 'Escolha uma carinha, escreva uma linha ou toque em "Respondi no papel".'; el.reflexao.focus(); return; }
     mudar(function (d) { d.reflexao = txt; });
-    falar('Reflexão guardada. Descansa bem, até amanhã!', 'comemorando', true);
+    falar(txt ? 'Guardei no seu histórico. Descansa bem, até amanhã!' : 'Guardado. Descansa bem, até amanhã!', 'comemorando', true);
+  });
+  document.querySelectorAll('[data-humor]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var n = +b.dataset.humor, antes = dia().humor;
+      mudar(function (d) { d.humor = antes === n ? 0 : n; });
+      if (antes === n) return;
+      falar(n <= 2 ? 'Obrigada por contar. Dia pesado passa. Se quiser, escreva o que pesou: ajuda a soltar.' : n === 3 ? 'Dia normal também conta. Quer anotar algo que valeu?' : 'Que bom! Anota o que deu certo, para repetir amanhã.', n <= 2 ? 'ola' : 'comemorando', !antes);
+    });
+  });
+  $('b-historico').addEventListener('click', function () {
+    var h = $('historico'), abre = h.hidden;
+    h.hidden = !abre; this.setAttribute('aria-expanded', String(abre));
+    if (abre) { renderHistorico(); h.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+  });
+  $('b-amanha').addEventListener('click', function () {
+    var f = $('fim-amanha'), abre = f.hidden;
+    f.hidden = !abre; this.setAttribute('aria-expanded', String(abre));
+    if (abre) $('fim-amanha-txt').focus();
+  });
+  $('fim-amanha').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var txt = $('fim-amanha-txt').value.trim(); if (!txt) return;
+    addTarefa(txt, $('fim-amanha-prio').checked, false, amanhaChave());
+    $('fim-amanha-txt').value = ''; $('fim-amanha-prio').checked = false; $('fim-amanha-txt').focus();
+    falar('Anotado para amanhã. Agora pode descansar.', 'ideia');
   });
   $('b-papel').addEventListener('click', function () { mudar(function (d) { d.papel = true; }); falar('Papel e caneta, longe da tela. Ótima escolha. +10', 'comemorando', true); });
 
@@ -800,21 +834,49 @@
   tipos.forEach(function (r) {
     r.addEventListener('change', function () {
       var hora = document.querySelector('[name="novo-tipo"]:checked').value === 'hora';
-      document.querySelector('.novo-hora').hidden = !hora; document.querySelector('.novo-intervalo').hidden = hora;
+      document.querySelectorAll('.novo-hora').forEach(function (x) { x.hidden = !hora; }); document.querySelector('.novo-intervalo').hidden = hora;
     });
   });
   $('novo').addEventListener('submit', function (e) {
     e.preventDefault();
     var nome = $('novo-nome').value.trim(); if (!nome) return;
     var tipo = document.querySelector('[name="novo-tipo"]:checked').value;
+    var sem = diasEscolhidos();
+    if (tipo === 'hora' && !sem.length) { falar('Escolha pelo menos um dia da semana para o lembrete.', 'ideia'); return; }
     var m = { id: 'm' + Date.now().toString(36), nome: nome, tipo: tipo, hora: $('novo-hora').value || '08:00', min: Math.max(15, +$('novo-min').value || 120), on: true };
+    if (tipo === 'hora' && sem.length < 7) m.semana = sem;
     // um horário que já passou hoje só toca amanhã
     if (tipo === 'hora' && minutosDoDia(m.hora) <= new Date().getHours() * 60 + new Date().getMinutes()) S.tocados[m.id] = chaveDia();
     S.meus.push(m); salvar(); renderMeus();
-    $('novo-nome').value = '';
+    $('novo-nome').value = ''; marcarDias(null);
     var semNotif = 'Notification' in window && Notification.permission === 'default';
     falar('Anotado. Eu lembro você de: ' + nome + '.' + (semNotif ? ' Ative as notificações para eu avisar com o app em segundo plano.' : ''), 'ideia', true);
   });
+
+  // Dias da semana do lembrete no horário: "Todos os dias" liga e desliga todos de uma vez.
+  var botoesDia = document.querySelectorAll('.dias-semana [data-dia]'), botaoTodos = document.querySelector('.dias-semana [data-todos]');
+  function diasEscolhidos() { return Array.prototype.filter.call(botoesDia, function (b) { return b.getAttribute('aria-pressed') === 'true'; }).map(function (b) { return +b.dataset.dia; }).sort(); }
+  function marcarDias(lista) {
+    botoesDia.forEach(function (b) { b.setAttribute('aria-pressed', String(!lista || lista.indexOf(+b.dataset.dia) >= 0)); });
+    botaoTodos.setAttribute('aria-pressed', String(diasEscolhidos().length === 7));
+  }
+  botoesDia.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var todos = diasEscolhidos().length === 7;
+      // com todos marcados, o primeiro toque escolhe só aquele dia
+      if (todos) marcarDias([+b.dataset.dia]);
+      else { b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true')); marcarDias(diasEscolhidos()); }
+    });
+  });
+  botaoTodos.addEventListener('click', function () { marcarDias(diasEscolhidos().length === 7 ? [] : null); });
+  function textoDias(sem) {
+    if (!sem || sem.length === 7) return 'todo dia';
+    var k = sem.slice().sort().join(',');
+    if (k === '1,2,3,4,5') return 'de segunda a sexta';
+    if (k === '0,6') return 'no fim de semana';
+    var nomes = [1, 2, 3, 4, 5, 6, 0].filter(function (d) { return sem.indexOf(d) >= 0; }).map(function (d) { return DSEM[d]; });
+    return nomes.length === 1 ? 'toda ' + nomes[0] : nomes.slice(0, -1).join(', ') + ' e ' + nomes[nomes.length - 1];
+  }
 
   $('b-notif').addEventListener('click', function () {
     if (!('Notification' in window)) return;
@@ -839,7 +901,10 @@
     var c = copia(est);
     LOCAIS.forEach(function (k) { delete c[k]; });
     if (!aceites.saude) c.meus = [];
-    if (!aceites.reflexoes) Object.keys(c.dias || {}).forEach(function (k) { var d = c.dias[k]; if (d.reflexao) { d.reflexao = ''; d.refOculta = true; } });
+    if (!aceites.reflexoes) {
+      Object.keys(c.dias || {}).forEach(function (k) { var d = c.dias[k]; if (d.reflexao || d.humor) { d.reflexao = ''; d.humor = 0; d.refOculta = true; } });
+      c.diario = {};
+    }
     return c;
   }
   function daNuvem(rem, loc, aceites) {
@@ -849,7 +914,9 @@
     Object.keys(r.dias || {}).forEach(function (k) {
       var l = loc.dias && loc.dias[k];
       if (l && l.reflexao && !r.dias[k].reflexao) r.dias[k].reflexao = l.reflexao;
+      if (l && l.humor && !r.dias[k].humor) r.dias[k].humor = l.humor;
     });
+    r.diario = Object.assign({}, loc.diario || {}, r.diario || {});
     return r;
   }
   function temDados(est) {
@@ -949,6 +1016,41 @@
     document.querySelector('.instalar h2').after(w);
   });
 
+  // ---------- Como foi o dia: histórico pessoal ----------
+  var HUMORES = [null, ['😣', 'Difícil'], ['😕', 'Pesado'], ['😐', 'Normal'], ['🙂', 'Bom'], ['😄', 'Ótimo']];
+  var DSEM = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+  function dataCurta(k) { var d = new Date(k + 'T12:00'); return DSEM[d.getDay()] + ', ' + k.slice(8, 10) + '/' + k.slice(5, 7) + (k.slice(0, 4) !== String(new Date().getFullYear()) ? '/' + k.slice(0, 4) : ''); }
+  function renderHistorico() {
+    var itens = {};
+    Object.keys(S.diario || {}).forEach(function (k) { itens[k] = S.diario[k]; });
+    Object.keys(S.dias).forEach(function (k) { var d = S.dias[k]; if (d.humor || d.reflexao || d.papel || d.refOculta) itens[k] = { humor: d.humor || 0, texto: d.reflexao || '', papel: !!d.papel, oculta: !!d.refOculta && !d.reflexao }; });
+    var ks = Object.keys(itens).sort().reverse(), ul = $('historico-lista'); ul.innerHTML = '';
+    ks.forEach(function (k) {
+      var it = itens[k], li = document.createElement('li');
+      var cab = document.createElement('div'); cab.className = 'hist-cab';
+      var em = document.createElement('span'); em.className = 'hist-humor'; em.textContent = it.humor ? HUMORES[it.humor][0] : '·';
+      if (it.humor) em.title = HUMORES[it.humor][1];
+      var dt = document.createElement('strong'); dt.textContent = k === chaveDia() ? 'Hoje' : dataCurta(k);
+      cab.appendChild(em); cab.appendChild(dt);
+      if (it.humor) { var hs = document.createElement('small'); hs.textContent = HUMORES[it.humor][1]; cab.appendChild(hs); }
+      li.appendChild(cab);
+      var p = document.createElement('p');
+      p.textContent = it.texto || (it.oculta ? 'Escrito em outro aparelho.' : it.papel ? 'Respondido no papel.' : 'Sem texto.');
+      if (!it.texto) p.className = 'nota';
+      li.appendChild(p); ul.appendChild(li);
+    });
+    var ult = ks.slice(0, 7).filter(function (k) { return itens[k].humor; });
+    var media = ult.length ? ult.reduce(function (a, k) { return a + itens[k].humor; }, 0) / ult.length : 0;
+    $('historico-resumo').textContent = !ks.length ? 'Ainda vazio. O que você marcar no fim do dia aparece aqui, só neste aparelho (ou na sua conta, se você permitir as reflexões).'
+      : ks.length + (ks.length === 1 ? ' dia registrado.' : ' dias registrados.') + (media ? ' Nos últimos registros, a média foi ' + HUMORES[Math.round(media)][0] + ' ' + HUMORES[Math.round(media)][1].toLowerCase() + '.' : '');
+  }
+  function renderAmanhaFim() {
+    var am = amanhaChave(), ul = $('fim-amanha-lista'); ul.innerHTML = '';
+    S.tarefas.filter(function (t) { return !t.rotina && t.dia === am; }).forEach(function (t) { ul.appendChild(linhaTarefa(t, { amanha: true })); });
+    var n = ul.children.length;
+    $('b-amanha').textContent = n ? '📝 Amanhã: ' + n + (n === 1 ? ' tarefa' : ' tarefas') + '. Mais alguma?' : '📝 Tem algo para amanhã?';
+  }
+
   // ---------- Tarefas e rotinas ----------
   function amanhaChave() { var d = new Date(); d.setDate(d.getDate() + 1); return chaveDia(d); }
   function novoId(p) { return p + Date.now().toString(36) + Math.floor(Math.random() * 1000); }
@@ -1006,7 +1108,7 @@
     // revisão do fim do dia
     $('revisao-resumo').textContent = lista.length
       ? 'Você concluiu ' + feitas.length + ' de ' + lista.length + ' itens hoje.' + (feitas.length === lista.length ? ' Dia fechado.' : ' O que ficou, vai para amanhã ou sai da lista?')
-      : 'Sem tarefas hoje. Quer deixar algo pronto para amanhã?';
+      : 'Sem tarefas hoje. Quer deixar algo pronto para outro dia? Use a Agenda.';
     var pend = $('pendentes'); pend.innerHTML = '';
     lista.filter(function (t) { return !t.rotina && !feitaHoje(t); }).forEach(function (t) {
       var li = document.createElement('li');
@@ -1017,9 +1119,56 @@
       r.addEventListener('click', function () { S.tarefas = S.tarefas.filter(function (y) { return y.id !== t.id; }); salvar(); render(); });
       li.appendChild(sp); li.appendChild(a); li.appendChild(r); pend.appendChild(li);
     });
-    var ula = $('amanha'); ula.innerHTML = '';
-    S.tarefas.filter(function (t) { return !t.rotina && t.dia > hoje; }).forEach(function (t) { ula.appendChild(linhaTarefa(t, { amanha: true })); });
+    renderAgenda();
   }
+
+  // Agenda: calendário do mês; o dia escolhido recebe as tarefas novas.
+  var calDia = null, calMes = null;
+  function chaveMes(d) { return new Date(d.getFullYear(), d.getMonth(), 1); }
+  function renderAgenda() {
+    var hoje = chaveDia(), am = amanhaChave();
+    if (!calDia || calDia < hoje) calDia = am;
+    if (!calMes) calMes = chaveMes(new Date(calDia + 'T12:00'));
+    var nomeMes = calMes.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+    $('cal-mes').textContent = nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1);
+    $('cal-ant').disabled = calMes <= chaveMes(new Date());
+    var conta = {};
+    S.tarefas.forEach(function (t) { if (!t.rotina && !t.feita && t.dia >= hoje) conta[t.dia] = (conta[t.dia] || 0) + 1; });
+    var box = $('cal-dias'); box.innerHTML = '';
+    for (var i = 0; i < calMes.getDay(); i++) box.appendChild(document.createElement('span'));
+    var ultimo = new Date(calMes.getFullYear(), calMes.getMonth() + 1, 0).getDate();
+    for (var n = 1; n <= ultimo; n++) {
+      var k = chaveDia(new Date(calMes.getFullYear(), calMes.getMonth(), n));
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'cal-d'; b.dataset.dia = k;
+      b.textContent = n;
+      if (k < hoje) b.disabled = true;
+      if (k === hoje) b.classList.add('hoje');
+      if (conta[k]) { b.classList.add('tem'); b.setAttribute('aria-label', dataCurta(k) + ', ' + conta[k] + (conta[k] === 1 ? ' tarefa' : ' tarefas')); }
+      else b.setAttribute('aria-label', dataCurta(k));
+      b.setAttribute('aria-pressed', String(k === calDia));
+      box.appendChild(b);
+    }
+    $('cal-titulo').textContent = calDia === hoje ? 'Hoje' : calDia === am ? 'Amanhã, ' + dataCurta(calDia) : dataCurta(calDia).replace(/^./, function (c) { return c.toUpperCase(); });
+    var ul = $('cal-lista'); ul.innerHTML = '';
+    var doDia = calDia === hoje ? visiveisHoje().filter(function (t) { return !t.rotina; }) : S.tarefas.filter(function (t) { return !t.rotina && t.dia === calDia; });
+    doDia.forEach(function (t) { ul.appendChild(linhaTarefa(t, calDia === hoje ? {} : { amanha: true })); });
+    $('cal-vazio').hidden = doDia.length > 0;
+    $('cal-add').textContent = calDia === hoje ? 'Adicionar hoje' : 'Adicionar em ' + dataCurta(calDia).split(',')[1].trim();
+  }
+  $('cal-dias').addEventListener('click', function (e) {
+    var b = e.target.closest('.cal-d'); if (!b || b.disabled) return;
+    calDia = b.dataset.dia; renderAgenda();
+  });
+  $('cal-ant').addEventListener('click', function () { calMes = new Date(calMes.getFullYear(), calMes.getMonth() - 1, 1); renderAgenda(); });
+  $('cal-prox').addEventListener('click', function () { calMes = new Date(calMes.getFullYear(), calMes.getMonth() + 1, 1); renderAgenda(); });
+  $('cal-nova').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var txt = $('cal-txt').value.trim(); if (!txt) return;
+    var quando = calDia;
+    addTarefa(txt, $('cal-prio').checked, false, quando);
+    $('cal-txt').value = ''; $('cal-prio').checked = false;
+    falar(quando === chaveDia() ? 'Anotado na lista de hoje.' : 'Anotado para ' + dataCurta(quando) + '. Nesse dia ela aparece na sua lista.', 'ideia');
+  });
   function addTarefa(texto, prio, rotina, quando) {
     S.tarefas.push({ id: novoId('t'), texto: texto, prio: prio, rotina: rotina, dia: quando, feita: null });
     salvar(); render();
@@ -1030,13 +1179,6 @@
     addTarefa(txt, $('tarefa-prio').checked, $('tarefa-rotina').checked, chaveDia());
     falar($('tarefa-rotina').checked ? 'Rotina criada. Ela volta todo dia.' : ($('tarefa-prio').checked ? 'Prioridade anotada. Começa por ela?' : 'Anotado na lista de hoje.'), 'ideia');
     $('tarefa-txt').value = ''; $('tarefa-prio').checked = false; $('tarefa-rotina').checked = false;
-  });
-  $('nova-amanha').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var txt = $('amanha-txt').value.trim(); if (!txt) return;
-    addTarefa(txt, $('amanha-prio').checked, false, amanhaChave());
-    $('amanha-txt').value = ''; $('amanha-prio').checked = false;
-    falar('Anotado para amanhã. Agora pode descansar.', 'ideia');
   });
 
   // ---------- Metas do ano ----------
@@ -1161,7 +1303,7 @@
     var todas = visiveisHoje().length;
     $('h-tarefas-vazio').hidden = lista.length > 0;
     $('h-tarefas-vazio').textContent = todas ? 'Tudo feito por hoje. Boa!' : 'Nada na lista ainda.';
-    $('h-tarefas-mais').textContent = todas ? 'Ver todas as tarefas (' + todas + ')' : 'Adicionar tarefas';
+    $('h-tarefas-mais').hidden = !todas; $('h-tarefas-mais').textContent = 'Ver todas (' + todas + ')';
     botoesNivel($('h-agua'), chaveDia());
     var nv = nivelAgua(dia());
     $('h-agua-txt').textContent = nv ? 'Marcado como ' + NIVEIS[nv] + (PONTOS_AGUA[nv] ? '. +' + PONTOS_AGUA[nv] : '.') : 'Bom vale 10 pontos e Excelente vale 20.';
@@ -1172,6 +1314,13 @@
     $('h-fechar').hidden = new Date().getHours() < 18 || !!(d.reflexao || d.papel);
   }
   $('h-iniciar').addEventListener('click', function () { el.iniciar.click(); });
+  // Botões que levam a outra aba (e, se pedir, já põem o cursor no campo)
+  document.querySelectorAll('[data-vai]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      irPara(b.dataset.vai);
+      if (b.dataset.foco) setTimeout(function () { var c = $(b.dataset.foco); if (c) { c.focus(); c.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }, 60);
+    });
+  });
 
   // ---------- Abas ----------
   var ABAS = ['hoje', 'foco', 'tarefas', 'bem-estar', 'metas', 'evolucao', 'ajustes'];

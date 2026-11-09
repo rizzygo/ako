@@ -365,3 +365,58 @@ textarea{width:100%;resize:vertical}
 .sons-ajuste .nota{margin:0}
 .sons-linha{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem}
 .sons-linha .ouvir{padding:.4rem .9rem}
+
+/* Botões no lugar de links de navegação */
+.btn.btn-p{padding:.55rem .95rem;font-size:.95rem}
+.mais-acoes{margin-top:auto}
+.metas-aviso{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem 1rem}
+
+/* Fim do dia: como foi, histórico e amanhã */
+.humores{display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem}
+.humores button{display:flex;flex-direction:column;align-items:center;gap:.15rem;font:600 .82rem var(--f-texto);color:var(--suave);background:var(--fundo);border:2px solid transparent;border-radius:12px;padding:.5rem .2rem;cursor:pointer;transition:transform .15s,border-color .15s}
+.humores button span{font-size:1.7rem;line-height:1}
+.humores button:hover{transform:translateY(-2px)}
+.humores button[aria-checked="true"]{border-color:var(--ambar);background:var(--ambar-claro);color:var(--tinta)}
+.dica{margin-top:-.4rem}
+.historico{border-top:1px solid var(--linha);padding-top:1rem;display:grid;gap:.6rem}
+.historico[hidden]{display:none}
+.historico ul{list-style:none;margin:0;padding:0;display:grid;gap:.5rem;max-height:26rem;overflow:auto}
+.historico li{background:var(--fundo);border-radius:12px;padding:.65rem .8rem}
+.historico li p{margin:.3rem 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.hist-cab{display:flex;align-items:center;gap:.5rem}
+.hist-humor{font-size:1.3rem;line-height:1}
+.hist-cab small{color:var(--suave)}
+.para-amanha{border-top:1px solid var(--linha);padding-top:1rem;display:grid;gap:.7rem;justify-items:start}
+.para-amanha .nova-tarefa,.para-amanha .tarefas{width:100%}
+.para-amanha .nova-tarefa[hidden]{display:none}
+
+/* Agenda */
+.grade > .largo{grid-column:1/-1}
+.agenda{display:grid;gap:1.25rem}
+@media (min-width:760px){.agenda{grid-template-columns:minmax(16rem,22rem) 1fr;align-items:start}}
+.cal{background:var(--fundo);border-radius:14px;padding:.75rem}
+.cal-topo{display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem}
+.cal-topo strong{font:700 1rem var(--f-titulo)}
+.cal-nav{width:2.2rem;height:2.2rem;border-radius:50%;border:1px solid var(--linha);background:var(--superficie);color:var(--azul);font:700 1.2rem/1 var(--f-texto);cursor:pointer}
+.cal-nav:disabled{opacity:.35;cursor:default}
+.cal-sem,.cal-dias{display:grid;grid-template-columns:repeat(7,1fr);gap:.2rem;text-align:center}
+.cal-sem span{font-size:.75rem;font-weight:700;color:var(--suave);padding:.2rem 0}
+.cal-d{position:relative;aspect-ratio:1;min-height:2.2rem;border:0;border-radius:10px;background:transparent;color:var(--tinta);font:600 .92rem var(--f-texto);cursor:pointer}
+.cal-d:hover:not(:disabled){background:var(--superficie)}
+.cal-d:disabled{color:var(--suave);opacity:.45;cursor:default}
+.cal-d.hoje{box-shadow:inset 0 0 0 2px var(--ambar)}
+.cal-d.tem::after{content:"";position:absolute;left:50%;bottom:4px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--azul)}
+.cal-d[aria-pressed="true"]{background:var(--azul);color:var(--azul-tinta)}
+.cal-d[aria-pressed="true"].tem::after{background:var(--azul-tinta)}
+.cal-dia{display:grid;gap:.6rem;min-width:0}
+.cal-dia h3{margin:0}
+
+/* Lembrete no horário: dias da semana */
+.novo-dias{display:grid;gap:.4rem}
+.novo-dias[hidden]{display:none}
+.novo-dias-rot{font-size:.95rem}
+.dias-semana{display:flex;flex-wrap:wrap;gap:.35rem}
+.dias-semana button{font:600 .85rem var(--f-texto);border:1px solid var(--linha);border-radius:999px;padding:.35rem .65rem;background:var(--superficie);color:var(--tinta);cursor:pointer}
+.dias-semana button[aria-pressed="true"]{background:var(--azul);border-color:var(--azul);color:var(--azul-tinta)}
+.dias-semana .todos{margin-right:.25rem}
+.btn[hidden]{display:none}
