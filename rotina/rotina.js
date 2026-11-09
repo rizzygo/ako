@@ -50,7 +50,8 @@
         estudo: { foco: 25, pausa: 5 },
         lazer: { foco: 60 },
         pausaLonga: 15, ciclos: 4,
-        inicio: '08:00', fim: '22:00', som: true, lembrarMetas: true, 
+        pausas: { trabalho: true, estudo: true }, somTipo: 'zumi',
+        inicio: '08:00', fim: '22:00', som: true, lembrarMetas: true,
         lembretes: { agua: { on: true, min: 45 }, respirar: { on: true, min: 90 }, semTela: { on: true, min: 120 } }
       },
       meus: [], tarefas: [], metas: [],
@@ -69,6 +70,7 @@
     // completa campos que versões novas acrescentarem
     s.config = Object.assign({}, p.config, s.config || {});
     s.config.lembretes = Object.assign({}, p.config.lembretes, s.config.lembretes || {});
+    s.config.pausas = Object.assign({}, p.config.pausas, s.config.pausas || {});
     ['meus', 'tarefas', 'metas', 'proximos', 'adiados', 'tocados', 'dias', 'timer'].forEach(function (k) { if (!s[k]) s[k] = p[k]; });
     if (typeof s.pontosAntigos !== 'number') s.pontosAntigos = 0;
     if (!s.criadoEm) s.criadoEm = Object.keys(s.dias).sort()[0] || chaveDia();
@@ -226,19 +228,38 @@
   }
 
   // ---------- Som e notificação ----------
+  // Dois sons feitos na hora, sem arquivo: a Zumi (zumbido curto e um sino) ou só o sino.
   var audio = null;
-  function tocar() {
-    if (!S.config.som) return;
+  function zumbido(ctx, t, dur) {
+    var o = ctx.createOscillator(), lfo = ctx.createOscillator(), prof = ctx.createGain();
+    var trem = ctx.createOscillator(), tremG = ctx.createGain(), f = ctx.createBiquadFilter(), g = ctx.createGain(), amp = ctx.createGain();
+    o.type = 'sawtooth'; o.frequency.setValueAtTime(205, t); o.frequency.linearRampToValueAtTime(245, t + dur * 0.5); o.frequency.linearRampToValueAtTime(215, t + dur);
+    lfo.frequency.value = 11; prof.gain.value = 9; lfo.connect(prof); prof.connect(o.frequency);
+    trem.frequency.value = 23; tremG.gain.value = 0.35; trem.connect(tremG); tremG.connect(amp.gain); amp.gain.value = 0.65;
+    f.type = 'bandpass'; f.frequency.value = 900; f.Q.value = 1.2;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.16, t + 0.08); g.gain.setValueAtTime(0.16, t + dur - 0.15); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(f); f.connect(amp); amp.connect(g); g.connect(ctx.destination);
+    [o, lfo, trem].forEach(function (x) { x.start(t); x.stop(t + dur + 0.05); });
+  }
+  function sino(ctx, t, base, forca) {
+    // Parciais de sino: a fundamental e harmônicos "tortos", que somem em tempos diferentes.
+    [[1, 1, 2.2], [2.0, 0.5, 1.6], [2.76, 0.35, 1.1], [5.4, 0.18, 0.6], [8.93, 0.08, 0.35]].forEach(function (p) {
+      var o = ctx.createOscillator(), g = ctx.createGain(), v = 0.22 * p[1] * (forca || 1);
+      o.type = 'sine'; o.frequency.value = base * p[0];
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v, t + 0.005); g.gain.exponentialRampToValueAtTime(0.0001, t + p[2]);
+      o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + p[2] + 0.05);
+    });
+  }
+  function tocar(forcar) {
+    if (!S.config.som && !forcar) return;
     try {
       audio = audio || new (window.AudioContext || window.webkitAudioContext)();
-      [660, 880, 990].forEach(function (f, i) {
-        var o = audio.createOscillator(), g = audio.createGain(), t = audio.currentTime + i * 0.22;
-        o.frequency.value = f; o.type = 'sine';
-        g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.25, t + 0.03); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
-        o.connect(g); g.connect(audio.destination); o.start(t); o.stop(t + 0.22);
-      });
+      if (audio.state === 'suspended') audio.resume();
+      var t = audio.currentTime + 0.05;
+      if (S.config.somTipo !== 'sino') { zumbido(audio, t, 0.7); t += 0.75; }
+      sino(audio, t, 1046.5); sino(audio, t + 0.45, 784, 0.8);
     } catch (e) { /* sem áudio */ }
-    if (navigator.vibrate) navigator.vibrate([120, 80, 120]);
+    if (navigator.vibrate && !forcar) navigator.vibrate([120, 80, 120]);
   }
 
   var registro = null;
@@ -250,7 +271,7 @@
   }
   function estadoNotif() {
     var b = $('b-notif');
-    if (!('Notification' in window)) { el.notifEstado.textContent = 'Este navegador não mostra notificações. No iPhone, instale o app na tela inicial primeiro.'; b.hidden = true; return; }
+    if (!('Notification' in window)) { el.notifEstado.textContent = 'Este navegador não mostra notificações. No iPhone, crie o atalho na tela inicial primeiro (veja Ajustes).'; b.hidden = true; return; }
     if (Notification.permission === 'granted') { el.notifEstado.textContent = 'Notificações ligadas. A Zumi avisa enquanto o app estiver aberto, mesmo em outra aba ou minimizado.'; b.hidden = true; }
     else if (Notification.permission === 'denied') { el.notifEstado.textContent = 'As notificações estão bloqueadas. Libere nas configurações do navegador para este site.'; b.hidden = true; }
     else { el.notifEstado.textContent = 'Os avisos aparecem só nesta página até você ativar as notificações.'; }
@@ -292,6 +313,12 @@
       if (modo === 'lazer') {
         t.fase = 'foco'; t.rodando = false; t.fimEm = null; t.restante = null;
         if (!pulou) { falar('Lazer feito. Voltou com a bateria mais cheia? +10', 'comemorando', true); notificar('Fim do lazer', 'Lazer feito. +10 pontos.', 'timer'); tocar(); }
+      } else if (!S.config.pausas[modo]) {
+        // Pausa desligada: o bloco conta, o ciclo avança e o próximo espera a pessoa.
+        t.ciclo = t.ciclo >= S.config.ciclos ? 1 : t.ciclo + 1;
+        t.rodando = false; t.fimEm = null; t.restante = null;
+        if (!pulou) { tocar(); notificar('Fim do bloco de ' + NOMES[modo], 'Bloco feito. +10', 'timer'); }
+        falar(pulou ? 'Pulei o bloco. Quando quiser, começa o próximo.' : 'Bloco feito, sem pausa como você pediu. +10. Quando quiser, começa o próximo.', pulou ? 'ola' : 'comemorando', !pulou);
       } else {
         t.fase = 'pausa'; t.restante = null;
         var frase = PAUSAS[Math.floor(Math.random() * PAUSAS.length)];
@@ -326,7 +353,7 @@
     el.arco.style.strokeDashoffset = String(339.3 * (1 - s / dur));
     el.relogio.className = 'relogio' + (t.fase === 'pausa' ? ' pausa' : '') + (t.modo === 'lazer' ? ' lazer' : '');
     el.fase.textContent = t.modo === 'lazer' ? 'Lazer' : t.fase === 'foco' ? 'Foco' : (t.ciclo % S.config.ciclos === 0 ? 'Pausa longa' : 'Pausa');
-    el.ciclo.textContent = t.modo === 'lazer' ? 'Sem culpa' : 'Bloco ' + t.ciclo + ' de ' + S.config.ciclos;
+    el.ciclo.textContent = t.modo === 'lazer' ? 'Sem culpa' : S.config.pausas[t.modo] ? 'Bloco ' + t.ciclo + ' de ' + S.config.ciclos : 'Bloco ' + t.ciclo + ', sem pausa';
     el.iniciar.textContent = t.rodando ? 'Pausar' : (t.restante != null ? 'Continuar' : 'Começar');
     $('h-tempo').textContent = mmss(s); $('h-fase').textContent = el.fase.textContent;
     $('h-modo').textContent = { trabalho: 'Trabalho', estudo: 'Estudo', lazer: 'Lazer' }[t.modo];
@@ -649,6 +676,7 @@
     document.querySelectorAll('[data-cfg]').forEach(function (inp) { var v = lerCfg(inp.dataset.cfg); if (inp.type === 'checkbox') inp.checked = !!v; else inp.value = v; });
     document.querySelectorAll('[data-lem]').forEach(function (inp) { inp.checked = S.config.lembretes[inp.dataset.lem].on; });
     document.querySelectorAll('[data-lem-min]').forEach(function (inp) { inp.value = S.config.lembretes[inp.dataset.lemMin].min; });
+    estadoTempos();
   }
 
   document.querySelectorAll('[data-cfg]').forEach(function (inp) {
@@ -658,10 +686,50 @@
       var nv = inp.type === 'checkbox' ? inp.checked : inp.type === 'number' ? Math.min(+inp.max, Math.max(+inp.min, Math.round(+inp.value || +inp.min))) : inp.value;
       if (inp.type === 'number') inp.value = nv;
       gravarCfg(c, nv);
+      document.querySelectorAll('[data-cfg="' + c + '"]').forEach(function (o) { if (o !== inp) { if (o.type === 'checkbox') o.checked = !!nv; else o.value = nv; } });
       if (!S.timer.rodando) S.timer.restante = null;
-      salvar(); renderTimer();
+      salvar(); renderTimer(); estadoTempos();
     });
   });
+
+  // Botões − e + ao lado dos minutos, tempos prontos e a escolha do som.
+  document.querySelectorAll('.passo button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var inp = b.parentNode.querySelector('input');
+      if (inp.disabled) return;
+      try { if (+b.dataset.passo > 0) inp.stepUp(); else inp.stepDown(); } catch (e) { inp.value = +inp.value + (+b.dataset.passo) * (+inp.step || 1); }
+      inp.dispatchEvent(new Event('change'));
+    });
+  });
+  document.querySelectorAll('[data-pronto]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var m = b.dataset.pronto;
+      S.config[m].foco = +b.dataset.foco; S.config[m].pausa = +b.dataset.pausa; S.config.pausas[m] = true;
+      if (!S.timer.rodando) S.timer.restante = null;
+      salvar(); preencherAjustes(); renderTimer();
+      falar(NOMES[m].charAt(0).toUpperCase() + NOMES[m].slice(1) + ' em ' + b.dataset.foco + ' min de foco e ' + b.dataset.pausa + ' de pausa.', 'estudando');
+    });
+  });
+  document.querySelectorAll('[data-som]').forEach(function (b) {
+    b.addEventListener('click', function () { S.config.somTipo = b.dataset.som; salvar(); estadoTempos(); tocar(true); });
+  });
+  $('b-ouvir').addEventListener('click', function () { tocar(true); });
+  function estadoTempos() {
+    ['trabalho', 'estudo'].forEach(function (m) {
+      var on = !!S.config.pausas[m], cx = document.querySelector('[data-modo-cfg="' + m + '"] .linha-tempo:nth-of-type(2)');
+      cx.classList.toggle('desligada', !on);
+      cx.querySelectorAll('.passo input,.passo button').forEach(function (x) { x.disabled = !on; });
+      document.querySelectorAll('[data-pronto="' + m + '"]').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(on && S.config[m].foco === +b.dataset.foco && S.config[m].pausa === +b.dataset.pausa));
+      });
+    });
+    var longa = S.config.pausas.trabalho || S.config.pausas.estudo, cl = document.querySelector('[data-modo-cfg="longa"]');
+    cl.classList.toggle('desligada', !longa);
+    cl.querySelectorAll('input,button').forEach(function (x) { x.disabled = !longa; });
+    document.querySelectorAll('[data-som]').forEach(function (b) { b.setAttribute('aria-checked', String(b.dataset.som === (S.config.somTipo || 'zumi'))); b.disabled = !S.config.som; });
+    $('nota-pausa').hidden = S.config.pausas.trabalho && S.config.pausas.estudo;
+  }
+  estadoTempos();
   document.querySelectorAll('[data-lem]').forEach(function (inp) {
     var k = inp.dataset.lem; inp.checked = S.config.lembretes[k].on;
     inp.addEventListener('change', function () { S.config.lembretes[k].on = inp.checked; delete S.proximos[k]; checarLembretes(); salvar(); renderLembretes(); });
@@ -872,7 +940,7 @@
   window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault(); pedidoInstalar = e;
     if ($('b-instalar')) return;
-    var b = document.createElement('button'); b.type = 'button'; b.className = 'btn'; b.id = 'b-instalar'; b.textContent = 'Instalar o app';
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'btn'; b.id = 'b-instalar'; b.textContent = 'Criar atalho na tela inicial';
     b.addEventListener('click', function () { pedidoInstalar.prompt(); pedidoInstalar.userChoice.finally(function () { b.remove(); }); });
     var w = document.createElement('div'); w.className = 'acoes'; w.appendChild(b);
     document.querySelector('.instalar h2').after(w);

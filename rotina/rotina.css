@@ -326,3 +326,38 @@ textarea{width:100%;resize:vertical}
 .contribua-copiar:focus-visible{outline:3px solid #FFFFFF;outline-offset:2px}
 .nuvem [hidden]{display:none !important}
 .nuvem .chave{margin:.35rem 0}
+
+/* Ajustar os tempos: cartões por bloco, botões − e +, pausa liga e desliga */
+.tempos{border:1px solid var(--linha);border-radius:14px;background:var(--fundo);padding:.2rem .9rem}
+.tempos[open]{padding-bottom:1rem}
+.tempos summary{list-style:none;display:flex;align-items:center;gap:.5rem;padding:.75rem 0;margin:0}
+.tempos summary::-webkit-details-marker{display:none}
+.tempos summary::after{content:"";margin-left:auto;width:.55rem;height:.55rem;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .2s}
+.tempos[open] summary::after{transform:rotate(225deg)}
+.tempos[open] summary{margin-bottom:.25rem}
+.cartoes-tempo{display:grid;gap:.75rem}
+@media (min-width:560px){.cartoes-tempo{grid-template-columns:1fr 1fr}}
+.cartao-tempo{margin:0;min-width:0;border:1px solid var(--linha);border-radius:14px;background:var(--superficie);padding:.8rem .9rem .9rem;display:grid;gap:.55rem;box-shadow:var(--sombra-1)}
+.cartao-tempo legend{float:left;width:100%;padding:0;margin-bottom:.15rem;font:700 1rem var(--f-titulo)}
+.cartao-tempo .nota{margin:0}
+.linha-tempo{display:grid;grid-template-columns:1fr auto 2.6rem;align-items:center;gap:.5rem;font-size:.95rem;transition:opacity .2s}
+.linha-tempo small{color:var(--suave);font-size:.85rem}
+.linha-tempo.desligada .passo,.linha-tempo.desligada small,.cartao-tempo.desligada{opacity:.45}
+.chave.pequena{font-weight:600;gap:.45rem}
+.chave.pequena input{width:2.2rem;height:1.3rem}
+.chave.pequena input::after{width:.95rem;height:.95rem}
+.chave.pequena input:checked::after{transform:translateX(.9rem)}
+.passo{display:inline-flex;align-items:center;background:var(--fundo);border:1px solid var(--linha);border-radius:999px;padding:2px}
+.passo button{width:2.1rem;height:2.1rem;border:0;border-radius:50%;background:transparent;color:var(--azul);font:700 1.2rem/1 var(--f-texto);cursor:pointer}
+.passo button:hover:not(:disabled){background:var(--superficie)}
+.passo button:disabled{cursor:default;color:var(--suave)}
+.passo input{width:2.8rem;border:0;background:transparent;text-align:center;font:800 1.1rem var(--f-titulo);font-variant-numeric:tabular-nums;color:var(--tinta);padding:0;-moz-appearance:textfield;appearance:textfield}
+.passo input::-webkit-outer-spin-button,.passo input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.atalhos{display:flex;gap:.4rem;flex-wrap:wrap}
+.atalhos button,.sons button{font:600 .85rem var(--f-texto);border:1px solid var(--linha);border-radius:999px;padding:.35rem .75rem;background:var(--superficie);color:var(--tinta);cursor:pointer}
+.atalhos button[aria-pressed="true"],.sons button[aria-checked="true"]{background:var(--azul);border-color:var(--azul);color:var(--azul-tinta)}
+.sons button:disabled{opacity:.45;cursor:default}
+.som-fim{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1rem;margin-top:.9rem;padding-top:.9rem;border-top:1px solid var(--linha)}
+.sons{display:flex;gap:.4rem}
+.som-fim .ouvir{padding:.4rem .9rem;margin-left:auto}
+.tempos #nota-pausa{margin-top:.6rem}
