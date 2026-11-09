@@ -17,6 +17,17 @@
     [4000, 'Colmeia em ritmo', 'Trabalho, estudo e lazer no mesmo compasso.']
   ];
 
+  // Como a Zumi aparece em cada título: selo, cor do anel e pose de descanso.
+  var VISUAL = [
+    { ic: '🌱', cor: '#7CB98F', pose: 'ola' },
+    { ic: '🌤️', cor: '#5B9BE6', pose: 'ola' },
+    { ic: '🌼', cor: '#F2C94C', pose: 'estudando' },
+    { ic: '🛡️', cor: '#3F7BE0', pose: 'estudando' },
+    { ic: '🏗️', cor: '#E8902A', pose: 'estudando' },
+    { ic: '🍯', cor: '#F5A524', pose: 'comemorando' },
+    { ic: '👑', cor: '#F5A524', pose: 'comemorando' }
+  ];
+
   var PERGUNTAS = [
     'O que deu certo hoje?',
     'O que tirou o seu foco hoje, e o que dá para mudar amanhã?',
@@ -218,12 +229,14 @@
   // ---------- Zumi ----------
   function falar(texto, pose, pular) {
     el.fala.textContent = texto;
+    // "olá" é a pose neutra: ela muda conforme o título (a Zumi evolui com os pontos)
+    if (pose === 'ola') pose = VISUAL[tituloAtual()].pose;
     if (pose) {
       el.img.src = '/zumi/abelha-' + pose + '.png';
       el.escuro.srcset = '/zumi/abelha-' + pose + '-fundo-escuro.png';
     }
     if (pular) {
-      var p = el.img.parentNode; p.classList.remove('pula'); void p.offsetWidth; p.classList.add('pula');
+      var p = el.img.closest('.guia-zumi'); p.classList.remove('pula'); void p.offsetWidth; p.classList.add('pula');
     }
   }
   function saudacao() {
@@ -624,7 +637,14 @@
   // ---------- Render geral ----------
   function render() {
     var d = dia(), p = total(), i = tituloAtual(), t = TITULOS[i], prox = TITULOS[i + 1];
-    el.tNome.textContent = t[1];
+    var v = VISUAL[i], zn = $('zumi-nivel');
+    $('titulo-txt').textContent = t[1]; $('titulo-ic').textContent = v.ic;
+    $('titulo-frase').textContent = t[2];
+    $('titulo-nivel').textContent = 'nível ' + (i + 1) + ' de ' + TITULOS.length;
+    $('zumi-selo').textContent = v.ic;
+    if (zn.dataset.nivel !== String(i)) { zn.dataset.nivel = String(i); el.img.alt = 'A Zumi, no título ' + t[1]; }
+    zn.style.setProperty('--nivel-cor', v.cor);
+    zn.style.setProperty('--prog', prox ? Math.max(0, Math.min(100, 100 * (p - t[0]) / (prox[0] - t[0]))).toFixed(1) : '100');
     el.tBarra.style.width = prox ? Math.max(0, 100 * (p - t[0]) / (prox[0] - t[0])).toFixed(1) + '%' : '100%';
     el.tMeta.textContent = p + ' pontos' + (prox ? ' · faltam ' + (prox[0] - p) + ' para ' + prox[1] : ' · título máximo');
     el.rPontos.textContent = pontosDia(d);

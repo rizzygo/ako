@@ -423,3 +423,19 @@ textarea{width:100%;resize:vertical}
 /* Botão de remover: vermelho, no mesmo tamanho dos botões ao lado */
 .btn.btn-perigo{background:transparent;border-color:var(--erro);color:var(--erro);padding:.4rem .8rem;font-size:.92rem}
 .btn.btn-perigo:hover{background:var(--erro-claro);box-shadow:none}
+
+/* A Zumi evolui com o título: anel com o progresso até o próximo título, selo e brilho nos últimos níveis */
+.guia-zumi{position:relative;display:inline-block;line-height:0;padding:7px;border-radius:50%;justify-self:center;--nivel-cor:var(--ambar)}
+.guia-zumi picture{display:block}
+.guia-zumi::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(var(--nivel-cor) calc(var(--prog) * 1%),var(--trilho) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));mask:radial-gradient(farthest-side,transparent calc(100% - 5px),#000 calc(100% - 4px));transition:background .6s ease}
+.zumi-selo{position:absolute;right:-2px;bottom:-2px;display:grid;place-items:center;width:2.1rem;height:2.1rem;border-radius:50%;background:var(--superficie);border:2px solid var(--nivel-cor);font-size:1.1rem;line-height:1;box-shadow:var(--sombra-1)}
+.guia-zumi[data-nivel="5"] img,.guia-zumi[data-nivel="6"] img{filter:drop-shadow(0 0 10px rgba(245,165,36,.55))}
+.guia-zumi[data-nivel="6"]::after{content:"";position:absolute;inset:-6px;border-radius:50%;box-shadow:0 0 0 2px var(--ambar),0 0 22px rgba(245,165,36,.45);animation:aura 3s ease-in-out infinite}
+@keyframes aura{50%{opacity:.45}}
+.titulo-frase{grid-column:1/-1;color:var(--suave);font-size:var(--t-pequeno)}
+@media (max-width:759px){
+  .zumi-selo{width:1.6rem;height:1.6rem;font-size:.85rem}
+  .guia-zumi{padding:5px}
+  .titulo-frase{display:none}
+}
+@media (prefers-reduced-motion:reduce){.guia-zumi::after{animation:none}}
