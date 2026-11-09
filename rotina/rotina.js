@@ -1,5 +1,6 @@
 // Rotina com a Zumi: timer de blocos, lembretes, checks, pontos e títulos.
 // Tudo fica no localStorage deste aparelho (chave rizzygo-rotina-v1). Sem login e sem servidor.
+// Quem quiser liga a cópia na nuvem em Ajustes (login com Google, /nuvem.js); o aparelho segue sendo a fonte.
 (function () {
   'use strict';
 
@@ -76,7 +77,8 @@
   }
 
   var S = carregar();
-  function salvar() { try { localStorage.setItem(CHAVE, JSON.stringify(S)); } catch (e) { /* modo privado: segue sem salvar */ } }
+  var nuvem = null; // módulo da nuvem, só quando a pessoa liga
+  function salvar() { try { localStorage.setItem(CHAVE, JSON.stringify(S)); } catch (e) { /* modo privado: segue sem salvar */ } if (nuvem) nuvem.mudou(); }
 
   function chaveDia(d) {
     d = d || new Date();
@@ -114,7 +116,7 @@
     return 10 * ((b.trabalho || 0) + (b.estudo || 0) + (b.lazer || 0)) +
       (PONTOS_AGUA[nivelAgua(d)] || 0) + 5 * Math.min(d.respirar || 0, 6) +
       (d.semTelaPts != null ? Math.min(d.semTelaPts, 60) : 5 * Math.min(d.semTela || 0, 4)) +
-      20 * ex + ((d.reflexao || d.papel) ? 10 : 0) + 2 * Math.min(d.meus || 0, 10) +
+      20 * ex + ((d.reflexao || d.papel || d.refOculta) ? 10 : 0) + 2 * Math.min(d.meus || 0, 10) +
       Math.min(d.tarefasPts || 0, 40) + Math.min(d.metasPts || 0, 50);
   }
   function total() {
@@ -123,7 +125,7 @@
   function indiceTitulo(p) { var i = 0; TITULOS.forEach(function (t, j) { if (p >= t[0]) i = j; }); return i; }
   // O título conquistado não cai, mesmo que os pontos diminuam.
   function tituloAtual() { var i = indiceTitulo(total()); if (i > S.melhor) S.melhor = i; return S.melhor; }
-  function ativo(d) { return !!d && (pontosBrutos(d) > 0 || !!nivelAgua(d) || !!d.reflexao); }
+  function ativo(d) { return !!d && (pontosBrutos(d) > 0 || !!nivelAgua(d) || !!d.reflexao || !!d.refOculta); }
 
   // Fecha os dias que já passaram: guarda pontos e nível da água; dia sem atividade perde 10 pontos.
   function fecharDias() {
@@ -642,6 +644,13 @@
   function lerCfg(caminho) { return caminho.split('.').reduce(function (o, k) { return o[k]; }, S.config); }
   function gravarCfg(caminho, v) { var ks = caminho.split('.'), o = S.config; ks.slice(0, -1).forEach(function (k) { o = o[k]; }); o[ks[ks.length - 1]] = v; }
 
+  // Depois de trazer a rotina da nuvem, os campos mostram os valores novos.
+  function preencherAjustes() {
+    document.querySelectorAll('[data-cfg]').forEach(function (inp) { var v = lerCfg(inp.dataset.cfg); if (inp.type === 'checkbox') inp.checked = !!v; else inp.value = v; });
+    document.querySelectorAll('[data-lem]').forEach(function (inp) { inp.checked = S.config.lembretes[inp.dataset.lem].on; });
+    document.querySelectorAll('[data-lem-min]').forEach(function (inp) { inp.value = S.config.lembretes[inp.dataset.lemMin].min; });
+  }
+
   document.querySelectorAll('[data-cfg]').forEach(function (inp) {
     var c = inp.dataset.cfg, v = lerCfg(c);
     if (inp.type === 'checkbox') inp.checked = !!v; else inp.value = v;
@@ -745,6 +754,114 @@
     try { localStorage.removeItem(CHAVE); } catch (e) { }
     S = padrao(); location.reload();
   });
+
+
+  // ---------- Nuvem (opcional) ----------
+  var CHAVE_NUVEM = 'rizzygo-nuvem-rotina-v1';
+  var LOCAIS = ['timer', 'proximos', 'adiados', 'tocados', 'semTelaAtivo']; // ficam só no aparelho
+  var metaNuvem = (function () { try { return JSON.parse(localStorage.getItem(CHAVE_NUVEM)) || {}; } catch (e) { return {}; } })();
+  if (!metaNuvem.aceites) metaNuvem.aceites = { saude: false, reflexoes: false };
+  var carregandoNuvem = null;
+  function salvarMeta() { try { localStorage.setItem(CHAVE_NUVEM, JSON.stringify(metaNuvem)); } catch (e) { } }
+  function copia(o) { return JSON.parse(JSON.stringify(o)); }
+  function paraNuvem(est, aceites) {
+    var c = copia(est);
+    LOCAIS.forEach(function (k) { delete c[k]; });
+    if (!aceites.saude) c.meus = [];
+    if (!aceites.reflexoes) Object.keys(c.dias || {}).forEach(function (k) { var d = c.dias[k]; if (d.reflexao) { d.reflexao = ''; d.refOculta = true; } });
+    return c;
+  }
+  function daNuvem(rem, loc, aceites) {
+    var r = copia(rem);
+    LOCAIS.forEach(function (k) { r[k] = loc[k]; });
+    if (!aceites.saude) r.meus = loc.meus;
+    Object.keys(r.dias || {}).forEach(function (k) {
+      var l = loc.dias && loc.dias[k];
+      if (l && l.reflexao && !r.dias[k].reflexao) r.dias[k].reflexao = l.reflexao;
+    });
+    return r;
+  }
+  function temDados(est) {
+    return est.tarefas.length > 0 || est.metas.length > 0 || est.meus.length > 0 ||
+      Object.keys(est.dias).some(function (k) { return ativo(est.dias[k]); });
+  }
+  function aplicarNuvem(est, avisar) {
+    try { localStorage.setItem(CHAVE, JSON.stringify(est)); } catch (e) { }
+    S = carregar(); podar(); dia();
+    renderMeus(); render(); renderTimer(); preencherAjustes();
+    if (avisar) falar('Trouxe sua rotina da nuvem.', 'comemorando', true);
+  }
+  function perguntarNuvem(quando) {
+    return new Promise(function (ok) {
+      var box = $('nuvem-pergunta');
+      var data = quando ? new Date(quando).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+      $('nuvem-pergunta-txt').textContent = 'Sua conta já tem uma rotina salva na nuvem' + (data ? ', de ' + data : '') + '. Este aparelho também tem uma. Qual delas você quer manter? A outra será substituída.';
+      box.hidden = false; $('nuvem-usar-nuvem').focus();
+      function fim(v) { box.hidden = true; ok(v); }
+      $('nuvem-usar-nuvem').onclick = function () { fim('nuvem'); };
+      $('nuvem-usar-aparelho').onclick = function () { fim('aparelho'); };
+    });
+  }
+  function mostrarNuvem(st) {
+    var dentro = !!(st && st.usuario && metaNuvem.ligado);
+    $('nuvem-fora').hidden = dentro; $('nuvem-entrar-box').hidden = dentro;
+    $('nuvem-dentro').hidden = !dentro; $('nuvem-acoes').hidden = !dentro; $('nuvem-apagar-box').hidden = !dentro;
+    $('nuvem-saude').checked = !!metaNuvem.aceites.saude; $('nuvem-reflexoes').checked = !!metaNuvem.aceites.reflexoes;
+    if (dentro) {
+      $('nuvem-quem').textContent = 'Salvando na nuvem com a conta ' + (st.usuario.email || st.usuario.nome || 'Google') + '.';
+      $('nuvem-quando').textContent = metaNuvem.sincronizadoEm ? 'Última cópia: ' + new Date(metaNuvem.sincronizadoEm).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) + '.' : 'Enviando a primeira cópia.';
+    }
+    $('nuvem-estado').textContent = (st && st.falha) || metaNuvem.erro || '';
+  }
+  function abrirNuvem() {
+    if (nuvem) return Promise.resolve(nuvem);
+    if (!carregandoNuvem) carregandoNuvem = import('/nuvem.js').then(function (m) {
+      nuvem = m.criar({
+        app: 'rotina', meta: metaNuvem, salvarMeta: salvarMeta,
+        ler: function () { return S; }, temDados: temDados, aplicar: aplicarNuvem,
+        paraNuvem: paraNuvem, daNuvem: daNuvem, perguntar: perguntarNuvem, aoMudar: mostrarNuvem
+      });
+      return nuvem;
+    }).catch(function () {
+      carregandoNuvem = null;
+      $('nuvem-estado').textContent = 'Não deu para carregar a nuvem agora. Confira a internet e tente de novo.';
+      return null;
+    });
+    return carregandoNuvem;
+  }
+  function aceitesTela() { return { saude: $('nuvem-saude').checked, reflexoes: $('nuvem-reflexoes').checked }; }
+  // O módulo do Google só carrega depois do aceite; assim o clique em "Entrar" abre a janela sem bloqueio.
+  $('nuvem-aceite').addEventListener('change', function () { if (this.checked) abrirNuvem(); });
+  $('nuvem-entrar').addEventListener('click', function () {
+    if (!$('nuvem-aceite').checked) { $('nuvem-estado').textContent = 'Para salvar na nuvem, marque que leu e aceita a política de privacidade.'; $('nuvem-aceite').focus(); return; }
+    if (!nuvem) { $('nuvem-estado').textContent = 'Preparando a conexão. Toque de novo em um instante.'; abrirNuvem(); return; }
+    $('nuvem-estado').textContent = 'Abrindo a janela do Google...';
+    nuvem.entrar(aceitesTela()).then(function (ok) { if (ok) falar('Pronto. Sua rotina agora tem uma cópia na nuvem.', 'comemorando', true); });
+  });
+  ['nuvem-saude', 'nuvem-reflexoes'].forEach(function (id) {
+    $(id).addEventListener('change', function () {
+      if (nuvem && metaNuvem.ligado) nuvem.mudarAceites(aceitesTela());
+      else { metaNuvem.aceites = aceitesTela(); salvarMeta(); }
+    });
+  });
+  function baixar() {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' }));
+    a.download = 'rotina-rizzygo-' + chaveDia() + '.json';
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+  $('nuvem-baixar').addEventListener('click', baixar);
+  $('nuvem-baixar2').addEventListener('click', baixar);
+  $('nuvem-sair').addEventListener('click', function () {
+    if (nuvem) nuvem.sair().then(function () { falar('Saiu da conta. A rotina segue neste aparelho.', 'ola', true); });
+  });
+  $('nuvem-apagar').addEventListener('click', function () {
+    if (!nuvem || !confirm('Apagar sua conta e todos os dados do Ako na nuvem? A rotina deste aparelho continua aqui. Não tem como desfazer.')) return;
+    nuvem.apagarConta().then(function () { falar('Conta e dados da nuvem apagados. A rotina segue neste aparelho.', 'ola', true); })
+      .catch(function () { $('nuvem-estado').textContent = 'Não deu para apagar agora. Tente de novo em instantes.'; });
+  });
+  mostrarNuvem(null);
+  if (metaNuvem.ligado) abrirNuvem();
 
   // instalar (Android e computador)
   var pedidoInstalar = null;
@@ -978,7 +1095,9 @@
   }
   var lento = 0;
   setInterval(function () { tick(); if (++lento % 30 === 0) { salvar(); renderLembretes(); } }, 1000);
-  document.addEventListener('visibilitychange', function () { if (!document.hidden) { tick(); render(); } });
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) { tick(); render(); if (nuvem) nuvem.puxar(); } else if (nuvem) { salvar(); nuvem.agora(); }
+  });
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/rotina/sw.js', { scope: '/rotina/' }).then(function (r) { registro = r; return navigator.serviceWorker.ready; }).then(function (r) { registro = r; }).catch(function () {});

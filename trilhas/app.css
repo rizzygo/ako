@@ -257,3 +257,4 @@ textarea:focus{border-color:var(--azul);outline:none}
 .contribua-copiar:hover{filter:brightness(1.06)}
 .contribua-copiar:focus-visible{outline:3px solid #FFFFFF;outline-offset:2px}
 @media (max-width:560px){.topo-in{flex-wrap:wrap;row-gap:.35rem}.menu{width:100%;gap:1.1rem;overflow-x:auto;scrollbar-width:none;padding-bottom:.3rem}.menu .xp-pill{margin-left:auto}}
+.texto-legal{max-width:44rem}.texto-legal h2{font-size:var(--t-secao);margin:2.2rem 0 .7rem}.texto-legal h2:first-child{margin-top:0}.texto-legal p,.texto-legal ul{margin:.7rem 0;line-height:1.6}.texto-legal ul{padding-left:1.3rem}.texto-legal li{margin:.35rem 0}

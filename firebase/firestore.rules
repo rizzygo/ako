@@ -1,0 +1,29 @@
+rules_version = '2';
+// Regras do Cloud Firestore do projeto rizzygo-webapp (Ako).
+// Cada pessoa lê e grava só os próprios documentos: users/<uid>/apps/<app>.
+// Para publicar: console do Firebase > Firestore Database > Regras > colar este arquivo > Publicar.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid}/apps/{app} {
+      function dono() {
+        return request.auth != null && request.auth.uid == uid;
+      }
+      function valido() {
+        let d = request.resource.data;
+        return app in ['rotina', 'trilhas', 'mapas']
+          && d.keys().hasOnly(['dados', 'cliente', 'aceites', 'versao', 'atualizadoEm'])
+          && d.dados is string && d.dados.size() < 900000
+          && d.cliente is int
+          && d.aceites is map && d.aceites.keys().hasOnly(['saude', 'reflexoes'])
+          && d.versao == 1
+          && d.atualizadoEm == request.time;
+      }
+      allow read, delete: if dono();
+      allow create, update: if dono() && valido();
+    }
+    // Todo o resto fica fechado.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
