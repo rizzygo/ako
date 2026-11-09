@@ -36,7 +36,7 @@
 <section class="hero hero-fina"><div class="casca">
   <p class="sobretitulo">Seus dados no Ako</p>
   <h1>Privacidade</h1>
-  <p class="lead">O Ako funciona sem conta. A conta com Google é opcional e serve só para levar a sua rotina para outro aparelho.</p>
+  <p class="lead">O Ako funciona sem conta. A conta com Google é opcional e serve só para você continuar seus estudos e a sua rotina em outro aparelho.</p>
 </div></section>
 <section class="secao"><div class="casca texto-legal">
   <h2>Sem conta</h2>
@@ -47,22 +47,25 @@
   <p>O que guardamos:</p>
   <ul>
     <li>Da conta Google: nome, e-mail e um identificador, para você entrar.</li>
+    <li>Uma cópia do seu progresso nas trilhas: o roteiro com as respostas das quatro perguntas, checklists, desafios, respostas da pergunta Ako, conquistas e revisões.</li>
+    <li>O que você marcou nos mapas das áreas.</li>
     <li>Uma cópia da sua Rotina: pontos, títulos, foco, água, tarefas, metas e ajustes.</li>
-    <li>Só se você marcar a caixa de cada um: seus lembretes, que podem citar remédios e saúde, e suas reflexões do fim do dia.</li>
+    <li>Da Rotina, só se você marcar a caixa de cada um nos Ajustes: seus lembretes, que podem citar remédios e saúde, e suas reflexões do fim do dia.</li>
   </ul>
   <p>Usamos esses dados só para você continuar de onde parou em outro aparelho. Não usamos para anúncio, não vendemos, não juntamos com outros dados e não mandamos e-mail de marketing.</p>
   <p>A base é o seu consentimento (LGPD, art. 7º, I). Para os lembretes de saúde, pedimos um consentimento à parte, como pede a LGPD para dado sensível (art. 11, I).</p>
 
   <h2>Onde ficam</h2>
-  <p>No Firebase, da Google, que guarda os dados para nós: o login passa pelo Firebase Authentication e a cópia da Rotina fica no Cloud Firestore, na região de São Paulo. O login pode passar por servidores da Google fora do Brasil.</p>
+  <p>No Firebase, da Google, que guarda os dados para nós: o login passa pelo Firebase Authentication e as cópias ficam no Cloud Firestore, na região de São Paulo. O login pode passar por servidores da Google fora do Brasil.</p>
   <p>A cópia existe enquanto a conta existir. Ao apagar a conta, os dados da nuvem são apagados na hora.</p>
 
   <h2>O que você pode fazer</h2>
-  <p>Tudo pela própria Rotina, em Ajustes, sem precisar pedir:</p>
+  <p>Para entrar, use o botão <strong>Entrar</strong> no topo de qualquer página do Ako. Ele pede o seu aceite antes de abrir o login do Google e some depois que você entra. Para o resto, não precisa pedir:</p>
+  <div data-conta-painel></div>
   <ul>
-    <li><strong>Baixar meus dados:</strong> um arquivo com tudo o que a Rotina guarda.</li>
-    <li><strong>Desmarcar uma caixa:</strong> lembretes ou reflexões saem da nuvem na hora e ficam só no aparelho.</li>
-    <li><strong>Sair da conta:</strong> a nuvem para de receber cópias; o aparelho continua com tudo.</li>
+    <li><strong>Baixar meus dados:</strong> nas Conquistas de cada trilha (Exportar progresso) e nos Ajustes da Rotina (Baixar meus dados).</li>
+    <li><strong>Desmarcar uma caixa nos Ajustes da Rotina:</strong> lembretes ou reflexões saem da nuvem na hora e ficam só no aparelho.</li>
+    <li><strong>Sair da conta:</strong> aqui, nas Conquistas das trilhas ou nos Ajustes da Rotina. A nuvem para de receber cópias e o aparelho continua com tudo.</li>
     <li><strong>Apagar a conta:</strong> apaga a conta e todos os dados do Ako na nuvem.</li>
   </ul>
   <p>Para outro pedido sobre os seus dados, fale com a Rizzygo pelo <a href="https://www.linkedin.com/in/danilo-rizzo-20bb6982">LinkedIn do fundador</a>.</p>
@@ -73,5 +76,6 @@
 <script src="/trilhas/efeitos.js?v=2026110801" defer></script>
 <script src="/contribua.js?v=2026110901" defer></script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "65a6fb651cf942a695482421e9de912b"}'></script><!-- End Cloudflare Web Analytics -->
+<script src="/conta.js?v=2026110913" defer></script>
 </body>
 </html>

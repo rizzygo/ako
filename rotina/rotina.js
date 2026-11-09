@@ -861,7 +861,10 @@
       .catch(function () { $('nuvem-estado').textContent = 'Não deu para apagar agora. Tente de novo em instantes.'; });
   });
   mostrarNuvem(null);
-  if (metaNuvem.ligado) abrirNuvem();
+  function contaLigada() { try { var c = JSON.parse(localStorage.getItem('rizzygo-conta-v1') || 'null'); return !!(c && c.ligado); } catch (e) { return false; } }
+  if (metaNuvem.ligado || contaLigada()) abrirNuvem();
+  // Entrou pelo botão do topo (/conta.js): a Rotina liga junto, com os mesmos cuidados de saúde e reflexões.
+  window.addEventListener('rizzygo-conta', function (ev) { if (ev.detail && ev.detail.usuario) abrirNuvem(); });
 
   // instalar (Android e computador)
   var pedidoInstalar = null;
