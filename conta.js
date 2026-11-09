@@ -119,7 +119,7 @@
   var css = document.createElement('style');
   css.textContent =
     '.conta-entrar{margin-left:auto;cursor:pointer;font:inherit;font-weight:700;font-size:.88rem;background:#F5A524;border-color:#F5A524;color:#0B1B3A}' +
-    '.conta-entrar[hidden]{display:none}.conta-entrar:hover{background:#FFC048;border-color:#FFC048;color:#0B1B3A}' +
+    '.conta-entrar[hidden],.conta-sair[hidden]{display:none}.conta-sair{margin-left:auto;cursor:pointer;font:inherit;font-weight:600;font-size:.88rem;background:transparent}.conta-entrar:hover{background:#FFC048;border-color:#FFC048;color:#0B1B3A}' +
     '.conta-dialogo{max-width:30rem;width:calc(100% - 32px);border:0;border-radius:12px;padding:1.4rem 1.4rem 1.2rem;background:#FFFFFF;color:#0B1B3A;font-family:"Atkinson Hyperlegible",system-ui,sans-serif;line-height:1.5;box-shadow:0 20px 50px rgba(11,27,58,.35)}' +
     '.conta-dialogo::backdrop{background:rgba(11,27,58,.55)}' +
     '.conta-dialogo h2{font-family:Outfit,system-ui,sans-serif;font-size:1.35rem;line-height:1.25;margin:0 0 .6rem}' +
@@ -167,6 +167,20 @@
   var faixa = document.querySelector('.familia-in');
   if (faixa) faixa.appendChild(botao);
   botao.addEventListener('click', function () { abrir(); });
+  // Quem entrou vê "Sair" no mesmo lugar. A cópia na conta fica; este navegador para de sincronizar.
+  var sair = document.createElement('button');
+  sair.type = 'button';
+  sair.className = 'familia-item conta-sair';
+  sair.id = 'conta-sair';
+  sair.textContent = 'Sair';
+  sair.hidden = true;
+  if (faixa) faixa.appendChild(sair);
+  sair.addEventListener('click', function () {
+    if (!mod) return;
+    sair.disabled = true;
+    mod.sairDaConta().then(function () { sair.disabled = false; toast('Você saiu da conta. O progresso segue neste navegador.'); },
+      function () { sair.disabled = false; toast('Não deu para sair agora. Tente de novo.'); });
+  });
 
   /* ---------- janela do aceite ---------- */
   var dlg = document.createElement('dialog');
@@ -300,6 +314,8 @@
   function desenhar() {
     var dentro = !!usuario || (!conhecido && ligada());
     botao.hidden = dentro;
+    sair.hidden = !usuario;
+    if (usuario) { sair.title = 'Sair da conta ' + (usuario.email || usuario.nome || ''); sair.setAttribute('aria-label', sair.title); }
     document.querySelectorAll('[data-conta-painel]').forEach(function (el) {
       if (!conhecido && ligada()) return; // espera saber quem é
       el.className = (el.className.replace(/\bconta-painel\b/, '') + ' conta-painel').trim();
