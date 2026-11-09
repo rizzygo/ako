@@ -37,7 +37,7 @@
   var LEMBRETES = {
     agua: { texto: 'Hora de beber um copo de água.', feito: 'Bebi' },
     respirar: { texto: 'Hora de respirar um minuto comigo.', feito: 'Respirar agora' },
-    semTela: { texto: 'Hora de 5 minutos longe da tela.', feito: 'Começar agora' }
+    semTela: { texto: 'Hora de um tempo longe da tela.', feito: 'Escolher o tempo' }
   };
 
   // ---------- Estado ----------
@@ -49,13 +49,14 @@
         estudo: { foco: 25, pausa: 5 },
         lazer: { foco: 60 },
         pausaLonga: 15, ciclos: 4,
-        inicio: '08:00', fim: '22:00', som: true, lembrarMetas: true,
+        inicio: '08:00', fim: '22:00', som: true, lembrarMetas: true, metaAgua: 8,
         lembretes: { agua: { on: true, min: 45 }, respirar: { on: true, min: 90 }, semTela: { on: true, min: 120 } }
       },
       meus: [], tarefas: [], metas: [],
       timer: { modo: 'estudo', fase: 'foco', ciclo: 1, rodando: false, fimEm: null, restante: null },
       proximos: {}, adiados: {}, tocados: {},
-      dias: {}, pontosAntigos: 0
+      dias: {}, pontosAntigos: 0,
+      criadoEm: chaveDia(), fechadoAte: null, melhor: 0, semTelaAtivo: null
     };
   }
 
@@ -69,6 +70,8 @@
     s.config.lembretes = Object.assign({}, p.config.lembretes, s.config.lembretes || {});
     ['meus', 'tarefas', 'metas', 'proximos', 'adiados', 'tocados', 'dias', 'timer'].forEach(function (k) { if (!s[k]) s[k] = p[k]; });
     if (typeof s.pontosAntigos !== 'number') s.pontosAntigos = 0;
+    if (!s.criadoEm) s.criadoEm = Object.keys(s.dias).sort()[0] || chaveDia();
+    if (typeof s.melhor !== 'number') s.melhor = 0;
     return s;
   }
 
@@ -93,19 +96,59 @@
   }
 
   // ---------- Pontos ----------
-  function pontosDia(d) {
+  // Água: o nível depende da meta de copos. Ruim não vale ponto, Bom vale 10, Excelente vale 20.
+  function metaAgua(d) { return (d && d.metaAgua) || S.config.metaAgua || 8; }
+  function nivelAgua(d) {
+    var r = (d && d.agua || 0) / metaAgua(d);
+    return r >= 1 ? 'excelente' : r >= 0.6 ? 'bom' : 'ruim';
+  }
+  var NIVEIS = { ruim: 'Ruim', bom: 'Bom', excelente: 'Excelente' };
+  var PONTOS_AGUA = { ruim: 0, bom: 10, excelente: 20 };
+  var TEMPOS_TELA = [[5, 5], [10, 8], [15, 10], [30, 15], [60, 25], [120, 40]];
+  function pontosDia(d) { return d ? pontosBrutos(d) - (d.penalidade || 0) : 0; }
+  function pontosBrutos(d) {
     if (!d) return 0;
     var b = d.blocos || {};
     var ex = Object.keys(d.ex || {}).filter(function (k) { return d.ex[k]; }).length;
     return 10 * ((b.trabalho || 0) + (b.estudo || 0) + (b.lazer || 0)) +
-      2 * Math.min(d.agua || 0, 10) + 5 * Math.min(d.respirar || 0, 6) + 5 * Math.min(d.semTela || 0, 4) +
+      PONTOS_AGUA[nivelAgua(d)] + 5 * Math.min(d.respirar || 0, 6) +
+      (d.semTelaPts != null ? Math.min(d.semTelaPts, 60) : 5 * Math.min(d.semTela || 0, 4)) +
       20 * ex + ((d.reflexao || d.papel) ? 10 : 0) + 2 * Math.min(d.meus || 0, 10) +
       Math.min(d.tarefasPts || 0, 40) + Math.min(d.metasPts || 0, 50);
   }
   function total() {
-    return S.pontosAntigos + Object.keys(S.dias).reduce(function (s, k) { return s + pontosDia(S.dias[k]); }, 0);
+    return Math.max(0, S.pontosAntigos + Object.keys(S.dias).reduce(function (s, k) { return s + pontosDia(S.dias[k]); }, 0));
   }
   function indiceTitulo(p) { var i = 0; TITULOS.forEach(function (t, j) { if (p >= t[0]) i = j; }); return i; }
+  // O título conquistado não cai, mesmo que os pontos diminuam.
+  function tituloAtual() { var i = indiceTitulo(total()); if (i > S.melhor) S.melhor = i; return S.melhor; }
+  function ativo(d) { return !!d && (pontosBrutos(d) > 0 || d.agua > 0 || !!d.reflexao); }
+
+  // Fecha os dias que já passaram: guarda pontos e nível da água; dia sem atividade perde 10 pontos.
+  function fecharDias() {
+    var hoje = chaveDia(), inicio = S.fechadoAte || S.criadoEm, d = new Date(inicio + 'T12:00');
+    if (S.fechadoAte) d.setDate(d.getDate() + 1);
+    var fechados = [], parados = 0, seguidos = 0;
+    while (chaveDia(d) < hoje) {
+      var k = chaveDia(d), reg = S.dias[k];
+      if (ativo(reg)) { reg.fechado = true; reg.metaAgua = reg.metaAgua || S.config.metaAgua; fechados.push(k); seguidos = 0; }
+      else if (k >= S.criadoEm) {
+        seguidos++;
+        if (seguidos <= 7) { reg = dia(k); reg.fechado = true; reg.penalidade = 10; parados++; }
+      }
+      d.setDate(d.getDate() + 1);
+    }
+    var ontem = new Date(); ontem.setDate(ontem.getDate() - 1);
+    S.fechadoAte = chaveDia(ontem);
+    if (S.fechadoAte < S.criadoEm) S.fechadoAte = null;
+    salvar();
+    return { fechados: fechados, parados: parados };
+  }
+  function avisarFechamento(r) {
+    var ontem = new Date(); ontem.setDate(ontem.getDate() - 1); var k = chaveDia(ontem), reg = S.dias[k];
+    if (r.parados) falar('Você ficou ' + (r.parados === 1 ? '1 dia' : r.parados + ' dias') + ' sem atividade: −' + (r.parados * 10) + ' pontos. O título continua seu. Bora retomar com um passo pequeno?', 'ola');
+    else if (r.fechados.indexOf(k) >= 0) falar('Ontem fechou com ' + pontosDia(reg) + ' pontos e água ' + NIVEIS[nivelAgua(reg)] + '. Hoje é mais um favo na sua colmeia.', 'comemorando', true);
+  }
   function sequencia() {
     var d = new Date(), n = 0;
     if (pontosDia(S.dias[chaveDia(d)]) === 0) d.setDate(d.getDate() - 1);
@@ -115,10 +158,10 @@
 
   // Toda mudança que vale ponto passa por aqui, para a Zumi comemorar quando o título sobe.
   function mudar(fn) {
-    var antes = indiceTitulo(total());
+    var antes = tituloAtual();
     fn(dia());
+    var depois = tituloAtual();
     salvar();
-    var depois = indiceTitulo(total());
     render();
     if (depois > antes) {
       var t = TITULOS[depois];
@@ -393,13 +436,104 @@
     }
     passo(); sobreTimer = setInterval(passo, 250);
   }
-  function fecharSobre() { clearInterval(sobreTimer); sobreTimer = null; el.sobre.hidden = true; }
+  function fecharSobre() { clearInterval(sobreTimer); sobreTimer = null; el.sobre.hidden = true; $('escolha').hidden = true; $('sobre-voltei').hidden = true; el.bolha.hidden = false; el.sobreGuia.hidden = false; el.sobreTempo.hidden = false; $('sobre-acoes').hidden = false; }
+
+  // ---------- Tempo sem tela ----------
+  var PARA = [['familia', 'Família'], ['saude', 'Saúde'], ['descanso', 'Descanso'], ['outra', 'Outra coisa']];
+  var escolhaMin = 15, escolhaPara = null;
+  function chips(id, itens, atual, ao) {
+    var box = $(id); box.innerHTML = '';
+    itens.forEach(function (it) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'chip'; b.setAttribute('role', 'radio');
+      b.textContent = it[1]; b.setAttribute('aria-checked', String(it[0] === atual));
+      b.addEventListener('click', function () { ao(it[0] === atual && id === 'chips-para' ? null : it[0]); });
+      box.appendChild(b);
+    });
+  }
+  function rotuloMin(m) { return m < 60 ? m + ' min' : (m / 60) + (m === 60 ? ' hora' : ' horas'); }
+  function desenharEscolha() {
+    chips('chips-tempo', TEMPOS_TELA.map(function (t) { return [t[0], rotuloMin(t[0]) + ' · +' + t[1]]; }), escolhaMin, function (v) { escolhaMin = v; desenharEscolha(); });
+    chips('chips-para', PARA, escolhaPara, function (v) { escolhaPara = v; desenharEscolha(); });
+  }
+  function escolherTela() {
+    if (S.semTelaAtivo) return contarTela();
+    el.sobreTitulo.textContent = 'Tempo sem tela';
+    $('escolha').hidden = false; el.bolha.hidden = true; el.sobreGuia.hidden = true; el.sobreTempo.hidden = true; $('sobre-acoes').hidden = true;
+    desenharEscolha();
+    el.sobre.hidden = false;
+    $('escolha-ir').focus();
+  }
+  function textoPara(p) { var x = PARA.filter(function (i) { return i[0] === p; })[0]; return x ? x[1].toLowerCase() : ''; }
+  function contarTela() {
+    var a = S.semTelaAtivo;
+    $('escolha').hidden = true; el.bolha.hidden = false; el.sobreGuia.hidden = false; el.sobreTempo.hidden = false; $('sobre-acoes').hidden = false;
+    $('sobre-voltei').hidden = false;
+    el.sobreTitulo.textContent = rotuloMin(a.min) + ' longe da tela' + (a.para ? ', para ' + textoPara(a.para) : '');
+    el.bolha.className = 'bolha verde';
+    el.sobreGuia.textContent = 'Pode bloquear o celular. Quando voltar, eu conto o tempo.';
+    el.sobre.hidden = false;
+    clearInterval(sobreTimer);
+    function passo() {
+      if (!S.semTelaAtivo) return;
+      el.sobreTempo.textContent = mmss(Math.max(0, Math.ceil((S.semTelaAtivo.fimEm - Date.now()) / 1000)));
+    }
+    passo(); sobreTimer = setInterval(passo, 500);
+  }
+  function concluirTela(min) {
+    var a = S.semTelaAtivo; if (!a) return;
+    S.semTelaAtivo = null;
+    var pts = (TEMPOS_TELA.filter(function (t) { return t[0] === min; })[0] || [0, 0])[1];
+    fecharSobre();
+    if (!pts) { salvar(); falar('Tudo bem. Menos de 5 minutos não conta ponto, mas já fez bem.', 'ola'); return; }
+    var dTela = S.dias[a.dia] ? a.dia : chaveDia();
+    var antes = tituloAtual(), d = dia(dTela);
+    d.semTelaMin = (d.semTelaMin || 0) + min; d.semTelaPts = (d.semTelaPts || 0) + pts;
+    d.semTelaPara = d.semTelaPara || {}; if (a.para) d.semTelaPara[a.para] = (d.semTelaPara[a.para] || 0) + min;
+    tituloAtual(); salvar(); render();
+    tocar();
+    var txt = rotuloMin(min) + ' longe da tela' + (a.para ? ', com ' + (a.para === 'outra' ? 'outra coisa' : textoPara(a.para)) : '') + '. Isso também é cuidar da vida. +' + pts;
+    falar(txt, 'comemorando', true);
+    notificar('Tempo sem tela feito', txt, 'sobre');
+    if (S.melhor > antes) falar('Título novo: ' + TITULOS[S.melhor][1] + '! ' + TITULOS[S.melhor][2], 'comemorando', true);
+  }
+  $('escolha-ir').addEventListener('click', function () {
+    S.semTelaAtivo = { min: escolhaMin, para: escolhaPara, inicio: Date.now(), fimEm: Date.now() + escolhaMin * MIN, dia: chaveDia() };
+    salvar(); contarTela();
+    falar('Vai lá. Eu fico de olho no relógio.', 'ola');
+  });
+  $('escolha-fechar').addEventListener('click', function () { fecharSobre(); });
+  $('sobre-voltei').addEventListener('click', function () {
+    var a = S.semTelaAtivo; if (!a) return;
+    var passou = (Date.now() - a.inicio) / MIN, feito = 0;
+    TEMPOS_TELA.forEach(function (t) { if (t[0] <= passou + 0.01) feito = t[0]; });
+    concluirTela(feito);
+  });
+
+  // Água: histórico dos últimos 14 dias e médias dos 7 e 30 dias já fechados, contando só os dias em que o app foi usado.
+  function renderAgua() {
+    var hoje = new Date(), lista = $('historico-agua'); lista.innerHTML = '';
+    function media(n) {
+      var soma = 0, dias = 0;
+      for (var j = 1; j <= n; j++) { var x = new Date(hoje); x.setDate(x.getDate() - j); var r = S.dias[chaveDia(x)]; if (r && !r.penalidade) { soma += r.agua || 0; dias++; } }
+      return dias ? (soma / dias).toFixed(1).replace('.', ',') : '0';
+    }
+    $('agua-media7').textContent = media(7); $('agua-media30').textContent = media(30);
+    for (var j = 0; j < 14; j++) {
+      var x = new Date(hoje); x.setDate(x.getDate() - j); var r = S.dias[chaveDia(x)];
+      if (!r) continue;
+      var li = document.createElement('li'), nv = nivelAgua(r);
+      var nome = document.createElement('span'); nome.textContent = j === 0 ? 'Hoje' : j === 1 ? 'Ontem' : x.toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric' }).replace('.', '');
+      var q = document.createElement('span'); q.textContent = (r.agua || 0) + ' de ' + metaAgua(r);
+      var n = document.createElement('span'); n.className = 'nivel ' + (r.penalidade ? 'parado' : nv); n.textContent = r.penalidade ? 'Sem atividade' : NIVEIS[nv];
+      li.appendChild(nome); li.appendChild(q); li.appendChild(n); lista.appendChild(li);
+    }
+  }
 
   // ---------- Render geral ----------
   function render() {
-    var d = dia(), p = total(), i = indiceTitulo(p), t = TITULOS[i], prox = TITULOS[i + 1];
+    var d = dia(), p = total(), i = tituloAtual(), t = TITULOS[i], prox = TITULOS[i + 1];
     el.tNome.textContent = t[1];
-    el.tBarra.style.width = prox ? (100 * (p - t[0]) / (prox[0] - t[0])).toFixed(1) + '%' : '100%';
+    el.tBarra.style.width = prox ? Math.max(0, 100 * (p - t[0]) / (prox[0] - t[0])).toFixed(1) + '%' : '100%';
     el.tMeta.textContent = p + ' pontos' + (prox ? ' · faltam ' + (prox[0] - p) + ' para ' + prox[1] : ' · título máximo');
     el.rPontos.textContent = pontosDia(d);
     el.rFoco.textContent = d.minutos.trabalho + d.minutos.estudo;
@@ -407,14 +541,19 @@
 
     // água
     el.copos.innerHTML = '';
-    for (var c = 0; c < Math.max(8, d.agua); c++) { var ic = document.createElement('i'); if (c < d.agua) ic.className = 'cheio'; el.copos.appendChild(ic); }
-    el.aguaTxt.textContent = d.agua + (d.agua === 1 ? ' copo' : ' copos');
+    var meta = metaAgua(d), nv = nivelAgua(d);
+    for (var c = 0; c < Math.max(meta, d.agua); c++) { var ic = document.createElement('i'); if (c < d.agua) ic.className = 'cheio'; el.copos.appendChild(ic); }
+    el.aguaTxt.textContent = d.agua + ' de ' + meta + ' copos';
+    var niv = $('agua-nivel'); niv.textContent = NIVEIS[nv]; niv.className = 'nivel ' + nv;
+    var paraBom = Math.ceil(meta * 0.6) - d.agua, paraEx = meta - d.agua;
+    $('agua-falta').textContent = nv === 'excelente' ? 'Meta batida. +20' : nv === 'bom' ? '+10 agora. Faltam ' + paraEx + ' para Excelente' : 'Faltam ' + paraBom + ' para Bom';
+    renderAgua();
 
     // checks
     $('c-respirar').textContent = d.respirar ? d.respirar + 'x hoje · +5' : '+5 pontos';
-    $('c-semTela').textContent = d.semTela ? d.semTela + 'x hoje · +5' : '+5 pontos';
+    $('c-semTela').textContent = d.semTelaMin ? d.semTelaMin + ' min hoje · +' + Math.min(d.semTelaPts, 60) : 'De 5 minutos a 2 horas';
     document.querySelector('[data-acao="respirar"]').setAttribute('aria-pressed', String(d.respirar > 0));
-    document.querySelector('[data-acao="semTela"]').setAttribute('aria-pressed', String(d.semTela > 0));
+    document.querySelector('[data-acao="semTela"]').setAttribute('aria-pressed', String(d.semTelaMin > 0 || d.semTela > 0));
     document.querySelectorAll('[data-ex]').forEach(function (b) { b.setAttribute('aria-pressed', String(!!d.ex[b.dataset.ex])); });
 
     // reflexão
@@ -429,7 +568,7 @@
     for (var j = 6; j >= 0; j--) { var dd = new Date(); dd.setDate(dd.getDate() - j); var pts = pontosDia(S.dias[chaveDia(dd)]); dias.push([dd, pts, j === 0]); if (pts > max) max = pts; }
     dias.forEach(function (x) {
       var li = document.createElement('li');
-      var b = document.createElement('b'); b.textContent = x[1];
+      var b = document.createElement('b'); b.textContent = x[1]; if (x[1] < 0) b.className = 'menos';
       var col = document.createElement('span'); col.className = 'col' + (x[2] ? ' hoje' : ''); col.style.height = Math.max(4, 100 * x[1] / max * 0.72) + '%';
       var nome = document.createElement('span'); nome.textContent = x[2] ? 'Hoje' : x[0].toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', '');
       li.setAttribute('aria-label', (x[2] ? 'Hoje' : x[0].toLocaleDateString('pt-BR', { weekday: 'long' })) + ': ' + x[1] + ' pontos');
@@ -441,7 +580,7 @@
     el.titulos.innerHTML = '';
     TITULOS.forEach(function (tt, k) {
       var li = document.createElement('li');
-      li.className = (p >= tt[0] ? 'feito' : '') + (k === i ? ' atual' : '');
+      li.className = (k <= i ? 'feito' : '') + (k === i ? ' atual' : '');
       li.innerHTML = '<span class="favo" aria-hidden="true"></span><span><strong></strong><small></small></span>';
       li.querySelector('strong').textContent = tt[1];
       li.querySelector('small').textContent = (tt[0] ? tt[0] + ' pontos. ' : 'Começo. ') + tt[2];
@@ -486,12 +625,14 @@
 
   $('agua-mais').addEventListener('click', function () {
     mudar(function (d) { d.agua++; });
-    var n = dia().agua;
-    falar(n <= 10 ? 'Boa! Copo ' + n + ' do dia. +2' : 'Copo ' + n + '. Água nunca é demais, mas os pontos param no décimo.', null);
+    var dd = dia(), n = dd.agua, nv = nivelAgua(dd), meta = metaAgua(dd);
+    if (n === meta) falar('Meta de água batida: Excelente! +20 no dia.', 'comemorando', true);
+    else if (n === Math.ceil(meta * 0.6)) falar('Água no nível Bom. +10. Mais ' + (meta - n) + ' e chega no Excelente.', 'ola', true);
+    else falar('Copo ' + n + ' do dia. Água: ' + NIVEIS[nv] + '.', null);
     if (S.config.lembretes.agua.on) agendar('agua', S.config.lembretes.agua.min);
   });
   $('agua-menos').addEventListener('click', function () { if (dia().agua > 0) mudar(function (d) { d.agua--; }); });
-  document.querySelectorAll('[data-acao]').forEach(function (b) { b.addEventListener('click', function () { abrirSobre(b.dataset.acao); }); });
+  document.querySelectorAll('[data-acao]').forEach(function (b) { b.addEventListener('click', function () { if (b.dataset.acao === 'semTela') escolherTela(); else abrirSobre('respirar'); }); });
   document.querySelectorAll('[data-ex]').forEach(function (b) {
     b.addEventListener('click', function () {
       var k = b.dataset.ex, liga = !dia().ex[k];
@@ -500,14 +641,15 @@
     });
   });
 
-  $('sobre-fechar').addEventListener('click', function () { fecharSobre(); falar('Tudo bem parar. Tenta de novo mais tarde.', 'ola'); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !el.sobre.hidden) fecharSobre(); });
+  $('sobre-fechar').addEventListener('click', function () { var tela = !!S.semTelaAtivo; S.semTelaAtivo = null; salvar(); fecharSobre(); falar(tela ? 'Tempo sem tela cancelado. Tenta de novo quando der.' : 'Tudo bem parar. Tenta de novo mais tarde.', 'ola'); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !el.sobre.hidden && !S.semTelaAtivo) fecharSobre(); });
 
   $('aviso-sim').addEventListener('click', function () {
     var k = atual, info = lembreteInfo(k);
     fecharAviso();
     if (k === 'agua') { $('agua-mais').click(); }
-    else if (k === 'respirar' || k === 'semTela') abrirSobre(k);
+    else if (k === 'respirar') abrirSobre(k);
+    else if (k === 'semTela') escolherTela();
     else if (k === 'metas') { $('metas-secao').scrollIntoView({ behavior: 'smooth' }); }
     else if (info && info.meu) { mudar(function (d) { d.meus++; }); falar('Feito: ' + info.meu.nome + '. +2', 'comemorando', true); }
   });
@@ -744,7 +886,8 @@
     if (S.timer.rodando && Date.now() >= S.timer.fimEm) concluir(false);
     checarLembretes();
     renderTimer();
-    if (chaveDia() !== ultimoDia) { ultimoDia = chaveDia(); podar(); salvar(); render(); falar(saudacao(), 'ola'); }
+    if (S.semTelaAtivo && Date.now() >= S.semTelaAtivo.fimEm) concluirTela(S.semTelaAtivo.min);
+    if (chaveDia() !== ultimoDia) { ultimoDia = chaveDia(); var r = fecharDias(); podar(); salvar(); render(); falar(saudacao(), 'ola'); avisarFechamento(r); }
   }
   var lento = 0;
   setInterval(function () { tick(); if (++lento % 30 === 0) { salvar(); renderLembretes(); } }, 1000);
@@ -754,7 +897,10 @@
     navigator.serviceWorker.register('/rotina/sw.js', { scope: '/rotina/' }).then(function (r) { registro = r; return navigator.serviceWorker.ready; }).then(function (r) { registro = r; }).catch(function () {});
   }
 
+  var fechamento = fecharDias();
   podar(); dia(); salvar();
   falar(saudacao(), S.timer.rodando ? 'estudando' : 'ola');
+  avisarFechamento(fechamento);
+  if (S.semTelaAtivo) { if (Date.now() >= S.semTelaAtivo.fimEm) concluirTela(S.semTelaAtivo.min); else contarTela(); }
   estadoNotif(); renderMeus(); render(); renderTimer();
 })();

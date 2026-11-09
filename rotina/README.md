@@ -14,7 +14,8 @@ Quem trabalha e estuda emenda um bloco no outro. A água fica para depois, o cor
 | Lembretes | Água, respiração e pausa sem tela, cada um com o seu intervalo, só dentro do horário escolhido. |
 | Seus lembretes | A pessoa cria os dela, como tomar um remédio: todo dia num horário ou a cada X minutos. |
 | Respiração guiada | Um minuto: 4 segundos inspirando e 6 soltando, com uma bolha que cresce e diminui. |
-| Pausa sem tela | Cinco minutos contados pela Zumi, para olhar para longe, alongar e beber água. |
+| Tempo sem tela | A pessoa escolhe 5, 10, 15 ou 30 minutos, 1 hora ou 2 horas, e, se quiser, para quê: família, saúde, descanso ou outra coisa. Pode bloquear o celular: na volta, a Zumi conta o tempo. Quem volta antes ganha os pontos do tempo que já cumpriu. |
+| Água | Copos contra uma meta diária ajustável (8 por padrão). O dia fica Ruim, Bom (a partir de 60% da meta) ou Excelente (meta batida). Há histórico dos últimos 14 dias e média dos últimos 7 e 30 dias. |
 | Tarefas e rotinas | Lista do dia com tarefas, que somem quando concluídas, e rotinas, que voltam todo dia. A estrela marca ou tira a prioridade, e as prioridades sobem para o topo. |
 | Metas do ano | Poucas metas por ano. Cada uma tem quatro trimestres, e no fim de cada um a Zumi pergunta se a meta está no caminho, atrasada, parada ou concluída. |
 | Checks de exercício | Academia, corrida e aeróbico, uma vez por dia cada. |
@@ -26,16 +27,23 @@ Quem trabalha e estuda emenda um bloco no outro. A água fica para depois, o cor
 | Ação | Pontos | Limite por dia |
 | --- | --- | --- |
 | Bloco de trabalho, estudo ou lazer concluído | 10 | sem limite |
-| Copo de água | 2 | 10 copos |
+| Água no nível Bom / Excelente | 10 / 20 | 1 vez |
 | Respirar 1 minuto | 5 | 6 vezes |
-| 5 minutos sem tela | 5 | 4 vezes |
+| Tempo sem tela: 5, 10, 15, 30 min, 1 h, 2 h | 5, 8, 10, 15, 25, 40 | 60 pontos |
 | Academia, corrida ou aeróbico | 20 cada | 1 vez cada |
 | Reflexão do fim do dia | 10 | 1 vez |
 | Lembrete próprio marcado como feito | 2 | 10 vezes |
 | Tarefa ou rotina concluída | 3, ou 5 se for prioridade | 40 pontos |
 | Revisão trimestral de uma meta | 10 | 5 metas |
+| Dia sem nenhuma atividade | −10 | 7 dias seguidos |
 
-Pular um bloco não dá ponto. Um dia comum, com quatro blocos, água, uma respiração, uma pausa sem tela, um exercício e a reflexão, rende cerca de 100 pontos.
+Pular um bloco não dá ponto.
+
+## O dia fecha às 23h59
+
+À meia-noite o dia fecha sozinho e guarda os pontos e o nível da água. Na próxima vez que a pessoa abre o app, a Zumi conta como o dia de ontem fechou.
+
+Dia sem nenhuma atividade tira 10 pontos. Só abrir o app não conta: vale beber água, marcar uma tarefa, fazer um bloco ou qualquer outro check. A perda para em 7 dias seguidos, para quem some não voltar zerado. O título conquistado nunca cai: a ideia é seguir construindo a colmeia aos poucos. Um dia comum, com quatro blocos, água, uma respiração, uma pausa sem tela, um exercício e a reflexão, rende cerca de 100 pontos.
 
 ## Títulos da colmeia
 
