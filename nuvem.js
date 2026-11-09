@@ -110,13 +110,14 @@ export async function sairDaConta() {
   await signOut(auth);
 }
 
-// Apaga os documentos de todos os apps do Ako e a conta. Os dados do aparelho ficam.
+// Apaga os documentos de todos os apps do Ako, o cadastro de leitor do site e a conta. Os dados do aparelho ficam.
 // pedirSenha() é chamada só quando o Firebase pede login recente de quem entrou com e-mail e senha.
 export async function apagarConta(pedirSenha) {
   const u = auth.currentUser;
   if (!u) return false;
   const apagar = async () => {
     for (const a of APPS) await deleteDoc(doc(db, 'users', u.uid, 'apps', a));
+    await deleteDoc(doc(db, 'leitores', u.uid)); // cadastro dos ebooks do rizzygo.com.br, mesma conta
     await deleteUser(u);
   };
   try { await apagar(); } catch (e) {
