@@ -144,3 +144,59 @@ textarea{width:100%;resize:vertical}
   .bolha,.barra i,.relogio .arco{transition:none}
   .guia-zumi.pula img,.aviso{animation:none}
 }
+
+/* Tarefas e rotinas */
+.tarefas{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
+.tarefas:empty{display:none}
+.tarefa{display:flex;align-items:center;gap:.6rem;background:var(--fundo);border-radius:12px;padding:.55rem .6rem;border-left:4px solid transparent}
+.tarefa.prio{border-left-color:var(--ambar)}
+.tarefa.feita .tarefa-txt{text-decoration:line-through;color:var(--suave)}
+.marca-tarefa{width:1.6rem;height:1.6rem;flex:none;border-radius:7px;border:2px solid var(--azul);background:transparent;cursor:pointer;display:grid;place-items:center;color:#fff;font-weight:700}
+.marca-tarefa[aria-pressed="true"]{background:var(--certo);border-color:var(--certo)}
+.marca-tarefa[aria-pressed="true"]::after{content:"✓"}
+.tarefa-txt{flex:1;min-width:0;overflow-wrap:anywhere}
+.tarefa-txt small{display:inline-block;margin-left:.5rem;font-size:.75rem;font-weight:700;color:var(--azul);background:var(--azul-claro);border-radius:999px;padding:0 .5rem;vertical-align:middle}
+.prio-bt,.tirar-bt{flex:none;width:2.2rem;height:2.2rem;border:0;background:transparent;border-radius:8px;font-size:1.25rem;line-height:1;cursor:pointer;color:var(--suave)}
+.prio-bt[aria-pressed="true"]{color:var(--ambar-forte)}
+.prio-bt:hover,.tirar-bt:hover{background:var(--azul-claro)}
+.nova-tarefa{display:grid;gap:.5rem}
+.nova-opcoes{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1rem}
+.nova-opcoes .btn{margin-left:auto;padding:.6rem 1rem}
+.opcao{display:inline-flex;align-items:center;gap:.4rem;font-size:.95rem;cursor:pointer}
+.opcao input{width:1.1rem;height:1.1rem;accent-color:var(--azul)}
+
+/* Revisão do dia */
+.revisao{display:grid;gap:.7rem;border-top:1px solid var(--linha);padding-top:1rem}
+.pendentes{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
+.pendentes:empty{display:none}
+.pendentes li{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .8rem;background:var(--ambar-claro);border-radius:12px;padding:.5rem .7rem}
+.pendentes li span{flex:1 1 10rem}
+.pendentes .btn{padding:.4rem .8rem;font-size:.92rem}
+.tarefas.amanha .tarefa{background:var(--azul-claro)}
+
+/* Metas do ano */
+.metas{list-style:none;margin:0;padding:0;display:grid;gap:.75rem;grid-template-columns:repeat(auto-fill,minmax(min(100%,20rem),1fr))}
+.metas:empty{display:none}
+.meta{border:1px solid var(--linha);border-radius:12px;padding:.85rem;display:grid;gap:.7rem}
+.meta.concluida{border-color:var(--certo);background:var(--certo-claro)}
+.meta-topo{display:grid;gap:.55rem}
+.meta-topo strong{font-family:var(--f-titulo);font-size:1.08rem;overflow-wrap:anywhere}
+.trimestres{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem}
+.trimestres li{text-align:center;font:700 .82rem/1 var(--f-titulo);padding:.45rem 0;border-radius:8px;background:var(--fundo);color:var(--suave);border:2px solid transparent}
+.trimestres li.agora{border-color:var(--ambar)}
+.trimestres li.caminho{background:var(--certo);color:#fff}
+.trimestres li.atrasada{background:var(--ambar);color:#0B1B3A}
+.trimestres li.parada{background:var(--erro);color:#fff}
+.trimestres li.concluida{background:var(--azul);color:var(--azul-tinta)}
+.meta-revisar{display:grid;gap:.5rem;background:var(--ambar-claro);border-radius:10px;padding:.7rem}
+.meta-revisar p{font-weight:700}
+.status-bts{display:flex;flex-wrap:wrap;gap:.35rem}
+.status-bt{font:700 .9rem var(--f-texto);border:2px solid var(--linha);background:var(--superficie);color:var(--tinta);border-radius:999px;padding:.35rem .8rem;cursor:pointer}
+.status-bt.caminho:hover,.status-bt.caminho[aria-pressed="true"]{border-color:var(--certo)}
+.status-bt.atrasada:hover,.status-bt.atrasada[aria-pressed="true"]{border-color:var(--ambar)}
+.status-bt.parada:hover,.status-bt.parada[aria-pressed="true"]{border-color:var(--erro)}
+.status-bt.concluida:hover,.status-bt.concluida[aria-pressed="true"]{border-color:var(--azul)}
+.meta-acoes{display:flex;gap:1rem;justify-content:flex-end;font-size:.92rem}
+.metas-aviso{font-weight:700;background:var(--ambar-claro);border-left:4px solid var(--ambar);border-radius:8px;padding:.6rem .8rem}
+.metas-aviso[hidden]{display:none}
+.grade > .painel:last-child:nth-child(odd){grid-column:1/-1}

@@ -15,8 +15,10 @@ Quem trabalha e estuda emenda um bloco no outro. A água fica para depois, o cor
 | Seus lembretes | A pessoa cria os dela, como tomar um remédio: todo dia num horário ou a cada X minutos. |
 | Respiração guiada | Um minuto: 4 segundos inspirando e 6 soltando, com uma bolha que cresce e diminui. |
 | Pausa sem tela | Cinco minutos contados pela Zumi, para olhar para longe, alongar e beber água. |
+| Tarefas e rotinas | Lista do dia com tarefas, que somem quando concluídas, e rotinas, que voltam todo dia. A estrela marca ou tira a prioridade, e as prioridades sobem para o topo. |
+| Metas do ano | Poucas metas por ano. Cada uma tem quatro trimestres, e no fim de cada um a Zumi pergunta se a meta está no caminho, atrasada, parada ou concluída. |
 | Checks de exercício | Academia, corrida e aeróbico, uma vez por dia cada. |
-| Fim do dia | Uma pergunta de reflexão por dia. A resposta pode ficar no app ou no papel. |
+| Fim do dia | Uma pergunta de reflexão por dia, respondida no app ou no papel. Depois vem a revisão: quantos itens saíram, o que ficou pendente (vai para amanhã ou sai da lista) e o que já entra na lista de amanhã. |
 | Pontos e títulos | Cada ação soma pontos e o título sobe. A semana aparece num gráfico de barras. |
 
 ## Quanto vale cada ação
@@ -30,6 +32,8 @@ Quem trabalha e estuda emenda um bloco no outro. A água fica para depois, o cor
 | Academia, corrida ou aeróbico | 20 cada | 1 vez cada |
 | Reflexão do fim do dia | 10 | 1 vez |
 | Lembrete próprio marcado como feito | 2 | 10 vezes |
+| Tarefa ou rotina concluída | 3, ou 5 se for prioridade | 40 pontos |
+| Revisão trimestral de uma meta | 10 | 5 metas |
 
 Pular um bloco não dá ponto. Um dia comum, com quatro blocos, água, uma respiração, uma pausa sem tela, um exercício e a reflexão, rende cerca de 100 pontos.
 
@@ -48,6 +52,12 @@ A Zumi é uma abelha sem ferrão. As abelhas sem ferrão guardam o mel em potes 
 | 4000 | Colmeia em ritmo | Trabalho, estudo e lazer no mesmo compasso. |
 
 Com cerca de 100 pontos por dia, o segundo título chega no primeiro dia e o último em umas seis semanas.
+
+## Quando a Zumi pede a revisão das metas
+
+Nos últimos 15 dias de cada trimestre, a Zumi avisa uma vez por dia enquanto houver meta sem resposta. Se o trimestre virar sem revisão, ela ainda pergunta nos primeiros 30 dias do seguinte. A pessoa também pode revisar a qualquer hora. Uma meta concluída não pede mais revisão.
+
+Tarefa que não saiu e não passou pela revisão continua na lista no dia seguinte, com a etiqueta "Veio de antes".
 
 ## Como o app foi feito
 

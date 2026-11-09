@@ -49,10 +49,10 @@
         estudo: { foco: 25, pausa: 5 },
         lazer: { foco: 60 },
         pausaLonga: 15, ciclos: 4,
-        inicio: '08:00', fim: '22:00', som: true,
+        inicio: '08:00', fim: '22:00', som: true, lembrarMetas: true,
         lembretes: { agua: { on: true, min: 45 }, respirar: { on: true, min: 90 }, semTela: { on: true, min: 120 } }
       },
-      meus: [],
+      meus: [], tarefas: [], metas: [],
       timer: { modo: 'estudo', fase: 'foco', ciclo: 1, rodando: false, fimEm: null, restante: null },
       proximos: {}, adiados: {}, tocados: {},
       dias: {}, pontosAntigos: 0
@@ -67,7 +67,7 @@
     // completa campos que versões novas acrescentarem
     s.config = Object.assign({}, p.config, s.config || {});
     s.config.lembretes = Object.assign({}, p.config.lembretes, s.config.lembretes || {});
-    ['meus', 'proximos', 'adiados', 'tocados', 'dias', 'timer'].forEach(function (k) { if (!s[k]) s[k] = p[k]; });
+    ['meus', 'tarefas', 'metas', 'proximos', 'adiados', 'tocados', 'dias', 'timer'].forEach(function (k) { if (!s[k]) s[k] = p[k]; });
     if (typeof s.pontosAntigos !== 'number') s.pontosAntigos = 0;
     return s;
   }
@@ -81,7 +81,8 @@
   }
   function dia(k) {
     k = k || chaveDia();
-    if (!S.dias[k]) S.dias[k] = { blocos: { trabalho: 0, estudo: 0, lazer: 0 }, minutos: { trabalho: 0, estudo: 0, lazer: 0 }, agua: 0, respirar: 0, semTela: 0, ex: {}, meus: 0, reflexao: '', papel: false };
+    if (!S.dias[k]) S.dias[k] = { blocos: { trabalho: 0, estudo: 0, lazer: 0 }, minutos: { trabalho: 0, estudo: 0, lazer: 0 }, agua: 0, respirar: 0, semTela: 0, ex: {}, meus: 0, reflexao: '', papel: false, feitas: {}, tarefasPts: 0, metasPts: 0 };
+    var d = S.dias[k]; if (!d.feitas) { d.feitas = {}; d.tarefasPts = 0; d.metasPts = 0; }
     return S.dias[k];
   }
 
@@ -98,7 +99,8 @@
     var ex = Object.keys(d.ex || {}).filter(function (k) { return d.ex[k]; }).length;
     return 10 * ((b.trabalho || 0) + (b.estudo || 0) + (b.lazer || 0)) +
       2 * Math.min(d.agua || 0, 10) + 5 * Math.min(d.respirar || 0, 6) + 5 * Math.min(d.semTela || 0, 4) +
-      20 * ex + ((d.reflexao || d.papel) ? 10 : 0) + 2 * Math.min(d.meus || 0, 10);
+      20 * ex + ((d.reflexao || d.papel) ? 10 : 0) + 2 * Math.min(d.meus || 0, 10) +
+      Math.min(d.tarefasPts || 0, 40) + Math.min(d.metasPts || 0, 50);
   }
   function total() {
     return S.pontosAntigos + Object.keys(S.dias).reduce(function (s, k) { return s + pontosDia(S.dias[k]); }, 0);
@@ -272,6 +274,7 @@
     return a <= b ? (m >= a && m < b) : (m >= a || m < b);
   }
   function lembreteInfo(chave) {
+    if (chave === 'metas') return { nome: 'Fim de trimestre: hora de ver como estão as suas metas do ano.', feito: 'Revisar agora' };
     if (LEMBRETES[chave]) return { nome: LEMBRETES[chave].texto, feito: LEMBRETES[chave].feito };
     var m = S.meus.filter(function (x) { return x.id === chave; })[0];
     return m ? { nome: 'Hora de: ' + m.nome + '.', feito: 'Feito', meu: m } : null;
@@ -302,6 +305,7 @@
 
   function checarLembretes() {
     var agora = Date.now(), d = new Date(), hoje = chaveDia(d);
+    if (S.config.lembrarMetas && S.tocados.metas !== hoje && noHorario(d) && metasPendentes().length) { S.tocados.metas = hoje; disparar('metas'); }
     Object.keys(S.adiados).forEach(function (k) { if (agora >= S.adiados[k]) { delete S.adiados[k]; disparar(k); } });
     Object.keys(S.config.lembretes).forEach(function (k) {
       var l = S.config.lembretes[k];
@@ -444,6 +448,7 @@
       el.titulos.appendChild(li);
     });
     renderLembretes();
+    renderTarefas(); renderMetas();
   }
 
   // ---------- Configurações nos campos ----------
@@ -503,6 +508,7 @@
     fecharAviso();
     if (k === 'agua') { $('agua-mais').click(); }
     else if (k === 'respirar' || k === 'semTela') abrirSobre(k);
+    else if (k === 'metas') { $('metas-secao').scrollIntoView({ behavior: 'smooth' }); }
     else if (info && info.meu) { mudar(function (d) { d.meus++; }); falar('Feito: ' + info.meu.nome + '. +2', 'comemorando', true); }
   });
   $('aviso-depois').addEventListener('click', function () { S.adiados[atual] = Date.now() + 10 * MIN; salvar(); fecharAviso(); renderLembretes(); });
@@ -555,6 +561,181 @@
     b.addEventListener('click', function () { pedidoInstalar.prompt(); pedidoInstalar.userChoice.finally(function () { b.remove(); }); });
     var w = document.createElement('div'); w.className = 'acoes'; w.appendChild(b);
     document.querySelector('.instalar h2').after(w);
+  });
+
+  // ---------- Tarefas e rotinas ----------
+  function amanhaChave() { var d = new Date(); d.setDate(d.getDate() + 1); return chaveDia(d); }
+  function novoId(p) { return p + Date.now().toString(36) + Math.floor(Math.random() * 1000); }
+  function feitaHoje(t) { return t.rotina ? !!dia().feitas[t.id] : t.feita === chaveDia(); }
+  function visiveisHoje() {
+    var hoje = chaveDia();
+    return S.tarefas.filter(function (t) { return t.rotina || (t.dia <= hoje && (!t.feita || t.feita === hoje)); })
+      .sort(function (a, b) { return (feitaHoje(a) - feitaHoje(b)) || (b.prio - a.prio) || (a.rotina - b.rotina); });
+  }
+  function marcarTarefa(t) {
+    var hoje = chaveDia(), liga = !feitaHoje(t), pts = t.prio ? 5 : 3;
+    mudar(function (d) {
+      if (t.rotina) { if (liga) d.feitas[t.id] = pts; else { pts = d.feitas[t.id] || pts; delete d.feitas[t.id]; } }
+      else { t.feita = liga ? hoje : null; if (liga) d.feitas[t.id] = pts; else { pts = d.feitas[t.id] || 0; delete d.feitas[t.id]; } }
+      d.tarefasPts = Math.max(0, d.tarefasPts + (liga ? pts : -pts));
+    });
+    if (liga) {
+      var faltam = visiveisHoje().filter(function (x) { return x.prio && !feitaHoje(x); }).length;
+      falar(t.prio ? (faltam ? 'Prioridade feita. Faltam ' + faltam + '. +5' : 'Todas as prioridades de hoje feitas! +5') : 'Feito: ' + t.texto + '. +3', faltam || !t.prio ? 'ola' : 'comemorando', !faltam && t.prio);
+    }
+  }
+  function linhaTarefa(t, opcoes) {
+    var li = document.createElement('li'), feita = opcoes.amanha ? false : feitaHoje(t), hoje = chaveDia();
+    li.className = 'tarefa' + (feita ? ' feita' : '') + (t.prio ? ' prio' : '');
+    if (!opcoes.amanha) {
+      var cb = document.createElement('button'); cb.type = 'button'; cb.className = 'marca-tarefa';
+      cb.setAttribute('aria-pressed', String(feita)); cb.setAttribute('aria-label', (feita ? 'Desmarcar: ' : 'Concluir: ') + t.texto);
+      cb.addEventListener('click', function () { marcarTarefa(t); });
+      li.appendChild(cb);
+    }
+    var txt = document.createElement('span'); txt.className = 'tarefa-txt'; txt.textContent = t.texto;
+    if (t.rotina) { var r = document.createElement('small'); r.textContent = 'Rotina'; txt.appendChild(r); }
+    else if (!opcoes.amanha && t.dia < hoje) { var v = document.createElement('small'); v.textContent = 'Veio de antes'; txt.appendChild(v); }
+    li.appendChild(txt);
+    var pr = document.createElement('button'); pr.type = 'button'; pr.className = 'prio-bt'; pr.textContent = t.prio ? '★' : '☆';
+    pr.setAttribute('aria-pressed', String(!!t.prio)); pr.setAttribute('aria-label', 'Prioridade: ' + t.texto);
+    pr.title = t.prio ? 'Tirar a prioridade' : 'Marcar como prioridade';
+    pr.addEventListener('click', function () { t.prio = !t.prio; salvar(); render(); });
+    li.appendChild(pr);
+    var x = document.createElement('button'); x.type = 'button'; x.className = 'tirar-bt'; x.textContent = '×';
+    x.setAttribute('aria-label', 'Remover: ' + t.texto);
+    x.addEventListener('click', function () { S.tarefas = S.tarefas.filter(function (y) { return y.id !== t.id; }); salvar(); render(); });
+    li.appendChild(x);
+    return li;
+  }
+  function renderTarefas() {
+    var lista = visiveisHoje(), feitas = lista.filter(feitaHoje), hoje = chaveDia(), am = amanhaChave();
+    var ul = $('tarefas'); ul.innerHTML = '';
+    lista.forEach(function (t) { ul.appendChild(linhaTarefa(t, {})); });
+    var prios = lista.filter(function (t) { return t.prio; });
+    $('tarefas-resumo').textContent = lista.length
+      ? feitas.length + ' de ' + lista.length + ' feitas' + (prios.length ? ', ' + prios.filter(feitaHoje).length + ' de ' + prios.length + ' prioridades.' : '.') + ' Toque na estrela para mudar a prioridade.'
+      : 'Nada na lista. Tarefa some quando você conclui. Rotina volta todo dia.';
+
+    // revisão do fim do dia
+    $('revisao-resumo').textContent = lista.length
+      ? 'Você concluiu ' + feitas.length + ' de ' + lista.length + ' itens hoje.' + (feitas.length === lista.length ? ' Dia fechado.' : ' O que ficou, vai para amanhã ou sai da lista?')
+      : 'Sem tarefas hoje. Quer deixar algo pronto para amanhã?';
+    var pend = $('pendentes'); pend.innerHTML = '';
+    lista.filter(function (t) { return !t.rotina && !feitaHoje(t); }).forEach(function (t) {
+      var li = document.createElement('li');
+      var sp = document.createElement('span'); sp.textContent = (t.prio ? '★ ' : '') + t.texto;
+      var a = document.createElement('button'); a.type = 'button'; a.className = 'btn btn-sec'; a.textContent = 'Amanhã';
+      a.addEventListener('click', function () { t.dia = am; salvar(); render(); falar('Combinado: "' + t.texto + '" fica para amanhã.', 'ideia'); });
+      var r = document.createElement('button'); r.type = 'button'; r.className = 'link perigo'; r.textContent = 'Tirar';
+      r.addEventListener('click', function () { S.tarefas = S.tarefas.filter(function (y) { return y.id !== t.id; }); salvar(); render(); });
+      li.appendChild(sp); li.appendChild(a); li.appendChild(r); pend.appendChild(li);
+    });
+    var ula = $('amanha'); ula.innerHTML = '';
+    S.tarefas.filter(function (t) { return !t.rotina && t.dia > hoje; }).forEach(function (t) { ula.appendChild(linhaTarefa(t, { amanha: true })); });
+  }
+  function addTarefa(texto, prio, rotina, quando) {
+    S.tarefas.push({ id: novoId('t'), texto: texto, prio: prio, rotina: rotina, dia: quando, feita: null });
+    salvar(); render();
+  }
+  $('nova-tarefa').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var txt = $('tarefa-txt').value.trim(); if (!txt) return;
+    addTarefa(txt, $('tarefa-prio').checked, $('tarefa-rotina').checked, chaveDia());
+    falar($('tarefa-rotina').checked ? 'Rotina criada. Ela volta todo dia.' : ($('tarefa-prio').checked ? 'Prioridade anotada. Começa por ela?' : 'Anotado na lista de hoje.'), 'ideia');
+    $('tarefa-txt').value = ''; $('tarefa-prio').checked = false; $('tarefa-rotina').checked = false;
+  });
+  $('nova-amanha').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var txt = $('amanha-txt').value.trim(); if (!txt) return;
+    addTarefa(txt, $('amanha-prio').checked, false, amanhaChave());
+    $('amanha-txt').value = ''; $('amanha-prio').checked = false;
+    falar('Anotado para amanhã. Agora pode descansar.', 'ideia');
+  });
+
+  // ---------- Metas do ano ----------
+  var STATUS = [['caminho', 'No caminho'], ['atrasada', 'Atrasada'], ['parada', 'Parada'], ['concluida', 'Concluída']];
+  function trimestre(d) { return Math.floor(d.getMonth() / 3) + 1; }
+  function fimTrimestre(ano, t) { return new Date(ano, t * 3, 0); }
+  // Revisão pendente: nos últimos 15 dias do trimestre, ou nos primeiros 30 dias do seguinte se a anterior ficou sem resposta.
+  function metasPendentes() {
+    var d = new Date(), ano = d.getFullYear(), t = trimestre(d), out = [];
+    var hoje0 = new Date(ano, d.getMonth(), d.getDate());
+    var fim = fimTrimestre(ano, t), diasFim = Math.round((fim - hoje0) / 86400000);
+    var ini = new Date(ano, (t - 1) * 3, 1), diasIni = Math.round((hoje0 - ini) / 86400000);
+    var antT = t === 1 ? 4 : t - 1, antAno = t === 1 ? ano - 1 : ano, antFim = chaveDia(fimTrimestre(antAno, antT));
+    S.metas.forEach(function (m) {
+      if (m.ano === antAno && diasIni < 30 && m.criada <= antFim && !m.checkins[antAno + '-T' + antT] && !m.checkins.fim) out.push({ meta: m, chave: antAno + '-T' + antT, rotulo: 'T' + antT + (antAno !== ano ? ' de ' + antAno : '') });
+      if (m.ano === ano && diasFim <= 15 && !m.checkins[ano + '-T' + t] && !m.checkins.fim) out.push({ meta: m, chave: ano + '-T' + t, rotulo: 'T' + t });
+    });
+    return out;
+  }
+  function revisarMeta(m, chave, status) {
+    var nova = !m.checkins[chave];
+    mudar(function (d) {
+      m.checkins[chave] = status;
+      if (status === 'concluida') m.checkins.fim = chave;
+      else if (m.checkins.fim === chave) delete m.checkins.fim;
+      if (nova) d.metasPts += 10;
+    });
+    var falas = { caminho: 'Meta no caminho. Segue assim.', atrasada: 'Atrasou, acontece. Qual é o menor passo para destravar esta semana?', parada: 'Parada também é resposta. Vale ajustar a meta ou largar de vez?', concluida: 'Meta concluída! Isso merece comemoração.' };
+    falar(falas[status] + (nova ? ' +10' : ''), status === 'concluida' ? 'comemorando' : 'ideia', status === 'concluida');
+  }
+  var abertas = {};
+  function renderMetas() {
+    var d = new Date(), ano = d.getFullYear(), tAtual = trimestre(d), pend = metasPendentes();
+    $('metas-ano').textContent = ano;
+    var aviso = $('metas-aviso');
+    aviso.hidden = !pend.length;
+    aviso.textContent = pend.length ? 'Hora da revisão: ' + pend.length + (pend.length === 1 ? ' meta espera' : ' metas esperam') + ' a sua resposta.' : '';
+    var ul = $('metas'); ul.innerHTML = '';
+    S.metas.filter(function (m) { return m.ano === ano || pend.some(function (p) { return p.meta === m; }); }).forEach(function (m) {
+      var li = document.createElement('li'); li.className = 'meta' + (m.checkins.fim ? ' concluida' : '');
+      var topo = document.createElement('div'); topo.className = 'meta-topo';
+      var nome = document.createElement('strong'); nome.textContent = m.texto; topo.appendChild(nome);
+      var tri = document.createElement('ol'); tri.className = 'trimestres'; tri.setAttribute('aria-label', 'Revisões por trimestre');
+      for (var t = 1; t <= 4; t++) {
+        var st = m.checkins[m.ano + '-T' + t], it = document.createElement('li');
+        it.className = (st || '') + (m.ano === ano && t === tAtual ? ' agora' : '');
+        it.textContent = 'T' + t;
+        it.title = st ? STATUS.filter(function (x) { return x[0] === st; })[0][1] : (m.ano === ano && t > tAtual ? 'Ainda não chegou' : 'Sem revisão');
+        it.setAttribute('aria-label', 'T' + t + ': ' + it.title);
+        tri.appendChild(it);
+      }
+      topo.appendChild(tri); li.appendChild(topo);
+      var minha = pend.filter(function (p) { return p.meta === m; });
+      var alvo = minha.length ? minha[0] : (abertas[m.id] && m.ano === ano ? { chave: ano + '-T' + tAtual, rotulo: 'T' + tAtual } : null);
+      if (alvo) {
+        var box = document.createElement('div'); box.className = 'meta-revisar';
+        var q = document.createElement('p'); q.textContent = 'Como está esta meta no ' + alvo.rotulo + '?'; box.appendChild(q);
+        var bts = document.createElement('div'); bts.className = 'status-bts';
+        STATUS.forEach(function (s2) {
+          var b = document.createElement('button'); b.type = 'button'; b.className = 'status-bt ' + s2[0]; b.textContent = s2[1];
+          b.setAttribute('aria-pressed', String(m.checkins[alvo.chave] === s2[0]));
+          b.addEventListener('click', function () { abertas[m.id] = false; revisarMeta(m, alvo.chave, s2[0]); });
+          bts.appendChild(b);
+        });
+        box.appendChild(bts); li.appendChild(box);
+      }
+      var acoes = document.createElement('div'); acoes.className = 'meta-acoes';
+      if (!minha.length && m.ano === ano) {
+        var rv = document.createElement('button'); rv.type = 'button'; rv.className = 'link';
+        rv.textContent = abertas[m.id] ? 'Fechar' : (m.checkins[ano + '-T' + tAtual] ? 'Mudar a revisão do T' + tAtual : 'Revisar agora');
+        rv.addEventListener('click', function () { abertas[m.id] = !abertas[m.id]; renderMetas(); });
+        acoes.appendChild(rv);
+      }
+      var x = document.createElement('button'); x.type = 'button'; x.className = 'link perigo'; x.textContent = 'Remover';
+      x.addEventListener('click', function () { if (confirm('Remover a meta "' + m.texto + '"?')) { S.metas = S.metas.filter(function (y) { return y.id !== m.id; }); salvar(); render(); } });
+      acoes.appendChild(x); li.appendChild(acoes);
+      ul.appendChild(li);
+    });
+  }
+  $('nova-meta').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var txt = $('meta-txt').value.trim(); if (!txt) return;
+    S.metas.push({ id: novoId('g'), texto: txt, ano: new Date().getFullYear(), criada: chaveDia(), checkins: {} });
+    $('meta-txt').value = ''; salvar(); render();
+    falar(S.metas.length > 5 ? 'Meta anotada. Dica: com mais de cinco metas, o foco se espalha.' : 'Meta anotada. No fim do trimestre eu pergunto como ela está.', 'ideia', true);
   });
 
   // ---------- Relógio central ----------
