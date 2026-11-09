@@ -17,6 +17,17 @@
     [4000, 'Colmeia em ritmo', 'Trabalho, estudo e lazer no mesmo compasso.']
   ];
 
+  // Como a Zumi aparece em cada título: selo, cor do anel e pose de descanso.
+  var VISUAL = [
+    { ic: '🌱', cor: '#7CB98F', pose: 'ola' },
+    { ic: '🌤️', cor: '#5B9BE6', pose: 'ola' },
+    { ic: '🌼', cor: '#F2C94C', pose: 'estudando' },
+    { ic: '🛡️', cor: '#3F7BE0', pose: 'estudando' },
+    { ic: '🏗️', cor: '#E8902A', pose: 'estudando' },
+    { ic: '🍯', cor: '#F5A524', pose: 'comemorando' },
+    { ic: '👑', cor: '#F5A524', pose: 'comemorando' }
+  ];
+
   var PERGUNTAS = [
     'O que deu certo hoje?',
     'O que tirou o seu foco hoje, e o que dá para mudar amanhã?',
@@ -50,10 +61,11 @@
         estudo: { foco: 25, pausa: 5 },
         lazer: { foco: 60 },
         pausaLonga: 15, ciclos: 4,
-        inicio: '08:00', fim: '22:00', som: true, lembrarMetas: true, 
+        pausas: { trabalho: true, estudo: true }, somTipo: 'zumi',
+        inicio: '08:00', fim: '22:00', som: true, somLembretes: true, lembrarMetas: true,
         lembretes: { agua: { on: true, min: 45 }, respirar: { on: true, min: 90 }, semTela: { on: true, min: 120 } }
       },
-      meus: [], tarefas: [], metas: [],
+      meus: [], tarefas: [], metas: [], diario: {},
       timer: { modo: 'estudo', fase: 'foco', ciclo: 1, rodando: false, fimEm: null, restante: null },
       proximos: {}, adiados: {}, tocados: {},
       dias: {}, pontosAntigos: 0,
@@ -69,7 +81,8 @@
     // completa campos que versões novas acrescentarem
     s.config = Object.assign({}, p.config, s.config || {});
     s.config.lembretes = Object.assign({}, p.config.lembretes, s.config.lembretes || {});
-    ['meus', 'tarefas', 'metas', 'proximos', 'adiados', 'tocados', 'dias', 'timer'].forEach(function (k) { if (!s[k]) s[k] = p[k]; });
+    s.config.pausas = Object.assign({}, p.config.pausas, s.config.pausas || {});
+    ['meus', 'tarefas', 'metas', 'diario', 'proximos', 'adiados', 'tocados', 'dias', 'timer'].forEach(function (k) { if (!s[k]) s[k] = p[k]; });
     if (typeof s.pontosAntigos !== 'number') s.pontosAntigos = 0;
     if (!s.criadoEm) s.criadoEm = Object.keys(s.dias).sort()[0] || chaveDia();
     if (typeof s.melhor !== 'number') s.melhor = 0;
@@ -94,7 +107,13 @@
   // Guarda só os últimos 60 dias; os pontos dos mais antigos continuam somando.
   function podar() {
     var ks = Object.keys(S.dias).sort();
-    while (ks.length > 60) { var k = ks.shift(); S.pontosAntigos += pontosDia(S.dias[k]); delete S.dias[k]; }
+    while (ks.length > 60) {
+      var k = ks.shift(), d = S.dias[k];
+      S.pontosAntigos += pontosDia(d);
+      // o histórico pessoal (como foi o dia) fica guardado mesmo depois dos 60 dias
+      if (d.humor || d.reflexao || d.papel) S.diario[k] = { humor: d.humor || 0, texto: d.reflexao || '', papel: !!d.papel };
+      delete S.dias[k];
+    }
   }
 
   // ---------- Pontos ----------
@@ -116,7 +135,7 @@
     return 10 * ((b.trabalho || 0) + (b.estudo || 0) + (b.lazer || 0)) +
       (PONTOS_AGUA[nivelAgua(d)] || 0) + 5 * Math.min(d.respirar || 0, 6) +
       (d.semTelaPts != null ? Math.min(d.semTelaPts, 60) : 5 * Math.min(d.semTela || 0, 4)) +
-      20 * ex + ((d.reflexao || d.papel || d.refOculta) ? 10 : 0) + 2 * Math.min(d.meus || 0, 10) +
+      20 * ex + ((d.reflexao || d.papel || d.refOculta || d.humor) ? 10 : 0) + 2 * Math.min(d.meus || 0, 10) +
       Math.min(d.tarefasPts || 0, 40) + Math.min(d.metasPts || 0, 50);
   }
   function total() {
@@ -125,7 +144,7 @@
   function indiceTitulo(p) { var i = 0; TITULOS.forEach(function (t, j) { if (p >= t[0]) i = j; }); return i; }
   // O título conquistado não cai, mesmo que os pontos diminuam.
   function tituloAtual() { var i = indiceTitulo(total()); if (i > S.melhor) S.melhor = i; return S.melhor; }
-  function ativo(d) { return !!d && (pontosBrutos(d) > 0 || !!nivelAgua(d) || !!d.reflexao || !!d.refOculta); }
+  function ativo(d) { return !!d && (pontosBrutos(d) > 0 || !!nivelAgua(d) || !!d.reflexao || !!d.refOculta || !!d.humor); }
 
   // Fecha os dias que já passaram: guarda pontos e nível da água; dia sem atividade perde 10 pontos.
   function fecharDias() {
@@ -210,12 +229,14 @@
   // ---------- Zumi ----------
   function falar(texto, pose, pular) {
     el.fala.textContent = texto;
+    // "olá" é a pose neutra: ela muda conforme o título (a Zumi evolui com os pontos)
+    if (pose === 'ola') pose = VISUAL[tituloAtual()].pose;
     if (pose) {
       el.img.src = '/zumi/abelha-' + pose + '.png';
       el.escuro.srcset = '/zumi/abelha-' + pose + '-fundo-escuro.png';
     }
     if (pular) {
-      var p = el.img.parentNode; p.classList.remove('pula'); void p.offsetWidth; p.classList.add('pula');
+      var p = el.img.closest('.guia-zumi'); p.classList.remove('pula'); void p.offsetWidth; p.classList.add('pula');
     }
   }
   function saudacao() {
@@ -226,19 +247,40 @@
   }
 
   // ---------- Som e notificação ----------
+  // Dois sons feitos na hora, sem arquivo: a Zumi (zumbido curto e um sino) ou só o sino.
   var audio = null;
-  function tocar() {
-    if (!S.config.som) return;
+  function zumbido(ctx, t, dur) {
+    var o = ctx.createOscillator(), lfo = ctx.createOscillator(), prof = ctx.createGain();
+    var trem = ctx.createOscillator(), tremG = ctx.createGain(), f = ctx.createBiquadFilter(), g = ctx.createGain(), amp = ctx.createGain();
+    o.type = 'sawtooth'; o.frequency.setValueAtTime(205, t); o.frequency.linearRampToValueAtTime(245, t + dur * 0.5); o.frequency.linearRampToValueAtTime(215, t + dur);
+    lfo.frequency.value = 11; prof.gain.value = 9; lfo.connect(prof); prof.connect(o.frequency);
+    trem.frequency.value = 23; tremG.gain.value = 0.35; trem.connect(tremG); tremG.connect(amp.gain); amp.gain.value = 0.65;
+    f.type = 'bandpass'; f.frequency.value = 900; f.Q.value = 1.2;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.16, t + 0.08); g.gain.setValueAtTime(0.16, t + dur - 0.15); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(f); f.connect(amp); amp.connect(g); g.connect(ctx.destination);
+    [o, lfo, trem].forEach(function (x) { x.start(t); x.stop(t + dur + 0.05); });
+  }
+  function sino(ctx, t, base, forca) {
+    // Parciais de sino: a fundamental e harmônicos "tortos", que somem em tempos diferentes.
+    [[1, 1, 2.2], [2.0, 0.5, 1.6], [2.76, 0.35, 1.1], [5.4, 0.18, 0.6], [8.93, 0.08, 0.35]].forEach(function (p) {
+      var o = ctx.createOscillator(), g = ctx.createGain(), v = 0.22 * p[1] * (forca || 1);
+      o.type = 'sine'; o.frequency.value = base * p[0];
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v, t + 0.005); g.gain.exponentialRampToValueAtTime(0.0001, t + p[2]);
+      o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + p[2] + 0.05);
+    });
+  }
+  // tipo 'lembrete' usa a chave própria e um som mais curto; forcar toca mesmo desligado (botão Ouvir).
+  function tocar(forcar, tipo) {
+    var lembrete = tipo === 'lembrete';
+    if (!forcar && !(lembrete ? S.config.somLembretes : S.config.som)) return;
     try {
       audio = audio || new (window.AudioContext || window.webkitAudioContext)();
-      [660, 880, 990].forEach(function (f, i) {
-        var o = audio.createOscillator(), g = audio.createGain(), t = audio.currentTime + i * 0.22;
-        o.frequency.value = f; o.type = 'sine';
-        g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.25, t + 0.03); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
-        o.connect(g); g.connect(audio.destination); o.start(t); o.stop(t + 0.22);
-      });
+      if (audio.state === 'suspended') audio.resume();
+      var t = audio.currentTime + 0.05;
+      if (S.config.somTipo !== 'sino') { zumbido(audio, t, lembrete ? 0.4 : 0.7); t += lembrete ? 0.45 : 0.75; }
+      sino(audio, t, 1046.5); if (!lembrete) sino(audio, t + 0.45, 784, 0.8);
     } catch (e) { /* sem áudio */ }
-    if (navigator.vibrate) navigator.vibrate([120, 80, 120]);
+    if (navigator.vibrate && !forcar) navigator.vibrate([120, 80, 120]);
   }
 
   var registro = null;
@@ -250,7 +292,7 @@
   }
   function estadoNotif() {
     var b = $('b-notif');
-    if (!('Notification' in window)) { el.notifEstado.textContent = 'Este navegador não mostra notificações. No iPhone, instale o app na tela inicial primeiro.'; b.hidden = true; return; }
+    if (!('Notification' in window)) { el.notifEstado.textContent = 'Este navegador não mostra notificações. No iPhone, crie o atalho na tela inicial primeiro (veja Ajustes).'; b.hidden = true; return; }
     if (Notification.permission === 'granted') { el.notifEstado.textContent = 'Notificações ligadas. A Zumi avisa enquanto o app estiver aberto, mesmo em outra aba ou minimizado.'; b.hidden = true; }
     else if (Notification.permission === 'denied') { el.notifEstado.textContent = 'As notificações estão bloqueadas. Libere nas configurações do navegador para este site.'; b.hidden = true; }
     else { el.notifEstado.textContent = 'Os avisos aparecem só nesta página até você ativar as notificações.'; }
@@ -292,6 +334,12 @@
       if (modo === 'lazer') {
         t.fase = 'foco'; t.rodando = false; t.fimEm = null; t.restante = null;
         if (!pulou) { falar('Lazer feito. Voltou com a bateria mais cheia? +10', 'comemorando', true); notificar('Fim do lazer', 'Lazer feito. +10 pontos.', 'timer'); tocar(); }
+      } else if (!S.config.pausas[modo]) {
+        // Pausa desligada: o bloco conta, o ciclo avança e o próximo espera a pessoa.
+        t.ciclo = t.ciclo >= S.config.ciclos ? 1 : t.ciclo + 1;
+        t.rodando = false; t.fimEm = null; t.restante = null;
+        if (!pulou) { tocar(); notificar('Fim do bloco de ' + NOMES[modo], 'Bloco feito. +10', 'timer'); }
+        falar(pulou ? 'Pulei o bloco. Quando quiser, começa o próximo.' : 'Bloco feito, sem pausa como você pediu. +10. Quando quiser, começa o próximo.', pulou ? 'ola' : 'comemorando', !pulou);
       } else {
         t.fase = 'pausa'; t.restante = null;
         var frase = PAUSAS[Math.floor(Math.random() * PAUSAS.length)];
@@ -326,7 +374,7 @@
     el.arco.style.strokeDashoffset = String(339.3 * (1 - s / dur));
     el.relogio.className = 'relogio' + (t.fase === 'pausa' ? ' pausa' : '') + (t.modo === 'lazer' ? ' lazer' : '');
     el.fase.textContent = t.modo === 'lazer' ? 'Lazer' : t.fase === 'foco' ? 'Foco' : (t.ciclo % S.config.ciclos === 0 ? 'Pausa longa' : 'Pausa');
-    el.ciclo.textContent = t.modo === 'lazer' ? 'Sem culpa' : 'Bloco ' + t.ciclo + ' de ' + S.config.ciclos;
+    el.ciclo.textContent = t.modo === 'lazer' ? 'Sem culpa' : S.config.pausas[t.modo] ? 'Bloco ' + t.ciclo + ' de ' + S.config.ciclos : 'Bloco ' + t.ciclo + ', sem pausa';
     el.iniciar.textContent = t.rodando ? 'Pausar' : (t.restante != null ? 'Continuar' : 'Começar');
     $('h-tempo').textContent = mmss(s); $('h-fase').textContent = el.fase.textContent;
     $('h-modo').textContent = { trabalho: 'Trabalho', estudo: 'Estudo', lazer: 'Lazer' }[t.modo];
@@ -355,7 +403,7 @@
     if (!info) return;
     fila.push(chave);
     notificar('Zumi lembrando', info.nome, 'lem-' + chave);
-    tocar();
+    tocar(false, 'lembrete');
     mostrarAviso();
   }
   function mostrarAviso() {
@@ -386,7 +434,7 @@
       if (m.tipo === 'intervalo') {
         if (!S.proximos[m.id]) agendar(m.id, m.min);
         else if (agora >= S.proximos[m.id]) { agendar(m.id, m.min); if (noHorario(d)) disparar(m.id); }
-      } else {
+      } else if (!m.semana || m.semana.indexOf(d.getDay()) >= 0) {
         var alvo = new Date(d); var p = m.hora.split(':'); alvo.setHours(+p[0], +p[1], 0, 0);
         // toca uma vez por dia; se o app abriu até 2 horas depois do horário, ainda avisa
         if (agora >= alvo.getTime() && agora - alvo.getTime() < 120 * MIN && S.tocados[m.id] !== hoje) { S.tocados[m.id] = hoje; disparar(m.id); }
@@ -410,8 +458,8 @@
       var sp = document.createElement('span'); sp.textContent = m.nome;
       lab.appendChild(cb); lab.appendChild(sp);
       var quando = document.createElement('span'); quando.className = 'cada';
-      quando.textContent = m.tipo === 'hora' ? 'todo dia às ' + m.hora : 'a cada ' + m.min + ' min';
-      var tirar = document.createElement('button'); tirar.type = 'button'; tirar.className = 'link perigo tirar'; tirar.textContent = 'Remover';
+      quando.textContent = m.tipo === 'hora' ? textoDias(m.semana) + ' às ' + m.hora : 'a cada ' + m.min + ' min';
+      var tirar = document.createElement('button'); tirar.type = 'button'; tirar.className = 'btn btn-perigo tirar'; tirar.textContent = 'Remover';
       tirar.setAttribute('aria-label', 'Remover o lembrete ' + m.nome);
       tirar.addEventListener('click', function () { S.meus = S.meus.filter(function (x) { return x.id !== m.id; }); delete S.proximos[m.id]; delete S.adiados[m.id]; salvar(); renderMeus(); });
       var prox = document.createElement('small'); prox.dataset.meuProx = m.id;
@@ -589,7 +637,14 @@
   // ---------- Render geral ----------
   function render() {
     var d = dia(), p = total(), i = tituloAtual(), t = TITULOS[i], prox = TITULOS[i + 1];
-    el.tNome.textContent = t[1];
+    var v = VISUAL[i], zn = $('zumi-nivel');
+    $('titulo-txt').textContent = t[1]; $('titulo-ic').textContent = v.ic;
+    $('titulo-frase').textContent = t[2];
+    $('titulo-nivel').textContent = 'nível ' + (i + 1) + ' de ' + TITULOS.length;
+    $('zumi-selo').textContent = v.ic;
+    if (zn.dataset.nivel !== String(i)) { zn.dataset.nivel = String(i); el.img.alt = 'A Zumi, no título ' + t[1]; }
+    zn.style.setProperty('--nivel-cor', v.cor);
+    zn.style.setProperty('--prog', prox ? Math.max(0, Math.min(100, 100 * (p - t[0]) / (prox[0] - t[0]))).toFixed(1) : '100');
     el.tBarra.style.width = prox ? Math.max(0, 100 * (p - t[0]) / (prox[0] - t[0])).toFixed(1) + '%' : '100%';
     el.tMeta.textContent = p + ' pontos' + (prox ? ' · faltam ' + (prox[0] - p) + ' para ' + prox[1] : ' · título máximo');
     el.rPontos.textContent = pontosDia(d);
@@ -610,7 +665,10 @@
     var hojeN = Math.floor(new Date(chaveDia() + 'T12:00').getTime() / 86400000);
     el.pergunta.textContent = PERGUNTAS[hojeN % PERGUNTAS.length];
     if (document.activeElement !== el.reflexao) el.reflexao.value = d.reflexao || '';
-    el.refEstado.textContent = d.reflexao ? 'Reflexão de hoje salva. +10' : d.papel ? 'Respondida no papel. +10' : '';
+    el.refEstado.textContent = d.reflexao ? 'Salvo no seu histórico. +10' : d.papel ? 'Respondido no papel. +10' : d.humor ? 'Marcado como ' + HUMORES[d.humor][1] + '. +10' : '';
+    document.querySelectorAll('[data-humor]').forEach(function (b) { b.setAttribute('aria-checked', String(+b.dataset.humor === (d.humor || 0))); });
+    renderAmanhaFim();
+    if (!$('historico').hidden) renderHistorico();
 
     // semana
     el.semana.innerHTML = '';
@@ -649,6 +707,7 @@
     document.querySelectorAll('[data-cfg]').forEach(function (inp) { var v = lerCfg(inp.dataset.cfg); if (inp.type === 'checkbox') inp.checked = !!v; else inp.value = v; });
     document.querySelectorAll('[data-lem]').forEach(function (inp) { inp.checked = S.config.lembretes[inp.dataset.lem].on; });
     document.querySelectorAll('[data-lem-min]').forEach(function (inp) { inp.value = S.config.lembretes[inp.dataset.lemMin].min; });
+    estadoTempos();
   }
 
   document.querySelectorAll('[data-cfg]').forEach(function (inp) {
@@ -658,10 +717,51 @@
       var nv = inp.type === 'checkbox' ? inp.checked : inp.type === 'number' ? Math.min(+inp.max, Math.max(+inp.min, Math.round(+inp.value || +inp.min))) : inp.value;
       if (inp.type === 'number') inp.value = nv;
       gravarCfg(c, nv);
+      document.querySelectorAll('[data-cfg="' + c + '"]').forEach(function (o) { if (o !== inp) { if (o.type === 'checkbox') o.checked = !!nv; else o.value = nv; } });
       if (!S.timer.rodando) S.timer.restante = null;
-      salvar(); renderTimer();
+      salvar(); renderTimer(); estadoTempos();
     });
   });
+
+  // Botões − e + ao lado dos minutos, tempos prontos e a escolha do som.
+  document.querySelectorAll('.passo button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var inp = b.parentNode.querySelector('input');
+      if (inp.disabled) return;
+      try { if (+b.dataset.passo > 0) inp.stepUp(); else inp.stepDown(); } catch (e) { inp.value = +inp.value + (+b.dataset.passo) * (+inp.step || 1); }
+      inp.dispatchEvent(new Event('change'));
+    });
+  });
+  document.querySelectorAll('[data-pronto]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var m = b.dataset.pronto;
+      S.config[m].foco = +b.dataset.foco; S.config[m].pausa = +b.dataset.pausa; S.config.pausas[m] = true;
+      if (!S.timer.rodando) S.timer.restante = null;
+      salvar(); preencherAjustes(); renderTimer();
+      falar(NOMES[m].charAt(0).toUpperCase() + NOMES[m].slice(1) + ' em ' + b.dataset.foco + ' min de foco e ' + b.dataset.pausa + ' de pausa.', 'estudando');
+    });
+  });
+  document.querySelectorAll('[data-som]').forEach(function (b) {
+    b.addEventListener('click', function () { S.config.somTipo = b.dataset.som; salvar(); estadoTempos(); tocar(true); });
+  });
+  $('b-ouvir').addEventListener('click', function () { tocar(true); });
+  $('b-ouvir-lem').addEventListener('click', function () { tocar(true, 'lembrete'); });
+  function estadoTempos() {
+    ['trabalho', 'estudo'].forEach(function (m) {
+      var on = !!S.config.pausas[m], cx = document.querySelector('[data-modo-cfg="' + m + '"] .linha-tempo:nth-of-type(2)');
+      cx.classList.toggle('desligada', !on);
+      cx.querySelectorAll('.passo input,.passo button').forEach(function (x) { x.disabled = !on; });
+      document.querySelectorAll('[data-pronto="' + m + '"]').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(on && S.config[m].foco === +b.dataset.foco && S.config[m].pausa === +b.dataset.pausa));
+      });
+    });
+    var longa = S.config.pausas.trabalho || S.config.pausas.estudo, cl = document.querySelector('[data-modo-cfg="longa"]');
+    cl.classList.toggle('desligada', !longa);
+    cl.querySelectorAll('input,button').forEach(function (x) { x.disabled = !longa; });
+    document.querySelectorAll('[data-som]').forEach(function (b) { b.setAttribute('aria-checked', String(b.dataset.som === (S.config.somTipo || 'zumi'))); b.disabled = !S.config.som; });
+    $('nota-pausa').hidden = S.config.pausas.trabalho && S.config.pausas.estudo;
+  }
+  estadoTempos();
   document.querySelectorAll('[data-lem]').forEach(function (inp) {
     var k = inp.dataset.lem; inp.checked = S.config.lembretes[k].on;
     inp.addEventListener('change', function () { S.config.lembretes[k].on = inp.checked; delete S.proximos[k]; checarLembretes(); salvar(); renderLembretes(); });
@@ -718,9 +818,34 @@
 
   $('b-refletir').addEventListener('click', function () {
     var txt = el.reflexao.value.trim();
-    if (!txt) { el.refEstado.textContent = 'Escreva uma linha ou toque em "Respondi no papel".'; el.reflexao.focus(); return; }
+    if (!txt && !dia().humor) { el.refEstado.textContent = 'Escolha uma carinha, escreva uma linha ou toque em "Respondi no papel".'; el.reflexao.focus(); return; }
     mudar(function (d) { d.reflexao = txt; });
-    falar('Reflexão guardada. Descansa bem, até amanhã!', 'comemorando', true);
+    falar(txt ? 'Guardei no seu histórico. Descansa bem, até amanhã!' : 'Guardado. Descansa bem, até amanhã!', 'comemorando', true);
+  });
+  document.querySelectorAll('[data-humor]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var n = +b.dataset.humor, antes = dia().humor;
+      mudar(function (d) { d.humor = antes === n ? 0 : n; });
+      if (antes === n) return;
+      falar(n <= 2 ? 'Obrigada por contar. Dia pesado passa. Se quiser, escreva o que pesou: ajuda a soltar.' : n === 3 ? 'Dia normal também conta. Quer anotar algo que valeu?' : 'Que bom! Anota o que deu certo, para repetir amanhã.', n <= 2 ? 'ola' : 'comemorando', !antes);
+    });
+  });
+  $('b-historico').addEventListener('click', function () {
+    var h = $('historico'), abre = h.hidden;
+    h.hidden = !abre; this.setAttribute('aria-expanded', String(abre));
+    if (abre) { renderHistorico(); h.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+  });
+  $('b-amanha').addEventListener('click', function () {
+    var f = $('fim-amanha'), abre = f.hidden;
+    f.hidden = !abre; this.setAttribute('aria-expanded', String(abre));
+    if (abre) $('fim-amanha-txt').focus();
+  });
+  $('fim-amanha').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var txt = $('fim-amanha-txt').value.trim(); if (!txt) return;
+    addTarefa(txt, $('fim-amanha-prio').checked, false, amanhaChave());
+    $('fim-amanha-txt').value = ''; $('fim-amanha-prio').checked = false; $('fim-amanha-txt').focus();
+    falar('Anotado para amanhã. Agora pode descansar.', 'ideia');
   });
   $('b-papel').addEventListener('click', function () { mudar(function (d) { d.papel = true; }); falar('Papel e caneta, longe da tela. Ótima escolha. +10', 'comemorando', true); });
 
@@ -729,21 +854,49 @@
   tipos.forEach(function (r) {
     r.addEventListener('change', function () {
       var hora = document.querySelector('[name="novo-tipo"]:checked').value === 'hora';
-      document.querySelector('.novo-hora').hidden = !hora; document.querySelector('.novo-intervalo').hidden = hora;
+      document.querySelectorAll('.novo-hora').forEach(function (x) { x.hidden = !hora; }); document.querySelector('.novo-intervalo').hidden = hora;
     });
   });
   $('novo').addEventListener('submit', function (e) {
     e.preventDefault();
     var nome = $('novo-nome').value.trim(); if (!nome) return;
     var tipo = document.querySelector('[name="novo-tipo"]:checked').value;
+    var sem = diasEscolhidos();
+    if (tipo === 'hora' && !sem.length) { falar('Escolha pelo menos um dia da semana para o lembrete.', 'ideia'); return; }
     var m = { id: 'm' + Date.now().toString(36), nome: nome, tipo: tipo, hora: $('novo-hora').value || '08:00', min: Math.max(15, +$('novo-min').value || 120), on: true };
+    if (tipo === 'hora' && sem.length < 7) m.semana = sem;
     // um horário que já passou hoje só toca amanhã
     if (tipo === 'hora' && minutosDoDia(m.hora) <= new Date().getHours() * 60 + new Date().getMinutes()) S.tocados[m.id] = chaveDia();
     S.meus.push(m); salvar(); renderMeus();
-    $('novo-nome').value = '';
+    $('novo-nome').value = ''; marcarDias(null);
     var semNotif = 'Notification' in window && Notification.permission === 'default';
     falar('Anotado. Eu lembro você de: ' + nome + '.' + (semNotif ? ' Ative as notificações para eu avisar com o app em segundo plano.' : ''), 'ideia', true);
   });
+
+  // Dias da semana do lembrete no horário: "Todos os dias" liga e desliga todos de uma vez.
+  var botoesDia = document.querySelectorAll('.dias-semana [data-dia]'), botaoTodos = document.querySelector('.dias-semana [data-todos]');
+  function diasEscolhidos() { return Array.prototype.filter.call(botoesDia, function (b) { return b.getAttribute('aria-pressed') === 'true'; }).map(function (b) { return +b.dataset.dia; }).sort(); }
+  function marcarDias(lista) {
+    botoesDia.forEach(function (b) { b.setAttribute('aria-pressed', String(!lista || lista.indexOf(+b.dataset.dia) >= 0)); });
+    botaoTodos.setAttribute('aria-pressed', String(diasEscolhidos().length === 7));
+  }
+  botoesDia.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var todos = diasEscolhidos().length === 7;
+      // com todos marcados, o primeiro toque escolhe só aquele dia
+      if (todos) marcarDias([+b.dataset.dia]);
+      else { b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true')); marcarDias(diasEscolhidos()); }
+    });
+  });
+  botaoTodos.addEventListener('click', function () { marcarDias(diasEscolhidos().length === 7 ? [] : null); });
+  function textoDias(sem) {
+    if (!sem || sem.length === 7) return 'todo dia';
+    var k = sem.slice().sort().join(',');
+    if (k === '1,2,3,4,5') return 'de segunda a sexta';
+    if (k === '0,6') return 'no fim de semana';
+    var nomes = [1, 2, 3, 4, 5, 6, 0].filter(function (d) { return sem.indexOf(d) >= 0; }).map(function (d) { return DSEM[d]; });
+    return nomes.length === 1 ? 'toda ' + nomes[0] : nomes.slice(0, -1).join(', ') + ' e ' + nomes[nomes.length - 1];
+  }
 
   $('b-notif').addEventListener('click', function () {
     if (!('Notification' in window)) return;
@@ -768,7 +921,10 @@
     var c = copia(est);
     LOCAIS.forEach(function (k) { delete c[k]; });
     if (!aceites.saude) c.meus = [];
-    if (!aceites.reflexoes) Object.keys(c.dias || {}).forEach(function (k) { var d = c.dias[k]; if (d.reflexao) { d.reflexao = ''; d.refOculta = true; } });
+    if (!aceites.reflexoes) {
+      Object.keys(c.dias || {}).forEach(function (k) { var d = c.dias[k]; if (d.reflexao || d.humor) { d.reflexao = ''; d.humor = 0; d.refOculta = true; } });
+      c.diario = {};
+    }
     return c;
   }
   function daNuvem(rem, loc, aceites) {
@@ -778,7 +934,9 @@
     Object.keys(r.dias || {}).forEach(function (k) {
       var l = loc.dias && loc.dias[k];
       if (l && l.reflexao && !r.dias[k].reflexao) r.dias[k].reflexao = l.reflexao;
+      if (l && l.humor && !r.dias[k].humor) r.dias[k].humor = l.humor;
     });
+    r.diario = Object.assign({}, loc.diario || {}, r.diario || {});
     return r;
   }
   function temDados(est) {
@@ -872,11 +1030,46 @@
   window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault(); pedidoInstalar = e;
     if ($('b-instalar')) return;
-    var b = document.createElement('button'); b.type = 'button'; b.className = 'btn'; b.id = 'b-instalar'; b.textContent = 'Instalar o app';
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'btn'; b.id = 'b-instalar'; b.textContent = 'Criar atalho na tela inicial';
     b.addEventListener('click', function () { pedidoInstalar.prompt(); pedidoInstalar.userChoice.finally(function () { b.remove(); }); });
     var w = document.createElement('div'); w.className = 'acoes'; w.appendChild(b);
     document.querySelector('.instalar h2').after(w);
   });
+
+  // ---------- Como foi o dia: histórico pessoal ----------
+  var HUMORES = [null, ['😣', 'Difícil'], ['😕', 'Pesado'], ['😐', 'Normal'], ['🙂', 'Bom'], ['😄', 'Ótimo']];
+  var DSEM = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+  function dataCurta(k) { var d = new Date(k + 'T12:00'); return DSEM[d.getDay()] + ', ' + k.slice(8, 10) + '/' + k.slice(5, 7) + (k.slice(0, 4) !== String(new Date().getFullYear()) ? '/' + k.slice(0, 4) : ''); }
+  function renderHistorico() {
+    var itens = {};
+    Object.keys(S.diario || {}).forEach(function (k) { itens[k] = S.diario[k]; });
+    Object.keys(S.dias).forEach(function (k) { var d = S.dias[k]; if (d.humor || d.reflexao || d.papel || d.refOculta) itens[k] = { humor: d.humor || 0, texto: d.reflexao || '', papel: !!d.papel, oculta: !!d.refOculta && !d.reflexao }; });
+    var ks = Object.keys(itens).sort().reverse(), ul = $('historico-lista'); ul.innerHTML = '';
+    ks.forEach(function (k) {
+      var it = itens[k], li = document.createElement('li');
+      var cab = document.createElement('div'); cab.className = 'hist-cab';
+      var em = document.createElement('span'); em.className = 'hist-humor'; em.textContent = it.humor ? HUMORES[it.humor][0] : '·';
+      if (it.humor) em.title = HUMORES[it.humor][1];
+      var dt = document.createElement('strong'); dt.textContent = k === chaveDia() ? 'Hoje' : dataCurta(k);
+      cab.appendChild(em); cab.appendChild(dt);
+      if (it.humor) { var hs = document.createElement('small'); hs.textContent = HUMORES[it.humor][1]; cab.appendChild(hs); }
+      li.appendChild(cab);
+      var p = document.createElement('p');
+      p.textContent = it.texto || (it.oculta ? 'Escrito em outro aparelho.' : it.papel ? 'Respondido no papel.' : 'Sem texto.');
+      if (!it.texto) p.className = 'nota';
+      li.appendChild(p); ul.appendChild(li);
+    });
+    var ult = ks.slice(0, 7).filter(function (k) { return itens[k].humor; });
+    var media = ult.length ? ult.reduce(function (a, k) { return a + itens[k].humor; }, 0) / ult.length : 0;
+    $('historico-resumo').textContent = !ks.length ? 'Ainda vazio. O que você marcar no fim do dia aparece aqui, só neste aparelho (ou na sua conta, se você permitir as reflexões).'
+      : ks.length + (ks.length === 1 ? ' dia registrado.' : ' dias registrados.') + (media ? ' Nos últimos registros, a média foi ' + HUMORES[Math.round(media)][0] + ' ' + HUMORES[Math.round(media)][1].toLowerCase() + '.' : '');
+  }
+  function renderAmanhaFim() {
+    var am = amanhaChave(), ul = $('fim-amanha-lista'); ul.innerHTML = '';
+    S.tarefas.filter(function (t) { return !t.rotina && t.dia === am; }).forEach(function (t) { ul.appendChild(linhaTarefa(t, { amanha: true })); });
+    var n = ul.children.length;
+    $('b-amanha').textContent = n ? '📝 Amanhã: ' + n + (n === 1 ? ' tarefa' : ' tarefas') + '. Mais alguma?' : '📝 Tem algo para amanhã?';
+  }
 
   // ---------- Tarefas e rotinas ----------
   function amanhaChave() { var d = new Date(); d.setDate(d.getDate() + 1); return chaveDia(d); }
@@ -935,20 +1128,67 @@
     // revisão do fim do dia
     $('revisao-resumo').textContent = lista.length
       ? 'Você concluiu ' + feitas.length + ' de ' + lista.length + ' itens hoje.' + (feitas.length === lista.length ? ' Dia fechado.' : ' O que ficou, vai para amanhã ou sai da lista?')
-      : 'Sem tarefas hoje. Quer deixar algo pronto para amanhã?';
+      : 'Sem tarefas hoje. Quer deixar algo pronto para outro dia? Use a Agenda.';
     var pend = $('pendentes'); pend.innerHTML = '';
     lista.filter(function (t) { return !t.rotina && !feitaHoje(t); }).forEach(function (t) {
       var li = document.createElement('li');
       var sp = document.createElement('span'); sp.textContent = (t.prio ? '★ ' : '') + t.texto;
       var a = document.createElement('button'); a.type = 'button'; a.className = 'btn btn-sec'; a.textContent = 'Amanhã';
       a.addEventListener('click', function () { t.dia = am; salvar(); render(); falar('Combinado: "' + t.texto + '" fica para amanhã.', 'ideia'); });
-      var r = document.createElement('button'); r.type = 'button'; r.className = 'link perigo'; r.textContent = 'Tirar';
+      var r = document.createElement('button'); r.type = 'button'; r.className = 'btn btn-perigo'; r.textContent = 'Tirar';
       r.addEventListener('click', function () { S.tarefas = S.tarefas.filter(function (y) { return y.id !== t.id; }); salvar(); render(); });
       li.appendChild(sp); li.appendChild(a); li.appendChild(r); pend.appendChild(li);
     });
-    var ula = $('amanha'); ula.innerHTML = '';
-    S.tarefas.filter(function (t) { return !t.rotina && t.dia > hoje; }).forEach(function (t) { ula.appendChild(linhaTarefa(t, { amanha: true })); });
+    renderAgenda();
   }
+
+  // Agenda: calendário do mês; o dia escolhido recebe as tarefas novas.
+  var calDia = null, calMes = null;
+  function chaveMes(d) { return new Date(d.getFullYear(), d.getMonth(), 1); }
+  function renderAgenda() {
+    var hoje = chaveDia(), am = amanhaChave();
+    if (!calDia || calDia < hoje) calDia = am;
+    if (!calMes) calMes = chaveMes(new Date(calDia + 'T12:00'));
+    var nomeMes = calMes.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+    $('cal-mes').textContent = nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1);
+    $('cal-ant').disabled = calMes <= chaveMes(new Date());
+    var conta = {};
+    S.tarefas.forEach(function (t) { if (!t.rotina && !t.feita && t.dia >= hoje) conta[t.dia] = (conta[t.dia] || 0) + 1; });
+    var box = $('cal-dias'); box.innerHTML = '';
+    for (var i = 0; i < calMes.getDay(); i++) box.appendChild(document.createElement('span'));
+    var ultimo = new Date(calMes.getFullYear(), calMes.getMonth() + 1, 0).getDate();
+    for (var n = 1; n <= ultimo; n++) {
+      var k = chaveDia(new Date(calMes.getFullYear(), calMes.getMonth(), n));
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'cal-d'; b.dataset.dia = k;
+      b.textContent = n;
+      if (k < hoje) b.disabled = true;
+      if (k === hoje) b.classList.add('hoje');
+      if (conta[k]) { b.classList.add('tem'); b.setAttribute('aria-label', dataCurta(k) + ', ' + conta[k] + (conta[k] === 1 ? ' tarefa' : ' tarefas')); }
+      else b.setAttribute('aria-label', dataCurta(k));
+      b.setAttribute('aria-pressed', String(k === calDia));
+      box.appendChild(b);
+    }
+    $('cal-titulo').textContent = calDia === hoje ? 'Hoje' : calDia === am ? 'Amanhã, ' + dataCurta(calDia) : dataCurta(calDia).replace(/^./, function (c) { return c.toUpperCase(); });
+    var ul = $('cal-lista'); ul.innerHTML = '';
+    var doDia = calDia === hoje ? visiveisHoje().filter(function (t) { return !t.rotina; }) : S.tarefas.filter(function (t) { return !t.rotina && t.dia === calDia; });
+    doDia.forEach(function (t) { ul.appendChild(linhaTarefa(t, calDia === hoje ? {} : { amanha: true })); });
+    $('cal-vazio').hidden = doDia.length > 0;
+    $('cal-add').textContent = calDia === hoje ? 'Adicionar hoje' : 'Adicionar em ' + dataCurta(calDia).split(',')[1].trim();
+  }
+  $('cal-dias').addEventListener('click', function (e) {
+    var b = e.target.closest('.cal-d'); if (!b || b.disabled) return;
+    calDia = b.dataset.dia; renderAgenda();
+  });
+  $('cal-ant').addEventListener('click', function () { calMes = new Date(calMes.getFullYear(), calMes.getMonth() - 1, 1); renderAgenda(); });
+  $('cal-prox').addEventListener('click', function () { calMes = new Date(calMes.getFullYear(), calMes.getMonth() + 1, 1); renderAgenda(); });
+  $('cal-nova').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var txt = $('cal-txt').value.trim(); if (!txt) return;
+    var quando = calDia;
+    addTarefa(txt, $('cal-prio').checked, false, quando);
+    $('cal-txt').value = ''; $('cal-prio').checked = false;
+    falar(quando === chaveDia() ? 'Anotado na lista de hoje.' : 'Anotado para ' + dataCurta(quando) + '. Nesse dia ela aparece na sua lista.', 'ideia');
+  });
   function addTarefa(texto, prio, rotina, quando) {
     S.tarefas.push({ id: novoId('t'), texto: texto, prio: prio, rotina: rotina, dia: quando, feita: null });
     salvar(); render();
@@ -959,13 +1199,6 @@
     addTarefa(txt, $('tarefa-prio').checked, $('tarefa-rotina').checked, chaveDia());
     falar($('tarefa-rotina').checked ? 'Rotina criada. Ela volta todo dia.' : ($('tarefa-prio').checked ? 'Prioridade anotada. Começa por ela?' : 'Anotado na lista de hoje.'), 'ideia');
     $('tarefa-txt').value = ''; $('tarefa-prio').checked = false; $('tarefa-rotina').checked = false;
-  });
-  $('nova-amanha').addEventListener('submit', function (e) {
-    e.preventDefault();
-    var txt = $('amanha-txt').value.trim(); if (!txt) return;
-    addTarefa(txt, $('amanha-prio').checked, false, amanhaChave());
-    $('amanha-txt').value = ''; $('amanha-prio').checked = false;
-    falar('Anotado para amanhã. Agora pode descansar.', 'ideia');
   });
 
   // ---------- Metas do ano ----------
@@ -997,14 +1230,40 @@
     falar(falas[status] + (nova ? ' +10' : ''), status === 'concluida' ? 'comemorando' : 'ideia', status === 'concluida');
   }
   var abertas = {};
+  // Ano das metas: do atual até 2033 (sempre pelo menos 5 anos à frente), para planejar os próximos anos.
+  var ULTIMO_ANO = 2033, anoMetas = new Date().getFullYear();
+  function anosMetas() {
+    var atual = new Date().getFullYear(), fim = Math.max(ULTIMO_ANO, atual + 5), out = [];
+    S.metas.forEach(function (m) { if (m.ano < atual && out.indexOf(m.ano) === -1 && !m.checkins.fim) out.push(m.ano); });
+    for (var a = atual; a <= fim; a++) out.push(a);
+    return out.sort();
+  }
+  function renderAnos() {
+    var box = $('metas-anos'); box.innerHTML = '';
+    anosMetas().forEach(function (a) {
+      var n = S.metas.filter(function (m) { return m.ano === a; }).length;
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = a;
+      b.setAttribute('aria-pressed', String(a === anoMetas));
+      b.setAttribute('aria-label', a + (n ? ', ' + n + (n === 1 ? ' meta' : ' metas') : ', sem metas'));
+      if (n) { var c = document.createElement('small'); c.textContent = n; c.setAttribute('aria-hidden', 'true'); b.appendChild(c); }
+      b.addEventListener('click', function () { anoMetas = a; abertas = {}; renderMetas(); });
+      box.appendChild(b);
+    });
+  }
   function renderMetas() {
     var d = new Date(), ano = d.getFullYear(), tAtual = trimestre(d), pend = metasPendentes();
-    $('metas-ano').textContent = ano;
+    var futuro = anoMetas > ano;
+    $('metas-ano').textContent = anoMetas;
+    renderAnos();
+    $('metas-nota').textContent = futuro
+      ? 'Planeje com calma. As revisões por trimestre começam quando ' + anoMetas + ' chegar.'
+      : 'Poucas metas, revisadas a cada trimestre. No fim de cada trimestre a Zumi pergunta como cada uma está.';
+    $('meta-txt').placeholder = futuro ? 'Ex.: Virar especialista em plataforma' : 'Ex.: Tirar uma certificação de cloud';
     var aviso = $('metas-aviso');
     aviso.hidden = !pend.length;
     aviso.textContent = pend.length ? 'Hora da revisão: ' + pend.length + (pend.length === 1 ? ' meta espera' : ' metas esperam') + ' a sua resposta.' : '';
     var ul = $('metas'); ul.innerHTML = '';
-    S.metas.filter(function (m) { return m.ano === ano || pend.some(function (p) { return p.meta === m; }); }).forEach(function (m) {
+    S.metas.filter(function (m) { return m.ano === anoMetas || (anoMetas === ano && pend.some(function (p) { return p.meta === m; })); }).forEach(function (m) {
       var li = document.createElement('li'); li.className = 'meta' + (m.checkins.fim ? ' concluida' : '');
       var topo = document.createElement('div'); topo.className = 'meta-topo';
       var nome = document.createElement('strong'); nome.textContent = m.texto; topo.appendChild(nome);
@@ -1039,7 +1298,7 @@
         rv.addEventListener('click', function () { abertas[m.id] = !abertas[m.id]; renderMetas(); });
         acoes.appendChild(rv);
       }
-      var x = document.createElement('button'); x.type = 'button'; x.className = 'link perigo'; x.textContent = 'Remover';
+      var x = document.createElement('button'); x.type = 'button'; x.className = 'btn btn-perigo'; x.textContent = 'Remover';
       x.addEventListener('click', function () { if (confirm('Remover a meta "' + m.texto + '"?')) { S.metas = S.metas.filter(function (y) { return y.id !== m.id; }); salvar(); render(); } });
       acoes.appendChild(x); li.appendChild(acoes);
       ul.appendChild(li);
@@ -1048,9 +1307,12 @@
   $('nova-meta').addEventListener('submit', function (e) {
     e.preventDefault();
     var txt = $('meta-txt').value.trim(); if (!txt) return;
-    S.metas.push({ id: novoId('g'), texto: txt, ano: new Date().getFullYear(), criada: chaveDia(), checkins: {} });
+    S.metas.push({ id: novoId('g'), texto: txt, ano: anoMetas, criada: chaveDia(), checkins: {} });
     $('meta-txt').value = ''; salvar(); render();
-    falar(S.metas.length > 5 ? 'Meta anotada. Dica: com mais de cinco metas, o foco se espalha.' : 'Meta anotada. No fim do trimestre eu pergunto como ela está.', 'ideia', true);
+    var doAno = S.metas.filter(function (m) { return m.ano === anoMetas; }).length;
+    falar(doAno > 5 ? 'Meta anotada. Dica: com mais de cinco metas no mesmo ano, o foco se espalha.'
+      : anoMetas > new Date().getFullYear() ? 'Meta de ' + anoMetas + ' anotada. Quando o ano chegar, eu pergunto como ela está a cada trimestre.'
+      : 'Meta anotada. No fim do trimestre eu pergunto como ela está.', 'ideia', true);
   });
 
   // ---------- Painel Hoje ----------
@@ -1061,7 +1323,7 @@
     var todas = visiveisHoje().length;
     $('h-tarefas-vazio').hidden = lista.length > 0;
     $('h-tarefas-vazio').textContent = todas ? 'Tudo feito por hoje. Boa!' : 'Nada na lista ainda.';
-    $('h-tarefas-mais').textContent = todas ? 'Ver todas as tarefas (' + todas + ')' : 'Adicionar tarefas';
+    $('h-tarefas-mais').hidden = !todas; $('h-tarefas-mais').textContent = 'Ver todas (' + todas + ')';
     botoesNivel($('h-agua'), chaveDia());
     var nv = nivelAgua(dia());
     $('h-agua-txt').textContent = nv ? 'Marcado como ' + NIVEIS[nv] + (PONTOS_AGUA[nv] ? '. +' + PONTOS_AGUA[nv] : '.') : 'Bom vale 10 pontos e Excelente vale 20.';
@@ -1072,6 +1334,13 @@
     $('h-fechar').hidden = new Date().getHours() < 18 || !!(d.reflexao || d.papel);
   }
   $('h-iniciar').addEventListener('click', function () { el.iniciar.click(); });
+  // Botões que levam a outra aba (e, se pedir, já põem o cursor no campo)
+  document.querySelectorAll('[data-vai]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      irPara(b.dataset.vai);
+      if (b.dataset.foco) setTimeout(function () { var c = $(b.dataset.foco); if (c) { c.focus(); c.scrollIntoView({ behavior: 'smooth', block: 'center' }); } }, 60);
+    });
+  });
 
   // ---------- Abas ----------
   var ABAS = ['hoje', 'foco', 'tarefas', 'bem-estar', 'metas', 'evolucao', 'ajustes'];
