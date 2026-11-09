@@ -1,0 +1,579 @@
+// Rotina com a Zumi: timer de blocos, lembretes, checks, pontos e títulos.
+// Tudo fica no localStorage deste aparelho (chave rizzygo-rotina-v1). Sem login e sem servidor.
+(function () {
+  'use strict';
+
+  var CHAVE = 'rizzygo-rotina-v1';
+  var MIN = 60000;
+
+  var TITULOS = [
+    [0, 'Primeiro zumbido', 'Você chegou na colmeia. Agora é achar o seu ritmo.'],
+    [60, 'Primeiro voo', 'Um dia inteiro de rotina. O voo começou.'],
+    [200, 'Rota do néctar', 'Você já conhece o caminho. Agora é repetir.'],
+    [500, 'Guarda da entrada', 'Você protege o seu foco e também o seu descanso.'],
+    [1000, 'Construção do favo', 'Cada dia vira um pedaço da estrutura.'],
+    [2000, 'Pote de mel', 'A rotina já rende. Guarde o que funcionou.'],
+    [4000, 'Colmeia em ritmo', 'Trabalho, estudo e lazer no mesmo compasso.']
+  ];
+
+  var PERGUNTAS = [
+    'O que deu certo hoje?',
+    'O que tirou o seu foco hoje, e o que dá para mudar amanhã?',
+    'Qual momento de hoje valeu a pena, fora do trabalho e do estudo?',
+    'O que você aprendeu hoje e já consegue explicar para alguém?',
+    'Qual é a primeira coisa que você quer fazer amanhã?',
+    'Como está o seu corpo agora: cansado, tenso ou leve?',
+    'Pelo que você agradece hoje?'
+  ];
+
+  var PAUSAS = [
+    'Pausa! Que tal um copo de água?',
+    'Pausa! Levanta, alonga e olha pela janela.',
+    'Pausa! Respira fundo comigo por um minuto.',
+    'Pausa! Tira os olhos da tela um pouco.'
+  ];
+
+  var NOMES = { trabalho: 'trabalho', estudo: 'estudo', lazer: 'lazer' };
+  var LEMBRETES = {
+    agua: { texto: 'Hora de beber um copo de água.', feito: 'Bebi' },
+    respirar: { texto: 'Hora de respirar um minuto comigo.', feito: 'Respirar agora' },
+    semTela: { texto: 'Hora de 5 minutos longe da tela.', feito: 'Começar agora' }
+  };
+
+  // ---------- Estado ----------
+  function padrao() {
+    return {
+      v: 1,
+      config: {
+        trabalho: { foco: 50, pausa: 10 },
+        estudo: { foco: 25, pausa: 5 },
+        lazer: { foco: 60 },
+        pausaLonga: 15, ciclos: 4,
+        inicio: '08:00', fim: '22:00', som: true,
+        lembretes: { agua: { on: true, min: 45 }, respirar: { on: true, min: 90 }, semTela: { on: true, min: 120 } }
+      },
+      meus: [],
+      timer: { modo: 'estudo', fase: 'foco', ciclo: 1, rodando: false, fimEm: null, restante: null },
+      proximos: {}, adiados: {}, tocados: {},
+      dias: {}, pontosAntigos: 0
+    };
+  }
+
+  function carregar() {
+    var s = null;
+    try { s = JSON.parse(localStorage.getItem(CHAVE)); } catch (e) { s = null; }
+    var p = padrao();
+    if (!s || s.v !== 1) return p;
+    // completa campos que versões novas acrescentarem
+    s.config = Object.assign({}, p.config, s.config || {});
+    s.config.lembretes = Object.assign({}, p.config.lembretes, s.config.lembretes || {});
+    ['meus', 'proximos', 'adiados', 'tocados', 'dias', 'timer'].forEach(function (k) { if (!s[k]) s[k] = p[k]; });
+    if (typeof s.pontosAntigos !== 'number') s.pontosAntigos = 0;
+    return s;
+  }
+
+  var S = carregar();
+  function salvar() { try { localStorage.setItem(CHAVE, JSON.stringify(S)); } catch (e) { /* modo privado: segue sem salvar */ } }
+
+  function chaveDia(d) {
+    d = d || new Date();
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+  function dia(k) {
+    k = k || chaveDia();
+    if (!S.dias[k]) S.dias[k] = { blocos: { trabalho: 0, estudo: 0, lazer: 0 }, minutos: { trabalho: 0, estudo: 0, lazer: 0 }, agua: 0, respirar: 0, semTela: 0, ex: {}, meus: 0, reflexao: '', papel: false };
+    return S.dias[k];
+  }
+
+  // Guarda só os últimos 60 dias; os pontos dos mais antigos continuam somando.
+  function podar() {
+    var ks = Object.keys(S.dias).sort();
+    while (ks.length > 60) { var k = ks.shift(); S.pontosAntigos += pontosDia(S.dias[k]); delete S.dias[k]; }
+  }
+
+  // ---------- Pontos ----------
+  function pontosDia(d) {
+    if (!d) return 0;
+    var b = d.blocos || {};
+    var ex = Object.keys(d.ex || {}).filter(function (k) { return d.ex[k]; }).length;
+    return 10 * ((b.trabalho || 0) + (b.estudo || 0) + (b.lazer || 0)) +
+      2 * Math.min(d.agua || 0, 10) + 5 * Math.min(d.respirar || 0, 6) + 5 * Math.min(d.semTela || 0, 4) +
+      20 * ex + ((d.reflexao || d.papel) ? 10 : 0) + 2 * Math.min(d.meus || 0, 10);
+  }
+  function total() {
+    return S.pontosAntigos + Object.keys(S.dias).reduce(function (s, k) { return s + pontosDia(S.dias[k]); }, 0);
+  }
+  function indiceTitulo(p) { var i = 0; TITULOS.forEach(function (t, j) { if (p >= t[0]) i = j; }); return i; }
+  function sequencia() {
+    var d = new Date(), n = 0;
+    if (pontosDia(S.dias[chaveDia(d)]) === 0) d.setDate(d.getDate() - 1);
+    while (pontosDia(S.dias[chaveDia(d)]) > 0) { n++; d.setDate(d.getDate() - 1); }
+    return n;
+  }
+
+  // Toda mudança que vale ponto passa por aqui, para a Zumi comemorar quando o título sobe.
+  function mudar(fn) {
+    var antes = indiceTitulo(total());
+    fn(dia());
+    salvar();
+    var depois = indiceTitulo(total());
+    render();
+    if (depois > antes) {
+      var t = TITULOS[depois];
+      falar('Título novo: ' + t[1] + '! ' + t[2], 'comemorando', true);
+      notificar('Título novo: ' + t[1], t[2], 'titulo');
+    }
+  }
+
+  // ---------- Elementos ----------
+  function $(id) { return document.getElementById(id); }
+  var el = {
+    fala: $('fala'), img: $('zumi-img'), escuro: $('zumi-escuro'),
+    tNome: $('titulo-nome'), tBarra: $('titulo-barra'), tMeta: $('titulo-meta'),
+    rPontos: $('r-pontos'), rFoco: $('r-foco'), rSeq: $('r-sequencia'),
+    relogio: $('relogio'), arco: $('arco'), fase: $('fase'), tempo: $('tempo'), ciclo: $('ciclo'),
+    iniciar: $('b-iniciar'), pular: $('b-pular'), zerar: $('b-zerar'),
+    copos: $('copos'), aguaTxt: $('agua-txt'),
+    pergunta: $('pergunta'), reflexao: $('reflexao'), refEstado: $('reflexao-estado'),
+    semana: $('semana'), titulos: $('titulos'), meus: $('meus'),
+    notifEstado: $('notif-estado'), aviso: $('aviso'), avisoTxt: $('aviso-txt'),
+    sobre: $('sobre'), sobreTitulo: $('sobre-titulo'), bolha: $('bolha'), sobreGuia: $('sobre-guia'), sobreTempo: $('sobre-tempo')
+  };
+
+  // ---------- Zumi ----------
+  function falar(texto, pose, pular) {
+    el.fala.textContent = texto;
+    if (pose) {
+      el.img.src = '/zumi/abelha-' + pose + '.png';
+      el.escuro.srcset = '/zumi/abelha-' + pose + '-fundo-escuro.png';
+    }
+    if (pular) {
+      var p = el.img.parentNode; p.classList.remove('pula'); void p.offsetWidth; p.classList.add('pula');
+    }
+  }
+  function saudacao() {
+    var h = new Date().getHours();
+    var oi = h < 12 ? 'Bom dia!' : h < 18 ? 'Boa tarde!' : 'Boa noite!';
+    if (h >= 20) return oi + ' Que tal fechar o dia com a pergunta lá embaixo?';
+    return oi + ' Eu sou a Zumi. Escolha um bloco e vamos começar.';
+  }
+
+  // ---------- Som e notificação ----------
+  var audio = null;
+  function tocar() {
+    if (!S.config.som) return;
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      [660, 880, 990].forEach(function (f, i) {
+        var o = audio.createOscillator(), g = audio.createGain(), t = audio.currentTime + i * 0.22;
+        o.frequency.value = f; o.type = 'sine';
+        g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.25, t + 0.03); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
+        o.connect(g); g.connect(audio.destination); o.start(t); o.stop(t + 0.22);
+      });
+    } catch (e) { /* sem áudio */ }
+    if (navigator.vibrate) navigator.vibrate([120, 80, 120]);
+  }
+
+  var registro = null;
+  function notificar(titulo, corpo, tag) {
+    if (!('Notification' in window) || Notification.permission !== 'granted' || !document.hidden) return;
+    var op = { body: corpo, icon: '/zumi/abelha-icone.png', badge: '/icones/icone-192.png', tag: tag || 'rotina', renotify: true };
+    if (registro && registro.showNotification) registro.showNotification(titulo, op).catch(function () {});
+    else { try { new Notification(titulo, op); } catch (e) { /* celular exige o service worker */ } }
+  }
+  function estadoNotif() {
+    var b = $('b-notif');
+    if (!('Notification' in window)) { el.notifEstado.textContent = 'Este navegador não mostra notificações. No iPhone, instale o app na tela inicial primeiro.'; b.hidden = true; return; }
+    if (Notification.permission === 'granted') { el.notifEstado.textContent = 'Notificações ligadas. A Zumi avisa enquanto o app estiver aberto, mesmo em outra aba ou minimizado.'; b.hidden = true; }
+    else if (Notification.permission === 'denied') { el.notifEstado.textContent = 'As notificações estão bloqueadas. Libere nas configurações do navegador para este site.'; b.hidden = true; }
+    else { el.notifEstado.textContent = 'Os avisos aparecem só nesta página até você ativar as notificações.'; }
+  }
+
+  // ---------- Timer ----------
+  function duracao(modo, fase, ciclo) {
+    var c = S.config;
+    if (modo === 'lazer') return c.lazer.foco * 60;
+    if (fase === 'foco') return c[modo].foco * 60;
+    return (ciclo % c.ciclos === 0 ? c.pausaLonga : c[modo].pausa) * 60;
+  }
+  function restante() {
+    var t = S.timer;
+    if (t.rodando) return Math.max(0, Math.round((t.fimEm - Date.now()) / 1000));
+    return t.restante == null ? duracao(t.modo, t.fase, t.ciclo) : t.restante;
+  }
+  function mmss(s) { var m = Math.floor(s / 60); return String(m).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+
+  function iniciar() {
+    var t = S.timer;
+    if (t.rodando) { t.restante = restante(); t.rodando = false; t.fimEm = null; falar('Pausei o relógio. Volta quando quiser.', null); }
+    else {
+      t.fimEm = Date.now() + restante() * 1000; t.rodando = true;
+      if (t.fase === 'foco') falar(t.modo === 'lazer' ? 'Lazer também é rotina. Aproveita, sem culpa.' : 'Foco no ' + NOMES[t.modo] + '. Eu cuido do relógio.', t.modo === 'lazer' ? 'ola' : 'estudando');
+      pedirAudio();
+    }
+    salvar(); renderTimer();
+  }
+  function pedirAudio() { try { audio = audio || new (window.AudioContext || window.webkitAudioContext)(); if (audio.state === 'suspended') audio.resume(); } catch (e) { } }
+
+  function concluir(pulou) {
+    var t = S.timer, modo = t.modo;
+    if (t.fase === 'foco') {
+      if (!pulou) {
+        var minutos = Math.round(duracao(modo, 'foco', t.ciclo) / 60);
+        mudar(function (d) { d.blocos[modo]++; d.minutos[modo] += minutos; });
+      }
+      if (modo === 'lazer') {
+        t.fase = 'foco'; t.rodando = false; t.fimEm = null; t.restante = null;
+        if (!pulou) { falar('Lazer feito. Voltou com a bateria mais cheia? +10', 'comemorando', true); notificar('Fim do lazer', 'Lazer feito. +10 pontos.', 'timer'); tocar(); }
+      } else {
+        t.fase = 'pausa'; t.restante = null;
+        var frase = PAUSAS[Math.floor(Math.random() * PAUSAS.length)];
+        if (!pulou) { frase += ' +10'; tocar(); notificar('Fim do bloco de ' + NOMES[modo], frase, 'timer'); }
+        falar(frase, 'ideia', !pulou);
+        t.fimEm = Date.now() + duracao(modo, 'pausa', t.ciclo) * 1000; t.rodando = true;
+      }
+    } else {
+      t.fase = 'foco'; t.ciclo = t.ciclo >= S.config.ciclos ? 1 : t.ciclo + 1;
+      t.rodando = false; t.fimEm = null; t.restante = null;
+      falar('Pausa encerrada. Quando quiser, começa o próximo bloco.', 'ola');
+      if (!pulou) { tocar(); notificar('Fim da pausa', 'Quando quiser, começa o próximo bloco.', 'timer'); }
+    }
+    salvar(); renderTimer();
+  }
+  function zerar() {
+    var t = S.timer; t.fase = 'foco'; t.ciclo = 1; t.rodando = false; t.fimEm = null; t.restante = null;
+    salvar(); renderTimer(); falar('Relógio zerado. Escolha um bloco e começa quando quiser.', 'ola');
+  }
+  function trocarModo(m) {
+    var t = S.timer;
+    if (m === t.modo) return;
+    if (t.rodando && !confirm('Trocar de bloco zera o relógio de agora. Continuar?')) return;
+    t.modo = m; t.fase = 'foco'; t.ciclo = 1; t.rodando = false; t.fimEm = null; t.restante = null;
+    salvar(); renderTimer();
+    falar(m === 'lazer' ? 'Lazer marcado. Descansar também conta ponto.' : 'Bloco de ' + NOMES[m] + '. Ajuste os tempos se precisar.', m === 'lazer' ? 'ola' : 'estudando');
+  }
+
+  function renderTimer() {
+    var t = S.timer, s = restante(), dur = duracao(t.modo, t.fase, t.ciclo);
+    el.tempo.textContent = mmss(s);
+    el.arco.style.strokeDashoffset = String(339.3 * (1 - s / dur));
+    el.relogio.className = 'relogio' + (t.fase === 'pausa' ? ' pausa' : '') + (t.modo === 'lazer' ? ' lazer' : '');
+    el.fase.textContent = t.modo === 'lazer' ? 'Lazer' : t.fase === 'foco' ? 'Foco' : (t.ciclo % S.config.ciclos === 0 ? 'Pausa longa' : 'Pausa');
+    el.ciclo.textContent = t.modo === 'lazer' ? 'Sem culpa' : 'Bloco ' + t.ciclo + ' de ' + S.config.ciclos;
+    el.iniciar.textContent = t.rodando ? 'Pausar' : (t.restante != null ? 'Continuar' : 'Começar');
+    document.querySelectorAll('.modo').forEach(function (b) { b.setAttribute('aria-checked', String(b.dataset.modo === t.modo)); });
+    document.title = (t.rodando ? mmss(s) + ' · ' : '') + 'Rotina com a Zumi';
+  }
+
+  // ---------- Lembretes ----------
+  function minutosDoDia(hhmm) { var p = (hhmm || '00:00').split(':'); return (+p[0]) * 60 + (+p[1]); }
+  function noHorario(d) {
+    var m = d.getHours() * 60 + d.getMinutes(), a = minutosDoDia(S.config.inicio), b = minutosDoDia(S.config.fim);
+    return a <= b ? (m >= a && m < b) : (m >= a || m < b);
+  }
+  function lembreteInfo(chave) {
+    if (LEMBRETES[chave]) return { nome: LEMBRETES[chave].texto, feito: LEMBRETES[chave].feito };
+    var m = S.meus.filter(function (x) { return x.id === chave; })[0];
+    return m ? { nome: 'Hora de: ' + m.nome + '.', feito: 'Feito', meu: m } : null;
+  }
+
+  var fila = [], atual = null;
+  function disparar(chave) {
+    if (fila.indexOf(chave) >= 0 || atual === chave) return;
+    var info = lembreteInfo(chave);
+    if (!info) return;
+    fila.push(chave);
+    notificar('Zumi lembrando', info.nome, 'lem-' + chave);
+    tocar();
+    mostrarAviso();
+  }
+  function mostrarAviso() {
+    if (atual || !fila.length) return;
+    atual = fila.shift();
+    var info = lembreteInfo(atual);
+    if (!info) { atual = null; return mostrarAviso(); }
+    el.avisoTxt.textContent = info.nome;
+    $('aviso-sim').textContent = info.feito;
+    el.aviso.hidden = false;
+  }
+  function fecharAviso() { el.aviso.hidden = true; atual = null; setTimeout(mostrarAviso, 300); }
+
+  function agendar(chave, min) { S.proximos[chave] = Date.now() + min * MIN; }
+
+  function checarLembretes() {
+    var agora = Date.now(), d = new Date(), hoje = chaveDia(d);
+    Object.keys(S.adiados).forEach(function (k) { if (agora >= S.adiados[k]) { delete S.adiados[k]; disparar(k); } });
+    Object.keys(S.config.lembretes).forEach(function (k) {
+      var l = S.config.lembretes[k];
+      if (!l.on) return;
+      if (!S.proximos[k]) agendar(k, l.min);
+      else if (agora >= S.proximos[k]) { agendar(k, l.min); if (noHorario(d)) disparar(k); }
+    });
+    S.meus.forEach(function (m) {
+      if (!m.on) return;
+      if (m.tipo === 'intervalo') {
+        if (!S.proximos[m.id]) agendar(m.id, m.min);
+        else if (agora >= S.proximos[m.id]) { agendar(m.id, m.min); if (noHorario(d)) disparar(m.id); }
+      } else {
+        var alvo = new Date(d); var p = m.hora.split(':'); alvo.setHours(+p[0], +p[1], 0, 0);
+        // toca uma vez por dia; se o app abriu até 2 horas depois do horário, ainda avisa
+        if (agora >= alvo.getTime() && agora - alvo.getTime() < 120 * MIN && S.tocados[m.id] !== hoje) { S.tocados[m.id] = hoje; disparar(m.id); }
+      }
+    });
+  }
+
+  function textoProximo(ts) {
+    if (!ts) return '';
+    var m = Math.max(0, Math.round((ts - Date.now()) / MIN));
+    return m <= 0 ? 'Próximo aviso: agora' : 'Próximo aviso em ' + (m >= 60 ? Math.floor(m / 60) + ' h ' + (m % 60) + ' min' : m + ' min');
+  }
+
+  function renderMeus() {
+    el.meus.innerHTML = '';
+    S.meus.forEach(function (m) {
+      var li = document.createElement('li');
+      var lab = document.createElement('label'); lab.className = 'chave';
+      var cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = m.on;
+      cb.addEventListener('change', function () { m.on = cb.checked; delete S.proximos[m.id]; salvar(); renderLembretes(); });
+      var sp = document.createElement('span'); sp.textContent = m.nome;
+      lab.appendChild(cb); lab.appendChild(sp);
+      var quando = document.createElement('span'); quando.className = 'cada';
+      quando.textContent = m.tipo === 'hora' ? 'todo dia às ' + m.hora : 'a cada ' + m.min + ' min';
+      var tirar = document.createElement('button'); tirar.type = 'button'; tirar.className = 'link perigo tirar'; tirar.textContent = 'Remover';
+      tirar.setAttribute('aria-label', 'Remover o lembrete ' + m.nome);
+      tirar.addEventListener('click', function () { S.meus = S.meus.filter(function (x) { return x.id !== m.id; }); delete S.proximos[m.id]; delete S.adiados[m.id]; salvar(); renderMeus(); });
+      var prox = document.createElement('small'); prox.dataset.meuProx = m.id;
+      li.appendChild(lab); li.appendChild(quando); li.appendChild(tirar); li.appendChild(prox);
+      el.meus.appendChild(li);
+    });
+    renderLembretes();
+  }
+  function renderLembretes() {
+    Object.keys(S.config.lembretes).forEach(function (k) {
+      var s = document.querySelector('[data-lem-prox="' + k + '"]');
+      if (s) s.textContent = S.config.lembretes[k].on ? textoProximo(S.adiados[k] || S.proximos[k]) : '';
+    });
+    S.meus.forEach(function (m) {
+      var s = document.querySelector('[data-meu-prox="' + m.id + '"]');
+      if (s) s.textContent = m.on && m.tipo === 'intervalo' ? textoProximo(S.adiados[m.id] || S.proximos[m.id]) : (S.adiados[m.id] ? textoProximo(S.adiados[m.id]) : '');
+    });
+  }
+
+  // ---------- Respiração e pausa sem tela ----------
+  var sobreTimer = null;
+  function abrirSobre(tipo) {
+    var fim = Date.now() + (tipo === 'respirar' ? 60 : 300) * 1000, inicio = Date.now();
+    el.sobreTitulo.textContent = tipo === 'respirar' ? 'Respirar um minuto' : 'Cinco minutos sem tela';
+    el.bolha.className = 'bolha' + (tipo === 'semTela' ? ' verde' : '');
+    el.sobre.hidden = false;
+    $('sobre-fechar').focus();
+    function passo() {
+      var falta = Math.max(0, Math.ceil((fim - Date.now()) / 1000));
+      el.sobreTempo.textContent = mmss(falta);
+      if (tipo === 'respirar') {
+        var fase = ((Date.now() - inicio) / 1000) % 10; // 4 s inspirando, 6 s soltando
+        var cheia = fase < 4;
+        el.sobreGuia.textContent = cheia ? 'Inspire pelo nariz' : 'Solte devagar pela boca';
+        el.bolha.classList.toggle('cheia', cheia); el.bolha.classList.toggle('solta', !cheia);
+      } else {
+        el.sobreGuia.textContent = 'Olhe para longe, alongue, beba água. A Zumi chama quando acabar.';
+      }
+      if (falta <= 0) {
+        fecharSobre();
+        tocar();
+        mudar(function (d) { d[tipo]++; });
+        var txt = tipo === 'respirar' ? 'Respiração feita. Mais leve? +5' : 'Cinco minutos longe da tela. Seus olhos agradecem. +5';
+        falar(txt, 'comemorando', true);
+        notificar('Feito', txt, 'sobre');
+      }
+    }
+    passo(); sobreTimer = setInterval(passo, 250);
+  }
+  function fecharSobre() { clearInterval(sobreTimer); sobreTimer = null; el.sobre.hidden = true; }
+
+  // ---------- Render geral ----------
+  function render() {
+    var d = dia(), p = total(), i = indiceTitulo(p), t = TITULOS[i], prox = TITULOS[i + 1];
+    el.tNome.textContent = t[1];
+    el.tBarra.style.width = prox ? (100 * (p - t[0]) / (prox[0] - t[0])).toFixed(1) + '%' : '100%';
+    el.tMeta.textContent = p + ' pontos' + (prox ? ' · faltam ' + (prox[0] - p) + ' para ' + prox[1] : ' · título máximo');
+    el.rPontos.textContent = pontosDia(d);
+    el.rFoco.textContent = d.minutos.trabalho + d.minutos.estudo;
+    el.rSeq.textContent = sequencia();
+
+    // água
+    el.copos.innerHTML = '';
+    for (var c = 0; c < Math.max(8, d.agua); c++) { var ic = document.createElement('i'); if (c < d.agua) ic.className = 'cheio'; el.copos.appendChild(ic); }
+    el.aguaTxt.textContent = d.agua + (d.agua === 1 ? ' copo' : ' copos');
+
+    // checks
+    $('c-respirar').textContent = d.respirar ? d.respirar + 'x hoje · +5' : '+5 pontos';
+    $('c-semTela').textContent = d.semTela ? d.semTela + 'x hoje · +5' : '+5 pontos';
+    document.querySelector('[data-acao="respirar"]').setAttribute('aria-pressed', String(d.respirar > 0));
+    document.querySelector('[data-acao="semTela"]').setAttribute('aria-pressed', String(d.semTela > 0));
+    document.querySelectorAll('[data-ex]').forEach(function (b) { b.setAttribute('aria-pressed', String(!!d.ex[b.dataset.ex])); });
+
+    // reflexão
+    var hojeN = Math.floor(new Date(chaveDia() + 'T12:00').getTime() / 86400000);
+    el.pergunta.textContent = PERGUNTAS[hojeN % PERGUNTAS.length];
+    if (document.activeElement !== el.reflexao) el.reflexao.value = d.reflexao || '';
+    el.refEstado.textContent = d.reflexao ? 'Reflexão de hoje salva. +10' : d.papel ? 'Respondida no papel. +10' : '';
+
+    // semana
+    el.semana.innerHTML = '';
+    var dias = [], max = 1;
+    for (var j = 6; j >= 0; j--) { var dd = new Date(); dd.setDate(dd.getDate() - j); var pts = pontosDia(S.dias[chaveDia(dd)]); dias.push([dd, pts, j === 0]); if (pts > max) max = pts; }
+    dias.forEach(function (x) {
+      var li = document.createElement('li');
+      var b = document.createElement('b'); b.textContent = x[1];
+      var col = document.createElement('span'); col.className = 'col' + (x[2] ? ' hoje' : ''); col.style.height = Math.max(4, 100 * x[1] / max * 0.72) + '%';
+      var nome = document.createElement('span'); nome.textContent = x[2] ? 'Hoje' : x[0].toLocaleDateString('pt-BR', { weekday: 'short' }).replace('.', '');
+      li.setAttribute('aria-label', (x[2] ? 'Hoje' : x[0].toLocaleDateString('pt-BR', { weekday: 'long' })) + ': ' + x[1] + ' pontos');
+      li.appendChild(b); li.appendChild(col); li.appendChild(nome);
+      el.semana.appendChild(li);
+    });
+
+    // títulos
+    el.titulos.innerHTML = '';
+    TITULOS.forEach(function (tt, k) {
+      var li = document.createElement('li');
+      li.className = (p >= tt[0] ? 'feito' : '') + (k === i ? ' atual' : '');
+      li.innerHTML = '<span class="favo" aria-hidden="true"></span><span><strong></strong><small></small></span>';
+      li.querySelector('strong').textContent = tt[1];
+      li.querySelector('small').textContent = (tt[0] ? tt[0] + ' pontos. ' : 'Começo. ') + tt[2];
+      el.titulos.appendChild(li);
+    });
+    renderLembretes();
+  }
+
+  // ---------- Configurações nos campos ----------
+  function lerCfg(caminho) { return caminho.split('.').reduce(function (o, k) { return o[k]; }, S.config); }
+  function gravarCfg(caminho, v) { var ks = caminho.split('.'), o = S.config; ks.slice(0, -1).forEach(function (k) { o = o[k]; }); o[ks[ks.length - 1]] = v; }
+
+  document.querySelectorAll('[data-cfg]').forEach(function (inp) {
+    var c = inp.dataset.cfg, v = lerCfg(c);
+    if (inp.type === 'checkbox') inp.checked = !!v; else inp.value = v;
+    inp.addEventListener('change', function () {
+      var nv = inp.type === 'checkbox' ? inp.checked : inp.type === 'number' ? Math.min(+inp.max, Math.max(+inp.min, Math.round(+inp.value || +inp.min))) : inp.value;
+      if (inp.type === 'number') inp.value = nv;
+      gravarCfg(c, nv);
+      if (!S.timer.rodando) S.timer.restante = null;
+      salvar(); renderTimer();
+    });
+  });
+  document.querySelectorAll('[data-lem]').forEach(function (inp) {
+    var k = inp.dataset.lem; inp.checked = S.config.lembretes[k].on;
+    inp.addEventListener('change', function () { S.config.lembretes[k].on = inp.checked; delete S.proximos[k]; checarLembretes(); salvar(); renderLembretes(); });
+  });
+  document.querySelectorAll('[data-lem-min]').forEach(function (inp) {
+    var k = inp.dataset.lemMin; inp.value = S.config.lembretes[k].min;
+    inp.addEventListener('change', function () {
+      var nv = Math.min(+inp.max, Math.max(+inp.min, Math.round(+inp.value || +inp.min))); inp.value = nv;
+      S.config.lembretes[k].min = nv; agendar(k, nv); salvar(); renderLembretes();
+    });
+  });
+
+  // ---------- Eventos ----------
+  el.iniciar.addEventListener('click', iniciar);
+  el.pular.addEventListener('click', function () { concluir(true); });
+  el.zerar.addEventListener('click', zerar);
+  document.querySelectorAll('.modo').forEach(function (b) { b.addEventListener('click', function () { trocarModo(b.dataset.modo); }); });
+
+  $('agua-mais').addEventListener('click', function () {
+    mudar(function (d) { d.agua++; });
+    var n = dia().agua;
+    falar(n <= 10 ? 'Boa! Copo ' + n + ' do dia. +2' : 'Copo ' + n + '. Água nunca é demais, mas os pontos param no décimo.', null);
+    if (S.config.lembretes.agua.on) agendar('agua', S.config.lembretes.agua.min);
+  });
+  $('agua-menos').addEventListener('click', function () { if (dia().agua > 0) mudar(function (d) { d.agua--; }); });
+  document.querySelectorAll('[data-acao]').forEach(function (b) { b.addEventListener('click', function () { abrirSobre(b.dataset.acao); }); });
+  document.querySelectorAll('[data-ex]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var k = b.dataset.ex, liga = !dia().ex[k];
+      mudar(function (d) { d.ex[k] = liga; });
+      if (liga) falar('Corpo em movimento, cabeça mais leve. +20', 'comemorando', true);
+    });
+  });
+
+  $('sobre-fechar').addEventListener('click', function () { fecharSobre(); falar('Tudo bem parar. Tenta de novo mais tarde.', 'ola'); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !el.sobre.hidden) fecharSobre(); });
+
+  $('aviso-sim').addEventListener('click', function () {
+    var k = atual, info = lembreteInfo(k);
+    fecharAviso();
+    if (k === 'agua') { $('agua-mais').click(); }
+    else if (k === 'respirar' || k === 'semTela') abrirSobre(k);
+    else if (info && info.meu) { mudar(function (d) { d.meus++; }); falar('Feito: ' + info.meu.nome + '. +2', 'comemorando', true); }
+  });
+  $('aviso-depois').addEventListener('click', function () { S.adiados[atual] = Date.now() + 10 * MIN; salvar(); fecharAviso(); renderLembretes(); });
+
+  $('b-refletir').addEventListener('click', function () {
+    var txt = el.reflexao.value.trim();
+    if (!txt) { el.refEstado.textContent = 'Escreva uma linha ou toque em "Respondi no papel".'; el.reflexao.focus(); return; }
+    mudar(function (d) { d.reflexao = txt; });
+    falar('Reflexão guardada. Descansa bem, até amanhã!', 'comemorando', true);
+  });
+  $('b-papel').addEventListener('click', function () { mudar(function (d) { d.papel = true; }); falar('Papel e caneta, longe da tela. Ótima escolha. +10', 'comemorando', true); });
+
+  // novo lembrete
+  var tipos = document.querySelectorAll('[name="novo-tipo"]');
+  tipos.forEach(function (r) {
+    r.addEventListener('change', function () {
+      var hora = document.querySelector('[name="novo-tipo"]:checked').value === 'hora';
+      document.querySelector('.novo-hora').hidden = !hora; document.querySelector('.novo-intervalo').hidden = hora;
+    });
+  });
+  $('novo').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var nome = $('novo-nome').value.trim(); if (!nome) return;
+    var tipo = document.querySelector('[name="novo-tipo"]:checked').value;
+    var m = { id: 'm' + Date.now().toString(36), nome: nome, tipo: tipo, hora: $('novo-hora').value || '08:00', min: Math.max(15, +$('novo-min').value || 120), on: true };
+    // um horário que já passou hoje só toca amanhã
+    if (tipo === 'hora' && minutosDoDia(m.hora) <= new Date().getHours() * 60 + new Date().getMinutes()) S.tocados[m.id] = chaveDia();
+    S.meus.push(m); salvar(); renderMeus();
+    $('novo-nome').value = '';
+    var semNotif = 'Notification' in window && Notification.permission === 'default';
+    falar('Anotado. Eu lembro você de: ' + nome + '.' + (semNotif ? ' Ative as notificações para eu avisar com o app em segundo plano.' : ''), 'ideia', true);
+  });
+
+  $('b-notif').addEventListener('click', function () {
+    if (!('Notification' in window)) return;
+    Notification.requestPermission().then(function () { estadoNotif(); if (Notification.permission === 'granted') falar('Notificações ligadas. Agora eu aviso com o app em segundo plano.', 'comemorando', true); });
+  });
+  $('b-apagar').addEventListener('click', function () {
+    if (!confirm('Apagar pontos, títulos, reflexões e lembretes deste aparelho? Não tem como desfazer.')) return;
+    try { localStorage.removeItem(CHAVE); } catch (e) { }
+    S = padrao(); location.reload();
+  });
+
+  // instalar (Android e computador)
+  var pedidoInstalar = null;
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault(); pedidoInstalar = e;
+    if ($('b-instalar')) return;
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'btn'; b.id = 'b-instalar'; b.textContent = 'Instalar o app';
+    b.addEventListener('click', function () { pedidoInstalar.prompt(); pedidoInstalar.userChoice.finally(function () { b.remove(); }); });
+    var w = document.createElement('div'); w.className = 'acoes'; w.appendChild(b);
+    document.querySelector('.instalar h2').after(w);
+  });
+
+  // ---------- Relógio central ----------
+  var ultimoDia = chaveDia();
+  function tick() {
+    if (S.timer.rodando && Date.now() >= S.timer.fimEm) concluir(false);
+    checarLembretes();
+    renderTimer();
+    if (chaveDia() !== ultimoDia) { ultimoDia = chaveDia(); podar(); salvar(); render(); falar(saudacao(), 'ola'); }
+  }
+  var lento = 0;
+  setInterval(function () { tick(); if (++lento % 30 === 0) { salvar(); renderLembretes(); } }, 1000);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) { tick(); render(); } });
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/rotina/sw.js', { scope: '/rotina/' }).then(function (r) { registro = r; return navigator.serviceWorker.ready; }).then(function (r) { registro = r; }).catch(function () {});
+  }
+
+  podar(); dia(); salvar();
+  falar(saudacao(), S.timer.rodando ? 'estudando' : 'ola');
+  estadoNotif(); renderMeus(); render(); renderTimer();
+})();

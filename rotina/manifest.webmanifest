@@ -1,0 +1,16 @@
+{
+  "name": "Rotina com a Zumi",
+  "short_name": "Rotina",
+  "description": "Foco, pausa, lazer e lembretes de água, respiração e pausa sem tela, com a Zumi.",
+  "lang": "pt-BR",
+  "start_url": "/rotina/",
+  "scope": "/rotina/",
+  "display": "standalone",
+  "theme_color": "#0B1B3A",
+  "background_color": "#0B1B3A",
+  "icons": [
+    { "src": "/icones/icone-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icones/icone-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icones/icone-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
