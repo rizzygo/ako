@@ -295,3 +295,16 @@ textarea{width:100%;resize:vertical}
   body:not([data-aba="hoje"]) .guia .guia-texto{grid-column:auto}
   body:not([data-aba="hoje"]) .guia .fala{font-size:.98rem;padding:.55rem .8rem}
 }
+/* Hoje no celular: cabeçalho mais baixo, para o painel aparecer logo */
+@media (max-width:759px){
+  .guia{grid-template-columns:64px 1fr;align-items:start;padding:1rem;gap:.8rem}
+  .guia .guia-texto{grid-column:auto;gap:.6rem}
+  .guia-zumi img{width:64px;height:64px}
+  .guia h1{font-size:1.3rem}
+  .fala{font-size:.98rem;padding:.55rem .8rem}
+  .titulo-atual strong{font-size:1.1rem}
+  .resumo li{padding:.45rem .4rem;min-width:0}
+  .resumo b{font-size:1.3rem}
+  .resumo span{font-size:.78rem;line-height:1.25;display:block}
+  .atalhos-topo a{font-size:.85rem;padding:.25rem .7rem}
+}
