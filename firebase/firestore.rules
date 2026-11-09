@@ -1,0 +1,53 @@
+rules_version = '2';
+// Regras do Cloud Firestore do projeto rizzygo-webapp, usado pelo Ako e pelo site.
+// O projeto tem um arquivo de regras só: este junta as do Ako (users/<uid>/apps/<app>) com o
+// cadastro de leitores dos ebooks do site (leitores/<uid>). Se mudar um lado, copie o outro igual.
+// Para publicar: console do Firebase > Firestore Database > Regras > colar este arquivo > Publicar.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function dono(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    // Ako: cada pessoa lê e grava só os próprios documentos.
+    match /users/{uid}/apps/{app} {
+      function valido() {
+        let d = request.resource.data;
+        return app in ['rotina', 'trilhas', 'mapas']
+          && d.keys().hasOnly(['dados', 'cliente', 'aceites', 'versao', 'atualizadoEm'])
+          && d.dados is string && d.dados.size() < 900000
+          && d.cliente is int
+          && d.aceites is map && d.aceites.keys().hasOnly(['saude', 'reflexoes'])
+          && d.versao == 1
+          && d.atualizadoEm == request.time;
+      }
+      allow read, delete: if dono(uid);
+      allow create, update: if dono(uid) && valido();
+    }
+
+    // Site: cadastro de quem lê os ebooks. O e-mail tem de ser o da conta logada,
+    // e a data do aceite e o ebook de origem não mudam depois de criados.
+    match /leitores/{uid} {
+      function campos() {
+        let d = request.resource.data;
+        return d.keys().hasOnly(['nome', 'email', 'novidades', 'origem', 'versao', 'aceiteEm', 'atualizadoEm'])
+          && d.nome is string && d.nome.size() <= 120
+          && d.email == request.auth.token.email
+          && d.novidades is bool
+          && d.origem is string && d.origem.size() <= 100
+          && d.versao == 1
+          && d.atualizadoEm == request.time;
+      }
+      allow read, delete: if dono(uid);
+      allow create: if dono(uid) && campos() && request.resource.data.aceiteEm == request.time;
+      allow update: if dono(uid) && campos()
+        && request.resource.data.aceiteEm == resource.data.aceiteEm
+        && request.resource.data.origem == resource.data.origem;
+    }
+
+    // Todo o resto fica fechado.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

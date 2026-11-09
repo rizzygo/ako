@@ -319,3 +319,5 @@ textarea{width:100%;resize:vertical}
 .contribua-copiar{font:700 .95rem var(--f-texto);color:var(--ambar-tinta);background:var(--ambar);border:0;border-radius:var(--raio-p);padding:.5rem .9rem;cursor:pointer;min-height:44px}
 .contribua-copiar:hover{filter:brightness(1.06)}
 .contribua-copiar:focus-visible{outline:3px solid #FFFFFF;outline-offset:2px}
+.nuvem [hidden]{display:none !important}
+.nuvem .chave{margin:.35rem 0}

@@ -1,7 +1,8 @@
 /* Rizzygo Ako: trilhas de estudo do Ako, da Rizzygo All. HTML, CSS e JS puros, sem build.
    Cada trilha tem um arquivo em dados/ e é escolhida pelo endereço: ?trilha=platform-engineering.
    Sem o parâmetro, abre a Primeiros passos em TI.
-   O progresso fica só no navegador (localStorage), e a pessoa pode exportar e importar. */
+   O progresso fica no navegador (localStorage), e a pessoa pode exportar e importar.
+   Quem entra com a conta Google (botão no topo, /conta.js) ganha uma cópia na nuvem. */
 (function () {
   'use strict';
 
@@ -62,7 +63,9 @@
   }
   function salvar() {
     try { localStorage.setItem(CHAVE, JSON.stringify(estado)); } catch (e) { /* modo privado: segue sem salvar */ }
+    window.dispatchEvent(new CustomEvent('rizzygo-salvou', { detail: 'trilhas' }));
   }
+  function painelConta() { if (window.AkoConta) window.AkoConta.desenhar(); }
   function st(id) {
     if (!estado.topicos[id]) estado.topicos[id] = { check: [], quiz: null, reflexao: '', ensinei: false };
     return estado.topicos[id];
@@ -339,6 +342,7 @@
       (dados.areas.length ? '<fieldset><legend>O que mais te atrai?</legend><p class="dica">Marque quantas quiser. Os tópicos que mais ajudam nesses caminhos ficam destacados.</p><div class="opcoes-escolha duas">' + areas + '</div></fieldset>' : '') +
       '<fieldset><legend>O que você já sabe?</legend><p class="dica">Os tópicos que você marcar viram desafios para validar. Acertou, conta como concluído.</p><div class="opcoes-escolha duas">' + jaSei + '</div></fieldset>' +
       '<p class="erro-form" id="erro-form" role="alert"></p>' +
+      '<p class="dica">O roteiro fica salvo neste navegador. Na próxima tela, você pode salvar na sua conta Google para abrir em qualquer aparelho. É opcional.</p>' +
       '<div class="acoes"><button class="btn" type="submit">Montar meu roteiro</button></div>' +
       '</form></div>';
     document.getElementById('form-montar').addEventListener('submit', function (ev) {
@@ -393,10 +397,12 @@
       '<div class="resumo-roteiro"><div><b>' + semanasTxt(semanas) + '</b><span>com ' + p.horas + ' horas por semana</span></div><div><b>' + horasTxt(Math.round(total)) + '</b><span>de estudo pela frente</span></div>' +
       (validar ? '<div><b>' + validar + '</b><span>' + (validar === 1 ? 'tópico para validar' : 'tópicos para validar') + '</span></div>' : '') + '</div>' +
       caminhoTxt +
+      '<div data-conta-painel data-contexto="roteiro"></div>' +
       '<div class="aviso">Este roteiro é um ponto de partida, não um trilho. Pule o que já sabe, volte quando precisar e questione o caminho.</div>' +
       '<ol class="lista-roteiro">' + itens + '</ol>' +
       '<div class="acoes">' + (prox ? '<a class="btn" href="#/t/' + prox.id + '">' + (prox === dados.topicos[0] ? 'Começar pelo primeiro tópico' : 'Continuar de onde parei') + '</a>' : '') +
       '<a class="btn btn-sec" href="#/trilha">Ver a trilha completa</a><a class="btn btn-sec" href="#/montar">Mudar minhas respostas</a></div></div>';
+    painelConta();
   }
 
   /* ---------- trilha ---------- */
@@ -798,11 +804,13 @@
       '<section class="bloco"><h2>Revisão rápida</h2><p>Cinco perguntas sorteadas dos tópicos que você já estudou. Não vale XP, mas três revisões com pelo menos 4 acertos dão a conquista Memória afiada.</p><div class="acoes" style="margin-top:.8rem">' + (revisaoLiberada() ? '<a class="btn btn-sec" href="#/revisao">Fazer uma revisão rápida</a>' : '<span class="dica">Comece pelo menos dois tópicos para liberar a revisão.</span>') + '</div></section>' +
       '<section class="bloco"><h2>Conquistas</h2><ul class="selos">' + selos + '</ul></section>' +
       '<section class="bloco"><h2>Seus dados</h2><div class="dados-acoes">' +
-      '<p>O progresso fica só neste navegador. Para levar para outro aparelho, exporte aqui e importe lá. Cada trilha tem o seu progresso e o seu arquivo: este é o da trilha ' + esc(dados.titulo) + '.</p>' +
+      '<div data-conta-painel></div>' +
+      '<p>Sem conta, também dá para levar o progresso: exporte aqui e importe no outro aparelho. Cada trilha tem o seu arquivo: este é o da trilha ' + esc(dados.titulo) + '.</p>' +
       '<div class="acoes"><button class="btn btn-sec" type="button" id="exportar">Exportar progresso</button>' +
       '<label class="btn btn-sec" for="importar" tabindex="0">Importar progresso</label><input type="file" id="importar" accept="application/json,.json" hidden></div>' +
       '<p class="salvo" id="dados-msg" aria-live="polite"></p>' +
       '<div class="acoes"><button class="btn btn-perigo" type="button" id="apagar">Apagar meu progresso</button></div></div></section></div>';
+    painelConta();
 
     document.getElementById('exportar').addEventListener('click', function () {
       var blob = new Blob([JSON.stringify(estado, null, 1)], { type: 'application/json' });
@@ -865,6 +873,15 @@
     }, 120);
   });
   window.addEventListener('hashchange', trocarPagina);
+  /* Chegou progresso da conta (outro aparelho): recarrega e redesenha a página atual. */
+  window.addEventListener('rizzygo-nuvem', function (ev) {
+    if (ev.detail.app !== 'trilhas') return;
+    estado = carregar();
+    if (!dados) return;
+    nivelAntes = nivelDe(xpTotal()).atual;
+    atualizarTopo();
+    rotear();
+  });
 
   if (Q) {
     var linkMapa = document.querySelector('.menu a[href="mapas/"]');

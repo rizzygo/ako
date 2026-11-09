@@ -1,6 +1,7 @@
 /* Mapas das áreas do Ako, em grafo. HTML, CSS e JS puros, sem build.
    O conteúdo fica em ../dados/mapas.json. O mapa de cada trilha sai do JSON dela (lista TRILHAS).
-   O que a pessoa marca nos mapas fica só no navegador, em rizzygo-mapas-v1. O progresso da trilha é só lido. */
+   O que a pessoa marca nos mapas fica no navegador, em rizzygo-mapas-v1 (e na conta, se ela entrou: /conta.js).
+   O progresso da trilha é só lido. */
 (function () {
   'use strict';
 
@@ -24,6 +25,7 @@
   }
   function salvar() {
     try { localStorage.setItem(CHAVE, JSON.stringify(marcas)); } catch (e) { /* modo privado: segue sem salvar */ }
+    window.dispatchEvent(new CustomEvent('rizzygo-salvou', { detail: 'mapas' }));
   }
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -344,6 +346,15 @@
   var espera;
   window.addEventListener('resize', function () { clearTimeout(espera); espera = setTimeout(desenhar, 80); });
   window.addEventListener('hashchange', rotear);
+  /* Chegou progresso da conta (outro aparelho): relê as marcas e a trilha e redesenha. */
+  window.addEventListener('rizzygo-nuvem', function (ev) {
+    if (ev.detail.app !== 'mapas' && ev.detail.app !== 'trilhas') return;
+    marcas = carregar(CHAVE, { versao: 1, nos: {} });
+    TRILHAS.forEach(function (x) { x.progresso = carregar(x.chave, { topicos: {} }); });
+    progressoTrilha = TRILHAS[0].progresso;
+    if (!mapas || painel.open) return;
+    if (atual) viewMapa(atual); else viewLista();
+  });
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(desenhar);
 
   Promise.all([
