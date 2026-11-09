@@ -420,3 +420,6 @@ textarea{width:100%;resize:vertical}
 .dias-semana button[aria-pressed="true"]{background:var(--azul);border-color:var(--azul);color:var(--azul-tinta)}
 .dias-semana .todos{margin-right:.25rem}
 .btn[hidden]{display:none}
+/* Botão de remover: vermelho, no mesmo tamanho dos botões ao lado */
+.btn.btn-perigo{background:transparent;border-color:var(--erro);color:var(--erro);padding:.4rem .8rem;font-size:.92rem}
+.btn.btn-perigo:hover{background:var(--erro-claro);box-shadow:none}

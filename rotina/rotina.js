@@ -446,7 +446,7 @@
       lab.appendChild(cb); lab.appendChild(sp);
       var quando = document.createElement('span'); quando.className = 'cada';
       quando.textContent = m.tipo === 'hora' ? textoDias(m.semana) + ' às ' + m.hora : 'a cada ' + m.min + ' min';
-      var tirar = document.createElement('button'); tirar.type = 'button'; tirar.className = 'link perigo tirar'; tirar.textContent = 'Remover';
+      var tirar = document.createElement('button'); tirar.type = 'button'; tirar.className = 'btn btn-perigo tirar'; tirar.textContent = 'Remover';
       tirar.setAttribute('aria-label', 'Remover o lembrete ' + m.nome);
       tirar.addEventListener('click', function () { S.meus = S.meus.filter(function (x) { return x.id !== m.id; }); delete S.proximos[m.id]; delete S.adiados[m.id]; salvar(); renderMeus(); });
       var prox = document.createElement('small'); prox.dataset.meuProx = m.id;
@@ -1115,7 +1115,7 @@
       var sp = document.createElement('span'); sp.textContent = (t.prio ? '★ ' : '') + t.texto;
       var a = document.createElement('button'); a.type = 'button'; a.className = 'btn btn-sec'; a.textContent = 'Amanhã';
       a.addEventListener('click', function () { t.dia = am; salvar(); render(); falar('Combinado: "' + t.texto + '" fica para amanhã.', 'ideia'); });
-      var r = document.createElement('button'); r.type = 'button'; r.className = 'link perigo'; r.textContent = 'Tirar';
+      var r = document.createElement('button'); r.type = 'button'; r.className = 'btn btn-perigo'; r.textContent = 'Tirar';
       r.addEventListener('click', function () { S.tarefas = S.tarefas.filter(function (y) { return y.id !== t.id; }); salvar(); render(); });
       li.appendChild(sp); li.appendChild(a); li.appendChild(r); pend.appendChild(li);
     });
@@ -1278,7 +1278,7 @@
         rv.addEventListener('click', function () { abertas[m.id] = !abertas[m.id]; renderMetas(); });
         acoes.appendChild(rv);
       }
-      var x = document.createElement('button'); x.type = 'button'; x.className = 'link perigo'; x.textContent = 'Remover';
+      var x = document.createElement('button'); x.type = 'button'; x.className = 'btn btn-perigo'; x.textContent = 'Remover';
       x.addEventListener('click', function () { if (confirm('Remover a meta "' + m.texto + '"?')) { S.metas = S.metas.filter(function (y) { return y.id !== m.id; }); salvar(); render(); } });
       acoes.appendChild(x); li.appendChild(acoes);
       ul.appendChild(li);
