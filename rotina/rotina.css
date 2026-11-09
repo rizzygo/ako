@@ -243,3 +243,5 @@ textarea{width:100%;resize:vertical}
 .dia-nome small{display:block;font-size:.78rem;color:var(--erro)}
 .aviso.recomeco{border-color:var(--azul);z-index:55}
 .aviso.recomeco .nota{grid-column:1/-1}
+.agua-titulo{display:inline-flex;align-items:center;gap:.6rem}
+.agua-titulo .ic{font-size:1.5rem;line-height:1}
