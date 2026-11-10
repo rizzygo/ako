@@ -5,7 +5,8 @@
 /* Zumi e título */
 .guia{display:grid;gap:1rem 1.5rem;align-items:center;background:var(--superficie);border:1px solid var(--linha);border-radius:var(--raio);padding:1.25rem;box-shadow:var(--sombra-1)}
 @media (min-width:860px){.guia{grid-template-columns:auto 1fr auto}}
-.guia-zumi img{width:112px;height:112px;transition:transform .3s ease}
+/* max-width:none vence o img{max-width:100%} do ds: a Zumi nunca encolhe só na largura */
+.guia-zumi img{width:112px;height:112px;max-width:none;aspect-ratio:1;object-fit:contain;transition:transform .3s ease}
 .guia-zumi.pula img{animation:pula .6s ease 2}
 @keyframes pula{50%{transform:translateY(-10px) rotate(-4deg)}}
 .guia-texto{display:flex;flex-direction:column;gap:.9rem;min-width:0}
@@ -329,7 +330,7 @@ textarea{width:100%;resize:vertical}
 }
 /* Hoje no celular: cabeçalho mais baixo, para o painel aparecer logo */
 @media (max-width:759px){
-  .guia{grid-template-columns:64px 1fr;align-items:start;padding:1rem;gap:.8rem}
+  .guia{grid-template-columns:auto 1fr;align-items:start;padding:1rem;gap:.8rem}
   .guia .guia-texto{grid-column:auto;gap:.6rem}
   .guia-zumi img{width:64px;height:64px}
   .guia h1{font-size:1.3rem}
