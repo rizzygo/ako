@@ -1,5 +1,5 @@
 // Service worker da Rotina com a Zumi: deixa o app abrir sem internet e mostra as notificações.
-var CACHE = 'rotina-2026110926';
+var CACHE = 'rotina-2026111001';
 var ARQUIVOS = [
   '/rotina/', '/rotina/rotina.css?v=2026110926', '/rotina/rotina.js?v=2026110926', '/nuvem.js', '/conta.js?v=2026110916', '/topo.css?v=2026110914', '/ds/rizzygo.css?v=2026110801', '/contribua.js?v=2026110901',
   '/zumi/abelha-mini.png', '/zumi/abelha-icone.png',
