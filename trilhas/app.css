@@ -194,7 +194,7 @@ textarea:focus{border-color:var(--azul);outline:none}
 .rodape{margin-top:4rem}
 .rodape-in{padding:2rem 16px 2.5rem;gap:.5rem;font-size:var(--t-pequeno)}
 .rodape-in strong{color:#FFFFFF}
-.credo{font-style:italic}
+.rodape-in .credo{margin-top:.6rem}
 .noscript{padding:2rem 16px;text-align:center}
 .carregando{padding:4rem 16px;text-align:center;color:var(--suave)}
 
