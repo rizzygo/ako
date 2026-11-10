@@ -315,8 +315,13 @@
     var b = ev.target.closest('[data-estado]');
     if (!b) return;
     var n = todosOsNos(atual).filter(function (x) { return x.id === painel.dataset.no; })[0];
+    var antes = situacao(atual, n);
     if (b.dataset.estado) marcas.nos[chave(atual, n)] = b.dataset.estado;
     else delete marcas.nos[chave(atual, n)];
+    // Som de vitória (/vitoria.js; desliga em Trilhas > Conquistas): tópico estudado, mais forte se o mapa fechou.
+    if (window.AkoVitoria && b.dataset.estado === 'feito' && antes !== 'feito') {
+      window.AkoVitoria.comemorar(contaveis(atual).every(function (x) { return situacao(atual, x) === 'feito'; }));
+    }
     salvar();
     painel.querySelectorAll('[data-estado]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
     var botao = app.querySelector('.no[data-no="' + n.id + '"]');

@@ -159,7 +159,7 @@
   }
 
   /* ---------- após cada ação ---------- */
-  var nivelAntes = null;
+  var nivelAntes = null, feitosAntes = null;
   function depoisDeAgir() {
     registrarDia();
     var novas = [];
@@ -170,7 +170,11 @@
     var n = nivelDe(xpTotal()).atual;
     if (nivelAntes && n.n > nivelAntes.n) avisar('Você subiu para o nível ' + n.n + ': ' + n.nome);
     novas.forEach(function (nome) { avisar('Conquista desbloqueada: ' + nome); });
-    nivelAntes = n;
+    // Som de vitória (/vitoria.js): tópico concluído, conquista nova ou nível novo.
+    var feitos = contarTopicos(concluido);
+    var subiu = !!nivelAntes && n.n > nivelAntes.n, topico = feitosAntes !== null && feitos > feitosAntes;
+    if (window.AkoVitoria && (subiu || novas.length || topico)) window.AkoVitoria.comemorar(subiu || novas.length > 0);
+    nivelAntes = n; feitosAntes = feitos;
     atualizarTopo();
   }
   function atualizarTopo() {
@@ -803,6 +807,9 @@
       '<li>Responder à pergunta Ako com suas palavras: ' + XP.reflexao + ' XP</li><li>Explicar o assunto para outra pessoa: ' + XP.ensinei + ' XP</li></ul></section>' +
       '<section class="bloco"><h2>Revisão rápida</h2><p>Cinco perguntas sorteadas dos tópicos que você já estudou. Não vale XP, mas três revisões com pelo menos 4 acertos dão a conquista Memória afiada.</p><div class="acoes" style="margin-top:.8rem">' + (revisaoLiberada() ? '<a class="btn btn-sec" href="#/revisao">Fazer uma revisão rápida</a>' : '<span class="dica">Comece pelo menos dois tópicos para liberar a revisão.</span>') + '</div></section>' +
       '<section class="bloco"><h2>Conquistas</h2><ul class="selos">' + selos + '</ul></section>' +
+      '<section class="bloco"><h2>Som de vitória</h2><p>Quando você conclui um tópico, ganha uma conquista ou sobe de nível, a Zumi passa zumbindo e toca uma fanfarra curta.</p>' +
+      '<div class="acoes"><label class="chave-som"><input type="checkbox" id="som-vitoria"' + (window.AkoVitoria && window.AkoVitoria.ligado() ? ' checked' : '') + '> Tocar o som de vitória</label>' +
+      '<button class="btn btn-sec" type="button" id="ouvir-vitoria">Ouvir</button></div></section>' +
       '<section class="bloco"><h2>Seus dados</h2><div class="dados-acoes">' +
       '<div data-conta-painel></div>' +
       '<p>Sem conta, também dá para levar o progresso: exporte aqui e importe no outro aparelho. Cada trilha tem o seu arquivo: este é o da trilha ' + esc(dados.titulo) + '.</p>' +
@@ -811,6 +818,8 @@
       '<p class="salvo" id="dados-msg" aria-live="polite"></p>' +
       '<div class="acoes"><button class="btn btn-perigo" type="button" id="apagar">Apagar meu progresso</button></div></div></section></div>';
     painelConta();
+    document.getElementById('som-vitoria').addEventListener('change', function (ev) { if (window.AkoVitoria) window.AkoVitoria.ligar(ev.target.checked); });
+    document.getElementById('ouvir-vitoria').addEventListener('click', function () { if (window.AkoVitoria) window.AkoVitoria.tocar(false); });
 
     document.getElementById('exportar').addEventListener('click', function () {
       var blob = new Blob([JSON.stringify(estado, null, 1)], { type: 'application/json' });
@@ -834,7 +843,7 @@
           if (!valido(obj)) throw new Error('formato');
           estado = normalizar(obj);
           salvar();
-          nivelAntes = nivelDe(xpTotal()).atual;
+          nivelAntes = nivelDe(xpTotal()).atual; feitosAntes = contarTopicos(concluido);
           atualizarTopo();
           viewConquistas();
           document.getElementById('dados-msg').textContent = 'Progresso importado.';
@@ -855,7 +864,7 @@
       }
       estado = vazio();
       salvar();
-      nivelAntes = nivelDe(0).atual;
+      nivelAntes = nivelDe(0).atual; feitosAntes = 0;
       atualizarTopo();
       viewConquistas();
       document.getElementById('dados-msg').textContent = 'Progresso apagado.';
@@ -878,7 +887,7 @@
     if (ev.detail.app !== 'trilhas') return;
     estado = carregar();
     if (!dados) return;
-    nivelAntes = nivelDe(xpTotal()).atual;
+    nivelAntes = nivelDe(xpTotal()).atual; feitosAntes = contarTopicos(concluido);
     atualizarTopo();
     rotear();
   });
@@ -893,7 +902,7 @@
     return r.json();
   }).then(function (d) {
     dados = d;
-    nivelAntes = nivelDe(xpTotal()).atual;
+    nivelAntes = nivelDe(xpTotal()).atual; feitosAntes = contarTopicos(concluido);
     atualizarTopo();
     rotear();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () {
