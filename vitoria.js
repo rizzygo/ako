@@ -1,12 +1,16 @@
 // Som de vitória do Ako: a Zumi passa zumbindo e uma fanfarra curta de sinos toca.
 // Feito na hora com Web Audio, sem arquivo de áudio. Quem chama decide se o som está ligado:
-// a Rotina usa o próprio Ajuste; Trilhas e Mapas usam AkoVitoria.ligado() (chave no localStorage).
+// a Rotina usa o próprio Ajuste; Trilhas e Mapas usam AkoVitoria.ligado() (chave no localStorage,
+// copiada para a conta pelo /conta.js, app 'ajustes').
 (function () {
   var CHAVE = 'ako-som-vitoria';
   var ctxProprio = null, ultima = 0;
 
   function ligado() { try { return localStorage.getItem(CHAVE) !== 'nao'; } catch (e) { return true; } }
-  function ligar(sim) { try { localStorage.setItem(CHAVE, sim ? 'sim' : 'nao'); } catch (e) { /* modo privado */ } }
+  function ligar(sim) {
+    try { localStorage.setItem(CHAVE, sim ? 'sim' : 'nao'); } catch (e) { /* modo privado */ }
+    window.dispatchEvent(new CustomEvent('rizzygo-salvou', { detail: 'ajustes' })); // vai para a conta, se a pessoa entrou
+  }
 
   function contexto(ctx) {
     if (ctx) return ctx;
