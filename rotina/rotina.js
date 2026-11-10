@@ -141,6 +141,8 @@
   function total() {
     return Math.max(0, S.pontosAntigos + Object.keys(S.dias).reduce(function (s, k) { return s + pontosDia(S.dias[k]); }, 0));
   }
+  // Abaixo do título: os pontos caíram (dias parados), mas o título conquistado continua. Só o brilho apaga.
+  function abaixoDoTitulo() { return total() < TITULOS[tituloAtual()][0]; }
   function indiceTitulo(p) { var i = 0; TITULOS.forEach(function (t, j) { if (p >= t[0]) i = j; }); return i; }
   // O título conquistado não cai, mesmo que os pontos diminuam.
   function tituloAtual() { var i = indiceTitulo(total()); if (i > S.melhor) S.melhor = i; return S.melhor; }
@@ -200,11 +202,12 @@
 
   // Toda mudança que vale ponto passa por aqui, para a Zumi comemorar quando o título sobe.
   function mudar(fn) {
-    var antes = tituloAtual();
+    var antes = tituloAtual(), apagado = abaixoDoTitulo();
     fn(dia());
     var depois = tituloAtual();
     salvar();
     render();
+    if (apagado && !abaixoDoTitulo() && depois === antes) falar('O brilho de ' + TITULOS[depois][1] + ' voltou! Bom te ver de volta.', 'comemorando', true);
     if (depois > antes) {
       var t = TITULOS[depois];
       falar('Título novo: ' + t[1] + '! ' + t[2], 'comemorando', true);
@@ -230,7 +233,7 @@
   function falar(texto, pose, pular) {
     el.fala.textContent = texto;
     // "olá" é a pose neutra: ela muda conforme o título (a Zumi evolui com os pontos)
-    if (pose === 'ola') pose = VISUAL[tituloAtual()].pose;
+    if (pose === 'ola') pose = VISUAL[abaixoDoTitulo() ? indiceTitulo(total()) : tituloAtual()].pose;
     if (pose) {
       el.img.src = '/zumi/abelha-' + pose + '.png';
       el.escuro.srcset = '/zumi/abelha-' + pose + '-fundo-escuro.png';
@@ -242,6 +245,7 @@
   function saudacao() {
     var h = new Date().getHours();
     var oi = h < 12 ? 'Bom dia!' : h < 18 ? 'Boa tarde!' : 'Boa noite!';
+    if (abaixoDoTitulo()) return oi + ' Senti sua falta. Faltam ' + (TITULOS[tituloAtual()][0] - total()) + ' pontos para o brilho do seu título voltar.';
     if (h >= 20) return oi + ' Que tal fechar o dia com a pergunta lá embaixo?';
     return oi + ' Eu sou a Zumi. Escolha um bloco e vamos começar.';
   }
@@ -595,7 +599,7 @@
     });
   }
   function definirAgua(k, nv) {
-    var antes = tituloAtual(), d = dia(k), tirouPerda = false;
+    var antes = tituloAtual(), apagado = abaixoDoTitulo(), d = dia(k), tirouPerda = false;
     d.aguaNivel = nv || null; if (!nv) delete d.agua;
     if (nv && d.penalidade) { delete d.penalidade; tirouPerda = true; }
     var depois = tituloAtual(); salvar(); render();
@@ -605,6 +609,7 @@
     else if (hoje) falar(nv === 'excelente' ? 'Água excelente hoje! +20' : nv === 'bom' ? 'Água boa hoje. +10' : 'Dia fraco de água. Os lembretes ajudam amanhã.', nv === 'ruim' ? 'ideia' : 'comemorando', nv !== 'ruim');
     else falar('Água de ' + new Date(k + 'T12:00').toLocaleDateString('pt-BR', { weekday: 'long' }) + ' corrigida: ' + NIVEIS[nv] + '.', null);
     if (depois > antes) falar('Título novo: ' + TITULOS[depois][1] + '! ' + TITULOS[depois][2], 'comemorando', true);
+    else if (apagado && !abaixoDoTitulo()) falar('O brilho de ' + TITULOS[depois][1] + ' voltou! Bom te ver de volta.', 'comemorando', true);
   }
   function mediaAgua(n) {
     var soma = 0, dias = 0, hoje = new Date();
@@ -644,9 +649,21 @@
     $('zumi-selo').textContent = v.ic;
     if (zn.dataset.nivel !== String(i)) { zn.dataset.nivel = String(i); el.img.alt = 'A Zumi, no título ' + t[1]; }
     zn.style.setProperty('--nivel-cor', v.cor);
-    zn.style.setProperty('--prog', prox ? Math.max(0, Math.min(100, 100 * (p - t[0]) / (prox[0] - t[0]))).toFixed(1) : '100');
-    el.tBarra.style.width = prox ? Math.max(0, 100 * (p - t[0]) / (prox[0] - t[0])).toFixed(1) + '%' : '100%';
-    el.tMeta.textContent = p + ' pontos' + (prox ? ' · faltam ' + (prox[0] - p) + ' para ' + prox[1] : ' · título máximo');
+    var apagado = p < t[0];
+    zn.classList.toggle('apagada', apagado);
+    $('titulo-atual').classList.toggle('apagado', apagado);
+    if (apagado) {
+      // o anel mostra o caminho de volta até o ponto do título
+      var base = TITULOS[indiceTitulo(p)][0], pct = Math.max(0, Math.min(100, 100 * (p - base) / (t[0] - base)));
+      zn.style.setProperty('--prog', pct.toFixed(1));
+      el.tBarra.style.width = pct.toFixed(1) + '%';
+      el.tMeta.textContent = p + ' pontos · faltam ' + (t[0] - p) + ' para o brilho voltar';
+      $('titulo-frase').textContent = 'O título continua seu. Os pontos caíram com os dias parados; volte e o brilho acende de novo.';
+    } else {
+      zn.style.setProperty('--prog', prox ? Math.max(0, Math.min(100, 100 * (p - t[0]) / (prox[0] - t[0]))).toFixed(1) : '100');
+      el.tBarra.style.width = prox ? Math.max(0, 100 * (p - t[0]) / (prox[0] - t[0])).toFixed(1) + '%' : '100%';
+      el.tMeta.textContent = p + ' pontos' + (prox ? ' · faltam ' + (prox[0] - p) + ' para ' + prox[1] : ' · título máximo');
+    }
     el.rPontos.textContent = pontosDia(d);
     el.rFoco.textContent = d.minutos.trabalho + d.minutos.estudo;
     el.rSeq.textContent = sequencia();
@@ -684,14 +701,41 @@
       el.semana.appendChild(li);
     });
 
-    // títulos
+    // títulos: trilha com os 7 níveis e um cartão para cada um
     el.titulos.innerHTML = '';
+    var trilha = $('titulos-trilha'); trilha.innerHTML = '';
+    var real = indiceTitulo(p);
+    // linha preenchida até onde os pontos chegaram (entre um nível e o próximo, proporcional)
+    var passo = real + (TITULOS[real + 1] ? Math.max(0, Math.min(1, (p - TITULOS[real][0]) / (TITULOS[real + 1][0] - TITULOS[real][0]))) : 0);
+    trilha.style.setProperty('--trilha', (100 * passo / (TITULOS.length - 1)).toFixed(1) + '%');
     TITULOS.forEach(function (tt, k) {
+      var vis = VISUAL[k], conq = k <= i, atual = k === i, apag = atual && p < tt[0];
+      var no = document.createElement('span'); no.className = 'no' + (conq ? ' feito' : '') + (atual ? ' atual' : '');
+      no.style.setProperty('--cor', vis.cor); no.textContent = vis.ic; no.title = tt[1];
+      trilha.appendChild(no);
+
       var li = document.createElement('li');
-      li.className = (k <= i ? 'feito' : '') + (k === i ? ' atual' : '');
-      li.innerHTML = '<span class="favo" aria-hidden="true"></span><span><strong></strong><small></small></span>';
+      li.className = 'titulo-cartao' + (conq ? ' feito' : ' trancado') + (atual ? ' atual' : '') + (apag ? ' apagado' : '');
+      li.style.setProperty('--cor', vis.cor);
+      li.innerHTML = '<div class="tc-topo"><span class="tc-ic" aria-hidden="true"></span><span class="tc-nivel"></span><span class="tc-estado"></span></div><strong></strong><p></p><div class="tc-pts"></div>';
+      li.querySelector('.tc-ic').textContent = vis.ic;
+      li.querySelector('.tc-nivel').textContent = 'Nível ' + (k + 1);
       li.querySelector('strong').textContent = tt[1];
-      li.querySelector('small').textContent = (tt[0] ? tt[0] + ' pontos. ' : 'Começo. ') + tt[2];
+      li.querySelector('p').textContent = tt[2];
+      var est = li.querySelector('.tc-estado'), pts = li.querySelector('.tc-pts');
+      if (apag) { est.textContent = 'Brilho apagado'; pts.textContent = 'Faltam ' + (tt[0] - p) + ' pts para voltar'; }
+      else if (atual) {
+        est.textContent = 'Você está aqui';
+        var nx = TITULOS[k + 1];
+        if (nx) {
+          var pc = Math.max(0, Math.min(100, 100 * (p - tt[0]) / (nx[0] - tt[0])));
+          pts.innerHTML = '<span class="tc-barra"><i></i></span><small></small>';
+          pts.querySelector('i').style.width = pc.toFixed(1) + '%';
+          pts.querySelector('small').textContent = (nx[0] - p) + ' pts para ' + nx[1];
+        } else pts.textContent = 'Título máximo. A colmeia está em ritmo.';
+      }
+      else if (conq) { est.textContent = '✓ Conquistado'; pts.textContent = tt[0] ? tt[0] + ' pts' : 'Começo'; }
+      else { est.textContent = '🔒'; est.setAttribute('aria-label', 'Ainda não conquistado'); pts.textContent = tt[0] + ' pts · faltam ' + (tt[0] - p); }
       el.titulos.appendChild(li);
     });
     renderLembretes();

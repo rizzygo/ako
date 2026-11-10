@@ -28,10 +28,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
 <link rel="stylesheet" href="/ds/rizzygo.css?v=2026110801">
-<link rel="stylesheet" href="/favos/favos.css?v=2026110802">
+<link rel="stylesheet" href="/favos/favos.css?v=2026110925">
 <link rel="stylesheet" href="/topo.css?v=2026110914">
 </head>
-<body>
+<body data-plugin="casa">
 <nav class="familia" aria-label="Sites da Rizzygo"><div class="familia-in"><a class="familia-item" href="https://rizzygo.com.br/" title="Site principal da Rizzygo"><svg viewBox="0 0 64 64" width="16" height="16" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/></svg>Rizzygo</a><a class="familia-item" href="https://ako.rizzygo.com.br/" aria-current="page"><img src="/zumi/abelha-mini.png" width="18" height="18" alt="">Ako</a></div></nav>
 <header class="topo favos-topo"><div class="topo-in">
   <a class="marca" href="/" aria-label="Rizzygo Ako, início"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="var(--azul)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/></svg><span>Rizzygo <b>Ako</b></span></a>
@@ -39,45 +39,52 @@
 </div></header>
 <nav class="abas" aria-label="Skills dos Favos"><div class="abas-in"><a class="aba aba-casa" href="/favos/" aria-current="page">Favos</a><a class="aba" href="/favos/dicas-antes-de-rodar/">Dicas antes de rodar</a><a class="aba" href="/favos/antes-de-rodar/">Antes de rodar</a><a class="aba" href="/favos/entender-antes/">Entender antes</a><a class="aba" href="/favos/estudar-junto/">Estudar junto</a><a class="aba" href="/favos/proximo-passo/">Próximo passo</a><a class="aba" href="/favos/carreira-em-y/">Carreira em Y</a></div></nav>
 <div class="wrap">
-<header>
+<header class="hero">
+  <img class="hero-zumi" src="/zumi/abelha-estudando.png" width="120" height="120" alt="">
   <div class="eyebrow"><span class="tag">Aberto e gratuito</span><span>Rizzygo All</span></div>
   <h1>Favos</h1>
   <p class="lead">Cada favo é um plugin aberto para a sua IA de código, em português. As skills fazem a IA <strong>explicar antes de mudar</strong>, <strong>ensinar perguntando</strong>, <strong>sugerir o próximo passo</strong> nas trilhas do Ako e montar um plano de carreira.</p>
-  <p>Escolha uma skill nas abas acima ou nos cartões abaixo para ver o que ela faz, como instalar e como testar. Todas funcionam no Claude Code e em outras ferramentas que leem skills no formato <code>SKILL.md</code>.</p>
+  <ul class="numeros" aria-label="Os Favos em números">
+    <li><b>3</b><span>plugins</span></li>
+    <li><b>5</b><span>skills</span></li>
+    <li><b>MIT</b><span>licença aberta</span></li>
+    <li><b>PT-BR</b><span>feito em português</span></li>
+  </ul>
+  <p class="hero-nota">Funcionam no Claude Code e em outras ferramentas que leem skills no formato <code>SKILL.md</code>.</p>
 </header>
 
-<section aria-labelledby="sem-instalar">
-  <h2 id="sem-instalar">Não usa IA de código? Comece pelo guia Dicas antes de rodar</h2>
-  <p>O guia Dicas antes de rodar funciona no ChatGPT, no Claude, no Gemini e em qualquer IA que aceite instruções. Você cola um texto uma vez e a IA passa a dizer o que muda, como desfazer e como conferir.</p>
+<a class="guia-destaque" href="/favos/dicas-antes-de-rodar/">
+  <span class="gd-ic" aria-hidden="true">💡</span>
+  <span class="gd-txt"><span class="gd-rot">Não usa IA de código? Comece por aqui · guia de 5 min</span><strong>Dicas antes de rodar</strong><span>Funciona no ChatGPT, no Claude, no Gemini e em qualquer IA que aceite instruções. Você cola um texto uma vez e a IA passa a dizer o que muda, como desfazer e como conferir.</span></span>
+  <span class="gd-bt">Abrir o guia</span>
+</a>
+
+<section class="plugin" data-plugin="estudo" aria-labelledby="estudo">
+  <div class="plugin-cab"><span class="plugin-ic" aria-hidden="true">📚</span><div><h2 id="estudo">favo-estudo</h2><p>Para quem estuda tecnologia com IA.</p></div><span class="plugin-qtd">3 skills</span></div>
   <div class="cards">
-    <a class="card destaque" href="/favos/dicas-antes-de-rodar/"><span class="n">guia · 5 min</span><h3>Dicas antes de rodar</h3><p>Configure qualquer IA para fechar cada comando com três respostas.</p></a>
+    <a class="card" href="/favos/antes-de-rodar/"><span class="card-ic" aria-hidden="true">🛡️</span><h3>Antes de rodar</h3><p>A IA confirma o contexto, segue guard rails e fecha toda mudança com o que muda, como desfazer, como conferir e o que não foi verificado.</p><span class="card-ver">Ver a skill</span></a>
+    <a class="card" href="/favos/entender-antes/"><span class="card-ic" aria-hidden="true">🔍</span><h3>Entender antes</h3><p>A IA explica, parte por parte, um comando, arquivo ou erro antes de você rodar ou colar a correção.</p><span class="card-ver">Ver a skill</span></a>
+    <a class="card" href="/favos/estudar-junto/"><span class="card-ic" aria-hidden="true">📚</span><h3>Estudar junto</h3><p>A IA ensina perguntando, pede que você explique de volta e termina com um exercício.</p><span class="card-ver">Ver a skill</span></a>
   </div>
 </section>
 
-<section aria-labelledby="estudo">
-  <h2 id="estudo">favo-estudo: para quem estuda tecnologia com IA</h2>
+<div class="duas">
+<section class="plugin" data-plugin="trilhas" aria-labelledby="trilhas">
+  <div class="plugin-cab"><span class="plugin-ic" aria-hidden="true">🧭</span><div><h2 id="trilhas">favo-trilhas</h2><p>Para quem segue as trilhas do Ako.</p></div><span class="plugin-qtd">1 skill</span></div>
   <div class="cards">
-    <a class="card" href="/favos/antes-de-rodar/"><span class="n">skill</span><h3>Antes de rodar</h3><p>A IA confirma o contexto, segue guard rails e fecha toda mudança com o que muda, como desfazer, como conferir e o que não foi verificado.</p></a>
-    <a class="card" href="/favos/entender-antes/"><span class="n">skill</span><h3>Entender antes</h3><p>A IA explica, parte por parte, um comando, arquivo ou erro antes de você rodar ou colar a correção.</p></a>
-    <a class="card" href="/favos/estudar-junto/"><span class="n">skill</span><h3>Estudar junto</h3><p>A IA ensina perguntando, pede que você explique de volta e termina com um exercício.</p></a>
+    <a class="card" href="/favos/proximo-passo/"><span class="card-ic" aria-hidden="true">🧭</span><h3>Próximo passo</h3><p>Lê onde você está na trilha ou num mapa de área e sugere um tópico para estudar agora.</p><span class="card-ver">Ver a skill</span></a>
   </div>
 </section>
 
-<section aria-labelledby="trilhas">
-  <h2 id="trilhas">favo-trilhas: para quem segue as trilhas do Ako</h2>
+<section class="plugin" data-plugin="carreira" aria-labelledby="carreira">
+  <div class="plugin-cab"><span class="plugin-ic" aria-hidden="true">📈</span><div><h2 id="carreira">favo-carreira</h2><p>Para quem planeja a carreira.</p></div><span class="plugin-qtd">1 skill</span></div>
   <div class="cards">
-    <a class="card" href="/favos/proximo-passo/"><span class="n">skill</span><h3>Próximo passo</h3><p>Lê onde você está na trilha ou num mapa de área e sugere um tópico para estudar agora.</p></a>
+    <a class="card" href="/favos/carreira-em-y/"><span class="card-ic" aria-hidden="true">📈</span><h3>Carreira em Y</h3><p>Monta, com perguntas, um plano pela técnica ou pela gestão, com metas de 90 dias.</p><span class="card-ver">Ver a skill</span></a>
   </div>
 </section>
+</div>
 
-<section aria-labelledby="carreira">
-  <h2 id="carreira">favo-carreira: para quem planeja a carreira</h2>
-  <div class="cards">
-    <a class="card" href="/favos/carreira-em-y/"><span class="n">skill</span><h3>Carreira em Y</h3><p>Monta, com perguntas, um plano pela técnica ou pela gestão, com metas de 90 dias.</p></a>
-  </div>
-</section>
-
-<section aria-labelledby="instalar">
+<section class="instalar-todos" aria-labelledby="instalar">
   <div class="step-head"><span class="step-n">+</span><h2 id="instalar">Instale os plugins no Claude Code</h2><span class="step-time">2 min</span></div>
   <p>No Claude Code, adicione o marketplace dos Favos e instale os plugins que fazem sentido para você.</p>
   <div class="prompt">
