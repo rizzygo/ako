@@ -572,3 +572,9 @@ textarea{width:100%;resize:vertical}
   #semdata-nova{max-width:44rem}
 }
 @media (min-width:900px){.grupos-lista{max-width:44rem}}
+.chip-novo{border-style:dashed;color:var(--azul);font-weight:700}
+.chip-novo[aria-expanded="true"]{background:var(--azul-claro)}
+.grupo-form{background:var(--fundo);border:1px solid var(--linha);border-radius:14px;padding:1rem;margin-bottom:1rem}
+.grupo-form[hidden]{display:none}
+.grupo-form h3{margin-top:0}
+.grupo-form input[type=text],.grupo-form .emoji-bt{background:var(--superficie)}

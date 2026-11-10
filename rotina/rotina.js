@@ -1360,12 +1360,20 @@
     li.appendChild(ac);
     return li;
   }
-  function opcoesGrupo(sel, atual) {
+  function opcoesGrupo(sel, atual, comNovo) {
     sel.innerHTML = '';
     var o = document.createElement('option'); o.value = ''; o.textContent = 'Sem grupo'; sel.appendChild(o);
     S.grupos.forEach(function (g) { var x = document.createElement('option'); x.value = g.id; x.textContent = nomeGrupo(g); sel.appendChild(x); });
+    if (comNovo) { var n = document.createElement('option'); n.value = '__novo'; n.textContent = '＋ Novo grupo…'; sel.appendChild(n); }
     sel.value = grupoDe(atual) ? atual : '';
+    sel.dataset.antes = sel.value;
   }
+  // "＋ Novo grupo…" no seletor do campo abre o formulário sem perder o que a pessoa digitou
+  $('semdata-grupo').addEventListener('change', function () {
+    var sel = $('semdata-grupo');
+    if (sel.value === '__novo') { sel.value = sel.dataset.antes || ''; abrirGrupoForm(); }
+    else sel.dataset.antes = sel.value;
+  });
 
   function renderSemData() {
     var todas = semData(), abertas = todas.filter(function (t) { return !t.feita; });
@@ -1389,6 +1397,10 @@
       });
       fx.appendChild(b);
     });
+    var novo = document.createElement('button'); novo.type = 'button'; novo.className = 'chip-grupo chip-novo'; novo.textContent = '＋ Novo grupo';
+    novo.setAttribute('aria-expanded', String(!$('grupo-form').hidden && !grupoEditando));
+    novo.addEventListener('click', function () { if ($('grupo-form').hidden || grupoEditando) abrirGrupoForm(); else limparGrupoForm(); });
+    fx.appendChild(novo);
 
     // lista, separada por grupo
     var box = $('semdata-lista'); box.innerHTML = '';
@@ -1414,7 +1426,7 @@
 
     var n = $('parte-semdata-n'); n.hidden = !abertas.length; n.textContent = abertas.length;
     var sel = $('semdata-grupo'), atual = sel.value;
-    opcoesGrupo(sel, atual);
+    opcoesGrupo(sel, atual, true);
     renderGrupos();
   }
 
@@ -1459,23 +1471,33 @@
       box.appendChild(b);
     });
   }
+  // O formulário de grupo fica escondido: abre pelo "＋ Novo grupo" ou pelo Editar.
+  function abrirGrupoForm() {
+    limparGrupoForm();
+    $('grupo-form').hidden = false; renderSemData();
+    $('grupo-form').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    $('grupo-nome').focus();
+  }
   function editarGrupo(g) {
+    $('grupo-form').hidden = false;
     grupoEditando = g.id;
     $('grupo-form-titulo').textContent = 'Editar ' + g.nome;
     $('grupo-nome').value = g.nome;
     if (EMOJIS.indexOf(g.emoji) >= 0) { emojiEscolhido = g.emoji; $('grupo-emoji-outro').value = ''; } else $('grupo-emoji-outro').value = g.emoji;
-    $('grupo-salvar').textContent = 'Salvar grupo'; $('grupo-cancelar').hidden = false;
-    renderEmojis(); $('grupo-nome').focus();
+    $('grupo-salvar').textContent = 'Salvar grupo';
+    renderEmojis(); renderSemData();
+    $('grupo-form').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); $('grupo-nome').focus();
   }
   function limparGrupoForm() {
     grupoEditando = null; emojiEscolhido = EMOJIS[0];
     $('grupo-form-titulo').textContent = 'Novo grupo';
     $('grupo-nome').value = ''; $('grupo-emoji-outro').value = '';
-    $('grupo-salvar').textContent = 'Criar grupo'; $('grupo-cancelar').hidden = true;
+    $('grupo-salvar').textContent = 'Criar grupo';
+    $('grupo-form').hidden = true;
     renderEmojis();
   }
   $('grupo-emoji-outro').addEventListener('input', renderEmojis);
-  $('grupo-cancelar').addEventListener('click', limparGrupoForm);
+  $('grupo-cancelar').addEventListener('click', function () { limparGrupoForm(); renderSemData(); });
   $('grupo-form').addEventListener('submit', function (e) {
     e.preventDefault();
     var nome = $('grupo-nome').value.trim(); if (!nome) return;
@@ -1485,7 +1507,7 @@
     else { g = { id: novoId('g'), nome: nome, emoji: emoji }; S.grupos.push(g); filtroGrupo = g.id; $('semdata-grupo').value = g.id; }
     var novo = !grupoEditando;
     limparGrupoForm(); salvar(); render();
-    if (novo) $('semdata-grupo').value = g.id;
+    if (novo) { $('semdata-grupo').value = g.id; $('semdata-grupo').dataset.antes = g.id; $('semdata-txt').focus(); }
     falar(novo ? 'Grupo ' + nomeGrupo(g) + ' criado. Agora é só guardar as coisas nele.' : 'Grupo ' + nomeGrupo(g) + ' atualizado.', 'ideia');
   });
   renderEmojis();
