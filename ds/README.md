@@ -41,6 +41,7 @@ O modo escuro segue o sistema (`prefers-color-scheme`) e aceita `data-theme="lig
 
 - Carregue no `<head>`, sem `defer`, logo depois do `rizzygo.css`. Assim a página já abre no tema certo, sem piscar.
 - Sem escolha salva, a página segue o sistema. Depois do clique, a escolha fica no cookie `rizzygo-tema` do domínio `.rizzygo.com.br` (vale para rizzygo.com.br, rizzo.rizzygo.com.br e o Ako) e no localStorage.
+- No Ako, quem entrou na conta leva a escolha para outros aparelhos: o `/conta.js` guarda tema e som de vitória no app `ajustes` da conta (via `window.RizzygoTema`). Nos três sites, o cookie leva a escolha junto.
 - A Zumi em `<picture>` com `media="(prefers-color-scheme: dark)"` acompanha a escolha.
 - Na impressão e no "Salvar em PDF", a página fica no claro.
 - Cor nova no CSS de um site: escreva a versão escura nas duas formas, `@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) ...}` e `:root[data-theme="dark"] ...`, como no `rizzygo.css`.

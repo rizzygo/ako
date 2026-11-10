@@ -13,7 +13,7 @@ service cloud.firestore {
     match /users/{uid}/apps/{app} {
       function valido() {
         let d = request.resource.data;
-        return app in ['rotina', 'trilhas', 'mapas']
+        return app in ['rotina', 'trilhas', 'mapas', 'ajustes']
           && d.keys().hasOnly(['dados', 'cliente', 'aceites', 'versao', 'atualizadoEm'])
           && d.dados is string && d.dados.size() < 900000
           && d.cliente is int

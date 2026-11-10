@@ -13,6 +13,9 @@
    - <picture> da Zumi com <source media="(prefers-color-scheme: dark)">
      acompanha a escolha.
    - Na impressão e no "Salvar em PDF", a página usa sempre o tema claro.
+   - No Ako, quem entrou na conta leva a escolha para outros aparelhos:
+     o /conta.js lê e grava por window.RizzygoTema e ouve o evento
+     'rizzygo-salvou' (detalhe 'ajustes') que o clique dispara.
    ===================================================================== */
 (function () {
   var CHAVE = 'rizzygo-tema';
@@ -72,6 +75,15 @@
 
   aplicar(); // antes de a página aparecer
 
+  // Para a conta do Ako: ler() devolve 'claro', 'escuro' ou null (segue o sistema); definir() troca sem disparar evento.
+  window.RizzygoTema = {
+    ler: salva,
+    definir: function (v) {
+      if (v !== 'claro' && v !== 'escuro') return;
+      if (v !== salva()) { salvar(v); aplicar(); }
+    }
+  };
+
   function montar() {
     var faixa = document.querySelector('.familia-in');
     if (!faixa || document.querySelector('.tema-botao')) return;
@@ -83,6 +95,7 @@
       raiz.classList.add('tema-trocando');
       aplicar();
       setTimeout(function () { raiz.classList.remove('tema-trocando'); }, 400);
+      window.dispatchEvent(new CustomEvent('rizzygo-salvou', { detail: 'ajustes' }));
     });
     faixa.appendChild(botao);
     aplicar();

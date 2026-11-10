@@ -20,7 +20,7 @@ const CONFIG = {
   messagingSenderId: '326966137118',
   appId: '1:326966137118:web:707625ac9a417c76bf790f'
 };
-const APPS = ['rotina', 'trilhas', 'mapas'];
+const APPS = ['rotina', 'trilhas', 'mapas', 'ajustes']; // ajustes: tema claro/escuro e som de vitória (/conta.js)
 const ESPERA = 5000; // junta as mudanças e grava uma vez
 const INTERVALO = 120000; // no máximo uma gravação a cada 2 min, fora ao sair do app
 const CONTA = 'rizzygo-conta-v1'; // a pessoa aceitou e entrou: todos os apps do Ako sincronizam

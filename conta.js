@@ -12,6 +12,8 @@
     { id: 'platform-engineering', chave: 'rizzygo-trilha-platform-engineering-v1' }
   ];
   var MAPAS = 'rizzygo-mapas-v1';
+  /* Ajustes do navegador que também vão para a conta: tema claro/escuro (/ds/tema.js) e som de vitória (/vitoria.js). */
+  var SOM = 'ako-som-vitoria';
 
   function ler(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
   function gravar(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* modo privado */ } }
@@ -83,6 +85,21 @@
       temDados: function (o) { return !!(o && o.nos && Object.keys(o.nos).length); },
       gravar: function (o) { gravar(MAPAS, o); },
       juntar: juntarMapas
+    },
+    ajustes: {
+      ler: function () {
+        var som = null;
+        try { som = localStorage.getItem(SOM); } catch (e) { /* modo privado */ }
+        return { tema: window.RizzygoTema ? window.RizzygoTema.ler() : null, som: som === 'sim' || som === 'nao' ? som : null };
+      },
+      temDados: function (o) { return !!(o && (o.tema || o.som)); },
+      gravar: function (o) {
+        o = o || {};
+        if ((o.tema === 'claro' || o.tema === 'escuro') && window.RizzygoTema) window.RizzygoTema.definir(o.tema);
+        if (o.som === 'sim' || o.som === 'nao') { try { localStorage.setItem(SOM, o.som); } catch (e) { /* modo privado */ } }
+      },
+      // Primeira vez neste aparelho: o que já está na conta vale; o aparelho completa o que falta.
+      juntar: function (rem, loc) { rem = rem || {}; loc = loc || {}; return { tema: rem.tema || loc.tema || null, som: rem.som || loc.som || null }; }
     }
   };
   function criarApps(m) {
@@ -97,7 +114,7 @@
         aplicar: function (e, avisar) {
           c.gravar(e);
           avisarPagina(app);
-          if (avisar) toast('Trouxe seu progresso da conta.');
+          if (avisar && app !== 'ajustes') toast('Trouxe seu progresso da conta.');
         },
         aoMudar: function () { desenhar(); }
       });
@@ -345,7 +362,7 @@
       var quando = m.sincronizadoEm ? ' Última cópia: ' + new Date(m.sincronizadoEm).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) + '.' : '';
       return roteiro
         ? '<p><strong>Roteiro salvo na sua conta</strong> (' + quem + '). Abra o Ako em outro aparelho, entre com a mesma conta e continue de onde parou.</p>'
-        : '<p>Você entrou como <strong>' + quem + '</strong>. Roteiro, trilhas, mapas e Rotina ficam salvos nessa conta.' + quando + '</p>' +
+        : '<p>Você entrou como <strong>' + quem + '</strong>. Roteiro, trilhas, mapas, Rotina e ajustes (tema e som) ficam salvos nessa conta.' + quando + '</p>' +
           '<div class="acoes"><button class="btn btn-sec" type="button" data-conta="sair">Sair da conta</button><button class="btn btn-perigo" type="button" data-conta="apagar">Apagar conta e dados da nuvem</button></div>' +
           '<p class="conta-msg" data-conta-msg role="alert"></p>';
     }
