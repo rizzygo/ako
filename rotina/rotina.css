@@ -528,7 +528,11 @@ textarea{width:100%;resize:vertical}
 .grupo-bloco{margin-bottom:1rem}
 .grupo-bloco h3{margin:0 0 .4rem;font-size:1rem}
 .tarefa.semdata{flex-wrap:wrap}
-.semdata-acoes{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;padding-left:2.2rem}
+.semdata-acoes{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;padding:.2rem 0 .1rem 2.2rem}
+.semdata-acoes[hidden]{display:none}
+.hoje-bt{flex:none}
+.mais-bt{flex:none;width:2.2rem;height:2.2rem;border:0;background:transparent;border-radius:8px;font-size:1.3rem;line-height:1;cursor:pointer;color:var(--suave)}
+.mais-bt:hover,.mais-bt[aria-expanded="true"]{background:var(--azul-claro);color:var(--azul)}
 .btn.btn-mini{padding:.3rem .7rem;font-size:.85rem}
 .escolher-dia{position:relative;overflow:hidden;cursor:pointer}
 .escolher-dia input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0}
@@ -554,3 +558,17 @@ textarea{width:100%;resize:vertical}
 [data-parte][hidden]{display:none!important}
 #semdata-nova{margin-bottom:1rem}
 @media (max-width:620px){.grupos-filtro{flex-wrap:nowrap;overflow-x:auto;padding-bottom:.3rem;scrollbar-width:thin}.chip-grupo{flex:none}}
+/* Sem data: celular sem zoom no iPhone (campos com 16px) e alvos de toque maiores */
+@media (max-width:620px){
+  .grupo-sel,.opcao select,.escolher-dia input{font-size:16px}
+  .tarefa.semdata .marca-tarefa{width:1.8rem;height:1.8rem}
+  .tarefa.semdata .btn-mini{padding:.45rem .8rem}
+  .semdata-acoes{padding-left:0}
+  #semdata-nova .nova-opcoes .btn{flex:1 1 100%;margin-left:0}
+}
+/* Sem data no computador: grupos lado a lado, sem linhas esticadas */
+@media (min-width:900px){
+  #semdata-lista{display:grid;grid-template-columns:repeat(auto-fill,minmax(20rem,1fr));gap:0 1.25rem;align-items:start}
+  #semdata-nova{max-width:44rem}
+}
+@media (min-width:900px){.grupos-lista{max-width:44rem}}

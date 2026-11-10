@@ -1314,27 +1314,37 @@
   function dias(desde) { return Math.round((new Date(chaveDia() + 'T12:00') - new Date(desde + 'T12:00')) / 86400000); }
   function ordemSemData(a, b) { return (feitaHoje(a) - feitaHoje(b)) || (b.prio - a.prio); }
 
+  // Linha compacta: concluir, texto, Hoje, estrela e "Mais" (escolher dia, mudar de grupo, remover).
+  // Assim a lista fica leve no celular e as ações menos usadas não ocupam espaço.
+  var semDataAberta = null;
   function linhaSemData(t) {
     var li = linhaTarefa(t, {}), hoje = chaveDia();
     li.classList.add('semdata');
+    var tirar = li.querySelector('.tirar-bt'); if (tirar) tirar.remove();
     if (t.criada && dias(t.criada) > 30 && !t.feita) {
       var v = document.createElement('small'); v.className = 'faz-tempo'; v.textContent = 'Faz tempo';
       v.title = 'Guardada há ' + dias(t.criada) + ' dias. Ainda quer?';
       li.querySelector('.tarefa-txt').appendChild(v);
     }
     if (t.feita) return li;
-    var ac = document.createElement('div'); ac.className = 'semdata-acoes';
-    var h = document.createElement('button'); h.type = 'button'; h.className = 'btn btn-sec btn-mini'; h.textContent = 'Fazer hoje';
-    h.setAttribute('aria-label', 'Fazer hoje: ' + t.texto);
+    var pr = li.querySelector('.prio-bt');
+    var h = document.createElement('button'); h.type = 'button'; h.className = 'btn btn-sec btn-mini hoje-bt'; h.textContent = 'Hoje';
+    h.setAttribute('aria-label', 'Fazer hoje: ' + t.texto); h.title = 'Levar para a lista de hoje';
     h.addEventListener('click', function () { t.dia = hoje; salvar(); render(); falar('"' + t.texto + '" entrou na lista de hoje.', 'ideia'); });
-    ac.appendChild(h);
+    li.insertBefore(h, pr);
+    var aberta = semDataAberta === t.id;
+    var mais = document.createElement('button'); mais.type = 'button'; mais.className = 'mais-bt'; mais.textContent = '⋯';
+    mais.setAttribute('aria-expanded', String(aberta)); mais.setAttribute('aria-label', 'Mais opções: ' + t.texto);
+    mais.addEventListener('click', function () { semDataAberta = aberta ? null : t.id; renderSemData(); });
+    li.appendChild(mais);
+    var ac = document.createElement('div'); ac.className = 'semdata-acoes'; ac.hidden = !aberta;
     var lb = document.createElement('label'); lb.className = 'btn btn-sec btn-mini escolher-dia';
     var sp = document.createElement('span'); sp.textContent = '📅 Escolher dia'; lb.appendChild(sp);
     var inp = document.createElement('input'); inp.type = 'date'; inp.min = amanhaChave();
     inp.setAttribute('aria-label', 'Escolher dia para: ' + t.texto);
     inp.addEventListener('change', function () {
       if (!inp.value) return;
-      t.dia = inp.value; salvar(); render();
+      t.dia = inp.value; semDataAberta = null; salvar(); render();
       falar('"' + t.texto + '" vai aparecer na sua lista em ' + dataCurta(inp.value) + '.', 'ideia');
     });
     lb.appendChild(inp); ac.appendChild(lb);
@@ -1343,6 +1353,10 @@
     opcoesGrupo(sel, t.grupo || '');
     sel.addEventListener('change', function () { t.grupo = sel.value || null; salvar(); render(); });
     ac.appendChild(sel);
+    var x = document.createElement('button'); x.type = 'button'; x.className = 'btn btn-perigo btn-mini'; x.textContent = 'Remover';
+    x.setAttribute('aria-label', 'Remover: ' + t.texto);
+    x.addEventListener('click', function () { S.tarefas = S.tarefas.filter(function (y) { return y.id !== t.id; }); semDataAberta = null; salvar(); render(); });
+    ac.appendChild(x);
     li.appendChild(ac);
     return li;
   }
