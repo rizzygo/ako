@@ -191,7 +191,10 @@ main{display:block;outline:none}
 .rodape ul{list-style:none;margin:0;padding:0;display:grid;gap:.35rem}
 .rodape a{color:var(--noite-texto)}
 .rodape .marca{color:#FFFFFF}
-.rodape .credo{font-style:italic;color:#FFFFFF}
+/* "Sou Zy": o lema da comunidade em destaque, num bloco com faixa âmbar */
+.rodape .credo{justify-self:start;max-width:34rem;margin:0;padding:.9rem 1.1rem;border:1px solid rgba(245,165,36,.4);border-left:4px solid var(--marca-ambar);border-radius:var(--raio-p);background:rgba(245,165,36,.08);font:600 1.05rem/1.5 var(--f-titulo);color:#FFFFFF}
+.rodape .credo a{font:800 1.45rem/1.2 var(--f-titulo);color:var(--marca-ambar);text-decoration:none;letter-spacing:.01em}
+.rodape .credo a:hover,.rodape .credo a:focus-visible{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px}
 
 /* ---------- 12. Efeitos (site.js e efeitos.js marcam os elementos) ---------- */
 .js .revela{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i,0) * 80ms)}
