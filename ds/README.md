@@ -11,11 +11,11 @@ Cada página carrega o `rizzygo.css` primeiro e o CSS do site depois (`estilo.cs
 
 ## Como mudar
 
-1. Mude o `rizzygo.css` em um dos repositórios.
+1. Mude o `rizzygo.css` (ou o `tema.js`) em um dos repositórios.
 2. Copie o arquivo igual para o outro e abra os dois pull requests juntos.
 3. Confira as prévias no computador, no celular e no modo escuro.
 
-Os dois arquivos precisam ficar idênticos. Para conferir: `diff rizzygo-website/ds/rizzygo.css ako/ds/rizzygo.css`.
+Os dois arquivos precisam ficar idênticos. Para conferir: `diff -r rizzygo-website/ds ako/ds`.
 
 ## Tokens
 
@@ -34,6 +34,16 @@ Os dois arquivos precisam ficar idênticos. Para conferir: `diff rizzygo-website
 | Largura | `--largura` 72rem, `--largura-texto` 46rem | Página e coluna de leitura |
 
 O modo escuro segue o sistema (`prefers-color-scheme`) e aceita `data-theme="light"` ou `"dark"` no `<html>`.
+
+## Tema claro e escuro
+
+`tema.js` também é igual nos dois repositórios. Ele põe um botão sol/lua no fim da faixa `.familia`, em todas as páginas: um clique troca entre o tema claro (dia) e o escuro (noite).
+
+- Carregue no `<head>`, sem `defer`, logo depois do `rizzygo.css`. Assim a página já abre no tema certo, sem piscar.
+- Sem escolha salva, a página segue o sistema. Depois do clique, a escolha fica no cookie `rizzygo-tema` do domínio `.rizzygo.com.br` (vale para rizzygo.com.br, rizzo.rizzygo.com.br e o Ako) e no localStorage.
+- A Zumi em `<picture>` com `media="(prefers-color-scheme: dark)"` acompanha a escolha.
+- Na impressão e no "Salvar em PDF", a página fica no claro.
+- Cor nova no CSS de um site: escreva a versão escura nas duas formas, `@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) ...}` e `:root[data-theme="dark"] ...`, como no `rizzygo.css`.
 
 ## Componentes
 

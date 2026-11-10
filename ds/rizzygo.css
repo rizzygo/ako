@@ -6,6 +6,7 @@
    Mudou aqui? Copie o arquivo para o outro repositório no mesmo PR.
    O CSS de cada site vem depois deste e só guarda o que é dele.
    Documentação: ds/README.md
+   Tema claro/escuro: ds/tema.js (botão sol/lua na faixa .familia).
    ===================================================================== */
 
 /* ---------- 1. Tokens ---------- */
@@ -88,6 +89,16 @@ main{display:block;outline:none}
 .familia-item:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5);color:#FFFFFF}
 .familia-item[aria-current="page"]{background:rgba(255,255,255,.14);border-color:transparent;color:#FFFFFF}
 .familia-item svg{width:16px;height:16px;flex:none}
+/* Botão de tema claro e escuro (ds/tema.js): sempre no fim da faixa, depois da conta */
+.familia-in::after{content:"";order:50;flex:1 1 auto}
+.familia-conta,.conta-entrar,.conta-sair{order:60}
+.tema-botao{order:70;flex:none;display:inline-grid;place-items:center;width:2rem;height:2rem;margin-left:.35rem;padding:0;border-radius:var(--raio-pilula);border:1px solid rgba(255,255,255,.28);background:transparent;color:#F5A524;cursor:pointer;transition:background-color .15s,border-color .15s,transform .2s}
+.tema-botao:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5)}
+.tema-botao:active{transform:scale(.92)}
+.tema-botao svg{width:16px;height:16px}
+.tema-trocando,.tema-trocando *,.tema-trocando *::before,.tema-trocando *::after{transition:background-color .3s ease,color .3s ease,border-color .3s ease !important}
+@media (prefers-reduced-motion: reduce){.tema-trocando,.tema-trocando *,.tema-trocando *::before,.tema-trocando *::after{transition:none !important}}
+@media print{.tema-botao{display:none !important}}
 
 /* ---------- 4. Topo ---------- */
 .topo{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--fundo) 88%,transparent);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--linha)}
