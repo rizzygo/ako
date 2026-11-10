@@ -65,12 +65,21 @@
         inicio: '08:00', fim: '22:00', som: true, somLembretes: true, somVitoria: true, lembrarMetas: true,
         lembretes: { agua: { on: true, min: 45 }, respirar: { on: true, min: 90 }, semTela: { on: true, min: 120 } }
       },
-      meus: [], tarefas: [], metas: [], diario: {},
+      meus: [], tarefas: [], metas: [], diario: {}, grupos: gruposPadrao(),
       timer: { modo: 'estudo', fase: 'foco', ciclo: 1, rodando: false, fimEm: null, restante: null },
       proximos: {}, adiados: {}, tocados: {},
       dias: {}, pontosAntigos: 0,
       criadoEm: chaveDia(), fechadoAte: null, melhor: 0, semTelaAtivo: null
     };
+  }
+
+  // Grupos da lista Sem data. Os três primeiros vêm prontos; a pessoa muda, apaga ou cria outros.
+  function gruposPadrao() {
+    return [
+      { id: 'g-viagem', nome: 'Viagem', emoji: '✈️' },
+      { id: 'g-mercado', nome: 'Mercado', emoji: '🛒' },
+      { id: 'g-internet', nome: 'Comprar na internet', emoji: '📦' }
+    ];
   }
 
   function carregar() {
@@ -82,7 +91,7 @@
     s.config = Object.assign({}, p.config, s.config || {});
     s.config.lembretes = Object.assign({}, p.config.lembretes, s.config.lembretes || {});
     s.config.pausas = Object.assign({}, p.config.pausas, s.config.pausas || {});
-    ['meus', 'tarefas', 'metas', 'diario', 'proximos', 'adiados', 'tocados', 'dias', 'timer'].forEach(function (k) { if (!s[k]) s[k] = p[k]; });
+    ['meus', 'tarefas', 'metas', 'diario', 'grupos', 'proximos', 'adiados', 'tocados', 'dias', 'timer'].forEach(function (k) { if (!s[k]) s[k] = p[k]; });
     if (typeof s.pontosAntigos !== 'number') s.pontosAntigos = 0;
     if (!s.criadoEm) s.criadoEm = Object.keys(s.dias).sort()[0] || chaveDia();
     if (typeof s.melhor !== 'number') s.melhor = 0;
@@ -114,6 +123,9 @@
       if (d.humor || d.reflexao || d.papel) S.diario[k] = { humor: d.humor || 0, texto: d.reflexao || '', papel: !!d.papel };
       delete S.dias[k];
     }
+    // tarefa concluída há mais de 60 dias sai da lista guardada (os pontos dela já ficaram no dia)
+    var limite = new Date(); limite.setDate(limite.getDate() - 60); limite = chaveDia(limite);
+    S.tarefas = S.tarefas.filter(function (t) { return t.rotina || !t.feita || t.feita >= limite; });
   }
 
   // ---------- Pontos ----------
@@ -1153,7 +1165,7 @@
   function feitaHoje(t) { return t.rotina ? !!dia().feitas[t.id] : t.feita === chaveDia(); }
   function visiveisHoje() {
     var hoje = chaveDia();
-    return S.tarefas.filter(function (t) { return t.rotina || (t.dia <= hoje && (!t.feita || t.feita === hoje)); })
+    return S.tarefas.filter(function (t) { return t.rotina || (!!t.dia && t.dia <= hoje && (!t.feita || t.feita === hoje)); })
       .sort(function (a, b) { return (feitaHoje(a) - feitaHoje(b)) || (b.prio - a.prio) || (a.rotina - b.rotina); });
   }
   function marcarTarefa(t) {
@@ -1204,21 +1216,29 @@
       : 'Nada na lista. Tarefa some quando você conclui. Rotina volta todo dia.';
 
     // revisão do fim do dia
-    $('revisao-resumo').textContent = lista.length
-      ? 'Você concluiu ' + feitas.length + ' de ' + lista.length + ' itens hoje.' + (feitas.length === lista.length ? ' Dia fechado.' : ' O que ficou, vai para amanhã ou sai da lista?')
-      : 'Sem tarefas hoje. Quer deixar algo pronto para outro dia? Use a Agenda.';
+    // antes das 18h a revisão só conta como vai o dia; a pergunta do que fica vem no fim do dia
+    var pendentes = lista.filter(function (t) { return !t.rotina && !feitaHoje(t); }), fimDoDia = new Date().getHours() >= 18;
+    $('revisao-resumo').textContent = !lista.length ? 'Sem tarefas hoje. Quer deixar algo pronto para outro dia? Use a Agenda ou a lista Sem data.'
+      : 'Você concluiu ' + feitas.length + ' de ' + lista.length + (lista.length === 1 ? ' item' : ' itens') + ' hoje.' +
+        (feitas.length === lista.length ? ' Dia fechado.' : !pendentes.length ? '' : fimDoDia || revisaoAberta ? ' O que ficou vai para amanhã, fica sem data ou sai da lista?' : ' No fim do dia eu pergunto o que fica para depois.');
     var pend = $('pendentes'); pend.innerHTML = '';
-    lista.filter(function (t) { return !t.rotina && !feitaHoje(t); }).forEach(function (t) {
+    $('revisao-agora').hidden = fimDoDia || revisaoAberta || !pendentes.length;
+    if (fimDoDia || revisaoAberta) pendentes.forEach(function (t) {
       var li = document.createElement('li');
       var sp = document.createElement('span'); sp.textContent = (t.prio ? '★ ' : '') + t.texto;
       var a = document.createElement('button'); a.type = 'button'; a.className = 'btn btn-sec'; a.textContent = 'Amanhã';
       a.addEventListener('click', function () { t.dia = am; salvar(); render(); falar('Combinado: "' + t.texto + '" fica para amanhã.', 'ideia'); });
+      var sd = document.createElement('button'); sd.type = 'button'; sd.className = 'btn btn-sec'; sd.textContent = 'Sem data';
+      sd.addEventListener('click', function () { t.dia = null; t.criada = hoje; salvar(); render(); falar('"' + t.texto + '" foi para a lista Sem data. Fica guardada, sem cobrança.', 'ideia'); });
       var r = document.createElement('button'); r.type = 'button'; r.className = 'btn btn-perigo'; r.textContent = 'Tirar';
       r.addEventListener('click', function () { S.tarefas = S.tarefas.filter(function (y) { return y.id !== t.id; }); salvar(); render(); });
-      li.appendChild(sp); li.appendChild(a); li.appendChild(r); pend.appendChild(li);
+      li.appendChild(sp); li.appendChild(a); li.appendChild(sd); li.appendChild(r); pend.appendChild(li);
     });
     renderAgenda();
+    renderSemData();
   }
+  var revisaoAberta = false;
+  $('revisao-agora').addEventListener('click', function () { revisaoAberta = true; renderTarefas(); });
 
   // Agenda: calendário do mês; o dia escolhido recebe as tarefas novas.
   var calDia = null, calMes = null;
@@ -1231,7 +1251,7 @@
     $('cal-mes').textContent = nomeMes.charAt(0).toUpperCase() + nomeMes.slice(1);
     $('cal-ant').disabled = calMes <= chaveMes(new Date());
     var conta = {};
-    S.tarefas.forEach(function (t) { if (!t.rotina && !t.feita && t.dia >= hoje) conta[t.dia] = (conta[t.dia] || 0) + 1; });
+    S.tarefas.forEach(function (t) { if (!t.rotina && !t.feita && t.dia && t.dia >= hoje) conta[t.dia] = (conta[t.dia] || 0) + 1; });
     var box = $('cal-dias'); box.innerHTML = '';
     for (var i = 0; i < calMes.getDay(); i++) box.appendChild(document.createElement('span'));
     var ultimo = new Date(calMes.getFullYear(), calMes.getMonth() + 1, 0).getDate();
@@ -1267,8 +1287,10 @@
     $('cal-txt').value = ''; $('cal-prio').checked = false;
     falar(quando === chaveDia() ? 'Anotado na lista de hoje.' : 'Anotado para ' + dataCurta(quando) + '. Nesse dia ela aparece na sua lista.', 'ideia');
   });
-  function addTarefa(texto, prio, rotina, quando) {
-    S.tarefas.push({ id: novoId('t'), texto: texto, prio: prio, rotina: rotina, dia: quando, feita: null });
+  function addTarefa(texto, prio, rotina, quando, grupo) {
+    var t = { id: novoId('t'), texto: texto, prio: prio, rotina: rotina, dia: quando, feita: null };
+    if (!quando) { t.grupo = grupo || null; t.criada = chaveDia(); }
+    S.tarefas.push(t);
     salvar(); render();
   }
   $('nova-tarefa').addEventListener('submit', function (e) {
@@ -1278,6 +1300,217 @@
     falar($('tarefa-rotina').checked ? 'Rotina criada. Ela volta todo dia.' : ($('tarefa-prio').checked ? 'Prioridade anotada. Começa por ela?' : 'Anotado na lista de hoje.'), 'ideia');
     $('tarefa-txt').value = ''; $('tarefa-prio').checked = false; $('tarefa-rotina').checked = false;
   });
+
+  // ---------- Sem data ----------
+  // Tarefa sem dia: fica guardada até a pessoa puxar para hoje, escolher um dia ou concluir. Pode estar num grupo.
+  var EMOJIS = ['✈️', '🛒', '📦', '🏠', '🎁', '📚', '💊', '🐶', '🚗', '🔧', '💡', '🎬', '🎵', '🍳', '👕', '💰', '🧾', '📞', '💻', '🌱', '🏋️', '🎮', '🧹', '🎂', '❤️', '⭐', '📌', '🧳', '🛍️', '✏️'];
+  var filtroGrupo = 'todos', grupoEditando = null, emojiEscolhido = EMOJIS[0];
+  function semData() {
+    var hoje = chaveDia();
+    return S.tarefas.filter(function (t) { return !t.rotina && !t.dia && (!t.feita || t.feita === hoje); });
+  }
+  function grupoDe(id) { return S.grupos.filter(function (g) { return g.id === id; })[0] || null; }
+  function nomeGrupo(g) { return g.emoji + ' ' + g.nome; }
+  function dias(desde) { return Math.round((new Date(chaveDia() + 'T12:00') - new Date(desde + 'T12:00')) / 86400000); }
+  function ordemSemData(a, b) { return (feitaHoje(a) - feitaHoje(b)) || (b.prio - a.prio); }
+
+  // Linha compacta: concluir, texto, Hoje, estrela e "Mais" (escolher dia, mudar de grupo, remover).
+  // Assim a lista fica leve no celular e as ações menos usadas não ocupam espaço.
+  var semDataAberta = null;
+  function linhaSemData(t) {
+    var li = linhaTarefa(t, {}), hoje = chaveDia();
+    li.classList.add('semdata');
+    var tirar = li.querySelector('.tirar-bt'); if (tirar) tirar.remove();
+    if (t.criada && dias(t.criada) > 30 && !t.feita) {
+      var v = document.createElement('small'); v.className = 'faz-tempo'; v.textContent = 'Faz tempo';
+      v.title = 'Guardada há ' + dias(t.criada) + ' dias. Ainda quer?';
+      li.querySelector('.tarefa-txt').appendChild(v);
+    }
+    if (t.feita) return li;
+    var pr = li.querySelector('.prio-bt');
+    var h = document.createElement('button'); h.type = 'button'; h.className = 'btn btn-sec btn-mini hoje-bt'; h.textContent = 'Hoje';
+    h.setAttribute('aria-label', 'Fazer hoje: ' + t.texto); h.title = 'Levar para a lista de hoje';
+    h.addEventListener('click', function () { t.dia = hoje; salvar(); render(); falar('"' + t.texto + '" entrou na lista de hoje.', 'ideia'); });
+    li.insertBefore(h, pr);
+    var aberta = semDataAberta === t.id;
+    var mais = document.createElement('button'); mais.type = 'button'; mais.className = 'mais-bt'; mais.textContent = '⋯';
+    mais.setAttribute('aria-expanded', String(aberta)); mais.setAttribute('aria-label', 'Mais opções: ' + t.texto);
+    mais.addEventListener('click', function () { semDataAberta = aberta ? null : t.id; renderSemData(); });
+    li.appendChild(mais);
+    var ac = document.createElement('div'); ac.className = 'semdata-acoes'; ac.hidden = !aberta;
+    var lb = document.createElement('label'); lb.className = 'btn btn-sec btn-mini escolher-dia';
+    var sp = document.createElement('span'); sp.textContent = '📅 Escolher dia'; lb.appendChild(sp);
+    var inp = document.createElement('input'); inp.type = 'date'; inp.min = amanhaChave();
+    inp.setAttribute('aria-label', 'Escolher dia para: ' + t.texto);
+    inp.addEventListener('change', function () {
+      if (!inp.value) return;
+      t.dia = inp.value; semDataAberta = null; salvar(); render();
+      falar('"' + t.texto + '" vai aparecer na sua lista em ' + dataCurta(inp.value) + '.', 'ideia');
+    });
+    lb.appendChild(inp); ac.appendChild(lb);
+    var sel = document.createElement('select'); sel.className = 'grupo-sel';
+    sel.setAttribute('aria-label', 'Grupo de: ' + t.texto);
+    opcoesGrupo(sel, t.grupo || '');
+    sel.addEventListener('change', function () { t.grupo = sel.value || null; salvar(); render(); });
+    ac.appendChild(sel);
+    var x = document.createElement('button'); x.type = 'button'; x.className = 'btn btn-perigo btn-mini'; x.textContent = 'Remover';
+    x.setAttribute('aria-label', 'Remover: ' + t.texto);
+    x.addEventListener('click', function () { S.tarefas = S.tarefas.filter(function (y) { return y.id !== t.id; }); semDataAberta = null; salvar(); render(); });
+    ac.appendChild(x);
+    li.appendChild(ac);
+    return li;
+  }
+  function opcoesGrupo(sel, atual, comNovo) {
+    sel.innerHTML = '';
+    var o = document.createElement('option'); o.value = ''; o.textContent = 'Sem grupo'; sel.appendChild(o);
+    S.grupos.forEach(function (g) { var x = document.createElement('option'); x.value = g.id; x.textContent = nomeGrupo(g); sel.appendChild(x); });
+    if (comNovo) { var n = document.createElement('option'); n.value = '__novo'; n.textContent = '＋ Novo grupo…'; sel.appendChild(n); }
+    sel.value = grupoDe(atual) ? atual : '';
+    sel.dataset.antes = sel.value;
+  }
+  // "＋ Novo grupo…" no seletor do campo abre o formulário sem perder o que a pessoa digitou
+  $('semdata-grupo').addEventListener('change', function () {
+    var sel = $('semdata-grupo');
+    if (sel.value === '__novo') { sel.value = sel.dataset.antes || ''; abrirGrupoForm(); }
+    else sel.dataset.antes = sel.value;
+  });
+
+  function renderSemData() {
+    var todas = semData(), abertas = todas.filter(function (t) { return !t.feita; });
+    var noGrupo = function (id) { return todas.filter(function (t) { return (grupoDe(t.grupo) ? t.grupo : '') === id; }); };
+    if (filtroGrupo !== 'todos' && filtroGrupo !== '' && !grupoDe(filtroGrupo)) filtroGrupo = 'todos';
+
+    // filtro por grupo
+    var fx = $('grupos-filtro'); fx.innerHTML = '';
+    var chips = [['todos', 'Todos', abertas.length]];
+    S.grupos.forEach(function (g) { chips.push([g.id, nomeGrupo(g), noGrupo(g.id).filter(function (t) { return !t.feita; }).length]); });
+    var soltas = noGrupo('').filter(function (t) { return !t.feita; }).length;
+    if (soltas || filtroGrupo === '') chips.push(['', 'Sem grupo', soltas]);
+    chips.forEach(function (c) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'chip-grupo';
+      b.setAttribute('aria-pressed', String(filtroGrupo === c[0]));
+      b.textContent = c[1] + (c[2] ? ' · ' + c[2] : '');
+      b.addEventListener('click', function () {
+        filtroGrupo = c[0];
+        if (c[0] !== 'todos') $('semdata-grupo').value = c[0];
+        renderSemData();
+      });
+      fx.appendChild(b);
+    });
+    var novo = document.createElement('button'); novo.type = 'button'; novo.className = 'chip-grupo chip-novo'; novo.textContent = '＋ Novo grupo';
+    novo.setAttribute('aria-expanded', String(!$('grupo-form').hidden && !grupoEditando));
+    novo.addEventListener('click', function () { if ($('grupo-form').hidden || grupoEditando) abrirGrupoForm(); else limparGrupoForm(); });
+    fx.appendChild(novo);
+
+    // lista, separada por grupo
+    var box = $('semdata-lista'); box.innerHTML = '';
+    var blocos = filtroGrupo === 'todos' ? S.grupos.map(function (g) { return g.id; }).concat(['']) : [filtroGrupo];
+    var mostrou = 0;
+    blocos.forEach(function (id) {
+      var itens = noGrupo(id).sort(ordemSemData);
+      if (!itens.length) return;
+      mostrou += itens.length;
+      var sec = document.createElement('div'); sec.className = 'grupo-bloco';
+      if (filtroGrupo === 'todos') {
+        var h = document.createElement('h3'); h.textContent = id ? nomeGrupo(grupoDe(id)) : 'Sem grupo';
+        sec.appendChild(h);
+      }
+      var ul = document.createElement('ul'); ul.className = 'tarefas';
+      itens.forEach(function (t) { ul.appendChild(linhaSemData(t)); });
+      sec.appendChild(ul); box.appendChild(sec);
+    });
+    var vazio = $('semdata-vazio'); vazio.hidden = mostrou > 0;
+    if (!mostrou) vazio.textContent = filtroGrupo === 'todos'
+      ? 'Nada guardado aqui. Anote o que você não quer esquecer, como a lista do mercado ou o que levar na viagem.'
+      : 'Nada em ' + (filtroGrupo ? nomeGrupo(grupoDe(filtroGrupo)) : 'Sem grupo') + ' ainda.';
+
+    var n = $('parte-semdata-n'); n.hidden = !abertas.length; n.textContent = abertas.length;
+    var sel = $('semdata-grupo'), atual = sel.value;
+    opcoesGrupo(sel, atual, true);
+    renderGrupos();
+  }
+
+  $('semdata-nova').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var txt = $('semdata-txt').value.trim(); if (!txt) return;
+    var g = grupoDe($('semdata-grupo').value);
+    addTarefa(txt, $('semdata-prio').checked, false, null, g ? g.id : null);
+    $('semdata-txt').value = ''; $('semdata-prio').checked = false; $('semdata-txt').focus();
+    falar(g ? 'Guardado em ' + nomeGrupo(g) + '. Sem prazo e sem cobrança.' : 'Guardado sem data. Quando der, puxe para hoje.', 'ideia');
+  });
+
+  // Grupos: criar, editar e apagar. Apagar um grupo não apaga as tarefas: elas ficam em Sem grupo.
+  function renderGrupos() {
+    var ul = $('grupos-lista'); ul.innerHTML = '';
+    S.grupos.forEach(function (g) {
+      var n = S.tarefas.filter(function (t) { return !t.dia && !t.feita && t.grupo === g.id; }).length;
+      var li = document.createElement('li');
+      var sp = document.createElement('span'); sp.textContent = nomeGrupo(g) + (n ? ' · ' + n : ''); li.appendChild(sp);
+      var ed = document.createElement('button'); ed.type = 'button'; ed.className = 'btn btn-sec btn-mini'; ed.textContent = 'Editar';
+      ed.setAttribute('aria-label', 'Editar o grupo ' + g.nome);
+      ed.addEventListener('click', function () { editarGrupo(g); });
+      var ap = document.createElement('button'); ap.type = 'button'; ap.className = 'btn btn-perigo btn-mini'; ap.textContent = 'Apagar';
+      ap.setAttribute('aria-label', 'Apagar o grupo ' + g.nome);
+      ap.addEventListener('click', function () {
+        S.grupos = S.grupos.filter(function (x) { return x.id !== g.id; });
+        S.tarefas.forEach(function (t) { if (t.grupo === g.id) t.grupo = null; });
+        if (grupoEditando === g.id) limparGrupoForm();
+        salvar(); render();
+        falar('Grupo ' + g.nome + ' apagado.' + (n ? ' As tarefas dele continuam na lista, em Sem grupo.' : ''), 'ideia');
+      });
+      li.appendChild(ed); li.appendChild(ap); ul.appendChild(li);
+    });
+  }
+  function renderEmojis() {
+    var box = $('grupo-emojis'); box.innerHTML = '';
+    EMOJIS.forEach(function (em) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'emoji-bt'; b.textContent = em;
+      b.setAttribute('role', 'radio'); b.setAttribute('aria-checked', String(em === emojiEscolhido && !$('grupo-emoji-outro').value.trim()));
+      b.setAttribute('aria-label', em);
+      b.addEventListener('click', function () { emojiEscolhido = em; $('grupo-emoji-outro').value = ''; renderEmojis(); });
+      box.appendChild(b);
+    });
+  }
+  // O formulário de grupo fica escondido: abre pelo "＋ Novo grupo" ou pelo Editar.
+  function abrirGrupoForm() {
+    limparGrupoForm();
+    $('grupo-form').hidden = false; renderSemData();
+    $('grupo-form').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    $('grupo-nome').focus();
+  }
+  function editarGrupo(g) {
+    $('grupo-form').hidden = false;
+    grupoEditando = g.id;
+    $('grupo-form-titulo').textContent = 'Editar ' + g.nome;
+    $('grupo-nome').value = g.nome;
+    if (EMOJIS.indexOf(g.emoji) >= 0) { emojiEscolhido = g.emoji; $('grupo-emoji-outro').value = ''; } else $('grupo-emoji-outro').value = g.emoji;
+    $('grupo-salvar').textContent = 'Salvar grupo';
+    renderEmojis(); renderSemData();
+    $('grupo-form').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); $('grupo-nome').focus();
+  }
+  function limparGrupoForm() {
+    grupoEditando = null; emojiEscolhido = EMOJIS[0];
+    $('grupo-form-titulo').textContent = 'Novo grupo';
+    $('grupo-nome').value = ''; $('grupo-emoji-outro').value = '';
+    $('grupo-salvar').textContent = 'Criar grupo';
+    $('grupo-form').hidden = true;
+    renderEmojis();
+  }
+  $('grupo-emoji-outro').addEventListener('input', renderEmojis);
+  $('grupo-cancelar').addEventListener('click', function () { limparGrupoForm(); renderSemData(); });
+  $('grupo-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var nome = $('grupo-nome').value.trim(); if (!nome) return;
+    var emoji = $('grupo-emoji-outro').value.trim() || emojiEscolhido;
+    var g = grupoDe(grupoEditando);
+    if (g) { g.nome = nome; g.emoji = emoji; }
+    else { g = { id: novoId('g'), nome: nome, emoji: emoji }; S.grupos.push(g); filtroGrupo = g.id; $('semdata-grupo').value = g.id; }
+    var novo = !grupoEditando;
+    limparGrupoForm(); salvar(); render();
+    if (novo) { $('semdata-grupo').value = g.id; $('semdata-grupo').dataset.antes = g.id; $('semdata-txt').focus(); }
+    falar(novo ? 'Grupo ' + nomeGrupo(g) + ' criado. Agora é só guardar as coisas nele.' : 'Grupo ' + nomeGrupo(g) + ' atualizado.', 'ideia');
+  });
+  renderEmojis();
 
   // ---------- Metas do ano ----------
   var STATUS = [['caminho', 'No caminho'], ['atrasada', 'Atrasada'], ['parada', 'Parada'], ['concluida', 'Concluída']];
@@ -1403,6 +1636,10 @@
     $('h-tarefas-vazio').hidden = lista.length > 0;
     $('h-tarefas-vazio').textContent = todas ? 'Tudo feito por hoje. Boa!' : 'Nada na lista ainda.';
     $('h-tarefas-mais').hidden = !todas; $('h-tarefas-mais').textContent = 'Ver todas (' + todas + ')';
+    // com a lista de hoje vazia ou toda feita, a Zumi lembra do que está guardado sem data
+    var sd = semData().filter(function (t) { return !t.feita; }).length;
+    $('h-semdata').hidden = lista.length > 0 || !sd;
+    $('h-semdata-txt').textContent = sd === 1 ? '📌 Tem 1 coisa sem data. Puxa para hoje?' : '📌 Tem ' + sd + ' coisas sem data. Puxa uma para hoje?';
     botoesNivel($('h-agua'), chaveDia());
     var nv = nivelAgua(dia());
     $('h-agua-txt').textContent = nv ? 'Marcado como ' + NIVEIS[nv] + (PONTOS_AGUA[nv] ? '. +' + PONTOS_AGUA[nv] : '.') : 'Bom vale 10 pontos e Excelente vale 20.';
@@ -1423,12 +1660,21 @@
 
   // ---------- Abas ----------
   var ABAS = ['hoje', 'foco', 'tarefas', 'bem-estar', 'metas', 'evolucao', 'ajustes'];
-  function abaDaUrl() { var h = location.hash.replace(/^#\/?/, ''); return ABAS.indexOf(h) >= 0 ? h : 'hoje'; }
+  var PARTES = ['hoje', 'agenda', 'sem-data'];
+  function abaDaUrl() { var h = location.hash.replace(/^#\/?/, '').split('/')[0]; return ABAS.indexOf(h) >= 0 ? h : 'hoje'; }
+  // A aba Tarefas mostra uma parte por vez: #/tarefas (hoje), #/tarefas/agenda e #/tarefas/sem-data.
+  function parteDaUrl() { var p = location.hash.replace(/^#\/?/, '').split('/')[1]; return PARTES.indexOf(p) >= 0 ? p : 'hoje'; }
+  function mostrarParte() {
+    var p = parteDaUrl();
+    document.querySelectorAll('[data-parte]').forEach(function (s) { s.hidden = s.dataset.parte !== p; });
+    document.querySelectorAll('[data-parte-ir]').forEach(function (l) { if (l.dataset.parteIr === p) l.setAttribute('aria-current', 'page'); else l.removeAttribute('aria-current'); });
+  }
   function mostrarAba(rolar) {
     if (location.hash && location.hash.indexOf('#/') !== 0) return; // âncoras comuns (#conteudo, #fim-do-dia) não trocam de aba
     var a = abaDaUrl();
     document.querySelectorAll('.aba').forEach(function (s) { s.hidden = s.dataset.aba !== a; });
     document.body.dataset.aba = a;
+    mostrarParte();
     document.querySelectorAll('[data-ir]').forEach(function (l) { if (l.dataset.ir === a) l.setAttribute('aria-current', 'page'); else l.removeAttribute('aria-current'); });
     if (rolar) { var nav = document.querySelector('.abas-app'); if (nav.getBoundingClientRect().top < 0) window.scrollTo({ top: 0 }); }
   }

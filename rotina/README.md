@@ -14,7 +14,7 @@ O app fica dividido em abas, para não ficar tudo numa página só. No celular, 
 | --- | --- |
 | Hoje | O painel do dia: o bloco que está rodando, até 3 tarefas (prioridades primeiro), a água de hoje, atalhos para respirar e para o tempo sem tela, o aviso de revisão das metas e, depois das 18h, o convite para fechar o dia. A reflexão fica aqui. |
 | Foco | O timer completo e os ajustes de tempo. |
-| Tarefas | Tarefas e rotinas, a revisão do dia e a lista de amanhã. |
+| Tarefas | Três partes, uma por vez: **Hoje** (tarefas, rotinas e revisão do dia), **Agenda** (`#/tarefas/agenda`) e **Sem data** (`#/tarefas/sem-data`). |
 | Bem-estar | Água com histórico, respiração, tempo sem tela e exercícios. |
 | Metas | As metas do ano e os trimestres. |
 | Evolução | A semana e os títulos. No celular, abre pelo atalho na Zumi. |
@@ -31,9 +31,11 @@ O app fica dividido em abas, para não ficar tudo numa página só. No celular, 
 | Tempo sem tela | A pessoa escolhe 5, 10, 15 ou 30 minutos, 1 hora ou 2 horas, e, se quiser, para quê: família, saúde, descanso ou outra coisa. Pode bloquear o celular: na volta, a Zumi conta o tempo. Quem volta antes ganha os pontos do tempo que já cumpriu. |
 | Água | Sem contar copos: no fim do dia a pessoa marca se a água foi Ruim, Bom ou Excelente. Os lembretes cuidam do resto. O histórico mostra os últimos 7 dias, e qualquer um deles pode ser corrigido. A média dos últimos 7 e 30 dias considera só os dias marcados. |
 | Tarefas e rotinas | Lista do dia com tarefas, que somem quando concluídas, e rotinas, que voltam todo dia. A estrela marca ou tira a prioridade, e as prioridades sobem para o topo. |
+| Agenda | Calendário do mês. A tarefa marcada para um dia entra na lista de hoje quando o dia chega. |
+| Sem data | O que a pessoa não quer esquecer, sem prazo. Cada item pode ficar num grupo com emoji (vêm prontos Viagem ✈️, Mercado 🛒 e Comprar na internet 📦; a pessoa cria, edita e apaga os dela). Dali o item vai para hoje ou para um dia da Agenda. Item guardado há mais de 30 dias ganha a etiqueta "Faz tempo". Quando a lista de hoje está vazia ou toda feita, o painel Hoje lembra quantas coisas estão sem data. A lista Sem data não entra na meta "Tudo feito por hoje". |
 | Metas do ano | Poucas metas por ano. Cada uma tem quatro trimestres, e no fim de cada um a Zumi pergunta se a meta está no caminho, atrasada, parada ou concluída. |
 | Checks de exercício | Academia, corrida e aeróbico, uma vez por dia cada. |
-| Fim do dia | Uma pergunta de reflexão por dia, respondida no app ou no papel. Depois vem a revisão: quantos itens saíram, o que ficou pendente (vai para amanhã ou sai da lista) e o que já entra na lista de amanhã. |
+| Fim do dia | "Como foi seu dia?": cinco carinhas, um texto livre ou "Respondi no papel", guardados em Meu histórico. Depois das 18h, a revisão pergunta o que ficou pendente: vai para amanhã, fica sem data ou sai da lista. Antes disso, ela só conta como vai o dia (o botão "Organizar agora" abre a pergunta). Também dá para deixar pronta a lista de amanhã. |
 | Pontos e títulos | Cada ação soma pontos e o título sobe. A semana aparece num gráfico de barras. |
 | Som de vitória | A Zumi passa zumbindo e toca uma fanfarra curta de sinos quando a pessoa bate a meta do dia (lista de hoje completa ou água excelente, uma vez por dia), conclui uma meta do ano ou ganha um título. O som sai de `/vitoria.js`, feito com Web Audio, sem arquivo. Liga e desliga em Ajustes. Trilhas e Mapas tocam o mesmo som ao concluir tópico, conquista ou nível. |
 
@@ -85,7 +87,7 @@ Tarefa que não saiu e não passou pela revisão continua na lista no dia seguin
 ## Como o app foi feito
 
 - HTML, CSS e JavaScript puro, sem build, como o resto do Ako. Carrega o `ds/rizzygo.css` primeiro.
-- Os dados ficam no `localStorage` do aparelho, na chave `rizzygo-rotina-v1`. Sem login e sem servidor. O app guarda os últimos 60 dias e mantém os pontos dos dias mais antigos.
+- Os dados ficam no `localStorage` do aparelho, na chave `rizzygo-rotina-v1`. Entrar na conta é opcional: com ela, a Rotina guarda uma cópia na nuvem (`/nuvem.js`, Firebase), e remédios e reflexões só vão se a pessoa permitir. O app guarda os últimos 60 dias e mantém os pontos dos dias mais antigos. Tarefa concluída há mais de 60 dias sai dos dados.
 - É um PWA: `manifest.webmanifest` e `sw.js` deixam instalar na tela inicial e abrir sem internet.
 - O relógio usa o horário de término, não um contador. Se o navegador segurar a aba, o tempo continua certo quando ela volta.
 
