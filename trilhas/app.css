@@ -249,3 +249,4 @@ textarea:focus{border-color:var(--azul);outline:none}
 .contribua-copiar:hover{background:rgba(245,165,36,.12)}
 .contribua-copiar:focus-visible{outline:3px solid #FFFFFF;outline-offset:2px}
 .texto-legal{max-width:44rem}.texto-legal h2{font-size:var(--t-secao);margin:2.2rem 0 .7rem}.texto-legal h2:first-child{margin-top:0}.texto-legal p,.texto-legal ul{margin:.7rem 0;line-height:1.6}.texto-legal ul{padding-left:1.3rem}.texto-legal li{margin:.35rem 0}
+.chave-som{display:inline-flex;align-items:center;gap:.5rem;font-weight:600;cursor:pointer}

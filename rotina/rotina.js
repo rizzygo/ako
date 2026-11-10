@@ -62,7 +62,7 @@
         lazer: { foco: 60 },
         pausaLonga: 15, ciclos: 4,
         pausas: { trabalho: true, estudo: true }, somTipo: 'zumi',
-        inicio: '08:00', fim: '22:00', som: true, somLembretes: true, lembrarMetas: true,
+        inicio: '08:00', fim: '22:00', som: true, somLembretes: true, somVitoria: true, lembrarMetas: true,
         lembretes: { agua: { on: true, min: 45 }, respirar: { on: true, min: 90 }, semTela: { on: true, min: 120 } }
       },
       meus: [], tarefas: [], metas: [], diario: {},
@@ -207,9 +207,10 @@
     var depois = tituloAtual();
     salvar();
     render();
-    if (apagado && !abaixoDoTitulo() && depois === antes) falar('O brilho de ' + TITULOS[depois][1] + ' voltou! Bom te ver de volta.', 'comemorando', true);
+    if (apagado && !abaixoDoTitulo() && depois === antes) { falar('O brilho de ' + TITULOS[depois][1] + ' voltou! Bom te ver de volta.', 'comemorando', true); vitoria(); }
     if (depois > antes) {
       var t = TITULOS[depois];
+      vitoria(true);
       falar('Título novo: ' + t[1] + '! ' + t[2], 'comemorando', true);
       notificar('Título novo: ' + t[1], t[2], 'titulo');
     }
@@ -285,6 +286,19 @@
       sino(audio, t, 1046.5); if (!lembrete) sino(audio, t + 0.45, 784, 0.8);
     } catch (e) { /* sem áudio */ }
     if (navigator.vibrate && !forcar) navigator.vibrate([120, 80, 120]);
+  }
+  // Som de vitória (/vitoria.js): meta do dia batida, meta do ano concluída, título novo.
+  function vitoria(forte, forcar) {
+    if ((!forcar && !S.config.somVitoria) || !window.AkoVitoria) return;
+    pedirAudio(); window.AkoVitoria.tocar(forte, audio);
+    if (navigator.vibrate && !forcar) navigator.vibrate(forte ? [80, 60, 80, 60, 220] : [80, 60, 160]);
+  }
+  // Metas do dia comemoram uma vez por dia, mesmo que a pessoa desmarque e marque de novo.
+  function vitoriaDoDia(qual) {
+    var k = 'vitoria-' + qual, hoje = chaveDia();
+    if (S.tocados[k] === hoje) return false;
+    S.tocados[k] = hoje; salvar(); vitoria();
+    return true;
   }
 
   var registro = null;
@@ -571,7 +585,7 @@
     var txt = rotuloMin(min) + ' longe da tela' + (a.para ? ', com ' + (a.para === 'outra' ? 'outra coisa' : textoPara(a.para)) : '') + '. Isso também é cuidar da vida. +' + pts;
     falar(txt, 'comemorando', true);
     notificar('Tempo sem tela feito', txt, 'sobre');
-    if (S.melhor > antes) falar('Título novo: ' + TITULOS[S.melhor][1] + '! ' + TITULOS[S.melhor][2], 'comemorando', true);
+    if (S.melhor > antes) { falar('Título novo: ' + TITULOS[S.melhor][1] + '! ' + TITULOS[S.melhor][2], 'comemorando', true); vitoria(true); }
   }
   $('escolha-ir').addEventListener('click', function () {
     S.semTelaAtivo = { min: escolhaMin, para: escolhaPara, inicio: Date.now(), fimEm: Date.now() + escolhaMin * MIN, dia: chaveDia() };
@@ -606,10 +620,13 @@
     var hoje = k === chaveDia();
     if (!nv) falar('Marcação da água apagada.', null);
     else if (tirouPerda) falar('Água marcada e aquele dia saiu do vermelho. +10 de volta' + (PONTOS_AGUA[nv] ? ' e +' + PONTOS_AGUA[nv] + ' da água.' : '.'), 'comemorando', true);
-    else if (hoje) falar(nv === 'excelente' ? 'Água excelente hoje! +20' : nv === 'bom' ? 'Água boa hoje. +10' : 'Dia fraco de água. Os lembretes ajudam amanhã.', nv === 'ruim' ? 'ideia' : 'comemorando', nv !== 'ruim');
+    else if (hoje) {
+      falar(nv === 'excelente' ? 'Água excelente hoje! Meta da água batida. +20' : nv === 'bom' ? 'Água boa hoje. +10' : 'Dia fraco de água. Os lembretes ajudam amanhã.', nv === 'ruim' ? 'ideia' : 'comemorando', nv !== 'ruim');
+      if (nv === 'excelente') vitoriaDoDia('agua');
+    }
     else falar('Água de ' + new Date(k + 'T12:00').toLocaleDateString('pt-BR', { weekday: 'long' }) + ' corrigida: ' + NIVEIS[nv] + '.', null);
-    if (depois > antes) falar('Título novo: ' + TITULOS[depois][1] + '! ' + TITULOS[depois][2], 'comemorando', true);
-    else if (apagado && !abaixoDoTitulo()) falar('O brilho de ' + TITULOS[depois][1] + ' voltou! Bom te ver de volta.', 'comemorando', true);
+    if (depois > antes) { falar('Título novo: ' + TITULOS[depois][1] + '! ' + TITULOS[depois][2], 'comemorando', true); vitoria(true); }
+    else if (apagado && !abaixoDoTitulo()) { falar('O brilho de ' + TITULOS[depois][1] + ' voltou! Bom te ver de volta.', 'comemorando', true); vitoria(); }
   }
   function mediaAgua(n) {
     var soma = 0, dias = 0, hoje = new Date();
@@ -790,6 +807,7 @@
   });
   $('b-ouvir').addEventListener('click', function () { tocar(true); });
   $('b-ouvir-lem').addEventListener('click', function () { tocar(true, 'lembrete'); });
+  $('b-ouvir-vit').addEventListener('click', function () { vitoria(false, true); });
   function estadoTempos() {
     ['trabalho', 'estudo'].forEach(function (m) {
       var on = !!S.config.pausas[m], cx = document.querySelector('[data-modo-cfg="' + m + '"] .linha-tempo:nth-of-type(2)');
@@ -1147,7 +1165,9 @@
     });
     if (liga) {
       var faltam = visiveisHoje().filter(function (x) { return x.prio && !feitaHoje(x); }).length;
-      falar(t.prio ? (faltam ? 'Prioridade feita. Faltam ' + faltam + '. +5' : 'Todas as prioridades de hoje feitas! +5') : 'Feito: ' + t.texto + '. +3', faltam || !t.prio ? 'ola' : 'comemorando', !faltam && t.prio);
+      var lista = visiveisHoje(), tudo = lista.length > 0 && lista.every(feitaHoje);
+      if (tudo) { falar('Tudo feito por hoje! Meta do dia batida. +' + pts, 'comemorando', true); vitoriaDoDia('tarefas'); }
+      else falar(t.prio ? (faltam ? 'Prioridade feita. Faltam ' + faltam + '. +5' : 'Todas as prioridades de hoje feitas! +5') : 'Feito: ' + t.texto + '. +3', faltam || !t.prio ? 'ola' : 'comemorando', !faltam && t.prio);
     }
   }
   function linhaTarefa(t, opcoes) {
@@ -1286,6 +1306,7 @@
     });
     var falas = { caminho: 'Meta no caminho. Segue assim.', atrasada: 'Atrasou, acontece. Qual é o menor passo para destravar esta semana?', parada: 'Parada também é resposta. Vale ajustar a meta ou largar de vez?', concluida: 'Meta concluída! Isso merece comemoração.' };
     falar(falas[status] + (nova ? ' +10' : ''), status === 'concluida' ? 'comemorando' : 'ideia', status === 'concluida');
+    if (status === 'concluida') vitoria(true);
   }
   var abertas = {};
   // Ano das metas: do atual até 2033 (sempre pelo menos 5 anos à frente), para planejar os próximos anos.

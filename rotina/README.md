@@ -35,6 +35,7 @@ O app fica dividido em abas, para não ficar tudo numa página só. No celular, 
 | Checks de exercício | Academia, corrida e aeróbico, uma vez por dia cada. |
 | Fim do dia | Uma pergunta de reflexão por dia, respondida no app ou no papel. Depois vem a revisão: quantos itens saíram, o que ficou pendente (vai para amanhã ou sai da lista) e o que já entra na lista de amanhã. |
 | Pontos e títulos | Cada ação soma pontos e o título sobe. A semana aparece num gráfico de barras. |
+| Som de vitória | A Zumi passa zumbindo e toca uma fanfarra curta de sinos quando a pessoa bate a meta do dia (lista de hoje completa ou água excelente, uma vez por dia), conclui uma meta do ano ou ganha um título. O som sai de `/vitoria.js`, feito com Web Audio, sem arquivo. Liga e desliga em Ajustes. Trilhas e Mapas tocam o mesmo som ao concluir tópico, conquista ou nível. |
 
 ## Quanto vale cada ação
 
