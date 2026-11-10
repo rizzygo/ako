@@ -2,7 +2,7 @@
    Cada trilha tem um arquivo em dados/ e é escolhida pelo endereço: ?trilha=platform-engineering.
    Sem o parâmetro, abre a Primeiros passos em TI.
    O progresso fica no navegador (localStorage), e a pessoa pode exportar e importar.
-   Quem entra com a conta Google (botão no topo, /conta.js) ganha uma cópia na nuvem. */
+   Quem faz login (Google ou e-mail, botão no topo, /conta.js) ganha uma cópia na nuvem. */
 (function () {
   'use strict';
 
@@ -342,7 +342,7 @@
       (dados.areas.length ? '<fieldset><legend>O que mais te atrai?</legend><p class="dica">Marque quantas quiser. Os tópicos que mais ajudam nesses caminhos ficam destacados.</p><div class="opcoes-escolha duas">' + areas + '</div></fieldset>' : '') +
       '<fieldset><legend>O que você já sabe?</legend><p class="dica">Os tópicos que você marcar viram desafios para validar. Acertou, conta como concluído.</p><div class="opcoes-escolha duas">' + jaSei + '</div></fieldset>' +
       '<p class="erro-form" id="erro-form" role="alert"></p>' +
-      '<p class="dica">O roteiro fica salvo neste navegador. Na próxima tela, você pode salvar na sua conta Google para abrir em qualquer aparelho. É opcional.</p>' +
+      '<p class="dica">O roteiro fica salvo neste navegador. Na próxima tela, você pode fazer login e salvar na sua conta para abrir em qualquer aparelho. É opcional.</p>' +
       '<div class="acoes"><button class="btn" type="submit">Montar meu roteiro</button></div>' +
       '</form></div>';
     document.getElementById('form-montar').addEventListener('submit', function (ev) {
