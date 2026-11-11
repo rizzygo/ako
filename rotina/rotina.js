@@ -1092,7 +1092,7 @@
   }
   function abrirNuvem() {
     if (nuvem) return Promise.resolve(nuvem);
-    if (!carregandoNuvem) carregandoNuvem = import('/nuvem.js?v=2026111105').then(function (m) {
+    if (!carregandoNuvem) carregandoNuvem = import('/nuvem.js?v=2026111106').then(function (m) {
       nuvemMod = m;
       nuvem = m.criar({
         app: 'rotina', meta: metaNuvem, salvarMeta: salvarMeta,

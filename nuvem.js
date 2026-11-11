@@ -232,7 +232,8 @@ export function criar(cfg) {
       if (rem) cfg.aplicar(cfg.juntar(rem, cfg.ler()), false);
       meta.ultimo = null; await enviar(true); return;
     }
-    if (remoto.dados === localTexto) { meta.ultimo = localTexto; meta.sincronizadoEm = remoto.cliente; cfg.salvarMeta(meta); avisa(); return; }
+    // sincronizadoEm = quando este aparelho conferiu que está igual à nuvem (não a hora da cópia), para "Salvo na nuvem há X" zerar ao atualizar.
+    if (remoto.dados === localTexto) { meta.ultimo = localTexto; meta.sincronizadoEm = Date.now(); cfg.salvarMeta(meta); avisa(); return; }
     let estado;
     try { estado = JSON.parse(remoto.dados); } catch (e) { return; }
     if (primeira && cfg.temDados(cfg.ler())) {
@@ -256,7 +257,7 @@ export function criar(cfg) {
     }
     cfg.aplicar(cfg.daNuvem(estado, cfg.ler(), meta.aceites), !primeira);
     meta.ultimo = JSON.stringify(cfg.paraNuvem(cfg.ler(), meta.aceites));
-    meta.sincronizadoEm = remoto.cliente; meta.erro = null;
+    meta.sincronizadoEm = Date.now(); meta.erro = null;
     cfg.salvarMeta(meta); avisa({ trouxe: true });
     if (migrou) { meta.ultimo = null; await enviar(true); } // o documento novo nasce com o que veio dos antigos
   }

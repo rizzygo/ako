@@ -149,7 +149,7 @@
 
   function carregar() {
     if (mod) return Promise.resolve(mod);
-    if (!carregando) carregando = import('/nuvem.js?v=2026111105').then(function (m) {
+    if (!carregando) carregando = import('/nuvem.js?v=2026111106').then(function (m) {
       mod = m;
       criarApps(m);
       m.aoMudarConta(function (u) { usuario = u; conhecido = true; desenhar(); });
