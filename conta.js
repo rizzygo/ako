@@ -102,29 +102,54 @@
       juntar: function (rem, loc) { rem = rem || {}; loc = loc || {}; return { tema: rem.tema || loc.tema || null, som: rem.som || loc.som || null }; }
     }
   };
+  /* Trilhas, mapas e ajustes vão juntos num documento só ('ako'): uma leitura por página em vez de três.
+     Na primeira vez, /nuvem.js traz o que estava nos três documentos antigos. */
+  var PARTES = ['trilhas', 'mapas', 'ajustes'];
+  var parte = function (o, p) { return (o && o[p]) || {}; };
+  var AKO = {
+    ler: function () { var o = {}; PARTES.forEach(function (p) { o[p] = CFG[p].ler(); }); return o; },
+    temDados: function (o) { return PARTES.some(function (p) { return CFG[p].temDados(parte(o, p)); }); },
+    juntar: function (rem, loc) {
+      return {
+        trilhas: CFG.trilhas.juntar(parte(rem, 'trilhas'), parte(loc, 'trilhas')),
+        mapas: juntarMapas(rem && rem.mapas, loc && loc.mapas),
+        ajustes: CFG.ajustes.juntar(rem && rem.ajustes, loc && loc.ajustes)
+      };
+    },
+    antigos: { apps: PARTES, juntar: function (e) { return { trilhas: e.trilhas || {}, mapas: e.mapas || null, ajustes: e.ajustes || null }; } }
+  };
+  var COTA_AVISADA = 'rizzygo-nuvem-cota-avisada';
   function criarApps(m) {
-    Object.keys(CFG).forEach(function (app) {
-      var c = CFG[app];
-      apps[app] = m.criar({
-        app: app, meta: meta(app),
-        salvarMeta: function (x) { gravar('rizzygo-nuvem-' + app + '-v1', x); },
-        ler: c.ler, temDados: c.temDados, juntar: c.juntar,
-        paraNuvem: function (e) { return e; },
-        daNuvem: function (rem) { return rem; },
-        aplicar: function (e, avisar) {
-          c.gravar(e);
-          lembrar();
-          avisarPagina(app);
-          if (avisar && app !== 'ajustes') toast('Trouxe seu progresso da conta.');
-        },
-        aoMudar: function () { desenhar(); }
-      });
+    apps.ako = m.criar({
+      app: 'ako', meta: meta('ako'), releitura: 600000, // trilhas, mapas e ajustes quase não mudam: relê a cada 10 min por aba
+      salvarMeta: function (x) { gravar('rizzygo-nuvem-ako-v1', x); },
+      ler: AKO.ler, temDados: AKO.temDados, juntar: AKO.juntar, antigos: AKO.antigos,
+      paraNuvem: function (e) { return e; },
+      daNuvem: function (rem) { return rem; },
+      aplicar: function (e, avisar) {
+        var antes = AKO.ler(), mudou = false;
+        PARTES.forEach(function (p) { if (e && e[p] !== undefined) CFG[p].gravar(e[p]); });
+        var depois = AKO.ler();
+        lembrar();
+        ['trilhas', 'mapas'].forEach(function (p) {
+          if (JSON.stringify(antes[p]) !== JSON.stringify(depois[p])) { mudou = true; avisarPagina(p); }
+        });
+        if (avisar && mudou) toast('Trouxe seu progresso da conta.');
+      },
+      aoMudar: function () {
+        desenhar();
+        // Cota cheia: avisa uma vez por dia, em qualquer página, para a pessoa não achar que a internet caiu.
+        if (meta('ako').erro !== m.AVISO_COTA) return;
+        var hoje = new Date().toDateString();
+        if (ler(COTA_AVISADA) === hoje) return;
+        gravar(COTA_AVISADA, hoje); toast(m.AVISO_COTA);
+      }
     });
   }
 
   function carregar() {
     if (mod) return Promise.resolve(mod);
-    if (!carregando) carregando = import('/nuvem.js?v=2026111101').then(function (m) {
+    if (!carregando) carregando = import('/nuvem.js?v=2026111105').then(function (m) {
       mod = m;
       criarApps(m);
       m.aoMudarConta(function (u) { usuario = u; conhecido = true; desenhar(); });
@@ -192,6 +217,7 @@
     '.conta-toast{position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%);z-index:60;max-width:calc(100% - 32px);background:#0B1B3A;color:#FFFFFF;padding:.75rem 1.1rem;border-radius:10px;font-family:"Atkinson Hyperlegible",system-ui,sans-serif;box-shadow:0 10px 30px rgba(0,0,0,.25)}' +
     '.conta-painel{border:1px solid rgba(31,79,216,.25);border-radius:10px;padding:.9rem 1rem;margin:1rem 0}' +
     '.conta-painel p{margin:0 0 .6rem}.conta-painel .acoes{margin-top:.4rem}' +
+    '.conta-painel .conta-msg:not(:empty){padding:.55rem .75rem;border-radius:10px;background:#FDECEA;color:#B42318}' +
     '@media (max-width:380px){.conta-entrar{padding-left:.6rem;padding-right:.6rem}}';
   document.head.appendChild(css);
 
@@ -359,12 +385,13 @@
     var roteiro = el.getAttribute('data-contexto') === 'roteiro';
     if (usuario) {
       var quem = esc(usuario.email || usuario.nome || 'Google');
-      var m = meta('trilhas');
-      var quando = m.sincronizadoEm ? ' Última cópia: ' + new Date(m.sincronizadoEm).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) + '.' : '';
+      var m = meta('ako');
+      var quando = m.sincronizadoEm && mod ? ' Salvo na nuvem ' + mod.haQuanto(m.sincronizadoEm) + '.' : '';
       return roteiro
         ? '<p><strong>Roteiro salvo na sua conta</strong> (' + quem + '). Abra o Ako em outro aparelho, entre com a mesma conta e continue de onde parou.</p>'
         : '<p>Você entrou como <strong>' + quem + '</strong>. Roteiro, trilhas, mapas, Rotina e ajustes (tema e som) ficam salvos nessa conta.' + quando + '</p>' +
-          '<div class="acoes"><button class="btn btn-sec" type="button" data-conta="sair">Sair da conta</button><button class="btn btn-perigo" type="button" data-conta="apagar">Apagar conta e dados da nuvem</button></div>' +
+          (m.erro ? '<p class="conta-msg">' + esc(m.erro) + '</p>' : '') +
+          '<div class="acoes"><button class="btn btn-sec" type="button" data-conta="atualizar">Atualizar agora</button><button class="btn btn-sec" type="button" data-conta="sair">Sair da conta</button><button class="btn btn-perigo" type="button" data-conta="apagar">Apagar conta e dados da nuvem</button></div>' +
           '<p class="conta-msg" data-conta-msg role="alert"></p>';
     }
     return roteiro
@@ -391,6 +418,14 @@
     var painel = b.closest('[data-conta-painel]');
     var aviso = painel && painel.querySelector('[data-conta-msg]');
     if (acao === 'entrar') abrir();
+    else if (acao === 'atualizar' && apps.ako) {
+      b.disabled = true;
+      apps.ako.atualizar().then(function (ok) {
+        if (ok) toast('Tudo em dia com a sua conta.');
+        else if (aviso) aviso.textContent = meta('ako').erro || 'Não deu para atualizar agora. Tente de novo.';
+        b.disabled = false;
+      });
+    }
     else if (acao === 'sair' && mod) {
       b.disabled = true;
       mod.sairDaConta().then(function () { toast('Você saiu. O progresso segue neste navegador.'); }, function () { b.disabled = false; if (aviso) aviso.textContent = 'Não deu para sair agora. Tente de novo.'; });
@@ -407,9 +442,9 @@
   /* ---------- sincronização enquanto a página está aberta ---------- */
   // Entrou por outro lugar (Ajustes da Rotina): trilhas e mapas ligam junto.
   window.addEventListener('rizzygo-conta', function () { carregar().catch(function () { }); });
-  window.addEventListener('rizzygo-salvou', function (ev) { lembrar(); var a = apps[ev.detail]; if (a) a.mudou(); });
+  window.addEventListener('rizzygo-salvou', function (ev) { lembrar(); if (apps.ako && PARTES.indexOf(ev.detail) >= 0) apps.ako.mudou(); });
   document.addEventListener('visibilitychange', function () {
-    if (!document.hidden) conferirOutraAba();
+    if (!document.hidden) { conferirOutraAba(); desenhar(); } // "salvo há X min" em dia
     Object.keys(apps).forEach(function (k) { if (document.hidden) apps[k].agora(); else apps[k].puxar(); });
   });
 

@@ -1072,20 +1072,28 @@
       $('nuvem-usar-aparelho').onclick = function () { fim('aparelho'); };
     });
   }
+  var nuvemMod = null, ultimoSt = null;
   function mostrarNuvem(st) {
+    ultimoSt = st;
     var dentro = !!(st && st.usuario && metaNuvem.ligado);
     $('nuvem-fora').hidden = dentro; $('nuvem-entrar-box').hidden = dentro;
     $('nuvem-dentro').hidden = !dentro; $('nuvem-acoes').hidden = !dentro; $('nuvem-apagar-box').hidden = !dentro;
     $('nuvem-saude').checked = !!metaNuvem.aceites.saude; $('nuvem-reflexoes').checked = !!metaNuvem.aceites.reflexoes;
     if (dentro) {
       $('nuvem-quem').textContent = 'Salvando na nuvem com a conta ' + (st.usuario.email || st.usuario.nome || 'Google') + '.';
-      $('nuvem-quando').textContent = metaNuvem.sincronizadoEm ? 'Última cópia: ' + new Date(metaNuvem.sincronizadoEm).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) + '.' : 'Enviando a primeira cópia.';
+      $('nuvem-quando').textContent = metaNuvem.sincronizadoEm && nuvemMod ? 'Salvo na nuvem ' + nuvemMod.haQuanto(metaNuvem.sincronizadoEm) + '.' : 'Enviando a primeira cópia.';
     }
     $('nuvem-estado').textContent = (st && st.falha) || metaNuvem.erro || '';
+    // Cota grátis da nuvem cheia: a Zumi avisa uma vez por dia (a mesma marca do topo, /conta.js), para não parecer falta de internet.
+    if (nuvemMod && metaNuvem.erro === nuvemMod.AVISO_COTA) {
+      var hoje = new Date().toDateString(), marca = 'rizzygo-nuvem-cota-avisada';
+      try { if (JSON.parse(localStorage.getItem(marca) || 'null') !== hoje) { localStorage.setItem(marca, JSON.stringify(hoje)); falar(nuvemMod.AVISO_COTA, 'ola', true); } } catch (e) { }
+    }
   }
   function abrirNuvem() {
     if (nuvem) return Promise.resolve(nuvem);
-    if (!carregandoNuvem) carregandoNuvem = import('/nuvem.js?v=2026111101').then(function (m) {
+    if (!carregandoNuvem) carregandoNuvem = import('/nuvem.js?v=2026111105').then(function (m) {
+      nuvemMod = m;
       nuvem = m.criar({
         app: 'rotina', meta: metaNuvem, salvarMeta: salvarMeta,
         ler: function () { return S; }, temDados: temDados, aplicar: aplicarNuvem,
@@ -1120,6 +1128,12 @@
   }
   $('nuvem-baixar').addEventListener('click', baixar);
   $('nuvem-baixar2').addEventListener('click', baixar);
+  $('nuvem-atualizar').addEventListener('click', function () {
+    var b = this;
+    if (!nuvem) return;
+    b.disabled = true;
+    nuvem.atualizar().then(function (ok) { b.disabled = false; if (ok) $('nuvem-estado').textContent = 'Tudo em dia com a nuvem.'; });
+  });
   $('nuvem-sair').addEventListener('click', function () {
     if (nuvem) nuvem.sair().then(function () { falar('Saiu da conta. A rotina segue neste aparelho.', 'ola', true); });
   });
@@ -1929,7 +1943,7 @@
     if (chaveDia() !== ultimoDia) { ultimoDia = chaveDia(); var r = fecharDias(); podar(); salvar(); render(); falar(saudacao(), 'ola'); avisarFechamento(r); }
   }
   var lento = 0;
-  setInterval(function () { tick(); if (++lento % 30 === 0) { salvar(); renderLembretes(); } }, 1000);
+  setInterval(function () { tick(); if (++lento % 30 === 0) { salvar(); renderLembretes(); if (ultimoSt) mostrarNuvem(ultimoSt); } }, 1000);
   document.addEventListener('visibilitychange', function () {
     if (!document.hidden) { releSeMudou(); tick(); render(); if (nuvem) nuvem.puxar(); } else { salvar(); if (nuvem) nuvem.agora(); }
   });

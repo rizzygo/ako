@@ -9,11 +9,12 @@ service cloud.firestore {
       return request.auth != null && request.auth.uid == uid;
     }
 
-    // Ako: cada pessoa lê e grava só os próprios documentos.
+    // Ako: cada pessoa lê e grava só os próprios documentos. 'ako' junta trilhas, mapas e ajustes
+    // (desde 11/11/2026); os três antigos continuam liberados para quem ainda está com a versão anterior.
     match /users/{uid}/apps/{app} {
       function valido() {
         let d = request.resource.data;
-        return app in ['rotina', 'trilhas', 'mapas', 'ajustes']
+        return app in ['rotina', 'ako', 'trilhas', 'mapas', 'ajustes']
           && d.keys().hasOnly(['dados', 'cliente', 'aceites', 'versao', 'atualizadoEm'])
           && d.dados is string && d.dados.size() < 900000
           && d.cliente is int
