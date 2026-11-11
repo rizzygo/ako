@@ -215,11 +215,13 @@ textarea{width:100%;resize:vertical}
 .tarefa-txt small.idade.forte,.pendentes small.idade.forte{color:var(--ambar-tinta);background:var(--ambar)}
 .pendentes small.idade{display:inline-block;margin-left:.5rem;font-size:.75rem;font-weight:700;color:var(--azul);background:var(--azul-claro);border-radius:999px;padding:0 .5rem;vertical-align:middle}
 .tarefa:has(.parada){flex-wrap:wrap}
-.parada{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .5rem;background:var(--ambar-claro);border-radius:10px;padding:.5rem .6rem;margin-top:.2rem}
-.parada p{flex-basis:100%;margin:0;font-weight:700}
-.parada .btn{padding:.3rem .7rem;font-size:.88rem}
+/* botões em grade de 2 colunas, como o menu ⋯ do Sem data */
+.parada{flex-basis:100%;display:grid;grid-template-columns:1fr 1fr;gap:.5rem;background:var(--ambar-claro);border-radius:10px;padding:.6rem;margin-top:.2rem}
+.parada p{grid-column:1/-1;margin:0;font-weight:700}
+.parada .btn,.ficou .pendentes .btn{width:100%;min-height:2.4rem;justify-content:center;text-align:center;padding:.35rem .6rem;font-size:.9rem}
 .idade{white-space:nowrap}
-.ficou .pendentes li span{flex-basis:100%}
+.ficou .pendentes li{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.ficou .pendentes li span{grid-column:1/-1}
 /* O que ficou hoje (Fim do dia) */
 .ficou{display:grid;gap:.6rem;border-top:1px solid var(--linha);margin-top:1rem;padding-top:1rem}
 .ficou[hidden]{display:none}

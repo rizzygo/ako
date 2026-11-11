@@ -1371,9 +1371,9 @@
       var b = document.createElement('button'); b.type = 'button'; b.className = 'btn ' + cls; b.textContent = txt;
       b.addEventListener('click', fn); box.appendChild(b);
     }
-    bt('Fica hoje', 'btn-sec', function () { t.mantida = chaveDia(); salvar(); render(); falar('Combinado: "' + t.texto + '" fica na lista de hoje.', 'ideia'); });
-    bt('Amanhã', 'btn-sec', function () { t.dia = amanhaChave(); delete t.mantida; salvar(); render(); falar('"' + t.texto + '" fica para amanhã.', 'ideia'); });
-    bt('Sem data', 'btn-sec', function () { paraSemData(t); });
+    bt('☀️ Fica hoje', 'btn-sec', function () { t.mantida = chaveDia(); salvar(); render(); falar('Combinado: "' + t.texto + '" fica na lista de hoje.', 'ideia'); });
+    bt('🌙 Amanhã', 'btn-sec', function () { t.dia = amanhaChave(); delete t.mantida; salvar(); render(); falar('"' + t.texto + '" fica para amanhã.', 'ideia'); });
+    bt('📌 Sem data', 'btn-sec', function () { paraSemData(t); });
     bt('Tirar', 'btn-perigo', function () { tirarTarefa(t); });
     return box;
   }
@@ -1496,7 +1496,7 @@
       var li = document.createElement('li');
       var sp = document.createElement('span'); sp.textContent = (t.prio ? '★ ' : '') + t.texto;
       if (t.dia && t.dia < chaveDia()) { var n = diasDesde(t.dia), sm = document.createElement('small'); sm.className = 'idade' + (n >= PARADA ? ' forte' : ''); sm.textContent = idadeTexto(n); sp.appendChild(sm); }
-      var sd = document.createElement('button'); sd.type = 'button'; sd.className = 'btn btn-sec'; sd.textContent = 'Sem data';
+      var sd = document.createElement('button'); sd.type = 'button'; sd.className = 'btn btn-sec'; sd.textContent = '📌 Sem data';
       sd.addEventListener('click', function () { paraSemData(t); });
       var r = document.createElement('button'); r.type = 'button'; r.className = 'btn btn-perigo'; r.textContent = 'Tirar';
       r.addEventListener('click', function () { tirarTarefa(t); });
