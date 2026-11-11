@@ -95,6 +95,7 @@
     if (typeof s.pontosAntigos !== 'number') s.pontosAntigos = 0;
     if (!s.criadoEm) s.criadoEm = Object.keys(s.dias).sort()[0] || chaveDia();
     if (typeof s.melhor !== 'number') s.melhor = 0;
+    darPosicoes(s.tarefas);
     return s;
   }
 
@@ -800,6 +801,7 @@
     });
     renderLembretes();
     renderTarefas(); renderMetas(); renderHoje();
+    voltarFoco();
   }
 
   // ---------- Configurações nos campos ----------
@@ -1185,7 +1187,7 @@
   }
   function renderAmanhaFim() {
     var am = amanhaChave(), ul = $('fim-amanha-lista'); ul.innerHTML = '';
-    S.tarefas.filter(function (t) { return !t.rotina && t.dia === am; }).forEach(function (t) { ul.appendChild(linhaTarefa(t, { amanha: true })); });
+    S.tarefas.filter(function (t) { return !t.rotina && t.dia === am; }).sort(porPos).forEach(function (t) { ul.appendChild(linhaTarefa(t, { amanha: true })); });
     var n = ul.children.length;
     $('b-amanha').textContent = n ? '📝 Amanhã: ' + n + (n === 1 ? ' tarefa' : ' tarefas') + '. Mais alguma?' : '📝 Tem algo para amanhã?';
   }
@@ -1193,11 +1195,49 @@
   // ---------- Tarefas e rotinas ----------
   function amanhaChave() { var d = new Date(); d.setDate(d.getDate() + 1); return chaveDia(d); }
   function novoId(p) { return p + Date.now().toString(36) + Math.floor(Math.random() * 1000); }
+  // ---------- Ordem das tarefas ----------
+  // Cada tarefa guarda a própria posição (pos). Mover uma tarefa muda só o pos dela (o meio entre as
+  // vizinhas), então a junção de mudanças (/mesclar.js) não perde o que outra aba ou aparelho mexeu.
+  function posDe(t) { return typeof t.pos === 'number' ? t.pos : 0; }
+  function porPos(a, b) { return posDe(a) - posDe(b); }
+  function limitesPos(l) {
+    var ps = l.filter(function (t) { return typeof t.pos === 'number'; }).map(posDe);
+    return ps.length ? [Math.min.apply(null, ps), Math.max.apply(null, ps)] : [0, 0];
+  }
+  // Tarefas de antes desta versão ganham posição na ordem que já apareciam: prioridades, depois o resto, rotinas no fim.
+  function darPosicoes(l) {
+    var sem = l.filter(function (t) { return typeof t.pos !== 'number'; });
+    if (!sem.length) return;
+    if (sem.length === l.length) {
+      l.map(function (t, i) { return [t, i]; })
+        .sort(function (a, b) { return (!!b[0].prio - !!a[0].prio) || (!!a[0].rotina - !!b[0].rotina) || (a[1] - b[1]); })
+        .forEach(function (x, i) { x[0].pos = i + 1; });
+      return;
+    }
+    var lim = limitesPos(l);
+    sem.forEach(function (t) { if (t.prio) t.pos = --lim[0]; else t.pos = ++lim[1]; });
+  }
+  function proTopo(t) { t.pos = limitesPos(S.tarefas)[0] - 1; }
+  // Põe a tarefa na posição i da lista mostrada (lista sem ela). Vizinhas com o mesmo pos: renumera tudo uma vez.
+  function moverPara(t, lista, i) {
+    var outras = lista.filter(function (x) { return x.id !== t.id; });
+    i = Math.max(0, Math.min(i, outras.length));
+    var a = outras[i - 1], b = outras[i], p;
+    if (!a && !b) return false;
+    p = !a ? posDe(b) - 1 : !b ? posDe(a) + 1 : (posDe(a) + posDe(b)) / 2;
+    if (a && b && !(p > posDe(a) && p < posDe(b))) {
+      S.tarefas.slice().sort(porPos).forEach(function (x, k) { x.pos = k + 1; });
+      return moverPara(t, lista, i);
+    }
+    if (p === t.pos) return false;
+    t.pos = p;
+    return true;
+  }
   function feitaHoje(t) { return t.rotina ? !!dia().feitas[t.id] : t.feita === chaveDia(); }
   function visiveisHoje() {
     var hoje = chaveDia();
     return S.tarefas.filter(function (t) { return t.rotina || (!!t.dia && t.dia <= hoje && (!t.feita || t.feita === hoje)); })
-      .sort(function (a, b) { return (feitaHoje(a) - feitaHoje(b)) || (b.prio - a.prio) || (a.rotina - b.rotina); });
+      .sort(function (a, b) { return (feitaHoje(a) - feitaHoje(b)) || porPos(a, b); });
   }
   function marcarTarefa(t) {
     var hoje = chaveDia(), liga = !feitaHoje(t), pts = t.prio ? 5 : 3;
@@ -1216,6 +1256,8 @@
   function linhaTarefa(t, opcoes) {
     var li = document.createElement('li'), feita = opcoes.amanha ? false : feitaHoje(t), hoje = chaveDia();
     li.className = 'tarefa' + (feita ? ' feita' : '') + (t.prio ? ' prio' : '');
+    li.dataset.id = t.id;
+    if (opcoes.lista && !feita && opcoes.lista.length > 1) alca(li, t, opcoes.lista);
     if (!opcoes.amanha) {
       var cb = document.createElement('button'); cb.type = 'button'; cb.className = 'marca-tarefa';
       cb.setAttribute('aria-pressed', String(feita)); cb.setAttribute('aria-label', (feita ? 'Desmarcar: ' : 'Concluir: ') + t.texto);
@@ -1229,7 +1271,7 @@
     var pr = document.createElement('button'); pr.type = 'button'; pr.className = 'prio-bt'; pr.textContent = t.prio ? '★' : '☆';
     pr.setAttribute('aria-pressed', String(!!t.prio)); pr.setAttribute('aria-label', 'Prioridade: ' + t.texto);
     pr.title = t.prio ? 'Tirar a prioridade' : 'Marcar como prioridade';
-    pr.addEventListener('click', function () { t.prio = !t.prio; salvar(); render(); });
+    pr.addEventListener('click', function () { t.prio = !t.prio; if (t.prio) proTopo(t); salvar(); render(); });
     li.appendChild(pr);
     var x = document.createElement('button'); x.type = 'button'; x.className = 'tirar-bt'; x.textContent = '×';
     x.setAttribute('aria-label', 'Remover: ' + t.texto);
@@ -1237,13 +1279,120 @@
     if (!opcoes.curta) li.appendChild(x);
     return li;
   }
+  // Alça ⠿ no começo do card. Arrastar (dedo ou mouse) muda a ordem dentro da mesma lista.
+  // Sem arrastar: um toque na alça mostra ▲ e ▼; no teclado, as setas para cima e para baixo movem.
+  var movendo = null, focoDepois = null;
+  function alca(li, t, lista) {
+    var h = document.createElement('button'); h.type = 'button'; h.className = 'alca'; h.textContent = '⠿';
+    h.setAttribute('aria-label', 'Mudar a ordem: ' + t.texto + '. Use as setas para cima e para baixo.');
+    h.setAttribute('aria-expanded', String(movendo === t.id));
+    h.title = 'Arraste para mudar a ordem';
+    li.appendChild(h);
+    h.addEventListener('keydown', function (e) {
+      var passo = e.key === 'ArrowUp' ? -1 : e.key === 'ArrowDown' ? 1 : 0;
+      if (!passo) return;
+      e.preventDefault(); passo1(t, lista, passo, 'alca');
+    });
+    h.addEventListener('click', function () {
+      if (h.dataset.arrastou) { delete h.dataset.arrastou; return; }
+      movendo = movendo === t.id ? null : t.id; focoDepois = { id: t.id, cls: 'alca' }; render();
+    });
+    arrastar(h, li);
+    if (movendo !== t.id) return;
+    li.classList.add('movendo');
+    var i = lista.indexOf(t);
+    [['▲', -1, 'Subir: '], ['▼', 1, 'Descer: ']].forEach(function (b) {
+      var x = document.createElement('button'); x.type = 'button'; x.className = 'seta-bt seta' + (b[1] < 0 ? '-sobe' : '-desce');
+      x.textContent = b[0]; x.setAttribute('aria-label', b[2] + t.texto);
+      x.disabled = b[1] < 0 ? i <= 0 : i >= lista.length - 1;
+      x.addEventListener('click', function () { passo1(t, lista, b[1], x.className.split(' ')[1]); });
+      li.appendChild(x);
+    });
+    var pronto = document.createElement('button'); pronto.type = 'button'; pronto.className = 'btn btn-sec btn-mini pronto-bt'; pronto.textContent = 'Pronto';
+    pronto.addEventListener('click', function () { movendo = null; focoDepois = { id: t.id, cls: 'alca' }; render(); });
+    li.appendChild(pronto);
+  }
+  function passo1(t, lista, passo, cls) {
+    var i = lista.indexOf(t) + passo;
+    if (i < 0 || i >= lista.length) return;
+    if (!moverPara(t, lista, i)) return;
+    focoDepois = { id: t.id, cls: cls };
+    salvar(); render();
+  }
+  // Depois de redesenhar, o foco volta para o mesmo botão do mesmo card (teclado e leitor de tela não se perdem).
+  function voltarFoco() {
+    if (!focoDepois) return;
+    var f = focoDepois; focoDepois = null;
+    var vis = [].slice.call(document.querySelectorAll('.tarefa[data-id="' + f.id + '"]')).filter(function (x) { return x.offsetParent; });
+    var li = vis[0], b = li && (li.querySelector('.' + f.cls + ':not([disabled])') || li.querySelector('.alca'));
+    if (b) b.focus();
+  }
+  function arrastar(h, li) {
+    var ul, y0, yTela0, topo0, ultimoY, rodando = false, ativo = false, id = null;
+    function irmaos() { return [].slice.call(ul.children).filter(function (x) { return x !== li && x.querySelector('.alca'); }); }
+    function posicionar() {
+      var meio = topo0 + (ultimoY + window.scrollY - y0) + li.offsetHeight / 2, antes = null;
+      irmaos().some(function (x) { var r = x.getBoundingClientRect(); if (meio < r.top + window.scrollY + r.height / 2) { antes = x; return true; } return false; });
+      var ultimoMovel = irmaos().pop();
+      if (antes) { if (li.nextElementSibling !== antes) ul.insertBefore(li, antes); }
+      else if (ultimoMovel && ultimoMovel.nextElementSibling !== li) ul.insertBefore(li, ultimoMovel.nextElementSibling);
+      li.style.transform = '';
+      var natural = li.getBoundingClientRect().top + window.scrollY;
+      li.style.transform = 'translateY(' + (topo0 + (ultimoY + window.scrollY - y0) - natural) + 'px)';
+    }
+    // perto da borda da tela, a página rola sozinha (no celular a barra de baixo ocupa uns 80px).
+    // Só rola para o lado em que o dedo andou: pegar um card já perto da borda não faz a página fugir.
+    function rolar() {
+      if (!ativo) { rodando = false; return; }
+      var v = ultimoY < 70 && ultimoY < yTela0 - 20 ? -12 : ultimoY > window.innerHeight - 100 && ultimoY > yTela0 + 20 ? 12 : 0;
+      if (v) { window.scrollBy(0, v); posicionar(); }
+      requestAnimationFrame(rolar);
+    }
+    h.addEventListener('pointerdown', function (e) {
+      if (e.button !== 0 || id !== null) return;
+      id = e.pointerId; ul = li.parentNode; y0 = e.clientY + window.scrollY; ultimoY = yTela0 = e.clientY;
+      topo0 = li.getBoundingClientRect().top + window.scrollY; ativo = false;
+      // escuta no documento: mover o card na lista tira a captura do ponteiro da alça
+      document.addEventListener('pointermove', mexe, { passive: false });
+      document.addEventListener('pointerup', fim); document.addEventListener('pointercancel', fim);
+    });
+    function mexe(e) {
+      if (e.pointerId !== id) return;
+      ultimoY = e.clientY;
+      if (!ativo) {
+        if (Math.abs(e.clientY + window.scrollY - y0) < 6) return;
+        ativo = true; li.classList.add('arrastando'); ul.classList.add('ordenando');
+        if (!rodando) { rodando = true; requestAnimationFrame(rolar); }
+      }
+      e.preventDefault(); posicionar();
+    }
+    function fim(e) {
+      if (e.pointerId !== id) return;
+      id = null;
+      document.removeEventListener('pointermove', mexe, { passive: false });
+      document.removeEventListener('pointerup', fim); document.removeEventListener('pointercancel', fim);
+      if (!ativo) return;
+      ativo = false; h.dataset.arrastou = '1';
+      setTimeout(function () { delete h.dataset.arrastou; }, 400);
+      li.classList.remove('arrastando'); ul.classList.remove('ordenando'); li.style.transform = '';
+      if (!li.isConnected || e.type === 'pointercancel') { render(); return; }
+      // a ordem nova vem da tela; as tarefas vêm do estado atual (outra aba pode ter gravado no meio)
+      var ids = [].slice.call(ul.children).filter(function (x) { return x.querySelector('.alca'); }).map(function (x) { return x.dataset.id; });
+      var lista = ids.map(function (k) { return S.tarefas.filter(function (x) { return x.id === k; })[0]; }).filter(Boolean);
+      var t = lista.filter(function (x) { return x.id === li.dataset.id; })[0];
+      var resto = lista.filter(function (x) { return x !== t; }).sort(porPos);
+      if (t && moverPara(t, resto, lista.indexOf(t))) { focoDepois = null; salvar(); }
+      render();
+    }
+  }
   function renderTarefas() {
     var lista = visiveisHoje(), feitas = lista.filter(feitaHoje), hoje = chaveDia(), am = amanhaChave();
     var ul = $('tarefas'); ul.innerHTML = '';
-    lista.forEach(function (t) { ul.appendChild(linhaTarefa(t, {})); });
+    var moveis = lista.filter(function (t) { return !feitaHoje(t); });
+    lista.forEach(function (t) { ul.appendChild(linhaTarefa(t, { lista: moveis })); });
     var prios = lista.filter(function (t) { return t.prio; });
     $('tarefas-resumo').textContent = lista.length
-      ? feitas.length + ' de ' + lista.length + ' feitas' + (prios.length ? ', ' + prios.filter(feitaHoje).length + ' de ' + prios.length + ' prioridades.' : '.') + ' Toque na estrela para mudar a prioridade.'
+      ? feitas.length + ' de ' + lista.length + ' feitas' + (prios.length ? ', ' + prios.filter(feitaHoje).length + ' de ' + prios.length + ' prioridades.' : '.') + ' Toque na estrela para mudar a prioridade. Arraste pelo ⠿ para mudar a ordem.'
       : 'Nada na lista. Tarefa some quando você conclui. Rotina volta todo dia.';
 
     // revisão do fim do dia
@@ -1299,8 +1448,9 @@
     }
     $('cal-titulo').textContent = calDia === hoje ? 'Hoje' : calDia === am ? 'Amanhã, ' + dataCurta(calDia) : dataCurta(calDia).replace(/^./, function (c) { return c.toUpperCase(); });
     var ul = $('cal-lista'); ul.innerHTML = '';
-    var doDia = calDia === hoje ? visiveisHoje().filter(function (t) { return !t.rotina; }) : S.tarefas.filter(function (t) { return !t.rotina && t.dia === calDia; });
-    doDia.forEach(function (t) { ul.appendChild(linhaTarefa(t, calDia === hoje ? {} : { amanha: true })); });
+    var doDia = calDia === hoje ? visiveisHoje().filter(function (t) { return !t.rotina; }) : S.tarefas.filter(function (t) { return !t.rotina && t.dia === calDia; }).sort(porPos);
+    var moveis = calDia === hoje ? doDia.filter(function (t) { return !feitaHoje(t); }) : doDia;
+    doDia.forEach(function (t) { ul.appendChild(linhaTarefa(t, calDia === hoje ? { lista: moveis } : { amanha: true, lista: moveis })); });
     $('cal-vazio').hidden = doDia.length > 0;
     $('cal-add').textContent = calDia === hoje ? 'Adicionar hoje' : 'Adicionar em ' + dataCurta(calDia).split(',')[1].trim();
   }
@@ -1321,6 +1471,7 @@
   function addTarefa(texto, prio, rotina, quando, grupo) {
     var t = { id: novoId('t'), texto: texto, prio: prio, rotina: rotina, dia: quando, feita: null };
     if (!quando) { t.grupo = grupo || null; t.criada = chaveDia(); }
+    if (prio) proTopo(t); else t.pos = limitesPos(S.tarefas)[1] + 1;
     S.tarefas.push(t);
     salvar(); render();
   }
@@ -1343,13 +1494,13 @@
   function grupoDe(id) { return S.grupos.filter(function (g) { return g.id === id; })[0] || null; }
   function nomeGrupo(g) { return g.emoji + ' ' + g.nome; }
   function dias(desde) { return Math.round((new Date(chaveDia() + 'T12:00') - new Date(desde + 'T12:00')) / 86400000); }
-  function ordemSemData(a, b) { return (feitaHoje(a) - feitaHoje(b)) || (b.prio - a.prio); }
+  function ordemSemData(a, b) { return (feitaHoje(a) - feitaHoje(b)) || porPos(a, b); }
 
   // Linha compacta: concluir, texto, Hoje, estrela e "Mais" (escolher dia, mudar de grupo, remover).
   // Assim a lista fica leve no celular e as ações menos usadas não ocupam espaço.
   var semDataAberta = null;
-  function linhaSemData(t) {
-    var li = linhaTarefa(t, {}), hoje = chaveDia();
+  function linhaSemData(t, lista) {
+    var li = linhaTarefa(t, { lista: lista }), hoje = chaveDia();
     li.classList.add('semdata');
     var tirar = li.querySelector('.tirar-bt'); if (tirar) tirar.remove();
     if (t.criada && dias(t.criada) > 30 && !t.feita) {
@@ -1447,7 +1598,8 @@
         sec.appendChild(h);
       }
       var ul = document.createElement('ul'); ul.className = 'tarefas';
-      itens.forEach(function (t) { ul.appendChild(linhaSemData(t)); });
+      var moveis = itens.filter(function (t) { return !t.feita; });
+      itens.forEach(function (t) { ul.appendChild(linhaSemData(t, moveis)); });
       sec.appendChild(ul); box.appendChild(sec);
     });
     var vazio = $('semdata-vazio'); vazio.hidden = mostrou > 0;
