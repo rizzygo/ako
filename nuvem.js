@@ -12,6 +12,10 @@ import {
   getFirestore, doc, getDoc, setDoc, deleteDoc, serverTimestamp
 } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore-lite.js';
 
+// Junta duas versões que mudaram ao mesmo tempo (ver /mesclar.js, que também serve a Rotina entre abas).
+import '/mesclar.js?v=2026111101';
+const mesclar = globalThis.RizzygoMesclar;
+
 const CONFIG = {
   apiKey: 'AIzaSyAnvFI3ZadinkXMr3F9fIO7vUeui8fIRss',
   authDomain: 'rizzygo-webapp.firebaseapp.com',
@@ -145,14 +149,21 @@ export function criar(cfg) {
 
   async function enviar(ja) {
     timer = null;
-    if (!usuario || gravando) return;
+    if (!usuario) return;
+    if (gravando) { timer = setTimeout(enviar, ESPERA); return; } // grava depois, para a mudança não se perder
     const falta = ultimaGravacao + INTERVALO - Date.now();
     if (!ja && falta > 0) { timer = setTimeout(enviar, falta); return; }
-    const texto = JSON.stringify(cfg.paraNuvem(cfg.ler(), meta.aceites));
-    if (texto === meta.ultimo) return;
+    if (JSON.stringify(cfg.paraNuvem(cfg.ler(), meta.aceites)) === meta.ultimo) return;
     gravando = true;
-    const quando = Date.now();
     try {
+      // Outro aparelho gravou depois da última cópia em comum: junta antes, para não apagar o que ele mandou.
+      // (meta.ultimo vazio = esta cópia deve valer inteira: primeira cópia ou "manter o aparelho".)
+      if (meta.ultimo !== null) {
+        const snap = await getDoc(ref(usuario.uid));
+        if (snap.exists() && snap.data().dados !== meta.ultimo) { gravando = false; await puxarAgora(false); return; }
+      }
+      const texto = JSON.stringify(cfg.paraNuvem(cfg.ler(), meta.aceites));
+      const quando = Date.now();
       await setDoc(ref(usuario.uid), { dados: texto, cliente: quando, aceites: meta.aceites, versao: 1, atualizadoEm: serverTimestamp() });
       meta.ultimo = texto; meta.sincronizadoEm = quando; meta.erro = null; ultimaGravacao = quando;
       cfg.salvarMeta(meta); avisa();
@@ -161,26 +172,47 @@ export function criar(cfg) {
     } finally { gravando = false; }
   }
 
-  // Primeira vez neste aparelho: se a nuvem já tem dados e o aparelho também, a página pergunta.
-  async function puxar(primeira) {
+  // Traz a cópia da nuvem. Se os dois lados mudaram desde a última cópia em comum, junta os dois
+  // (mesclar) em vez de um apagar o outro. Primeira vez neste aparelho: se a nuvem já tem dados
+  // e o aparelho também, a página junta ou pergunta.
+  let puxando = null;
+  function puxar(primeira) {
+    if (!puxando) puxando = puxarAgora(primeira).finally(() => { puxando = null; });
+    return puxando;
+  }
+  async function puxarAgora(primeira) {
     const snap = await getDoc(ref(usuario.uid));
     if (!snap.exists()) { meta.ultimo = null; await enviar(true); return; }
     const remoto = snap.data();
     const localTexto = JSON.stringify(cfg.paraNuvem(cfg.ler(), meta.aceites));
-    const mudouAqui = meta.ultimo !== null && localTexto !== meta.ultimo;
     if (primeira && cfg.temDados(cfg.ler()) && cfg.juntar) {
       let rem = null;
       try { rem = JSON.parse(remoto.dados); } catch (e) { }
       if (rem) cfg.aplicar(cfg.juntar(rem, cfg.ler()), false);
       meta.ultimo = null; await enviar(true); return;
     }
-    if (primeira && cfg.temDados(cfg.ler())) {
-      const escolha = await cfg.perguntar(remoto.cliente);
-      if (escolha === 'aparelho') { meta.ultimo = null; await enviar(true); return; }
-    } else if (mudouAqui && (meta.mudouEm || 0) > remoto.cliente) { await enviar(true); return; }
     if (remoto.dados === localTexto) { meta.ultimo = localTexto; meta.sincronizadoEm = remoto.cliente; cfg.salvarMeta(meta); avisa(); return; }
     let estado;
     try { estado = JSON.parse(remoto.dados); } catch (e) { return; }
+    if (primeira && cfg.temDados(cfg.ler())) {
+      const escolha = await cfg.perguntar(remoto.cliente);
+      if (escolha === 'aparelho') { meta.ultimo = null; await enviar(true); return; }
+    } else if (!primeira) {
+      // Não usa o relógio dos aparelhos (podem estar desacertados): compara com a última cópia em comum.
+      const mudouAqui = localTexto !== meta.ultimo;
+      const mudouLa = remoto.dados !== meta.ultimo;
+      if (mudouAqui && !mudouLa) { await enviar(true); return; }
+      if (mudouAqui) {
+        let base = null;
+        try { base = meta.ultimo ? JSON.parse(meta.ultimo) : null; } catch (e) { base = null; }
+        const junto = mesclar(base, estado, JSON.parse(localTexto));
+        cfg.aplicar(cfg.daNuvem(cfg.ajustar ? cfg.ajustar(junto) : junto, cfg.ler(), meta.aceites), false);
+        meta.ultimo = remoto.dados; meta.sincronizadoEm = remoto.cliente; meta.erro = null;
+        cfg.salvarMeta(meta); avisa({ trouxe: true });
+        await enviar(true); // a nuvem recebe o que juntou
+        return;
+      }
+    }
     cfg.aplicar(cfg.daNuvem(estado, cfg.ler(), meta.aceites), !primeira);
     meta.ultimo = JSON.stringify(cfg.paraNuvem(cfg.ler(), meta.aceites));
     meta.sincronizadoEm = remoto.cliente; meta.erro = null;
@@ -217,7 +249,6 @@ export function criar(cfg) {
     mudou() {
       if (!usuario || !meta.ligado || timer) return;
       if (JSON.stringify(cfg.paraNuvem(cfg.ler(), meta.aceites)) === meta.ultimo) return;
-      if (!meta.mudouEm || meta.mudouEm < (meta.sincronizadoEm || 0)) { meta.mudouEm = Date.now(); cfg.salvarMeta(meta); }
       timer = setTimeout(enviar, ESPERA);
     },
     agora() { if (timer) { clearTimeout(timer); enviar(true); } },

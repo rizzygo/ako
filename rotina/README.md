@@ -88,6 +88,7 @@ Tarefa que não saiu e não passou pela revisão continua na lista no dia seguin
 
 - HTML, CSS e JavaScript puro, sem build, como o resto do Ako. Carrega o `ds/rizzygo.css` primeiro.
 - Os dados ficam no `localStorage` do aparelho, na chave `rizzygo-rotina-v1`. Entrar na conta é opcional: com ela, a Rotina guarda uma cópia na nuvem (`/nuvem.js`, Firebase), e remédios e reflexões só vão se a pessoa permitir. O app guarda os últimos 60 dias e mantém os pontos dos dias mais antigos. Tarefa concluída há mais de 60 dias sai dos dados.
+- Duas cópias abertas (duas abas, ou a aba e o atalho na tela inicial) e dois aparelhos na mesma conta não apagam a mudança um do outro: quando os dois lados mudaram, `/mesclar.js` junta campo a campo (o que só um lado mudou fica; contagem e pontos ficam com o maior; tarefa nova entra e tarefa apagada sai). Trilhas e mapas seguem a mesma regra.
 - É um PWA: `manifest.webmanifest` e `sw.js` deixam instalar na tela inicial e abrir sem internet.
 - O relógio usa o horário de término, não um contador. Se o navegador segurar a aba, o tempo continua certo quando ela volta.
 
