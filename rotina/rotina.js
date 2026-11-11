@@ -1323,7 +1323,7 @@
       else if (!opcoes.amanha && t.dia < hoje) { var v = document.createElement('small'); v.textContent = 'Veio de antes'; txt.appendChild(v); }
       if (!opcoes.curta) duploClique(txt, chave, t.texto, render);
       li.appendChild(txt);
-      if (!opcoes.curta) li.appendChild(caneta(chave, t.texto, t.texto, render));
+      if (!opcoes.curta && !opcoes.semCaneta) li.appendChild(caneta(chave, t.texto, t.texto, render));
     }
     var pr = document.createElement('button'); pr.type = 'button'; pr.className = 'prio-bt'; pr.textContent = t.prio ? '★' : '☆';
     pr.setAttribute('aria-pressed', String(!!t.prio)); pr.setAttribute('aria-label', 'Prioridade: ' + t.texto);
@@ -1538,7 +1538,8 @@
   // Assim a lista fica leve no celular e as ações menos usadas não ocupam espaço.
   var semDataAberta = null;
   function linhaSemData(t, lista) {
-    var li = linhaTarefa(t, { lista: lista }), hoje = chaveDia();
+    // No Sem data a linha fica curta (alça, marcar, texto, estrela, ⋯); o resto mora no menu ⋯.
+    var li = linhaTarefa(t, { lista: lista, semCaneta: true }), hoje = chaveDia();
     li.classList.add('semdata');
     var tirar = li.querySelector('.tirar-bt'); if (tirar) tirar.remove();
     if (t.criada && dias(t.criada) > 30 && !t.feita) {
@@ -1547,27 +1548,34 @@
       var tx = li.querySelector('.tarefa-txt'); if (tx) tx.appendChild(v);
     }
     if (t.feita) return li;
-    var pr = li.querySelector('.prio-bt');
-    var h = document.createElement('button'); h.type = 'button'; h.className = 'btn btn-sec btn-mini hoje-bt'; h.textContent = 'Hoje';
-    h.setAttribute('aria-label', 'Fazer hoje: ' + t.texto); h.title = 'Levar para a lista de hoje';
-    h.addEventListener('click', function () { t.dia = hoje; salvar(); render(); falar('"' + t.texto + '" entrou na lista de hoje.', 'ideia'); });
-    li.insertBefore(h, pr);
     var aberta = semDataAberta === t.id;
     var mais = document.createElement('button'); mais.type = 'button'; mais.className = 'mais-bt'; mais.textContent = '⋯';
     mais.setAttribute('aria-expanded', String(aberta)); mais.setAttribute('aria-label', 'Mais opções: ' + t.texto);
     mais.addEventListener('click', function () { semDataAberta = aberta ? null : t.id; renderSemData(); });
     li.appendChild(mais);
     var ac = document.createElement('div'); ac.className = 'semdata-acoes'; ac.hidden = !aberta;
-    var lb = document.createElement('label'); lb.className = 'btn btn-sec btn-mini escolher-dia';
-    var sp = document.createElement('span'); sp.textContent = '📅 Escolher dia'; lb.appendChild(sp);
-    var inp = document.createElement('input'); inp.type = 'date'; inp.min = amanhaChave();
+    var h = document.createElement('button'); h.type = 'button'; h.className = 'btn btn-mini hoje-bt'; h.textContent = '☀️ Vou fazer hoje';
+    h.setAttribute('aria-label', 'Vou fazer hoje: ' + t.texto);
+    h.addEventListener('click', function () { t.dia = hoje; semDataAberta = null; salvar(); render(); falar('"' + t.texto + '" entrou na lista de hoje.', 'ideia'); });
+    ac.appendChild(h);
+    // Escolher dia: o botão abre o calendário do aparelho (showPicker). Sem ele, o campo de data aparece na linha.
+    var dt = document.createElement('button'); dt.type = 'button'; dt.className = 'btn btn-sec btn-mini escolher-dia'; dt.textContent = '📅 Escolher dia';
+    var inp = document.createElement('input'); inp.type = 'date'; inp.min = amanhaChave(); inp.className = 'dia-campo';
     inp.setAttribute('aria-label', 'Escolher dia para: ' + t.texto);
     inp.addEventListener('change', function () {
-      if (!inp.value) return;
+      if (!inp.value || inp.value < inp.min) return;
       t.dia = inp.value; semDataAberta = null; salvar(); render();
       falar('"' + t.texto + '" vai aparecer na sua lista em ' + dataCurta(inp.value) + '.', 'ideia');
     });
-    lb.appendChild(inp); ac.appendChild(lb);
+    dt.addEventListener('click', function () {
+      try { if (inp.showPicker) { inp.showPicker(); return; } } catch (e) { /* segue para o campo visível */ }
+      inp.classList.add('visivel'); inp.focus();
+    });
+    ac.appendChild(dt); ac.appendChild(inp);
+    var ed = document.createElement('button'); ed.type = 'button'; ed.className = 'btn btn-sec btn-mini'; ed.textContent = '✏️ Editar';
+    ed.setAttribute('aria-label', 'Editar: ' + t.texto);
+    ed.addEventListener('click', function () { semDataAberta = null; abrirEdicao('tarefa:' + t.id, t.texto, render); });
+    ac.appendChild(ed);
     var sel = document.createElement('select'); sel.className = 'grupo-sel';
     sel.setAttribute('aria-label', 'Grupo de: ' + t.texto);
     opcoesGrupo(sel, t.grupo || '');
