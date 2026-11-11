@@ -84,7 +84,7 @@ Com cerca de 100 pontos por dia, o segundo título chega no primeiro dia e o úl
 
 Nos últimos 15 dias de cada trimestre, a Zumi avisa uma vez por dia enquanto houver meta sem resposta. Se o trimestre virar sem revisão, ela ainda pergunta nos primeiros 30 dias do seguinte. A pessoa também pode revisar a qualquer hora. Uma meta concluída não pede mais revisão.
 
-Tarefa que não saiu e não passou pela revisão continua na lista no dia seguinte, com a etiqueta "Veio de antes".
+Tarefa que não saiu continua na lista no dia seguinte, com a etiqueta "desde ontem" ou "há 4 dias". Com 3 dias ou mais, a própria linha pergunta se ainda é para hoje (Fica hoje, Amanhã, Sem data ou Tirar). Rotina não ganha etiqueta: ela volta todo dia. Depois das 18h, o Fim do dia mostra "O que ficou hoje": a pessoa manda o que quiser para Sem data ou tira da lista, e fecha com "Pronto, tudo para amanhã".
 
 ## Como o app foi feito
 

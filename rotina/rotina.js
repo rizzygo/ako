@@ -1334,7 +1334,10 @@
     else {
       var txt = document.createElement('span'); txt.className = 'tarefa-txt'; txt.textContent = t.texto;
       if (t.rotina) { var r = document.createElement('small'); r.textContent = 'Rotina'; txt.appendChild(r); }
-      else if (!opcoes.amanha && t.dia < hoje) { var v = document.createElement('small'); v.textContent = 'Veio de antes'; txt.appendChild(v); }
+      else if (!opcoes.amanha && t.dia && t.dia < hoje) {
+        var n = diasDesde(t.dia), v = document.createElement('small');
+        v.className = 'idade' + (n >= PARADA ? ' forte' : ''); v.textContent = idadeTexto(n); txt.appendChild(v);
+      }
       if (!opcoes.curta) duploClique(txt, chave, t.texto, render);
       li.appendChild(txt);
       if (!opcoes.curta && !opcoes.semCaneta) li.appendChild(caneta(chave, t.texto, t.texto, render));
@@ -1348,8 +1351,37 @@
     x.setAttribute('aria-label', 'Remover: ' + t.texto);
     x.addEventListener('click', function () { S.tarefas = S.tarefas.filter(function (y) { return y.id !== t.id; }); salvar(); render(); });
     if (!opcoes.curta) li.appendChild(x);
+    if (!opcoes.curta && !opcoes.amanha && !feita && tarefaParada(t)) li.appendChild(perguntaParada(t));
     return li;
   }
+  // Tarefa que passa de um dia para o outro mostra há quanto tempo está na lista.
+  // Com PARADA dias ou mais, a própria linha pergunta, sem culpa, se ainda é para hoje.
+  // Rotina fica de fora: ela volta todo dia de propósito.
+  var PARADA = 3;
+  function diasDesde(k) {
+    var a = k.split('-'), b = chaveDia().split('-');
+    return Math.round((new Date(b[0], b[1] - 1, b[2]) - new Date(a[0], a[1] - 1, a[2])) / 864e5);
+  }
+  function idadeTexto(n) { return n <= 1 ? 'desde ontem' : 'há ' + n + ' dias'; }
+  function tarefaParada(t) { return !t.rotina && !!t.dia && diasDesde(t.dia) >= PARADA && t.mantida !== chaveDia(); }
+  function perguntaParada(t) {
+    var n = diasDesde(t.dia), box = document.createElement('div'); box.className = 'parada';
+    var q = document.createElement('p'); q.textContent = 'Já são ' + n + ' dias na lista. Ainda é para hoje?'; box.appendChild(q);
+    function bt(txt, cls, fn) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'btn ' + cls; b.textContent = txt;
+      b.addEventListener('click', fn); box.appendChild(b);
+    }
+    bt('Fica hoje', 'btn-sec', function () { t.mantida = chaveDia(); salvar(); render(); falar('Combinado: "' + t.texto + '" fica na lista de hoje.', 'ideia'); });
+    bt('Amanhã', 'btn-sec', function () { t.dia = amanhaChave(); delete t.mantida; salvar(); render(); falar('"' + t.texto + '" fica para amanhã.', 'ideia'); });
+    bt('Sem data', 'btn-sec', function () { paraSemData(t); });
+    bt('Tirar', 'btn-perigo', function () { tirarTarefa(t); });
+    return box;
+  }
+  function paraSemData(t) {
+    t.dia = null; t.criada = chaveDia(); delete t.mantida; salvar(); render();
+    falar('"' + t.texto + '" foi para a lista Sem data. Fica guardada, sem cobrança.', 'ideia');
+  }
+  function tirarTarefa(t) { S.tarefas = S.tarefas.filter(function (y) { return y.id !== t.id; }); salvar(); render(); }
   // Alça ⠿ no começo do card. Arrastar (dedo ou mouse) muda a ordem dentro da mesma lista.
   // No teclado, com a alça em foco, as setas para cima e para baixo movem.
   var focoDepois = null;
@@ -1447,30 +1479,34 @@
       ? feitas.length + ' de ' + lista.length + ' feitas' + (prios.length ? ', ' + prios.filter(feitaHoje).length + ' de ' + prios.length + ' prioridades.' : '.') + ' Toque na estrela para mudar a prioridade. Arraste pelo ⠿ para mudar a ordem.'
       : 'Nada na lista. Tarefa some quando você conclui. Rotina volta todo dia.';
 
-    // revisão do fim do dia
-    // antes das 18h a revisão só conta como vai o dia; a pergunta do que fica vem no fim do dia
-    var pendentes = lista.filter(function (t) { return !t.rotina && !feitaHoje(t); }), fimDoDia = new Date().getHours() >= 18;
-    $('revisao-resumo').textContent = !lista.length ? 'Sem tarefas hoje. Quer deixar algo pronto para outro dia? Use a Agenda ou a lista Sem data.'
-      : 'Você concluiu ' + feitas.length + ' de ' + lista.length + (lista.length === 1 ? ' item' : ' itens') + ' hoje.' +
-        (feitas.length === lista.length ? ' Dia fechado.' : !pendentes.length ? '' : fimDoDia || revisaoAberta ? ' O que ficou vai para amanhã, fica sem data ou sai da lista?' : ' No fim do dia eu pergunto o que fica para depois.');
-    var pend = $('pendentes'); pend.innerHTML = '';
-    $('revisao-agora').hidden = fimDoDia || revisaoAberta || !pendentes.length;
-    if (fimDoDia || revisaoAberta) pendentes.forEach(function (t) {
-      var li = document.createElement('li');
-      var sp = document.createElement('span'); sp.textContent = (t.prio ? '★ ' : '') + t.texto;
-      var a = document.createElement('button'); a.type = 'button'; a.className = 'btn btn-sec'; a.textContent = 'Amanhã';
-      a.addEventListener('click', function () { t.dia = am; salvar(); render(); falar('Combinado: "' + t.texto + '" fica para amanhã.', 'ideia'); });
-      var sd = document.createElement('button'); sd.type = 'button'; sd.className = 'btn btn-sec'; sd.textContent = 'Sem data';
-      sd.addEventListener('click', function () { t.dia = null; t.criada = hoje; salvar(); render(); falar('"' + t.texto + '" foi para a lista Sem data. Fica guardada, sem cobrança.', 'ideia'); });
-      var r = document.createElement('button'); r.type = 'button'; r.className = 'btn btn-perigo'; r.textContent = 'Tirar';
-      r.addEventListener('click', function () { S.tarefas = S.tarefas.filter(function (y) { return y.id !== t.id; }); salvar(); render(); });
-      li.appendChild(sp); li.appendChild(a); li.appendChild(sd); li.appendChild(r); pend.appendChild(li);
-    });
+    renderFicou(lista, feitas);
     renderAgenda();
     renderSemData();
   }
-  var revisaoAberta = false;
-  $('revisao-agora').addEventListener('click', function () { revisaoAberta = true; renderTarefas(); });
+  // "O que ficou hoje", no Fim do dia, depois das 18h. A tarefa que não sai passa sozinha para
+  // amanhã; aqui a pessoa só mexe no que quiser (Sem data ou Tirar) e fecha com um toque.
+  function renderFicou(lista, feitas) {
+    var pendentes = lista.filter(function (t) { return !t.rotina && !feitaHoje(t); });
+    var box = $('ficou'), ul = $('ficou-lista');
+    box.hidden = new Date().getHours() < 18 || !pendentes.length || !!dia().ficouOk;
+    ul.innerHTML = '';
+    if (box.hidden) return;
+    $('ficou-resumo').textContent = 'Você fez ' + feitas.length + ' de ' + lista.length + '. O que ficou passa sozinho para amanhã. Só mexa no que quiser.';
+    pendentes.forEach(function (t) {
+      var li = document.createElement('li');
+      var sp = document.createElement('span'); sp.textContent = (t.prio ? '★ ' : '') + t.texto;
+      if (t.dia && t.dia < chaveDia()) { var n = diasDesde(t.dia), sm = document.createElement('small'); sm.className = 'idade' + (n >= PARADA ? ' forte' : ''); sm.textContent = idadeTexto(n); sp.appendChild(sm); }
+      var sd = document.createElement('button'); sd.type = 'button'; sd.className = 'btn btn-sec'; sd.textContent = 'Sem data';
+      sd.addEventListener('click', function () { paraSemData(t); });
+      var r = document.createElement('button'); r.type = 'button'; r.className = 'btn btn-perigo'; r.textContent = 'Tirar';
+      r.addEventListener('click', function () { tirarTarefa(t); });
+      li.appendChild(sp); li.appendChild(sd); li.appendChild(r); ul.appendChild(li);
+    });
+  }
+  $('ficou-pronto').addEventListener('click', function () {
+    dia().ficouOk = true; salvar(); render();
+    falar('Combinado. O que ficou passa para amanhã, sem cobrança.', 'ideia');
+  });
 
   // Agenda: calendário do mês; o dia escolhido recebe as tarefas novas.
   var calDia = null, calMes = null;

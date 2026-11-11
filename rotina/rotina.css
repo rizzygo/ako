@@ -211,8 +211,19 @@ textarea{width:100%;resize:vertical}
 .opcao{display:inline-flex;align-items:center;gap:.4rem;font-size:.95rem;cursor:pointer}
 .opcao input{width:1.1rem;height:1.1rem;accent-color:var(--azul)}
 
-/* Revisão do dia */
-.revisao{display:grid;gap:.7rem;border-top:1px solid var(--linha);padding-top:1rem}
+/* Há quanto tempo a tarefa está na lista; com 3 dias ou mais, a linha pergunta */
+.tarefa-txt small.idade.forte,.pendentes small.idade.forte{color:var(--ambar-tinta);background:var(--ambar)}
+.pendentes small.idade{display:inline-block;margin-left:.5rem;font-size:.75rem;font-weight:700;color:var(--azul);background:var(--azul-claro);border-radius:999px;padding:0 .5rem;vertical-align:middle}
+.tarefa:has(.parada){flex-wrap:wrap}
+.parada{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .5rem;background:var(--ambar-claro);border-radius:10px;padding:.5rem .6rem;margin-top:.2rem}
+.parada p{flex-basis:100%;margin:0;font-weight:700}
+.parada .btn{padding:.3rem .7rem;font-size:.88rem}
+.idade{white-space:nowrap}
+.ficou .pendentes li span{flex-basis:100%}
+/* O que ficou hoje (Fim do dia) */
+.ficou{display:grid;gap:.6rem;border-top:1px solid var(--linha);margin-top:1rem;padding-top:1rem}
+.ficou[hidden]{display:none}
+.ficou h3,.ficou p{margin:0}
 .pendentes{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
 .pendentes:empty{display:none}
 .pendentes li{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .8rem;background:var(--ambar-claro);border-radius:12px;padding:.5rem .7rem}
