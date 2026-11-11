@@ -113,6 +113,7 @@
         daNuvem: function (rem) { return rem; },
         aplicar: function (e, avisar) {
           c.gravar(e);
+          lembrar();
           avisarPagina(app);
           if (avisar && app !== 'ajustes') toast('Trouxe seu progresso da conta.');
         },
@@ -123,7 +124,7 @@
 
   function carregar() {
     if (mod) return Promise.resolve(mod);
-    if (!carregando) carregando = import('/nuvem.js').then(function (m) {
+    if (!carregando) carregando = import('/nuvem.js?v=2026111101').then(function (m) {
       mod = m;
       criarApps(m);
       m.aoMudarConta(function (u) { usuario = u; conhecido = true; desenhar(); });
@@ -406,10 +407,31 @@
   /* ---------- sincronização enquanto a página está aberta ---------- */
   // Entrou por outro lugar (Ajustes da Rotina): trilhas e mapas ligam junto.
   window.addEventListener('rizzygo-conta', function () { carregar().catch(function () { }); });
-  window.addEventListener('rizzygo-salvou', function (ev) { var a = apps[ev.detail]; if (a) a.mudou(); });
+  window.addEventListener('rizzygo-salvou', function (ev) { lembrar(); var a = apps[ev.detail]; if (a) a.mudou(); });
   document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) conferirOutraAba();
     Object.keys(apps).forEach(function (k) { if (document.hidden) apps[k].agora(); else apps[k].puxar(); });
   });
+
+  /* ---------- outra aba do mesmo navegador ----------
+     Duas abas do Ako abertas guardam o progresso no mesmo lugar. Quando uma grava, a outra
+     relê e redesenha (evento 'rizzygo-nuvem'), para não gravar por cima com a versão velha. */
+  var CHAVES_APP = { mapas: [MAPAS], trilhas: TRILHAS.map(function (t) { return t.chave; }) };
+  var vistos = {};
+  function bruto(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lembrar() { Object.keys(CHAVES_APP).forEach(function (a) { CHAVES_APP[a].forEach(function (k) { vistos[k] = bruto(k); }); }); }
+  function conferirOutraAba() {
+    Object.keys(CHAVES_APP).forEach(function (a) {
+      var mudou = CHAVES_APP[a].some(function (k) { return bruto(k) !== vistos[k]; });
+      if (mudou) { lembrar(); avisarPagina(a); }
+    });
+  }
+  lembrar();
+  window.addEventListener('storage', function (e) {
+    var a = Object.keys(CHAVES_APP).filter(function (x) { return CHAVES_APP[x].indexOf(e.key) >= 0; })[0];
+    if (a) { lembrar(); avisarPagina(a); }
+  });
+  window.addEventListener('focus', conferirOutraAba);
 
   window.AkoConta = { abrir: abrir, pedirSenha: pedirSenha, desenhar: desenhar, entrou: function () { return !!usuario; } };
   desenhar();

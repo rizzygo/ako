@@ -100,7 +100,38 @@
 
   var S = carregar();
   var nuvem = null; // módulo da nuvem, só quando a pessoa liga
-  function salvar() { try { localStorage.setItem(CHAVE, JSON.stringify(S)); } catch (e) { /* modo privado: segue sem salvar */ } if (nuvem) nuvem.mudou(); }
+  // Duas cópias da Rotina abertas no mesmo aparelho (duas abas, ou a aba e o atalho na tela inicial)
+  // gravam no mesmo lugar. "gravado" é o que esta cópia leu ou escreveu por último: se o aparelho tem
+  // outro texto, a outra cópia mudou algo, e esta junta as mudanças em vez de apagar as da outra.
+  var gravado = null;
+  function textoGuardado() { try { return localStorage.getItem(CHAVE); } catch (e) { return null; } }
+  function deOutraAba() { var t = textoGuardado(); return gravado !== null && t !== null && t !== gravado; }
+  function juntarOutraAba() {
+    var base = null, outra = null;
+    try { base = JSON.parse(gravado); outra = JSON.parse(textoGuardado()); } catch (e) { return; }
+    if (!outra || outra.v !== 1 || !window.RizzygoMesclar) return;
+    var junto = ajustarJunto(window.RizzygoMesclar(base, outra, JSON.parse(JSON.stringify(S))));
+    try { localStorage.setItem(CHAVE, JSON.stringify(junto)); } catch (e) { return; }
+    S = carregar();
+  }
+  function salvar() {
+    if (deOutraAba()) juntarOutraAba();
+    try { gravado = JSON.stringify(S); localStorage.setItem(CHAVE, gravado); } catch (e) { /* modo privado: segue sem salvar */ }
+    if (nuvem) nuvem.mudou();
+  }
+  // Depois de juntar: dia que ficou com atividade não perde os 10 pontos de dia parado.
+  function ajustarJunto(est) {
+    Object.keys(est.dias || {}).forEach(function (k) { var d = est.dias[k]; if (d.penalidade && ativo(d)) delete d.penalidade; });
+    return est;
+  }
+  // A outra cópia gravou: relê e redesenha (antes de a pessoa mexer aqui).
+  function releSeMudou() {
+    if (!deOutraAba()) return false;
+    S = carregar(); gravado = textoGuardado();
+    dia(); renderMeus(); render(); renderTimer(); preencherAjustes();
+    if (nuvem) nuvem.mudou();
+    return true;
+  }
 
   function chaveDia(d) {
     d = d || new Date();
@@ -1019,7 +1050,7 @@
   }
   function aplicarNuvem(est, avisar) {
     try { localStorage.setItem(CHAVE, JSON.stringify(est)); } catch (e) { }
-    S = carregar(); podar(); dia();
+    S = carregar(); podar(); dia(); salvar();
     renderMeus(); render(); renderTimer(); preencherAjustes();
     if (avisar) falar('Trouxe sua rotina da nuvem.', 'comemorando', true);
   }
@@ -1047,11 +1078,11 @@
   }
   function abrirNuvem() {
     if (nuvem) return Promise.resolve(nuvem);
-    if (!carregandoNuvem) carregandoNuvem = import('/nuvem.js').then(function (m) {
+    if (!carregandoNuvem) carregandoNuvem = import('/nuvem.js?v=2026111101').then(function (m) {
       nuvem = m.criar({
         app: 'rotina', meta: metaNuvem, salvarMeta: salvarMeta,
         ler: function () { return S; }, temDados: temDados, aplicar: aplicarNuvem,
-        paraNuvem: paraNuvem, daNuvem: daNuvem, perguntar: perguntarNuvem, aoMudar: mostrarNuvem
+        paraNuvem: paraNuvem, daNuvem: daNuvem, ajustar: ajustarJunto, perguntar: perguntarNuvem, aoMudar: mostrarNuvem
       });
       return nuvem;
     }).catch(function () {
@@ -1694,13 +1725,18 @@
   var lento = 0;
   setInterval(function () { tick(); if (++lento % 30 === 0) { salvar(); renderLembretes(); } }, 1000);
   document.addEventListener('visibilitychange', function () {
-    if (!document.hidden) { tick(); render(); if (nuvem) nuvem.puxar(); } else if (nuvem) { salvar(); nuvem.agora(); }
+    if (!document.hidden) { releSeMudou(); tick(); render(); if (nuvem) nuvem.puxar(); } else { salvar(); if (nuvem) nuvem.agora(); }
   });
+  // Outra aba (ou o atalho na tela inicial) gravou a rotina: esta mostra na hora.
+  window.addEventListener('storage', function (e) { if (e.key === CHAVE) releSeMudou(); });
+  window.addEventListener('focus', releSeMudou);
+  window.addEventListener('pageshow', function (e) { if (e.persisted) { releSeMudou(); render(); } });
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/rotina/sw.js', { scope: '/rotina/' }).then(function (r) { registro = r; return navigator.serviceWorker.ready; }).then(function (r) { registro = r; }).catch(function () {});
   }
 
+  gravado = textoGuardado();
   var fechamento = fecharDias();
   podar(); dia(); salvar();
   falar(saudacao(), S.timer.rodando ? 'estudando' : 'ola');
