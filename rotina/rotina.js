@@ -518,17 +518,22 @@
       var cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = m.on;
       cb.addEventListener('change', function () { m.on = cb.checked; delete S.proximos[m.id]; salvar(); renderLembretes(); });
       var sp = document.createElement('span'); sp.textContent = m.nome;
-      lab.appendChild(cb); lab.appendChild(sp);
+      lab.appendChild(cb);
+      var chave = 'lembrete:' + m.id, campo = campoEdicao(chave, m.nome, 40, function (v) { m.nome = v; }, renderMeus);
+      if (campo) li.className = 'editando';
+      lab.appendChild(campo || sp);
       var quando = document.createElement('span'); quando.className = 'cada';
       quando.textContent = m.tipo === 'hora' ? textoDias(m.semana) + ' às ' + m.hora : 'a cada ' + m.min + ' min';
       var tirar = document.createElement('button'); tirar.type = 'button'; tirar.className = 'btn btn-perigo tirar'; tirar.textContent = 'Remover';
       tirar.setAttribute('aria-label', 'Remover o lembrete ' + m.nome);
       tirar.addEventListener('click', function () { S.meus = S.meus.filter(function (x) { return x.id !== m.id; }); delete S.proximos[m.id]; delete S.adiados[m.id]; salvar(); renderMeus(); });
       var prox = document.createElement('small'); prox.dataset.meuProx = m.id;
-      li.appendChild(lab); li.appendChild(quando); li.appendChild(tirar); li.appendChild(prox);
+      li.appendChild(lab);
+      if (!campo) li.appendChild(caneta(chave, m.nome, 'o lembrete ' + m.nome, renderMeus));
+      li.appendChild(quando); li.appendChild(tirar); li.appendChild(prox);
       el.meus.appendChild(li);
     });
-    renderLembretes();
+    renderLembretes(); focarEdicao();
   }
   function renderLembretes() {
     Object.keys(S.config.lembretes).forEach(function (k) {
@@ -801,7 +806,7 @@
     });
     renderLembretes();
     renderTarefas(); renderMetas(); renderHoje();
-    voltarFoco();
+    voltarFoco(); focarEdicao();
   }
 
   // ---------- Configurações nos campos ----------
@@ -1253,6 +1258,52 @@
       else falar(t.prio ? (faltam ? 'Prioridade feita. Faltam ' + faltam + '. +5' : 'Todas as prioridades de hoje feitas! +5') : 'Feito: ' + t.texto + '. +3', faltam || !t.prio ? 'ola' : 'comemorando', !faltam && t.prio);
     }
   }
+  // ---------- Editar o texto ----------
+  // A caneta ✏️ abre o campo no lugar do texto. No computador, o duplo clique no texto faz o mesmo.
+  // Enter ou sair do campo grava; Esc desiste. Se a tela redesenhar no meio, o rascunho continua.
+  var editando = null; // { chave, valor }
+  var COMPUTADOR = !!(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches);
+  function caneta(chave, atual, rotulo, redesenhar) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'editar-bt'; b.textContent = '✏️';
+    b.setAttribute('aria-label', 'Editar: ' + rotulo); b.title = 'Editar';
+    b.addEventListener('click', function () { abrirEdicao(chave, atual, redesenhar); });
+    return b;
+  }
+  function duploClique(alvo, chave, atual, redesenhar) {
+    if (!COMPUTADOR) return;
+    alvo.title = 'Dois cliques para editar';
+    alvo.addEventListener('dblclick', function (e) { e.preventDefault(); abrirEdicao(chave, atual, redesenhar); });
+  }
+  function abrirEdicao(chave, atual, redesenhar) { editando = { chave: chave, valor: atual }; redesenhar(); focarEdicao(); }
+  // Devolve o campo, se este item está sendo editado; senão, null.
+  function campoEdicao(chave, atual, max, gravar, redesenhar) {
+    if (!editando || editando.chave !== chave) return null;
+    var f = document.createElement('input'); f.type = 'text'; f.className = 'editar-campo'; f.maxLength = max;
+    f.value = editando.valor; f.dataset.edicao = chave; f.setAttribute('aria-label', 'Novo texto');
+    f.setAttribute('enterkeyhint', 'done');
+    var feito = false;
+    function fim(grava) {
+      if (feito || !editando || editando.chave !== chave) return;
+      feito = true;
+      var v = f.value.trim(); editando = null;
+      if (grava && v && v !== atual) { gravar(v); salvar(); }
+      redesenhar();
+    }
+    f.addEventListener('input', function () { if (editando && editando.chave === chave) editando.valor = f.value; });
+    f.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); fim(true); }
+      else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); fim(false); }
+    });
+    // sair do campo grava; um campo tirado da tela por um redesenho não conta
+    f.addEventListener('blur', function () { setTimeout(function () { if (f.isConnected) fim(true); }, 0); });
+    return f;
+  }
+  function focarEdicao() {
+    if (!editando) return;
+    var f = [].slice.call(document.querySelectorAll('[data-edicao]')).filter(function (x) { return x.offsetParent; })[0];
+    if (f && document.activeElement !== f) { f.focus(); f.setSelectionRange(f.value.length, f.value.length); }
+  }
+
   function linhaTarefa(t, opcoes) {
     var li = document.createElement('li'), feita = opcoes.amanha ? false : feitaHoje(t), hoje = chaveDia();
     li.className = 'tarefa' + (feita ? ' feita' : '') + (t.prio ? ' prio' : '');
@@ -1264,10 +1315,16 @@
       cb.addEventListener('click', function () { marcarTarefa(t); });
       li.appendChild(cb);
     }
-    var txt = document.createElement('span'); txt.className = 'tarefa-txt'; txt.textContent = t.texto;
-    if (t.rotina) { var r = document.createElement('small'); r.textContent = 'Rotina'; txt.appendChild(r); }
-    else if (!opcoes.amanha && t.dia < hoje) { var v = document.createElement('small'); v.textContent = 'Veio de antes'; txt.appendChild(v); }
-    li.appendChild(txt);
+    var chave = 'tarefa:' + t.id, campo = opcoes.curta ? null : campoEdicao(chave, t.texto, 80, function (v) { t.texto = v; focoDepois = { id: t.id, cls: 'editar-bt' }; }, render);
+    if (campo) { li.classList.add('editando'); li.appendChild(campo); }
+    else {
+      var txt = document.createElement('span'); txt.className = 'tarefa-txt'; txt.textContent = t.texto;
+      if (t.rotina) { var r = document.createElement('small'); r.textContent = 'Rotina'; txt.appendChild(r); }
+      else if (!opcoes.amanha && t.dia < hoje) { var v = document.createElement('small'); v.textContent = 'Veio de antes'; txt.appendChild(v); }
+      if (!opcoes.curta) duploClique(txt, chave, t.texto, render);
+      li.appendChild(txt);
+      if (!opcoes.curta && !opcoes.semCaneta) li.appendChild(caneta(chave, t.texto, t.texto, render));
+    }
     var pr = document.createElement('button'); pr.type = 'button'; pr.className = 'prio-bt'; pr.textContent = t.prio ? '★' : '☆';
     pr.setAttribute('aria-pressed', String(!!t.prio)); pr.setAttribute('aria-label', 'Prioridade: ' + t.texto);
     pr.title = t.prio ? 'Tirar a prioridade' : 'Marcar como prioridade';
@@ -1481,36 +1538,44 @@
   // Assim a lista fica leve no celular e as ações menos usadas não ocupam espaço.
   var semDataAberta = null;
   function linhaSemData(t, lista) {
-    var li = linhaTarefa(t, { lista: lista }), hoje = chaveDia();
+    // No Sem data a linha fica curta (alça, marcar, texto, estrela, ⋯); o resto mora no menu ⋯.
+    var li = linhaTarefa(t, { lista: lista, semCaneta: true }), hoje = chaveDia();
     li.classList.add('semdata');
     var tirar = li.querySelector('.tirar-bt'); if (tirar) tirar.remove();
     if (t.criada && dias(t.criada) > 30 && !t.feita) {
       var v = document.createElement('small'); v.className = 'faz-tempo'; v.textContent = 'Faz tempo';
       v.title = 'Guardada há ' + dias(t.criada) + ' dias. Ainda quer?';
-      li.querySelector('.tarefa-txt').appendChild(v);
+      var tx = li.querySelector('.tarefa-txt'); if (tx) tx.appendChild(v);
     }
     if (t.feita) return li;
-    var pr = li.querySelector('.prio-bt');
-    var h = document.createElement('button'); h.type = 'button'; h.className = 'btn btn-sec btn-mini hoje-bt'; h.textContent = 'Hoje';
-    h.setAttribute('aria-label', 'Fazer hoje: ' + t.texto); h.title = 'Levar para a lista de hoje';
-    h.addEventListener('click', function () { t.dia = hoje; salvar(); render(); falar('"' + t.texto + '" entrou na lista de hoje.', 'ideia'); });
-    li.insertBefore(h, pr);
     var aberta = semDataAberta === t.id;
     var mais = document.createElement('button'); mais.type = 'button'; mais.className = 'mais-bt'; mais.textContent = '⋯';
     mais.setAttribute('aria-expanded', String(aberta)); mais.setAttribute('aria-label', 'Mais opções: ' + t.texto);
     mais.addEventListener('click', function () { semDataAberta = aberta ? null : t.id; renderSemData(); });
     li.appendChild(mais);
     var ac = document.createElement('div'); ac.className = 'semdata-acoes'; ac.hidden = !aberta;
-    var lb = document.createElement('label'); lb.className = 'btn btn-sec btn-mini escolher-dia';
-    var sp = document.createElement('span'); sp.textContent = '📅 Escolher dia'; lb.appendChild(sp);
-    var inp = document.createElement('input'); inp.type = 'date'; inp.min = amanhaChave();
+    var h = document.createElement('button'); h.type = 'button'; h.className = 'btn btn-mini hoje-bt'; h.textContent = '☀️ Vou fazer hoje';
+    h.setAttribute('aria-label', 'Vou fazer hoje: ' + t.texto);
+    h.addEventListener('click', function () { t.dia = hoje; semDataAberta = null; salvar(); render(); falar('"' + t.texto + '" entrou na lista de hoje.', 'ideia'); });
+    ac.appendChild(h);
+    // Escolher dia: o botão abre o calendário do aparelho (showPicker). Sem ele, o campo de data aparece na linha.
+    var dt = document.createElement('button'); dt.type = 'button'; dt.className = 'btn btn-sec btn-mini escolher-dia'; dt.textContent = '📅 Escolher dia';
+    var inp = document.createElement('input'); inp.type = 'date'; inp.min = amanhaChave(); inp.className = 'dia-campo';
     inp.setAttribute('aria-label', 'Escolher dia para: ' + t.texto);
     inp.addEventListener('change', function () {
-      if (!inp.value) return;
+      if (!inp.value || inp.value < inp.min) return;
       t.dia = inp.value; semDataAberta = null; salvar(); render();
       falar('"' + t.texto + '" vai aparecer na sua lista em ' + dataCurta(inp.value) + '.', 'ideia');
     });
-    lb.appendChild(inp); ac.appendChild(lb);
+    dt.addEventListener('click', function () {
+      try { if (inp.showPicker) { inp.showPicker(); return; } } catch (e) { /* segue para o campo visível */ }
+      inp.classList.add('visivel'); inp.focus();
+    });
+    ac.appendChild(dt); ac.appendChild(inp);
+    var ed = document.createElement('button'); ed.type = 'button'; ed.className = 'btn btn-sec btn-mini'; ed.textContent = '✏️ Editar';
+    ed.setAttribute('aria-label', 'Editar: ' + t.texto);
+    ed.addEventListener('click', function () { semDataAberta = null; abrirEdicao('tarefa:' + t.id, t.texto, render); });
+    ac.appendChild(ed);
     var sel = document.createElement('select'); sel.className = 'grupo-sel';
     sel.setAttribute('aria-label', 'Grupo de: ' + t.texto);
     opcoesGrupo(sel, t.grupo || '');
@@ -1742,7 +1807,15 @@
     S.metas.filter(function (m) { return m.ano === anoMetas || (anoMetas === ano && pend.some(function (p) { return p.meta === m; })); }).forEach(function (m) {
       var li = document.createElement('li'); li.className = 'meta' + (m.checkins.fim ? ' concluida' : '');
       var topo = document.createElement('div'); topo.className = 'meta-topo';
-      var nome = document.createElement('strong'); nome.textContent = m.texto; topo.appendChild(nome);
+      var chave = 'meta:' + m.id, campo = campoEdicao(chave, m.texto, 90, function (v) { m.texto = v; }, render);
+      if (campo) topo.appendChild(campo);
+      else {
+        var linha = document.createElement('div'); linha.className = 'meta-nome';
+        var nome = document.createElement('strong'); nome.textContent = m.texto; linha.appendChild(nome);
+        duploClique(nome, chave, m.texto, render);
+        linha.appendChild(caneta(chave, m.texto, 'a meta ' + m.texto, render));
+        topo.appendChild(linha);
+      }
       var tri = document.createElement('ol'); tri.className = 'trimestres'; tri.setAttribute('aria-label', 'Revisões por trimestre');
       for (var t = 1; t <= 4; t++) {
         var st = m.checkins[m.ano + '-T' + t], it = document.createElement('li');

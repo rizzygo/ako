@@ -187,6 +187,18 @@ textarea{width:100%;resize:vertical}
 .prio-bt,.tirar-bt{flex:none;width:2.2rem;height:2.2rem;border:0;background:transparent;border-radius:8px;font-size:1.25rem;line-height:1;cursor:pointer;color:var(--suave)}
 .prio-bt[aria-pressed="true"]{color:var(--ambar-forte)}
 .prio-bt:hover,.tirar-bt:hover{background:var(--azul-claro)}
+/* Editar o texto: caneta ✏️ (e duplo clique no computador) abre o campo no lugar */
+.editar-bt{flex:none;width:2.2rem;height:2.2rem;border:0;background:transparent;border-radius:8px;font-size:1rem;line-height:1;cursor:pointer;opacity:.75}
+.editar-bt:hover,.editar-bt:focus-visible{background:var(--azul-claro);opacity:1}
+.editar-campo{flex:1;min-width:0;font:inherit;padding:.45rem .6rem;border:2px solid var(--azul);border-radius:8px;background:var(--superficie);color:var(--tinta)}
+.meta-nome{display:flex;align-items:center;gap:.3rem}
+.meta-nome strong{flex:1;min-width:0}
+.meta-topo .editar-campo{font-family:var(--f-titulo);font-size:1.08rem}
+.lembretes li.editando > .chave{flex:1 1 100%}
+.lembretes li > .chave:has(+ .editar-bt){flex:0 1 auto}
+.lembretes li > .editar-bt{margin:0 auto 0 -.6rem}
+.lembretes li > .editar-bt ~ .tirar{margin-left:0}
+@media (hover: hover) and (pointer: fine){.tarefa-txt[title],.meta-nome strong[title]{cursor:text}}
 /* Mudar a ordem: alça ⠿ (arrastar com dedo ou mouse; setas no teclado) */
 .alca{flex:none;align-self:stretch;width:1.6rem;min-height:2.2rem;margin:-.55rem 0 -.55rem -.45rem;border:0;border-radius:10px 0 0 10px;background:transparent;color:var(--suave);font-size:1.15rem;line-height:1;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;display:grid;place-items:center}
 .alca:hover{background:var(--azul-claro);color:var(--azul)}
@@ -534,15 +546,18 @@ textarea{width:100%;resize:vertical}
 .grupo-bloco{margin-bottom:1rem}
 .grupo-bloco h3{margin:0 0 .4rem;font-size:1rem}
 .tarefa.semdata{flex-wrap:wrap}
-.semdata-acoes{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;padding:.2rem 0 .1rem 2.2rem}
+/* Menu ⋯ do Sem data: uma grade que se ajusta à largura (2 colunas no celular, uma linha no computador) */
+.semdata-acoes{flex-basis:100%;display:grid;grid-template-columns:repeat(auto-fit,minmax(8rem,1fr));gap:.5rem;padding:.5rem 0 .1rem;margin-top:.3rem;border-top:1px solid var(--linha)}
+.semdata-acoes > *{width:100%;min-height:2.4rem;justify-content:center;text-align:center}
+.semdata-acoes .hoje-bt{grid-column:1/-1}
+.semdata-acoes .btn-perigo{grid-column:-2/-1}
+.dia-campo{position:absolute;width:1px;height:1px;min-height:0;opacity:0;pointer-events:none}
+.dia-campo.visivel{position:static;width:100%;height:auto;opacity:1;pointer-events:auto;grid-column:1/-1}
 .semdata-acoes[hidden]{display:none}
-.hoje-bt{flex:none}
 .mais-bt{flex:none;width:2.2rem;height:2.2rem;border:0;background:transparent;border-radius:8px;font-size:1.3rem;line-height:1;cursor:pointer;color:var(--suave)}
 .mais-bt:hover,.mais-bt[aria-expanded="true"]{background:var(--azul-claro);color:var(--azul)}
 .btn.btn-mini{padding:.3rem .7rem;font-size:.85rem}
-.escolher-dia{position:relative;overflow:hidden;cursor:pointer}
-.escolher-dia input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0}
-.grupo-sel{font:inherit;font-size:.85rem;padding:.3rem .5rem;border-radius:999px;border:1px solid var(--linha);background:var(--superficie);color:inherit;max-width:12rem}
+.grupo-sel{font:inherit;font-size:.85rem;padding:.3rem .5rem;border-radius:999px;border:1px solid var(--linha);background:var(--superficie);color:inherit;min-width:0}
 .opcao select{font:inherit;font-size:.92rem;padding:.3rem .5rem;border-radius:8px;border:1px solid var(--linha);background:var(--superficie);color:inherit;max-width:14rem}
 .faz-tempo{color:var(--ambar-forte)!important;background:var(--ambar-claro)!important}
 #grupos-ajustes{margin-top:1rem}
@@ -566,10 +581,9 @@ textarea{width:100%;resize:vertical}
 @media (max-width:620px){.grupos-filtro{flex-wrap:nowrap;overflow-x:auto;padding-bottom:.3rem;scrollbar-width:thin}.chip-grupo{flex:none}}
 /* Sem data: celular sem zoom no iPhone (campos com 16px) e alvos de toque maiores */
 @media (max-width:620px){
-  .grupo-sel,.opcao select,.escolher-dia input{font-size:16px}
+  .grupo-sel,.opcao select,.dia-campo{font-size:16px}
   .tarefa.semdata .marca-tarefa{width:1.8rem;height:1.8rem}
   .tarefa.semdata .btn-mini{padding:.45rem .8rem}
-  .semdata-acoes{padding-left:0}
   #semdata-nova .nova-opcoes .btn{flex:1 1 100%;margin-left:0}
 }
 /* Sem data no computador: grupos lado a lado, sem linhas esticadas */

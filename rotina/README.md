@@ -20,6 +20,8 @@ O app fica dividido em abas, para não ficar tudo numa página só. No celular, 
 | Evolução | A semana e os títulos. No celular, abre pelo atalho na Zumi. |
 | Ajustes | Lembretes, notificações, instalar e apagar dados. No celular, abre pelo atalho na Zumi. |
 
+Tarefas, metas e lembretes têm a caneta ✏️ para mudar o texto. No computador, dois cliques no texto também abrem a edição. Enter grava, Esc desiste e sair do campo grava.
+
 ## O que o app faz no dia
 
 | Parte | Como funciona |
