@@ -187,17 +187,12 @@ textarea{width:100%;resize:vertical}
 .prio-bt,.tirar-bt{flex:none;width:2.2rem;height:2.2rem;border:0;background:transparent;border-radius:8px;font-size:1.25rem;line-height:1;cursor:pointer;color:var(--suave)}
 .prio-bt[aria-pressed="true"]{color:var(--ambar-forte)}
 .prio-bt:hover,.tirar-bt:hover{background:var(--azul-claro)}
-/* Mudar a ordem: alça ⠿ (arrastar com dedo ou mouse) e, sem arrastar, ▲ ▼ */
+/* Mudar a ordem: alça ⠿ (arrastar com dedo ou mouse; setas no teclado) */
 .alca{flex:none;align-self:stretch;width:1.6rem;min-height:2.2rem;margin:-.55rem 0 -.55rem -.45rem;border:0;border-radius:10px 0 0 10px;background:transparent;color:var(--suave);font-size:1.15rem;line-height:1;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;display:grid;place-items:center}
-.alca:hover,.alca[aria-expanded="true"]{background:var(--azul-claro);color:var(--azul)}
+.alca:hover{background:var(--azul-claro);color:var(--azul)}
 .alca:active{cursor:grabbing}
 .tarefa.arrastando{position:relative;z-index:5;box-shadow:var(--sombra-2);outline:2px solid var(--azul);opacity:.97}
 .tarefas.ordenando{user-select:none;-webkit-user-select:none}
-.tarefa.movendo{outline:2px dashed var(--azul);outline-offset:-2px}
-.seta-bt{flex:none;width:2.2rem;height:2.2rem;border:0;border-radius:8px;background:var(--azul-claro);color:var(--azul);font-size:.95rem;cursor:pointer}
-.seta-bt:disabled{opacity:.35;cursor:default}
-.tarefa.movendo .seta-bt,.tarefa.movendo .pronto-bt{order:1}
-.tarefa.movendo :is(.prio-bt,.tirar-bt,.hoje-bt,.mais-bt,.semdata-acoes){display:none}
 .nova-tarefa{display:grid;gap:.5rem}
 .nova-opcoes{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1rem}
 .nova-opcoes .btn{margin-left:auto;padding:.6rem 1rem}

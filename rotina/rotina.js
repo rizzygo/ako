@@ -1280,12 +1280,11 @@
     return li;
   }
   // Alça ⠿ no começo do card. Arrastar (dedo ou mouse) muda a ordem dentro da mesma lista.
-  // Sem arrastar: um toque na alça mostra ▲ e ▼; no teclado, as setas para cima e para baixo movem.
-  var movendo = null, focoDepois = null;
+  // No teclado, com a alça em foco, as setas para cima e para baixo movem.
+  var focoDepois = null;
   function alca(li, t, lista) {
     var h = document.createElement('button'); h.type = 'button'; h.className = 'alca'; h.textContent = '⠿';
     h.setAttribute('aria-label', 'Mudar a ordem: ' + t.texto + '. Use as setas para cima e para baixo.');
-    h.setAttribute('aria-expanded', String(movendo === t.id));
     h.title = 'Arraste para mudar a ordem';
     li.appendChild(h);
     h.addEventListener('keydown', function (e) {
@@ -1293,24 +1292,7 @@
       if (!passo) return;
       e.preventDefault(); passo1(t, lista, passo, 'alca');
     });
-    h.addEventListener('click', function () {
-      if (h.dataset.arrastou) { delete h.dataset.arrastou; return; }
-      movendo = movendo === t.id ? null : t.id; focoDepois = { id: t.id, cls: 'alca' }; render();
-    });
     arrastar(h, li);
-    if (movendo !== t.id) return;
-    li.classList.add('movendo');
-    var i = lista.indexOf(t);
-    [['▲', -1, 'Subir: '], ['▼', 1, 'Descer: ']].forEach(function (b) {
-      var x = document.createElement('button'); x.type = 'button'; x.className = 'seta-bt seta' + (b[1] < 0 ? '-sobe' : '-desce');
-      x.textContent = b[0]; x.setAttribute('aria-label', b[2] + t.texto);
-      x.disabled = b[1] < 0 ? i <= 0 : i >= lista.length - 1;
-      x.addEventListener('click', function () { passo1(t, lista, b[1], x.className.split(' ')[1]); });
-      li.appendChild(x);
-    });
-    var pronto = document.createElement('button'); pronto.type = 'button'; pronto.className = 'btn btn-sec btn-mini pronto-bt'; pronto.textContent = 'Pronto';
-    pronto.addEventListener('click', function () { movendo = null; focoDepois = { id: t.id, cls: 'alca' }; render(); });
-    li.appendChild(pronto);
   }
   function passo1(t, lista, passo, cls) {
     var i = lista.indexOf(t) + passo;
@@ -1372,8 +1354,7 @@
       document.removeEventListener('pointermove', mexe, { passive: false });
       document.removeEventListener('pointerup', fim); document.removeEventListener('pointercancel', fim);
       if (!ativo) return;
-      ativo = false; h.dataset.arrastou = '1';
-      setTimeout(function () { delete h.dataset.arrastou; }, 400);
+      ativo = false;
       li.classList.remove('arrastando'); ul.classList.remove('ordenando'); li.style.transform = '';
       if (!li.isConnected || e.type === 'pointercancel') { render(); return; }
       // a ordem nova vem da tela; as tarefas vêm do estado atual (outra aba pode ter gravado no meio)
