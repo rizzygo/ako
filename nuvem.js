@@ -2,7 +2,10 @@
 // Opcional: só carrega quando a pessoa pede para entrar (botão do topo em /conta.js ou Ajustes da Rotina)
 // ou já tinha entrado antes. Uma conta só para todos os apps do Ako.
 // O aparelho continua sendo a fonte do dia a dia; a nuvem guarda uma cópia por app em
-// users/<uid>/apps/<app>, com os dados como texto JSON. Detalhes em /privacidade/.
+// users/<uid>/apps/<app>, com os dados como texto JSON: 'rotina' e 'ako' (trilhas, mapas e ajustes
+// juntos, desde 11/11/2026; antes eram três documentos). Detalhes em /privacidade/.
+// Cota do plano gratuito (Spark): 50 mil leituras e 20 mil gravações por dia, para todo mundo junto.
+// Por isso cada aba relê a nuvem no máximo uma vez a cada cfg.releitura, e o aviso de cota cheia é claro.
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
 import {
   getAuth, GoogleAuthProvider, EmailAuthProvider, signInWithPopup, reauthenticateWithPopup, reauthenticateWithCredential,
@@ -24,10 +27,26 @@ const CONFIG = {
   messagingSenderId: '326966137118',
   appId: '1:326966137118:web:707625ac9a417c76bf790f'
 };
-const APPS = ['rotina', 'trilhas', 'mapas', 'ajustes']; // ajustes: tema claro/escuro e som de vitória (/conta.js)
+const APPS = ['rotina', 'ako', 'trilhas', 'mapas', 'ajustes']; // trilhas, mapas e ajustes: documentos antigos, antes do 'ako'
 const ESPERA = 5000; // junta as mudanças e grava uma vez
 const INTERVALO = 120000; // no máximo uma gravação a cada 2 min, fora ao sair do app
 const CONTA = 'rizzygo-conta-v1'; // a pessoa aceitou e entrou: todos os apps do Ako sincronizam
+const RELEITURA = 120000; // padrão: esta aba relê a nuvem no máximo a cada 2 min (abrir uma aba nova sempre lê)
+
+// A cota grátis do Firestore acabou: a nuvem volta quando a cota zera (meia-noite no Pacífico, de madrugada no Brasil).
+export const AVISO_COTA = 'A nuvem do Ako chegou ao limite de hoje e volta de madrugada. Tudo continua salvo neste aparelho e vai para a nuvem quando ela voltar.';
+const falha = (e, padrao) => (e && e.code === 'resource-exhausted' ? AVISO_COTA : padrao);
+
+// "há 3 min", "hoje às 14:05", "10/11 às 09:30": quando a nuvem recebeu a última cópia.
+export function haQuanto(ms) {
+  if (!ms) return '';
+  const min = Math.round((Date.now() - ms) / 60000);
+  if (min < 1) return 'agora há pouco';
+  if (min < 60) return 'há ' + min + ' min';
+  const d = new Date(ms), hora = d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  if (d.toDateString() === new Date().toDateString()) return 'hoje às ' + hora;
+  return d.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) + ' às ' + hora;
+}
 
 const app = initializeApp(CONFIG);
 const auth = getAuth(app);
@@ -141,9 +160,16 @@ export async function apagarConta(pedirSenha) {
 // cfg = { app, meta, salvarMeta(meta), ler(), temDados(estado), aplicar(estado, avisar), paraNuvem(estado, aceites),
 //         daNuvem(remoto, local, aceites), aoMudar(status), e um destes dois para a primeira vez neste aparelho:
 //         juntar(remoto, local) -> estado (soma os dois) ou perguntar(quandoNaNuvem) -> 'nuvem' | 'aparelho' }
+// Opcionais: releitura (ms entre leituras nesta aba) e antigos ({ apps: [...], juntar({ app: estado }) -> estado }),
+// para trazer documentos de antes na primeira vez, quando o documento do app ainda não existe.
 export function criar(cfg) {
   let usuario = null, timer = null, gravando = false, ultimaGravacao = 0, ligando = null;
-  const ref = (uid) => doc(db, 'users', uid, 'apps', cfg.app);
+  const ref = (uid, app) => doc(db, 'users', uid, 'apps', app || cfg.app);
+  // Quando esta aba leu a nuvem por último (sessionStorage: cada aba nova começa lendo).
+  const LIDO = 'rizzygo-nuvem-lido-' + cfg.app;
+  const releitura = cfg.releitura || RELEITURA;
+  const leu = () => { try { sessionStorage.setItem(LIDO, String(Date.now())); } catch (e) { } };
+  const leuHaPouco = () => { try { return Date.now() - Number(sessionStorage.getItem(LIDO) || 0) < releitura; } catch (e) { return false; } };
   const meta = cfg.meta;
   const avisa = (extra) => cfg.aoMudar(Object.assign({ usuario: usuario && { nome: usuario.displayName, email: usuario.email }, meta }, extra || {}));
 
@@ -160,6 +186,7 @@ export function criar(cfg) {
       // (meta.ultimo vazio = esta cópia deve valer inteira: primeira cópia ou "manter o aparelho".)
       if (meta.ultimo !== null) {
         const snap = await getDoc(ref(usuario.uid));
+        leu();
         if (snap.exists() && snap.data().dados !== meta.ultimo) { gravando = false; await puxarAgora(false); return; }
       }
       const texto = JSON.stringify(cfg.paraNuvem(cfg.ler(), meta.aceites));
@@ -168,7 +195,7 @@ export function criar(cfg) {
       meta.ultimo = texto; meta.sincronizadoEm = quando; meta.erro = null; ultimaGravacao = quando;
       cfg.salvarMeta(meta); avisa();
     } catch (e) {
-      meta.erro = 'Não deu para salvar na nuvem agora. Tento de novo na próxima mudança.'; avisa();
+      meta.erro = falha(e, 'Não deu para salvar na nuvem agora. Tento de novo na próxima mudança.'); avisa();
     } finally { gravando = false; }
   }
 
@@ -180,10 +207,24 @@ export function criar(cfg) {
     if (!puxando) puxando = puxarAgora(primeira).finally(() => { puxando = null; });
     return puxando;
   }
+  // Primeira vez com um documento novo (ex.: 'ako'): junta o que estava nos documentos antigos.
+  async function lerAntigos() {
+    const estados = {};
+    let cliente = 0, achou = false;
+    for (const a of cfg.antigos.apps) {
+      const s = await getDoc(ref(usuario.uid, a));
+      if (!s.exists()) continue;
+      try { estados[a] = JSON.parse(s.data().dados); achou = true; cliente = Math.max(cliente, s.data().cliente || 0); } catch (e) { }
+    }
+    return achou ? { dados: JSON.stringify(cfg.antigos.juntar(estados)), cliente } : null;
+  }
   async function puxarAgora(primeira) {
     const snap = await getDoc(ref(usuario.uid));
-    if (!snap.exists()) { meta.ultimo = null; await enviar(true); return; }
-    const remoto = snap.data();
+    leu();
+    meta.erro = null; // a nuvem respondeu (a cota voltou, a conexão voltou)
+    let remoto = snap.exists() ? snap.data() : null, migrou = false;
+    if (!remoto && primeira && cfg.antigos) { remoto = await lerAntigos(); migrou = !!remoto; }
+    if (!remoto) { meta.ultimo = null; await enviar(true); return; }
     const localTexto = JSON.stringify(cfg.paraNuvem(cfg.ler(), meta.aceites));
     if (primeira && cfg.temDados(cfg.ler()) && cfg.juntar) {
       let rem = null;
@@ -217,13 +258,14 @@ export function criar(cfg) {
     meta.ultimo = JSON.stringify(cfg.paraNuvem(cfg.ler(), meta.aceites));
     meta.sincronizadoEm = remoto.cliente; meta.erro = null;
     cfg.salvarMeta(meta); avisa({ trouxe: true });
+    if (migrou) { meta.ultimo = null; await enviar(true); } // o documento novo nasce com o que veio dos antigos
   }
 
   // Liga este app na conta: a primeira sincronização junta ou pergunta.
   function ligar() {
     if (!usuario || meta.ligado || ligando) return ligando;
     meta.ligado = true; meta.ultimo = null; cfg.salvarMeta(meta);
-    ligando = puxar(true).catch(() => { meta.erro = 'Entrou, mas não deu para falar com a nuvem. Tento de novo depois.'; avisa(); })
+    ligando = puxar(true).catch((e) => { meta.erro = falha(e, 'Entrou, mas não deu para falar com a nuvem. Tento de novo depois.'); avisa(); })
       .finally(() => { ligando = null; avisa(); });
     return ligando;
   }
@@ -232,9 +274,16 @@ export function criar(cfg) {
     usuario = u;
     if (!u) { if (meta.ligado && !pedindo) { meta.ligado = false; meta.ultimo = null; cfg.salvarMeta(meta); } avisa(); return; }
     avisa();
-    if (meta.ligado) { try { await puxar(false); } catch (e) { meta.erro = 'Sem conexão com a nuvem agora. Seus dados seguem salvos neste aparelho.'; avisa(); } }
+    if (meta.ligado) { if (!leuHaPouco()) await atualizar(); } // mesma aba, outra página há pouco: não relê
     else if (contaLigada() && !pedindo) ligar();
   });
+
+  // Traz e envia o que mudou. Sem conexão ou sem cota, a mensagem diz o motivo.
+  async function atualizar() {
+    try { await puxar(false); return true; } catch (e) {
+      meta.erro = falha(e, 'Sem conexão com a nuvem agora. Seus dados seguem salvos neste aparelho.'); avisa(); return false;
+    }
+  }
 
   const inst = {
     ligar,
@@ -252,7 +301,14 @@ export function criar(cfg) {
       timer = setTimeout(enviar, ESPERA);
     },
     agora() { if (timer) { clearTimeout(timer); enviar(true); } },
-    puxar() { if (usuario && meta.ligado) puxar(false).catch(() => {}); },
+    // Voltou para a aba: relê só se a última leitura desta aba já passou de cfg.releitura.
+    puxar() { if (usuario && meta.ligado && !leuHaPouco()) atualizar(); },
+    // Botão "Atualizar agora": lê na hora e envia o que estiver esperando.
+    async atualizar() {
+      if (!usuario || !meta.ligado) return false;
+      clearTimeout(timer); timer = null;
+      return atualizar();
+    },
     async mudarAceites(aceites) { meta.aceites = aceites; meta.ultimo = null; cfg.salvarMeta(meta); await enviar(true); },
     async sair() { await sairDaConta(); avisa(); },
     async apagarConta(pedirSenha) { const ok = await apagarConta(pedirSenha); avisa(); return ok; }
