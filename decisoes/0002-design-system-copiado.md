@@ -20,4 +20,4 @@ Um arquivo de CSS, `ds/rizzygo.css`, e um script de tema, `ds/tema.js`, idêntic
 ## Consequências
 
 - Mudança no `ds/` exige dois PRs abertos juntos, com o mesmo arquivo.
-- Sem checagem automática, as cópias podem divergir. Próximo passo planejado: o CI do site principal compara o `ds/` com o deste repositório, que passa a ser a fonte.
+- O `ako` é a fonte. Desde 12/11/2026, o CI do site principal compara o `ds/` dele com o deste repositório e falha se houver diferença. Mude aqui primeiro e mescle este PR antes do PR do site.

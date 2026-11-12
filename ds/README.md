@@ -11,11 +11,12 @@ Cada página carrega o `rizzygo.css` primeiro e o CSS do site depois (`estilo.cs
 
 ## Como mudar
 
-1. Mude o `rizzygo.css` (ou o `tema.js`) em um dos repositórios.
-2. Copie o arquivo igual para o outro e abra os dois pull requests juntos.
+1. Mude o `rizzygo.css` (ou o `tema.js`) no `ako`, que é a fonte.
+2. Copie a pasta `ds/` igual para o `rizzygo-website` e abra os dois pull requests juntos.
 3. Confira as prévias no computador, no celular e no modo escuro.
+4. Mescle o PR do `ako` primeiro. O CI do `rizzygo-website` compara o `ds/` com o do `ako` e só passa quando os dois estão idênticos.
 
-Os dois arquivos precisam ficar idênticos. Para conferir: `diff -r rizzygo-website/ds ako/ds`.
+Para conferir local: `diff -r rizzygo-website/ds ako/ds`.
 
 ## Tokens
 
