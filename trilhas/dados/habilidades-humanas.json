@@ -1,0 +1,1464 @@
+{
+ "id": "habilidades-humanas",
+ "titulo": "Habilidades humanas",
+ "versao": 1,
+ "descricao": "Entender o problema, comunicar, dar feedback, segurar a emoção sob pressão, priorizar e ensinar. A parte humana que toda área de TI usa, com uma pergunta para cada cargo, do júnior à gestão.",
+ "cor": "#A3266A",
+ "inicio": {
+  "titulo": "Quase todo B.O. começa numa conversa.",
+  "lead": "Entender o que a pessoa precisa, explicar o que você fez, dar e receber feedback, manter a cabeça no lugar num incidente e dizer não sem queimar a ponte. Toda trilha do Ako passa por aqui. Cada tópico traz uma pergunta para a sua altura, do júnior à gestão, porque o problema muda com o cargo.",
+  "mini_mapa": [
+   "Entender o B.O.",
+   "Comunicar",
+   "Lidar com pessoas",
+   "Cuidar de você",
+   "Crescer e ensinar"
+  ],
+  "mini_mapa_rotulo": "Mapa da trilha Habilidades humanas: cinco etapas, de entender o problema até crescer e ensinar",
+  "para_quem": [
+   "Para quem está começando e quer chegar no primeiro emprego sabendo pedir ajuda e explicar o que fez.",
+   "Para quem já trabalha com tecnologia, em qualquer área, e sente que a parte difícil é a conversa.",
+   "Para quem lidera ou quer liderar, pela técnica ou pela gestão.",
+   "Não precisa de computador potente nem de conta em lugar nenhum. Precisa de outras pessoas para praticar."
+  ]
+ },
+ "momentos": [
+  {
+   "id": "quero",
+   "titulo": "Estou chegando agora",
+   "detalhe": "Ainda estudo ou estou no primeiro emprego"
+  },
+  {
+   "id": "comecando",
+   "titulo": "Já trabalho na área",
+   "detalhe": "Quero melhorar a parte humana do meu trabalho"
+  }
+ ],
+ "ja_sei": [
+  {
+   "id": "escrita",
+   "rotulo": "Escrevo mensagens e PRs que ninguém precisa perguntar de novo",
+   "topicos": [
+    "comunicacao-escrita"
+   ]
+  },
+  {
+   "id": "feedback",
+   "rotulo": "Dou e recebo feedback com frequência",
+   "topicos": [
+    "feedback"
+   ]
+  },
+  {
+   "id": "ensino",
+   "rotulo": "Já ensino ou mentoro alguém",
+   "topicos": [
+    "ensinar"
+   ]
+  }
+ ],
+ "mapa_antes": [
+  {
+   "id": "base-comunicacao",
+   "titulo": "Comunicação e trabalho em equipe",
+   "topico": "soft-skills",
+   "resumo": "O tópico da Primeiros passos traz os modelos básicos: relatar um problema, pedir ajuda e atualizar as pessoas."
+  },
+  {
+   "id": "base-ia",
+   "titulo": "IA com responsabilidade",
+   "topico": "ia-responsavel",
+   "resumo": "Usar IA no estudo e no trabalho sem deixar de pensar. Volta no tópico sobre trabalhar com pessoas e com IA."
+  }
+ ],
+ "mapa_fim": "A trilha termina com você ensinando o que aprendeu e escolhendo o seu braço na carreira em Y.",
+ "etapas": [
+  {
+   "id": "entender",
+   "titulo": "Entender o B.O.",
+   "conquista": "Olho no problema",
+   "descricao": "Achar o problema certo antes de correr para a solução."
+  },
+  {
+   "id": "comunicar",
+   "titulo": "Comunicar",
+   "conquista": "Recado dado",
+   "descricao": "Escrever e falar para a pessoa entender de primeira."
+  },
+  {
+   "id": "pessoas",
+   "titulo": "Lidar com pessoas",
+   "conquista": "Ponte firme",
+   "descricao": "Feedback, discordância e trabalho junto, com gente e com IA."
+  },
+  {
+   "id": "voce",
+   "titulo": "Cuidar de você",
+   "conquista": "Cabeça no lugar",
+   "descricao": "Emoção sob pressão, foco e dizer não."
+  },
+  {
+   "id": "crescer",
+   "titulo": "Crescer e ensinar",
+   "conquista": "Mão de duas vias",
+   "descricao": "Ensinar o que aprendeu e escolher o seu braço na carreira em Y."
+  }
+ ],
+ "areas": [],
+ "topicos": [
+  {
+   "id": "qual-e-o-bo",
+   "etapa": "entender",
+   "titulo": "Qual é o B.O.?",
+   "horas": 3,
+   "resumo": "Antes de resolver, descubra qual é o problema de verdade. O pedido que chega (\"faz um botão\", \"sobe esse servidor\") quase nunca é o problema. Ele é a solução que a pessoa imaginou. Entender quem sente a dor, quando ela aparece e o que acontece hoje evita semanas de trabalho na direção errada.",
+   "essencial": [
+    "Separe o pedido da necessidade. O pedido diz o que fazer. A necessidade diz por quê.",
+    "Pergunte \"por quê?\" até chegar numa dor que alguém sente. Costuma levar umas três a cinco perguntas.",
+    "Escreva o problema numa frase, sem a solução dentro: quem sente, em que momento, o que acontece hoje.",
+    "O mesmo pedido é um problema diferente em cada cargo. A pessoa júnior olha para a tarefa, a gestão olha para o valor e o custo.",
+    "Confira com quem pediu: \"entendi assim, é isso?\". Dois minutos de conversa valem mais que um dia de código."
+   ],
+   "alturas": [
+    {
+     "cargo": "Júnior",
+     "pergunta": "Antes de começar a tarefa, você consegue dizer em uma frase quem vai usar o que você vai fazer e por quê?"
+    },
+    {
+     "cargo": "Pleno",
+     "pergunta": "Qual pergunta você fez para quem pediu, antes de estimar o prazo?"
+    },
+    {
+     "cargo": "Sênior",
+     "pergunta": "Que outra solução, mais simples, resolveria a mesma dor? Alguém já tentou?"
+    },
+    {
+     "cargo": "Especialista",
+     "pergunta": "Que risco técnico do problema ninguém enxergou ainda, e como você mostra isso sem travar o time?"
+    },
+    {
+     "cargo": "Tech lead",
+     "pergunta": "O time inteiro descreveria este problema com as mesmas palavras? Como você confere?"
+    },
+    {
+     "cargo": "Gestão",
+     "pergunta": "Quanto custa não resolver este problema, e ele é mais importante que o resto da fila?"
+    }
+   ],
+   "checklist": [
+    "Li a lição \"Qual é o B.O.?\" do Ako",
+    "Peguei um pedido real (do trabalho, da escola ou de casa) e escrevi o problema numa frase, sem a solução",
+    "Fiz pelo menos três \"por quê?\" seguidos sobre esse pedido e anotei as respostas",
+    "Conferi com quem pediu se entendi direito"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Alguém pede: \"coloca um botão de exportar para Excel no relatório\". Qual é o melhor primeiro passo?",
+     "opcoes": [
+      "Fazer o botão, que é rápido",
+      "Perguntar o que a pessoa faz com a planilha depois de exportar",
+      "Dizer que Excel é ruim e sugerir outra ferramenta",
+      "Pedir o pedido por escrito e esperar"
+     ],
+     "correta": 1,
+     "explicacao": "O botão é a solução que a pessoa imaginou. Saber o que ela faz com a planilha mostra a necessidade. Às vezes o problema é um número que falta na tela, e o botão nem precisa existir."
+    },
+    {
+     "pergunta": "Qual frase descreve um problema, e não uma solução?",
+     "opcoes": [
+      "Precisamos de um app novo",
+      "Vamos migrar para a nuvem",
+      "Quem atende o cliente leva 20 minutos para achar o histórico de um pedido",
+      "Falta um dashboard"
+     ],
+     "correta": 2,
+     "explicacao": "A frase certa diz quem sente, em que momento e o que acontece hoje. As outras já trazem a resposta pronta."
+    },
+    {
+     "pergunta": "Para que serve perguntar \"por quê?\" várias vezes seguidas?",
+     "opcoes": [
+      "Para mostrar que você sabe mais",
+      "Para chegar na causa, que costuma estar algumas camadas abaixo do sintoma",
+      "Para atrasar a entrega",
+      "Para achar um culpado"
+     ],
+     "correta": 1,
+     "explicacao": "Os \"5 porquês\" descem do sintoma até a causa. O objetivo é entender, nunca apontar o dedo."
+    },
+    {
+     "pergunta": "Uma pessoa júnior e uma gestora recebem o mesmo pedido. O que muda entre elas?",
+     "opcoes": [
+      "Nada: o problema é o mesmo",
+      "Só o salário",
+      "O tamanho da pergunta: a júnior entende a tarefa, a gestora pesa o time, o prazo e o custo",
+      "A gestora não precisa entender o problema"
+     ],
+     "correta": 2,
+     "explicacao": "Cada altura enxerga um pedaço do problema. Juntas, elas veem o todo."
+    },
+    {
+     "pergunta": "Você entendeu o problema e escreveu a frase. O que fazer antes de começar?",
+     "opcoes": [
+      "Começar logo, para ganhar tempo",
+      "Mostrar a frase para quem pediu e perguntar se é isso",
+      "Guardar a frase só para você",
+      "Pedir para a IA resolver"
+     ],
+     "correta": 1,
+     "explicacao": "Conferir com quem pediu fecha o ciclo. Se a frase estiver errada, você descobre em dois minutos, não depois da entrega."
+    },
+    {
+     "pergunta": "O que costuma acontecer quando o time pula a parte de entender o problema?",
+     "opcoes": [
+      "Entrega mais rápido e acerta",
+      "Entrega algo que funciona, mas que não resolve a dor de ninguém",
+      "Nada de diferente",
+      "O código fica mais bonito"
+     ],
+     "correta": 1,
+     "explicacao": "Software que funciona e não resolve nada é um dos desperdícios mais comuns em tecnologia."
+    }
+   ],
+   "pergunta_ako": "Lembre de uma vez em que você fez exatamente o que pediram e, mesmo assim, a pessoa não ficou satisfeita. Qual era o B.O. de verdade?",
+   "recursos": [
+    {
+     "titulo": "Qual é o B.O.? Entender o problema antes do código",
+     "fonte": "Ako",
+     "url": "./materiais/qual-e-o-bo.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição do Ako: o mesmo pedido visto em seis cargos, do júnior à gestão, e um roteiro de perguntas para usar amanhã."
+    },
+    {
+     "titulo": "Guia completo do exercício dos 5 porquês",
+     "fonte": "Atlassian, Team Playbook",
+     "url": "https://www.atlassian.com/br/team-playbook/plays/5-whys",
+     "tipo": "exercício",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Passo a passo para descer do sintoma até a causa, com materiais, tempo e variações.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "Declarações de problema: método de enquadramento do problema",
+     "fonte": "Atlassian, Team Playbook",
+     "url": "https://www.atlassian.com/br/team-playbook/plays/problem-framing",
+     "tipo": "exercício",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Sessão em grupo para escrever o problema: quem é afetado, o quê, por que e onde.",
+     "verificado_em": "2026-11-12"
+    }
+   ]
+  },
+  {
+   "id": "perguntar-e-escutar",
+   "etapa": "entender",
+   "titulo": "Perguntar e escutar",
+   "horas": 2,
+   "resumo": "Escutar é mais do que esperar a sua vez de falar. Quem escuta bem faz perguntas abertas, repete com as próprias palavras o que ouviu e aguenta alguns segundos de silêncio. É a ferramenta mais barata para entender o problema e para a pessoa confiar em você.",
+   "essencial": [
+    "Pergunta aberta começa com \"como\", \"o que\" ou \"me conta\". Ela rende história. Pergunta fechada rende \"sim\" ou \"não\".",
+    "Repita com suas palavras: \"então, se entendi, o problema aparece quando...\". Se estiver errado, a pessoa corrige na hora.",
+    "Peça um exemplo real: \"me mostra a última vez que isso aconteceu\". Exemplo vale mais que opinião.",
+    "Fique quieto depois de perguntar. O silêncio faz a pessoa completar o raciocínio.",
+    "Anote durante a conversa e mande um resumo curto depois."
+   ],
+   "alturas": [
+    {
+     "cargo": "Júnior",
+     "pergunta": "Na última vez que você não entendeu uma tarefa, você perguntou ou adivinhou? O que te travou?"
+    },
+    {
+     "cargo": "Pleno",
+     "pergunta": "Quando alguém explica um problema, você repete com suas palavras antes de responder?"
+    },
+    {
+     "cargo": "Sênior",
+     "pergunta": "Em reunião, você fala primeiro ou deixa as pessoas mais novas falarem antes?"
+    },
+    {
+     "cargo": "Especialista",
+     "pergunta": "Como você pergunta sobre um sistema que não conhece sem parecer que está duvidando de quem fez?"
+    },
+    {
+     "cargo": "Tech lead",
+     "pergunta": "Nas suas conversas individuais, quanto do tempo você fala e quanto você escuta?"
+    },
+    {
+     "cargo": "Gestão",
+     "pergunta": "Quando foi a última vez que você ouviu um cliente ou um usuário direto, sem intermediário?"
+    }
+   ],
+   "checklist": [
+    "Numa conversa real, fiz pelo menos três perguntas abertas",
+    "Repeti com minhas palavras o que ouvi e pedi para a pessoa corrigir",
+    "Pedi um exemplo real em vez de aceitar uma opinião geral",
+    "Mandei um resumo curto da conversa por escrito"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Qual destas é uma pergunta aberta?",
+     "opcoes": [
+      "Você usa o sistema todo dia?",
+      "O sistema é lento?",
+      "Me conta como foi a última vez que você precisou desse relatório",
+      "Você gostou da tela nova?"
+     ],
+     "correta": 2,
+     "explicacao": "A pergunta aberta convida a pessoa a contar uma história, com detalhes que você nem sabia que precisava."
+    },
+    {
+     "pergunta": "Por que repetir com suas palavras o que a pessoa disse?",
+     "opcoes": [
+      "Para ganhar tempo",
+      "Para a pessoa corrigir na hora o que você entendeu errado",
+      "Para mostrar que estava prestando atenção, só isso",
+      "Para encerrar a conversa"
+     ],
+     "correta": 1,
+     "explicacao": "Repetir é um teste rápido do seu entendimento. Erro achado na conversa custa minutos."
+    },
+    {
+     "pergunta": "A pessoa diz: \"o sistema é sempre lento\". Qual é a melhor próxima pergunta?",
+     "opcoes": [
+      "Lento quanto?",
+      "Me mostra a última vez que ficou lento: o que você estava fazendo?",
+      "Já tentou reiniciar?",
+      "Todo mundo acha isso?"
+     ],
+     "correta": 1,
+     "explicacao": "Um exemplo real mostra a tela, o horário e a ação. Com isso dá para investigar."
+    },
+    {
+     "pergunta": "Você fez uma pergunta e a pessoa ficou quieta. O que fazer?",
+     "opcoes": [
+      "Responder por ela",
+      "Fazer outra pergunta logo",
+      "Esperar alguns segundos",
+      "Mudar de assunto"
+     ],
+     "correta": 2,
+     "explicacao": "O silêncio costuma ser a pessoa pensando. Quem espera ouve a parte mais útil."
+    },
+    {
+     "pergunta": "Qual é o papel de mandar um resumo depois da conversa?",
+     "opcoes": [
+      "Nenhum, já foi falado",
+      "Deixar registrado o que foi entendido e dar chance de corrigir",
+      "Cobrar a pessoa",
+      "Provar que você estava certo"
+     ],
+     "correta": 1,
+     "explicacao": "O resumo escrito pega o que ficou diferente na cabeça de cada um e vira referência para depois."
+    }
+   ],
+   "pergunta_ako": "Pense numa pessoa que faz você se sentir ouvido. O que ela faz de diferente quando você fala?",
+   "recursos": [
+    {
+     "titulo": "Qual é o B.O.? Entender o problema antes do código",
+     "fonte": "Ako",
+     "url": "./materiais/qual-e-o-bo.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "A lição traz um roteiro de perguntas abertas para usar na primeira conversa sobre um pedido."
+    },
+    {
+     "titulo": "Declarações de problema: método de enquadramento do problema",
+     "fonte": "Atlassian, Team Playbook",
+     "url": "https://www.atlassian.com/br/team-playbook/plays/problem-framing",
+     "tipo": "exercício",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Um roteiro de perguntas em grupo para ouvir todo mundo antes de escrever o problema.",
+     "verificado_em": "2026-11-12"
+    }
+   ]
+  },
+  {
+   "id": "comunicacao-escrita",
+   "etapa": "comunicar",
+   "titulo": "Escrever para ser entendido",
+   "horas": 3,
+   "resumo": "Em tecnologia, boa parte da comunicação é escrita: chat, ticket, pull request, documento. Texto bom começa pelo que importa, cabe numa tela e deixa claro o que você precisa de quem lê. Quem lê não precisa voltar para perguntar.",
+   "essencial": [
+    "Comece pelo que importa: a conclusão ou o pedido vem na primeira linha. O contexto vem depois.",
+    "Uma mensagem, um assunto. Assunto novo, mensagem nova.",
+    "Diga o que você precisa e até quando: \"preciso de um OK até quinta\".",
+    "Relato de problema: o que fiz, o que esperava, o que aconteceu, o que já tentei.",
+    "Releia antes de mandar, como se fosse a pessoa mais ocupada do time. Corte o que ela não precisa."
+   ],
+   "alturas": [
+    {
+     "cargo": "Júnior",
+     "pergunta": "Sua última mensagem pedindo ajuda tinha o que você fez, o que esperava, o que aconteceu e o que já tentou?"
+    },
+    {
+     "cargo": "Pleno",
+     "pergunta": "A descrição do seu último pull request explica o porquê da mudança, ou só o quê?"
+    },
+    {
+     "cargo": "Sênior",
+     "pergunta": "Você escreve as decisões técnicas do time, ou elas ficam só na conversa?"
+    },
+    {
+     "cargo": "Especialista",
+     "pergunta": "Uma pessoa de outra área entenderia o seu último documento técnico?"
+    },
+    {
+     "cargo": "Tech lead",
+     "pergunta": "O time sabe o que mudou nesta semana sem precisar te perguntar?"
+    },
+    {
+     "cargo": "Gestão",
+     "pergunta": "Seu último recado para o time cabia numa tela e dizia o que você espera de cada um?"
+    }
+   ],
+   "checklist": [
+    "Li a lição de comunicação no trabalho do Ako",
+    "Reescrevi uma mensagem minha colocando a conclusão ou o pedido na primeira linha",
+    "Escrevi a descrição de um pull request (ou de uma entrega) com o que mudou, por que e como conferir",
+    "Pedi para alguém ler um texto meu e dizer o que não entendeu"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Qual é o melhor começo para uma mensagem pedindo aprovação?",
+     "opcoes": [
+      "Oi, tudo bem? Então, estava pensando...",
+      "Preciso do seu OK até quinta para publicar a página nova. Resumo abaixo.",
+      "Bom dia!",
+      "Você viu meu e-mail de ontem?"
+     ],
+     "correta": 1,
+     "explicacao": "O pedido e o prazo na primeira linha deixam claro o que a pessoa precisa fazer. O resto é contexto."
+    },
+    {
+     "pergunta": "Você travou num erro e vai pedir ajuda no chat. O que não pode faltar?",
+     "opcoes": [
+      "Só o print do erro",
+      "O que você fez, o que esperava, o que aconteceu e o que já tentou",
+      "Um pedido de desculpas",
+      "A palavra urgente"
+     ],
+     "correta": 1,
+     "explicacao": "Com esses quatro pontos a pessoa ajuda sem precisar fazer dez perguntas de volta."
+    },
+    {
+     "pergunta": "Por que separar assuntos diferentes em mensagens diferentes?",
+     "opcoes": [
+      "Para parecer mais ativo",
+      "Para cada assunto ter a sua resposta e não se perder",
+      "Porque o chat limita o tamanho",
+      "Não precisa separar"
+     ],
+     "correta": 1,
+     "explicacao": "Mensagem com três assuntos costuma receber resposta para um só."
+    },
+    {
+     "pergunta": "O que a descrição de um pull request deve explicar além do que mudou?",
+     "opcoes": [
+      "Quanto tempo levou",
+      "Por que mudou e como conferir",
+      "Quem pediu",
+      "Nada, o código explica"
+     ],
+     "correta": 1,
+     "explicacao": "O código mostra o quê. Só você sabe o porquê e como testar."
+    },
+    {
+     "pergunta": "Antes de mandar um texto longo, o que ajuda mais?",
+     "opcoes": [
+      "Colocar mais detalhes",
+      "Reler como a pessoa mais ocupada e cortar o que ela não precisa",
+      "Mandar em partes, uma por minuto",
+      "Pedir para a IA aumentar"
+     ],
+     "correta": 1,
+     "explicacao": "Texto curto e claro é lido. Texto longo fica para depois e às vezes nunca é lido."
+    }
+   ],
+   "pergunta_ako": "Pegue a última mensagem que você mandou no trabalho ou na escola. Como ela ficaria com o pedido na primeira linha?",
+   "recursos": [
+    {
+     "titulo": "Comunicação no trabalho de tecnologia",
+     "fonte": "Ako",
+     "url": "./materiais/comunicacao-no-trabalho.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição do Ako com modelos prontos: pedir ajuda, escrever no chat, relatar problemas, descrever pull requests, feedback e reuniões."
+    },
+    {
+     "titulo": "Technical Writing One",
+     "fonte": "Google for Developers",
+     "url": "https://developers.google.com/tech-writing/one",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Curso curto de escrita técnica: frases claras, listas, parágrafos e escrever para o público certo.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "Comunicação Empresarial",
+     "fonte": "Fundação Bradesco, Escola Virtual",
+     "url": "https://www.ev.org.br/cursos/comunicacao-empresarial",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim, precisa criar conta",
+     "nota": "Curso de 12 horas para se comunicar melhor por escrito e falando no ambiente de trabalho.",
+     "verificado_em": "2026-11-12"
+    }
+   ]
+  },
+  {
+   "id": "falar",
+   "etapa": "comunicar",
+   "titulo": "Falar em reunião e apresentar",
+   "horas": 2,
+   "resumo": "Daily, demo, entrevista, reunião com cliente: em algum momento você vai explicar o seu trabalho em voz alta. Isso se aprende com preparação: saber a mensagem principal, adaptar para quem ouve e treinar antes.",
+   "essencial": [
+    "Prepare uma frase com a mensagem principal. Se só der tempo de dizer uma coisa, qual seria?",
+    "Fale para quem está ouvindo: para quem é técnico, o como. Para quem não é, o que muda para a pessoa.",
+    "Na daily, três pontos: o que fiz, o que vou fazer, onde estou travado.",
+    "Mostre em vez de descrever. Uma tela ou um exemplo vale mais que um slide cheio.",
+    "Treine em voz alta uma vez antes. Nervoso é normal e diminui com repetição."
+   ],
+   "alturas": [
+    {
+     "cargo": "Júnior",
+     "pergunta": "Na daily, você fala onde está travado, ou só o que já fez?"
+    },
+    {
+     "cargo": "Pleno",
+     "pergunta": "Você consegue explicar sua última entrega em um minuto para alguém que não é da área?"
+    },
+    {
+     "cargo": "Sênior",
+     "pergunta": "Você já apresentou uma proposta técnica para o time e pediu críticas no fim?"
+    },
+    {
+     "cargo": "Especialista",
+     "pergunta": "Como você explica um risco técnico para quem decide o orçamento?"
+    },
+    {
+     "cargo": "Tech lead",
+     "pergunta": "Nas reuniões que você conduz, todo mundo fala, ou sempre as mesmas pessoas?"
+    },
+    {
+     "cargo": "Gestão",
+     "pergunta": "Você consegue contar a estratégia da área em três frases que o time repete sem você?"
+    }
+   ],
+   "checklist": [
+    "Escrevi a mensagem principal de uma apresentação minha em uma frase",
+    "Expliquei meu trabalho em um minuto para alguém de fora da área",
+    "Treinei em voz alta antes de uma reunião ou apresentação",
+    "Pedi para alguém me dizer uma coisa que funcionou e uma que posso melhorar"
+   ],
+   "quiz": [
+    {
+     "pergunta": "O que preparar primeiro para uma apresentação curta?",
+     "opcoes": [
+      "Os slides",
+      "A mensagem principal, em uma frase",
+      "A roupa",
+      "As piadas"
+     ],
+     "correta": 1,
+     "explicacao": "Com a mensagem principal clara, o resto se organiza em volta dela."
+    },
+    {
+     "pergunta": "Você vai explicar uma mudança técnica para a área de vendas. O que priorizar?",
+     "opcoes": [
+      "Detalhes da arquitetura",
+      "O que muda para o cliente e para o trabalho deles",
+      "O nome das ferramentas",
+      "Quanto código foi escrito"
+     ],
+     "correta": 1,
+     "explicacao": "Quem não é técnico quer saber o efeito na vida dele, não o mecanismo."
+    },
+    {
+     "pergunta": "Na daily, qual ponto costuma ser esquecido e é o mais útil para o time?",
+     "opcoes": [
+      "O que fiz ontem",
+      "Onde estou travado",
+      "Quantas horas trabalhei",
+      "O que comi no almoço"
+     ],
+     "correta": 1,
+     "explicacao": "Falar do bloqueio cedo deixa alguém ajudar antes que vire atraso."
+    },
+    {
+     "pergunta": "Você fica nervoso para falar em público. O que mais ajuda?",
+     "opcoes": [
+      "Evitar apresentar",
+      "Treinar em voz alta antes e começar com grupos pequenos",
+      "Ler tudo do slide",
+      "Falar bem rápido"
+     ],
+     "correta": 1,
+     "explicacao": "Nervoso diminui com repetição. Grupo pequeno e treino antes tornam a prática mais leve."
+    },
+    {
+     "pergunta": "Por que mostrar um exemplo em vez de só descrever?",
+     "opcoes": [
+      "Porque é mais bonito",
+      "Porque as pessoas entendem e lembram mais de algo que viram funcionando",
+      "Para gastar o tempo",
+      "Não faz diferença"
+     ],
+     "correta": 1,
+     "explicacao": "Ver a tela, o antes e o depois, deixa a ideia concreta."
+    }
+   ],
+   "pergunta_ako": "Qual foi a última vez que você explicou algo e percebeu que a pessoa não entendeu? O que você mudaria?",
+   "recursos": [
+    {
+     "titulo": "Comunicação no trabalho de tecnologia",
+     "fonte": "Ako",
+     "url": "./materiais/comunicacao-no-trabalho.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "A lição tem uma parte sobre reuniões: como se preparar, o que falar na daily e como encerrar com próximos passos."
+    },
+    {
+     "titulo": "Comunicação Empresarial",
+     "fonte": "Fundação Bradesco, Escola Virtual",
+     "url": "https://www.ev.org.br/cursos/comunicacao-empresarial",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim, precisa criar conta",
+     "nota": "Curso de 12 horas de comunicação no trabalho, com uma parte de comunicação oral.",
+     "verificado_em": "2026-11-12"
+    }
+   ]
+  },
+  {
+   "id": "feedback",
+   "etapa": "pessoas",
+   "titulo": "Feedback que ajuda",
+   "horas": 3,
+   "resumo": "Feedback bom é sobre um fato, dito perto do momento, com o efeito que ele causou. Vale para elogio e para correção. Receber bem é metade da habilidade: ouvir até o fim, agradecer e decidir depois o que fazer com ele.",
+   "essencial": [
+    "Use situação, comportamento e impacto: \"na reunião de ontem (situação), você interrompeu a Ana duas vezes (comportamento) e ela não terminou a proposta (impacto)\".",
+    "Fale do que a pessoa fez, nunca de quem ela é. \"Você entregou sem teste\" ajuda. \"Você é desleixado\" machuca e não muda nada.",
+    "Elogio também é feedback. Diga o que exatamente funcionou, para a pessoa repetir.",
+    "Ao receber: escute até o fim, pergunte um exemplo se precisar, agradeça. Decida depois, com calma.",
+    "Feedback em particular, reconhecimento em público. Combine com o time o jeito de cada um."
+   ],
+   "alturas": [
+    {
+     "cargo": "Júnior",
+     "pergunta": "Quando foi a última vez que você pediu feedback sobre uma entrega, em vez de esperar a avaliação?"
+    },
+    {
+     "cargo": "Pleno",
+     "pergunta": "Você já deu feedback para alguém do mesmo nível que você? Como foi?"
+    },
+    {
+     "cargo": "Sênior",
+     "pergunta": "No code review, seus comentários falam do código ou da pessoa? Um júnior se sentiria à vontade lendo?"
+    },
+    {
+     "cargo": "Especialista",
+     "pergunta": "Como você dá feedback técnico duro sem que a pessoa pare de te procurar?"
+    },
+    {
+     "cargo": "Tech lead",
+     "pergunta": "Cada pessoa do seu time ouviu de você, neste mês, uma coisa que está indo bem e uma que pode melhorar?"
+    },
+    {
+     "cargo": "Gestão",
+     "pergunta": "Que feedback sobre a sua liderança você recebeu por último, e o que mudou depois dele?"
+    }
+   ],
+   "checklist": [
+    "Escrevi um feedback no formato situação, comportamento e impacto",
+    "Dei um elogio específico para alguém, dizendo o que exatamente funcionou",
+    "Pedi feedback sobre algo que fiz e só escutei, sem me defender",
+    "Anotei o que vou fazer com o feedback que recebi"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Qual destes é um feedback útil?",
+     "opcoes": [
+      "Você precisa melhorar muito",
+      "Seu trabalho está ruim",
+      "No PR de ontem faltou teste na função de login, e o bug voltou em produção",
+      "Você é desatento"
+     ],
+     "correta": 2,
+     "explicacao": "Tem a situação, o comportamento e o impacto. A pessoa sabe exatamente o que mudar."
+    },
+    {
+     "pergunta": "Alguém te dá um feedback que parece injusto. O que fazer na hora?",
+     "opcoes": [
+      "Explicar por que a pessoa está errada",
+      "Escutar até o fim, pedir um exemplo e agradecer",
+      "Ir embora",
+      "Devolver um feedback sobre ela"
+     ],
+     "correta": 1,
+     "explicacao": "Na hora, entenda. Concordar ou não é uma decisão que dá para tomar depois, com calma."
+    },
+    {
+     "pergunta": "Por que elogio também precisa ser específico?",
+     "opcoes": [
+      "Para parecer sincero",
+      "Para a pessoa saber o que repetir",
+      "Para ocupar tempo",
+      "Não precisa"
+     ],
+     "correta": 1,
+     "explicacao": "\"Bom trabalho\" é simpático. \"O resumo no topo do documento me poupou meia hora\" ensina."
+    },
+    {
+     "pergunta": "Num code review, qual comentário é melhor?",
+     "opcoes": [
+      "Isso está errado",
+      "Quem escreveu isso?",
+      "Esta consulta roda uma vez por item da lista. Que tal buscar tudo de uma vez? Fica mais rápido com muitos itens.",
+      "Refaz"
+     ],
+     "correta": 2,
+     "explicacao": "O comentário fala do código, explica o porquê e sugere um caminho."
+    },
+    {
+     "pergunta": "Onde dar um feedback de correção?",
+     "opcoes": [
+      "No canal do time, para todos aprenderem",
+      "Em particular",
+      "Por e-mail com cópia para a gestão",
+      "Não dar"
+     ],
+     "correta": 1,
+     "explicacao": "Correção em público envergonha e coloca a pessoa na defensiva. Em particular ela consegue ouvir."
+    },
+    {
+     "pergunta": "Quando dar o feedback?",
+     "opcoes": [
+      "Só na avaliação anual",
+      "Perto do momento em que aconteceu",
+      "Nunca, para não criar clima",
+      "Depois que acontecer três vezes"
+     ],
+     "correta": 1,
+     "explicacao": "Perto do fato, a pessoa lembra o contexto e consegue mudar já na próxima vez."
+    }
+   ],
+   "pergunta_ako": "Qual foi o feedback mais útil que você já recebeu? O que fez ele funcionar?",
+   "recursos": [
+    {
+     "titulo": "Feedback: guia para dar, receber e pedir no dia a dia",
+     "fonte": "Na Prática, Fundação Estudar",
+     "url": "https://napratica.org.br/noticias/feedback-guia/",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Tipos de feedback e como dar, receber e pedir, com exemplos de carreira.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "Guidance on Feedback",
+     "fonte": "GitLab Handbook",
+     "url": "https://handbook.gitlab.com/handbook/people-group/guidance-on-feedback/",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Como uma empresa remota grande ensina feedback: o modelo situação, comportamento e impacto, conversas difíceis e como receber.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "Como criar um manual do usuário pessoal",
+     "fonte": "Atlassian, Team Playbook",
+     "url": "https://www.atlassian.com/br/team-playbook/plays/my-user-manual",
+     "tipo": "exercício",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Cada pessoa escreve como prefere trabalhar e receber feedback. Bom para combinar o jeito de cada um.",
+     "verificado_em": "2026-11-12"
+    }
+   ]
+  },
+  {
+   "id": "trabalhar-junto",
+   "etapa": "pessoas",
+   "titulo": "Discordar sem brigar, com pessoas e com IA",
+   "horas": 3,
+   "resumo": "Times bons discordam. O que separa um time bom de um time em guerra é discordar da ideia, não da pessoa, e se comprometer com a decisão depois de ser ouvido. Hoje o time também tem IA: ela ajuda muito, mas a responsabilidade pelo que sai continua sendo sua.",
+   "essencial": [
+    "Discorde da ideia com um motivo e uma alternativa: \"acho arriscado por X. E se a gente fizer Y?\".",
+    "Depois de decidir, todos seguem a decisão, inclusive quem discordou. Se aparecer fato novo, reabra.",
+    "Combine o básico com o time: quem decide o quê, como pedir ajuda, em quanto tempo responder.",
+    "Trate a IA como uma colega rápida que às vezes inventa: peça o raciocínio, confira as fontes, teste o código.",
+    "Diga quando usou IA num trabalho que outra pessoa vai revisar. Quem revisa precisa saber o que conferir."
+   ],
+   "alturas": [
+    {
+     "cargo": "Júnior",
+     "pergunta": "Você já discordou de alguém mais experiente? Como você disse?"
+    },
+    {
+     "cargo": "Pleno",
+     "pergunta": "Quando o time decide algo de que você discordou, você segue junto ou continua resistindo?"
+    },
+    {
+     "cargo": "Sênior",
+     "pergunta": "Como você ajuda o time a decidir quando duas pessoas sêniores discordam?"
+    },
+    {
+     "cargo": "Especialista",
+     "pergunta": "Que regra você combinaria com o time para usar IA sem deixar passar erro?"
+    },
+    {
+     "cargo": "Tech lead",
+     "pergunta": "Seu time tem combinados escritos sobre como trabalhar? Quando foram revistos?"
+    },
+    {
+     "cargo": "Gestão",
+     "pergunta": "Como você resolve um conflito entre dois times sem escolher um lado antes de ouvir os dois?"
+    }
+   ],
+   "checklist": [
+    "Discordei de uma ideia com um motivo e uma alternativa",
+    "Escrevi três combinados de trabalho para um grupo de que participo",
+    "Usei uma IA numa tarefa e conferi o que ela entregou antes de usar",
+    "Contei para quem revisou que usei IA e onde"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Qual é o melhor jeito de discordar numa reunião?",
+     "opcoes": [
+      "Ficar quieto e reclamar depois",
+      "Dizer que a ideia é ruim",
+      "Dar o motivo e propor uma alternativa",
+      "Votar contra sem explicar"
+     ],
+     "correta": 2,
+     "explicacao": "Motivo e alternativa transformam a discordância numa contribuição."
+    },
+    {
+     "pergunta": "O time decidiu um caminho de que você discordou. Duas semanas depois, o que esperar de você?",
+     "opcoes": [
+      "Que siga a decisão e traga fatos novos se aparecerem",
+      "Que faça do seu jeito em silêncio",
+      "Que relembre todo dia que avisou",
+      "Que saia do projeto"
+     ],
+     "correta": 0,
+     "explicacao": "Discordar e se comprometer mantém o time andando. Fato novo é motivo para reabrir a conversa."
+    },
+    {
+     "pergunta": "A IA escreveu uma função que parece certa. O que fazer antes de mandar para revisão?",
+     "opcoes": [
+      "Mandar, a IA não erra",
+      "Ler, entender e testar a função",
+      "Pedir para outra IA aprovar",
+      "Apagar os comentários para ninguém saber"
+     ],
+     "correta": 1,
+     "explicacao": "Quem assina o trabalho é você. A IA pode inventar biblioteca, número ou caso de uso."
+    },
+    {
+     "pergunta": "Para que servem combinados de trabalho escritos?",
+     "opcoes": [
+      "Para controlar as pessoas",
+      "Para todo mundo saber como o time funciona sem depender de memória",
+      "Para a gestão",
+      "Não servem"
+     ],
+     "correta": 1,
+     "explicacao": "Combinado escrito evita conflito por expectativa diferente e ajuda quem chega no time."
+    },
+    {
+     "pergunta": "Duas pessoas brigam por causa de uma escolha técnica. O que ajuda primeiro?",
+     "opcoes": [
+      "Escolher a pessoa mais antiga",
+      "Voltar ao problema: o que cada opção resolve e quanto custa",
+      "Deixar pra lá",
+      "Fazer as duas"
+     ],
+     "correta": 1,
+     "explicacao": "Quando a conversa volta ao problema e aos critérios, sai do campo pessoal."
+    }
+   ],
+   "pergunta_ako": "Pense numa discordância que terminou bem. O que as pessoas fizeram para não virar briga?",
+   "recursos": [
+    {
+     "titulo": "IA com responsabilidade",
+     "fonte": "Ako",
+     "url": "./materiais/ia-com-responsabilidade.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição do Ako sobre usar IA para estudar e trabalhar: o que conferir, o que nunca colar e como dizer que usou."
+    },
+    {
+     "titulo": "Tática de acordos de trabalho",
+     "fonte": "Atlassian, Team Playbook",
+     "url": "https://www.atlassian.com/br/team-playbook/plays/working-agreements",
+     "tipo": "exercício",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Oficina para o time combinar como trabalhar e se comunicar, presencial ou à distância.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "Como definir funções e responsabilidades da equipe",
+     "fonte": "Atlassian, Team Playbook",
+     "url": "https://www.atlassian.com/br/team-playbook/plays/roles-and-responsibilities",
+     "tipo": "exercício",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Passo a passo para deixar claro quem faz e quem decide o quê.",
+     "verificado_em": "2026-11-12"
+    }
+   ]
+  },
+  {
+   "id": "emocao-sob-pressao",
+   "etapa": "voce",
+   "titulo": "Emoção sob pressão",
+   "horas": 3,
+   "resumo": "Sistema fora do ar, prazo apertado, crítica na frente de todo mundo, a sensação de que todos sabem mais que você. A emoção vem antes do raciocínio. Inteligência emocional é perceber o que está sentindo, dar um tempo antes de agir e ajudar o time a se sentir seguro para falar de erro.",
+   "essencial": [
+    "Dê nome ao que sente: \"estou com medo de ter quebrado\". Nomear ajuda a baixar a intensidade.",
+    "Pause antes de responder no calor: respire, levante, espere a mensagem esfriar dez minutos.",
+    "Num incidente, uma pessoa coordena, as outras investigam, e a conversa é sobre o sistema, não sobre culpados.",
+    "Sentir que não sabe o suficiente é comum, inclusive em gente experiente. Compare você com você de seis meses atrás.",
+    "Num time em que dá para admitir erro, o erro aparece cedo e todo mundo aprende com ele. Você ajuda quando conta os seus."
+   ],
+   "alturas": [
+    {
+     "cargo": "Júnior",
+     "pergunta": "Quando você erra, você conta logo ou tenta consertar escondido? O que te faz esconder?"
+    },
+    {
+     "cargo": "Pleno",
+     "pergunta": "Qual situação do trabalho mais tira você do sério? O que você faz nos primeiros cinco minutos?"
+    },
+    {
+     "cargo": "Sênior",
+     "pergunta": "Durante um incidente, como você mantém a calma e ajuda quem está mais nervoso?"
+    },
+    {
+     "cargo": "Especialista",
+     "pergunta": "Como você reage quando alguém questiona a sua especialidade na frente dos outros?"
+    },
+    {
+     "cargo": "Tech lead",
+     "pergunta": "Alguém do seu time já te contou um erro antes de você descobrir? Se não, por quê?"
+    },
+    {
+     "cargo": "Gestão",
+     "pergunta": "Como o time percebe o seu humor num dia ruim, e o que isso faz com eles?"
+    }
+   ],
+   "checklist": [
+    "Numa situação difícil, dei nome ao que estava sentindo antes de reagir",
+    "Esperei antes de responder uma mensagem que me irritou",
+    "Contei um erro meu para alguém e o que aprendi com ele",
+    "Li a lição do Ako sobre incidentes e postmortem sem culpa"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Você recebe uma crítica dura no chat do time. Qual é a melhor primeira reação?",
+     "opcoes": [
+      "Responder na hora, explicando tudo",
+      "Esperar um pouco, entender o que foi dito e responder com calma",
+      "Sair do grupo",
+      "Encaminhar para a gestão"
+     ],
+     "correta": 1,
+     "explicacao": "Responder no calor quase sempre piora. Dez minutos mudam o tom da resposta."
+    },
+    {
+     "pergunta": "Você subiu uma mudança e o sistema caiu. O que fazer primeiro?",
+     "opcoes": [
+      "Desligar o computador",
+      "Avisar o time na hora e ajudar a desfazer",
+      "Esperar alguém perceber",
+      "Procurar quem revisou para culpar"
+     ],
+     "correta": 1,
+     "explicacao": "Avisar cedo encurta o incidente. Esconder estende o problema e quebra a confiança."
+    },
+    {
+     "pergunta": "Por que dar nome à emoção ajuda?",
+     "opcoes": [
+      "Não ajuda",
+      "Porque nomear o que sente costuma baixar a intensidade e devolve o controle",
+      "Para poder reclamar",
+      "Para os outros sentirem pena"
+     ],
+     "correta": 1,
+     "explicacao": "Perceber \"estou com raiva\" cria um espaço entre sentir e agir."
+    },
+    {
+     "pergunta": "O que é um time com segurança psicológica?",
+     "opcoes": [
+      "Um time sem conflitos",
+      "Um time em que as pessoas podem admitir erro, perguntar e discordar sem medo de punição",
+      "Um time com seguro de vida",
+      "Um time que nunca erra"
+     ],
+     "correta": 1,
+     "explicacao": "Segurança psicológica não é falta de cobrança. É poder falar sem medo de ser humilhado."
+    },
+    {
+     "pergunta": "Você sente que todo mundo sabe mais que você. O que costuma ajudar?",
+     "opcoes": [
+      "Fingir que sabe",
+      "Comparar você com você de meses atrás e perguntar o que não sabe",
+      "Desistir da área",
+      "Estudar a noite toda"
+     ],
+     "correta": 1,
+     "explicacao": "Essa sensação é comum em qualquer altura. Ver o próprio progresso e perguntar sem vergonha quebra o ciclo."
+    },
+    {
+     "pergunta": "Num incidente, qual papel ajuda o time a não se perder?",
+     "opcoes": [
+      "Todo mundo mexendo em tudo ao mesmo tempo",
+      "Uma pessoa coordenando e avisando, enquanto outras investigam",
+      "Ninguém falar nada até resolver",
+      "A gestão decidir cada passo"
+     ],
+     "correta": 1,
+     "explicacao": "Com papel claro, cada um sabe o que fazer e a comunicação não se perde."
+    }
+   ],
+   "pergunta_ako": "Pense na última vez que você agiu no calor e se arrependeu. O que teria acontecido se tivesse esperado dez minutos?",
+   "recursos": [
+    {
+     "titulo": "Incidentes e postmortem sem culpa",
+     "fonte": "Ako",
+     "url": "./materiais/incidentes-e-postmortem.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição do Ako sobre o que fazer quando algo cai: papéis, comunicação e o postmortem que aprende em vez de culpar."
+    },
+    {
+     "titulo": "Trilha Inteligência Emocional",
+     "fonte": "Fundação Bradesco, Escola Virtual",
+     "url": "https://www.ev.org.br/trilhas-de-conhecimento/inteligencia-emocional",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim, precisa criar conta",
+     "nota": "Quatro cursos de 4 horas: ansiedade; raiva, vergonha e inveja; resiliência; decisão responsável.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "Understand team effectiveness",
+     "fonte": "Google re:Work",
+     "url": "https://rework.withgoogle.com/intl/en/guides/understand-team-effectiveness",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "A pesquisa do Google sobre o que faz um time funcionar. Segurança psicológica aparece em primeiro lugar.",
+     "verificado_em": "2026-11-12"
+    }
+   ]
+  },
+  {
+   "id": "prioridade",
+   "etapa": "voce",
+   "titulo": "Prioridade, foco e dizer não",
+   "horas": 2,
+   "resumo": "Sempre vai ter mais pedido do que tempo. Priorizar é escolher o que fica para depois, e dizer isso em voz alta. Quem não escolhe acaba fazendo o que grita mais alto, não o que importa mais. Dizer não, com motivo e alternativa, protege o seu trabalho e o do time.",
+   "essencial": [
+    "Separe urgente de importante. Urgente pede atenção agora. Importante muda o resultado. Nem tudo que é urgente é importante.",
+    "Faça uma coisa de cada vez. Começar muito e terminar pouco é um jeito comum de atrasar tudo.",
+    "Diga não com motivo e alternativa: \"esta semana não dá, porque estou no X. Consigo na terça, ou a Bia pode ajudar\".",
+    "Quando a prioridade não estiver clara, pergunte a quem decide: \"entre A e B, qual vem primeiro?\".",
+    "Guarde um tempo do dia sem notificação para o trabalho que exige foco."
+   ],
+   "alturas": [
+    {
+     "cargo": "Júnior",
+     "pergunta": "Quando chegam dois pedidos ao mesmo tempo, você pergunta qual vem primeiro ou tenta fazer os dois?"
+    },
+    {
+     "cargo": "Pleno",
+     "pergunta": "Quantas tarefas você tem começadas agora? Quantas terminou nesta semana?"
+    },
+    {
+     "cargo": "Sênior",
+     "pergunta": "Você já disse não para um pedido de outro time? Como você explicou?"
+    },
+    {
+     "cargo": "Especialista",
+     "pergunta": "Que pedido você recusa para proteger o tempo de estudo e de trabalho profundo?"
+    },
+    {
+     "cargo": "Tech lead",
+     "pergunta": "O time sabe as três prioridades da semana sem olhar uma ferramenta?"
+    },
+    {
+     "cargo": "Gestão",
+     "pergunta": "O que a sua área parou de fazer neste trimestre para focar no que importa?"
+    }
+   ],
+   "checklist": [
+    "Listei minhas tarefas da semana e marquei quais são urgentes e quais são importantes",
+    "Terminei uma tarefa antes de começar a próxima por um dia inteiro",
+    "Disse não para um pedido com motivo e alternativa",
+    "Organizei um bloco de foco na Rotina da Zumi ou na minha agenda"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Qual tarefa costuma ser importante, mas não urgente?",
+     "opcoes": [
+      "Responder uma notificação",
+      "Estudar a base de um assunto que você usa todo dia",
+      "Atender o telefone",
+      "Apagar e-mails"
+     ],
+     "correta": 1,
+     "explicacao": "O importante raramente grita. Por isso precisa de um horário reservado."
+    },
+    {
+     "pergunta": "Você tem cinco tarefas começadas e nenhuma pronta. O que fazer?",
+     "opcoes": [
+      "Começar a sexta",
+      "Escolher a mais importante e terminar antes de pegar outra",
+      "Trabalhar mais horas",
+      "Pedir prazo maior para todas"
+     ],
+     "correta": 1,
+     "explicacao": "Terminar uma por vez entrega valor antes e diminui a troca de contexto."
+    },
+    {
+     "pergunta": "Qual é o melhor jeito de dizer não para um pedido?",
+     "opcoes": [
+      "Não, estou ocupado",
+      "Ignorar a mensagem",
+      "Explicar o motivo e oferecer uma alternativa",
+      "Dizer sim e não fazer"
+     ],
+     "correta": 2,
+     "explicacao": "Motivo e alternativa mostram respeito pelo pedido e mantêm a relação boa."
+    },
+    {
+     "pergunta": "Dois pedidos chegam de pessoas diferentes, os dois para hoje. O que fazer?",
+     "opcoes": [
+      "Escolher o de quem é mais importante na empresa",
+      "Perguntar a quem decide as prioridades qual vem primeiro",
+      "Fazer os dois pela metade",
+      "Esperar alguém reclamar"
+     ],
+     "correta": 1,
+     "explicacao": "Quando a escolha não é sua, deixe quem decide escolher, com a informação na mesa."
+    },
+    {
+     "pergunta": "Por que reservar um tempo sem notificação?",
+     "opcoes": [
+      "Para descansar",
+      "Porque trabalho que exige foco rende pouco quando é interrompido a cada minuto",
+      "Para ninguém achar você",
+      "Não adianta"
+     ],
+     "correta": 1,
+     "explicacao": "Cada interrupção cobra um tempo para voltar ao raciocínio."
+    }
+   ],
+   "pergunta_ako": "O que você faria com duas horas livres por semana, se dissesse não para uma coisa que hoje faz por obrigação?",
+   "recursos": [
+    {
+     "titulo": "Rotina com a Zumi",
+     "fonte": "Ako",
+     "url": "../rotina/",
+     "tipo": "ferramenta",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "App do Ako para organizar tarefas, metas e blocos de estudo, com tarefas sem dia certo separadas em grupos. Funciona no celular, sem conta."
+    },
+    {
+     "titulo": "Análise de concessão de projeto (trade-offs)",
+     "fonte": "Atlassian, Team Playbook",
+     "url": "https://www.atlassian.com/br/team-playbook/plays/trade-offs",
+     "tipo": "exercício",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "O time ordena custo, escopo, qualidade, prazo e risco para decidir o que vem primeiro.",
+     "verificado_em": "2026-11-12"
+    }
+   ]
+  },
+  {
+   "id": "ensinar",
+   "etapa": "crescer",
+   "titulo": "Ensinar o que aprendeu",
+   "horas": 2,
+   "resumo": "Ensinar é um dos melhores jeitos de aprender, e é a mão de duas vias do Ako: quem aprende hoje ensina amanhã. Explicar um assunto com palavras simples mostra o que você ainda não entendeu. Ajudar quem está chegando também abre portas na carreira.",
+   "essencial": [
+    "Explique como se fosse para alguém de 12 anos. Onde você travar, é ali que precisa estudar mais.",
+    "Ensine perguntando: \"o que você acha que acontece se...?\". Dar a resposta pronta ensina menos.",
+    "Escreva o que aprendeu: um post, um README, um resumo no grupo. Texto ensina gente que você nem conhece.",
+    "Ajudar quem está chegando não exige ser especialista. Basta estar um passo à frente.",
+    "Peça para a pessoa explicar de volta. É assim que você sabe se ensinou."
+   ],
+   "alturas": [
+    {
+     "cargo": "Júnior",
+     "pergunta": "Qual foi a última coisa que você aprendeu e explicou para alguém?"
+    },
+    {
+     "cargo": "Pleno",
+     "pergunta": "Quem chegou no time depois de você? O que você poderia mostrar para essa pessoa nesta semana?"
+    },
+    {
+     "cargo": "Sênior",
+     "pergunta": "O que só você sabe no time? O que acontece se você sair de férias?"
+    },
+    {
+     "cargo": "Especialista",
+     "pergunta": "Como você transforma o que só você sabe em algo que o time consegue usar sem você?"
+    },
+    {
+     "cargo": "Tech lead",
+     "pergunta": "Quem do seu time está pronto para assumir algo seu? O que falta ensinar?"
+    },
+    {
+     "cargo": "Gestão",
+     "pergunta": "Quem você está preparando para ocupar o seu lugar?"
+    }
+   ],
+   "checklist": [
+    "Expliquei um assunto que estudei para alguém e pedi para a pessoa explicar de volta",
+    "Escrevi um resumo, post ou README sobre algo que aprendi",
+    "Respondi uma dúvida de alguém numa comunidade ou grupo de estudo",
+    "Marquei \"Expliquei para outra pessoa\" em pelo menos três tópicos do Ako"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Por que explicar com palavras simples ajuda a aprender?",
+     "opcoes": [
+      "Porque é mais rápido",
+      "Porque mostra onde você ainda não entendeu",
+      "Porque impressiona",
+      "Não ajuda"
+     ],
+     "correta": 1,
+     "explicacao": "Quando a explicação simples trava, você achou o buraco no seu entendimento."
+    },
+    {
+     "pergunta": "Qual destas é uma forma de ensinar perguntando?",
+     "opcoes": [
+      "Aqui está a resposta",
+      "Lê a documentação",
+      "O que você acha que acontece se a gente tirar esta linha?",
+      "Faz assim e pronto"
+     ],
+     "correta": 2,
+     "explicacao": "A pergunta faz a pessoa pensar e chegar na resposta. Assim ela lembra depois."
+    },
+    {
+     "pergunta": "Você está no primeiro ano na área. Pode ajudar alguém?",
+     "opcoes": [
+      "Não, só especialista ensina",
+      "Sim, quem está um passo atrás aprende muito com você",
+      "Só depois de cinco anos",
+      "Só com certificado"
+     ],
+     "correta": 1,
+     "explicacao": "Você lembra bem das dúvidas do começo. Isso torna a sua explicação muito útil para quem está chegando."
+    },
+    {
+     "pergunta": "Como saber se a pessoa entendeu o que você ensinou?",
+     "opcoes": [
+      "Perguntar se entendeu",
+      "Pedir para ela explicar de volta ou fazer sozinha",
+      "Ela disse que sim",
+      "Pelo olhar"
+     ],
+     "correta": 1,
+     "explicacao": "\"Entendeu?\" quase sempre recebe \"sim\". Explicar de volta mostra de verdade."
+    },
+    {
+     "pergunta": "Por que escrever o que você aprendeu?",
+     "opcoes": [
+      "Para guardar segredo",
+      "Porque o texto ensina outras pessoas, até quem você não conhece, e fixa para você",
+      "Para ganhar curtida",
+      "Não precisa"
+     ],
+     "correta": 1,
+     "explicacao": "Um bom README ou post continua ensinando muito tempo depois de escrito."
+    }
+   ],
+   "pergunta_ako": "Quem te ensinou algo que mudou o seu caminho? Para quem você pode fazer o mesmo?",
+   "recursos": [
+    {
+     "titulo": "Como estudar",
+     "fonte": "Ako",
+     "url": "./materiais/como-estudar.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição do Ako sobre estudar com método: explicar com as próprias palavras, revisar e ensinar para fixar."
+    },
+    {
+     "titulo": "Como usar o método Feynman para aprender qualquer assunto",
+     "fonte": "Na Prática, Fundação Estudar",
+     "url": "https://napratica.org.br/noticias/como-usar-o-metodo-feynman-para-aprender-qualquer-assunto-rapidamente",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Os quatro passos da técnica de explicar com palavras simples, e os erros comuns.",
+     "verificado_em": "2026-11-12"
+    }
+   ]
+  },
+  {
+   "id": "carreira-em-y",
+   "etapa": "crescer",
+   "titulo": "Carreira em Y: técnica ou gestão",
+   "horas": 2,
+   "resumo": "Em algum momento a carreira em tecnologia se divide em dois braços, como um Y. Um vai pela técnica: especialista, staff, principal. O outro vai pela gestão: coordenar, gerenciar pessoas. Os dois pedem as habilidades desta trilha, em doses diferentes. Escolher não é para sempre.",
+   "essencial": [
+    "No braço técnico, você cresce resolvendo problemas maiores e ajudando outros times a resolver os deles.",
+    "No braço da gestão, você cresce fazendo as pessoas e o time crescerem. Você passa a programar menos.",
+    "Tech lead fica no meio: é técnico, mas responde pela direção técnica do time e pelas pessoas no dia a dia.",
+    "Gestão não é promoção obrigatória. É outra profissão, com outras habilidades.",
+    "Experimente antes de decidir: conduza uma reunião, mentore alguém, lidere um projeto pequeno."
+   ],
+   "alturas": [
+    {
+     "cargo": "Júnior",
+     "pergunta": "Qual parte do trabalho te dá mais energia: resolver o problema ou ajudar alguém a resolver?"
+    },
+    {
+     "cargo": "Pleno",
+     "pergunta": "Que experiência pequena de liderança você pode pedir neste trimestre?"
+    },
+    {
+     "cargo": "Sênior",
+     "pergunta": "Você está crescendo pela técnica ou pela gestão? Escolheu, ou foi acontecendo?"
+    },
+    {
+     "cargo": "Especialista",
+     "pergunta": "Qual problema da empresa só alguém com a sua profundidade técnica resolve?"
+    },
+    {
+     "cargo": "Tech lead",
+     "pergunta": "Quanto do seu tempo vai para código e quanto vai para pessoas? É a divisão que você quer?"
+    },
+    {
+     "cargo": "Gestão",
+     "pergunta": "Você ainda tem contato com a técnica o bastante para decidir bem? Como você se mantém atualizado?"
+    }
+   ],
+   "checklist": [
+    "Li a página da skill carreira-em-y nos Favos",
+    "Escrevi o que me dá mais energia no trabalho: resolver ou ajudar outros a resolver",
+    "Conversei com alguém do braço técnico e com alguém da gestão sobre o dia a dia deles",
+    "Montei uma meta de 90 dias para o braço que quero testar"
+   ],
+   "quiz": [
+    {
+     "pergunta": "O que é a carreira em Y?",
+     "opcoes": [
+      "Uma empresa",
+      "A divisão da carreira em dois braços de crescimento: técnica e gestão",
+      "Um curso",
+      "Um cargo só"
+     ],
+     "correta": 1,
+     "explicacao": "Os dois braços têm níveis, reconhecimento e salário que podem crescer, sem obrigar todo mundo a virar gestor."
+    },
+    {
+     "pergunta": "Uma pessoa sênior adora resolver problemas difíceis e não gosta de cuidar de agenda e pessoas. Qual braço combina mais?",
+     "opcoes": [
+      "Gestão, porque é a promoção natural",
+      "O técnico, rumo a especialista ou staff",
+      "Nenhum",
+      "Sair da área"
+     ],
+     "correta": 1,
+     "explicacao": "Gestão é outra profissão. Quem cresce bem pela técnica não precisa virar gestor para avançar."
+    },
+    {
+     "pergunta": "O que costuma mudar quando alguém vira gestor?",
+     "opcoes": [
+      "Programa mais",
+      "Passa a medir o sucesso pelo time, não pelo próprio código",
+      "Nada muda",
+      "Para de conversar com pessoas"
+     ],
+     "correta": 1,
+     "explicacao": "O trabalho da gestão é o time entregar e crescer. O próprio código passa para segundo plano."
+    },
+    {
+     "pergunta": "Como testar se a gestão combina com você antes de mudar de cargo?",
+     "opcoes": [
+      "Pedir demissão",
+      "Assumir algo pequeno: mentorar alguém, conduzir uma reunião, liderar um projeto curto",
+      "Fazer um MBA primeiro",
+      "Não dá para testar"
+     ],
+     "correta": 1,
+     "explicacao": "Experimentos pequenos mostram se você gosta do dia a dia, com pouco risco."
+    },
+    {
+     "pergunta": "Qual habilidade desta trilha os dois braços pedem?",
+     "opcoes": [
+      "Só programar",
+      "Comunicação, feedback e entender o problema",
+      "Só falar bem",
+      "Nenhuma"
+     ],
+     "correta": 1,
+     "explicacao": "A técnica pede influência sem cargo. A gestão pede tudo isso com pessoas. As duas usam as mesmas habilidades humanas."
+    }
+   ],
+   "pergunta_ako": "Se daqui a cinco anos você estivesse feliz no trabalho, você estaria resolvendo problemas ou ajudando outras pessoas a resolver?",
+   "recursos": [
+    {
+     "titulo": "Skill carreira-em-y",
+     "fonte": "Favos, Rizzygo All",
+     "url": "../favos/carreira-em-y/",
+     "tipo": "ferramenta",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Uma skill gratuita para usar com a sua IA: ela monta um plano de evolução pela técnica ou pela gestão, com metas de 90 dias."
+    },
+    {
+     "titulo": "Staff archetypes",
+     "fonte": "Will Larson, StaffEng",
+     "url": "https://staffeng.com/guides/staff-archetypes",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Os quatro jeitos de crescer no braço técnico depois do sênior: tech lead, arquiteto, solucionador e braço direito. O site também divulga um livro pago, que não é necessário.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "What do Staff engineers actually do?",
+     "fonte": "Will Larson, lethain.com",
+     "url": "https://lethain.com/what-do-staff-engineers-actually-do/",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "O dia a dia de quem cresce pela técnica: direção técnica, mentoria e menos código.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "Engineering Ladders",
+     "fonte": "Engineering Ladders, projeto aberto",
+     "url": "https://www.engineeringladders.com/",
+     "tipo": "ferramenta",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Um modelo aberto de níveis de carreira para conversar sobre onde você está e para onde quer ir.",
+     "verificado_em": "2026-11-12"
+    }
+   ]
+  }
+ ]
+}

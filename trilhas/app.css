@@ -128,6 +128,10 @@ legend{font-family:var(--f-titulo);font-weight:700;font-size:1.25rem;margin-bott
 .bloco > p + p{margin-top:.7rem}
 .resumo-texto{font-size:1.15rem}
 .essencial{margin:0;padding-left:1.2rem;display:grid;gap:.45rem}
+.alturas{margin:.6rem 0 0;display:grid;grid-template-columns:minmax(6.5rem,max-content) 1fr;gap:.5rem 1rem}
+.alturas dt{font-weight:700;color:var(--tinta)}
+.alturas dd{margin:0}
+@media (max-width:520px){.alturas{grid-template-columns:1fr;gap:.15rem}.alturas dd{margin-bottom:.55rem}}
 .checklist{list-style:none;margin:0;padding:0;display:grid;gap:.5rem}
 .checklist label{display:flex;gap:.7rem;align-items:flex-start;background:var(--superficie);border:1px solid var(--linha);border-radius:var(--raio-p);padding:.65rem .8rem;cursor:pointer}
 .checklist input{width:1.25rem;height:1.25rem;margin-top:.15rem;accent-color:var(--ambar);flex:none}

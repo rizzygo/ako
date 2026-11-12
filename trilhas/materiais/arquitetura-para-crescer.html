@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arquitetura para crescer: fatias, decisões e IA | Rizzygo Ako</title>
+<meta name="description" content="Lição em português sobre organizar o código em fatias verticais, registrar decisões em ADR e escrever um AGENTS.md para trabalhar junto com agentes de IA, com exemplos do repositório do Ako.">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:title" content="Arquitetura para crescer: fatias, decisões e IA | Rizzygo Ako">
+<meta property="og:description" content="Lição em português sobre organizar o código em fatias verticais, registrar decisões em ADR e escrever um AGENTS.md para trabalhar junto com agentes de IA, com exemplos do repositório do Ako.">
+<meta property="og:url" content="https://ako.rizzygo.com.br/trilhas/materiais/arquitetura-para-crescer.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rizzygo Ako">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ako.rizzygo.com.br/icones/og/licoes.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Lições do Ako: lições práticas em português, com a Zumi, abelha da Rizzygo All">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ako.rizzygo.com.br/trilhas/materiais/arquitetura-para-crescer.html">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Arquitetura para crescer: fatias, decisões e IA", "description": "Lição em português sobre organizar o código em fatias verticais, registrar decisões em ADR e escrever um AGENTS.md para trabalhar junto com agentes de IA, com exemplos do repositório do Ako.", "url": "https://ako.rizzygo.com.br/trilhas/materiais/arquitetura-para-crescer.html", "inLanguage": "pt-BR", "isAccessibleForFree": true, "learningResourceType": "lição", "license": "https://creativecommons.org/licenses/by/4.0/", "publisher": {"@type": "Organization", "name": "Rizzygo", "url": "https://rizzygo.com.br/"}}</script>
+<meta name="theme-color" content="#0B1B3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="/ds/rizzygo.css?v=2026111020">
+<script src="/ds/tema.js?v=2026111020"></script>
+<link rel="stylesheet" href="../app.css?v=2026111001">
+<link rel="stylesheet" href="materiais.css?v=2026110801">
+<link rel="stylesheet" href="/topo.css?v=2026110914">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<nav class="familia" aria-label="Sites da Rizzygo"><div class="familia-in"><a class="familia-item" href="https://rizzygo.com.br/" title="Site principal da Rizzygo"><svg viewBox="0 0 64 64" width="16" height="16" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/></svg>Rizzygo</a><a class="familia-item" href="https://ako.rizzygo.com.br/" aria-current="page"><img src="/zumi/abelha-mini.png" width="18" height="18" alt="">Ako</a></div></nav>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="/" aria-label="Rizzygo Ako, início"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="var(--azul)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/></svg><span>Rizzygo <b>Ako</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="/trilhas/?trilha=desenvolvimento">Trilhas</a><a href="/trilhas/mapas/#/desenvolvimento">Mapas</a><a href="/trilhas/materiais/" aria-current="page">Materiais</a><a href="/favos/">Favos</a><a href="/rotina/">Rotina</a></nav>
+</div></header>
+
+
+<main id="conteudo" class="licao">
+<div class="licao-cab">
+  <a class="voltar" href="../?trilha=desenvolvimento#/t/arquitetura">Voltar para o tópico Arquitetura para crescer</a>
+  <h1>Arquitetura para crescer: fatias, decisões e IA</h1>
+  <p class="lead">Quando cada mudança mexe no projeto inteiro, todo mundo tem medo de mexer, e a IA também mexe onde não devia. Esta lição mostra três ferramentas simples para o projeto crescer sem virar bagunça: fatias verticais, ADRs e o AGENTS.md. Os exemplos vêm do próprio repositório do Ako, que é público.</p>
+  <div class="ficha"><span class="etiqueta">Cerca de 1 hora</span><span class="etiqueta">Trilha Desenvolvimento</span><span class="etiqueta ambar">Material gratuito em português</span></div>
+</div>
+<nav class="indice" aria-label="Nesta lição">
+  <h2>Nesta lição</h2>
+  <ol>
+    <li><a href="#porque">Por que organizar</a></li>
+    <li><a href="#fatias">Camadas ou fatias</a></li>
+    <li><a href="#ako">O Ako em fatias</a></li>
+    <li><a href="#adr">ADR: a decisão escrita</a></li>
+    <li><a href="#agents">AGENTS.md: o mapa para a IA</a></li>
+    <li><a href="#junto">Trabalhar junto com a IA</a></li>
+    <li><a href="#missao">Missão final</a></li>
+  </ol>
+</nav>
+
+<section id="porque">
+  <h2>1. Por que organizar</h2>
+  <p>Projeto pequeno cabe na cabeça. Projeto que cresce, não. A partir de um ponto, ninguém lembra onde fica cada coisa, e cada mudança quebra algo longe dali.</p>
+  <p>Arquitetura é como o código está organizado e por quê. Boa arquitetura é a que o time entende e consegue mudar sem medo.</p>
+  <div class="faca"><strong>Sinal de alerta</strong>Se para mudar um texto de uma tela você precisa abrir cinco pastas, a organização está trabalhando contra você.</div>
+</section>
+
+<section id="fatias">
+  <h2>2. Camadas ou fatias</h2>
+  <p>Muito projeto começa separado por <strong>tipo de arquivo</strong>: todas as telas juntas, todas as regras juntas, todos os dados juntos. Parece arrumado. Mas uma funcionalidade nova mexe em todas as pastas.</p>
+  <div class="cmd"><pre>Por tipo de arquivo          Por assunto (fatias)
+telas/                       tarefas/
+  tarefas.html                 tela.html
+  metas.html                   regras.js
+regras/                        dados.js
+  tarefas.js                 metas/
+  metas.js                     tela.html
+dados/                         regras.js
+  tarefas.js                   dados.js
+  metas.js</pre></div>
+  <p>Na <strong>fatia vertical</strong>, cada pasta é um assunto completo, do que aparece na tela até onde o dado fica. Mudar as tarefas mexe só em <code>tarefas/</code>. A ideia tem nome e autor: Jimmy Bogard chamou de Vertical Slice Architecture. A regra dele: cada fatia depende pouco das outras, e o código de uma mesma fatia fica junto.</p>
+  <p>O que todas as fatias usam, como o design system, fica numa pasta compartilhada. Só entra lá o que é de fato compartilhado.</p>
+</section>
+
+<section id="ako">
+  <h2>3. O Ako em fatias</h2>
+  <p>O repositório do Ako é organizado assim. Cada pasta de primeiro nível é uma parte do produto:</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Pasta</th><th>O que tem</th></tr></thead>
+    <tbody>
+      <tr><td><code>trilhas/</code></td><td>As trilhas, os mapas e as lições, como esta</td></tr>
+      <tr><td><code>rotina/</code></td><td>A Rotina da Zumi, com a sua tela, as regras e o modo offline</td></tr>
+      <tr><td><code>favos/</code></td><td>As páginas das skills dos Favos</td></tr>
+      <tr><td><code>ds/</code></td><td>O design system, compartilhado por todas</td></tr>
+    </tbody>
+  </table></div>
+  <p>Uma pegadinha do Ako: o site é publicado sem build (nenhuma etapa transforma o código antes de ir ao ar), e cada arquivo vira um endereço. Mover um arquivo de pasta quebra o link de quem salvou. Por isso a regra do repositório é nunca mover um arquivo publicado sem criar um redirecionamento. Essa regra está escrita no AGENTS.md, para nenhuma IA esquecer.</p>
+</section>
+
+<section id="adr">
+  <h2>4. ADR: a decisão escrita</h2>
+  <p>Algumas decisões custam caro para desfazer: o banco de dados, o jeito de publicar, o formato dos dados salvos. Se ninguém escreve o porquê, daqui a seis meses o time discute tudo de novo.</p>
+  <p>O ADR (Architecture Decision Record) é uma página curta, um arquivo por decisão, numa pasta <code>decisoes/</code>. Este é um resumo do primeiro ADR do Ako:</p>
+  <div class="cmd"><pre># 0001: O Ako não tem build
+
+## Contexto
+O Ako é feito para quem está começando. Qualquer pessoa precisa
+abrir um arquivo, entender e mandar uma correção pelo GitHub.
+
+## Decisão
+HTML, CSS e JavaScript puros, sem framework e sem build.
+
+## Opções consideradas
+Sem build (escolhida), gerador estático, framework de front-end.
+
+## Consequências
+Todo caminho de arquivo é um endereço público: mover quebra link.
+O cache é controlado à mão, com ?v= nos arquivos.</pre></div>
+  <p>O ADR inteiro está em <a href="https://github.com/rizzygo/ako/blob/main/decisoes/0001-sem-build.md">decisoes/0001-sem-build.md</a>, no GitHub.</p>
+  <p>Escreva ADR só para o que é difícil de desfazer. Para o resto, a mensagem do commit basta. O modelo usado na Rizzygo segue o MADR, um formato aberto.</p>
+</section>
+
+<section id="agents">
+  <h2>5. AGENTS.md: o mapa para a IA</h2>
+  <p>Vários agentes de IA que programam, como Codex e Copilot, leem um arquivo chamado <code>AGENTS.md</code> na raiz do projeto. É um formato aberto. Alguns usam outro nome: o Claude Code lê o <code>CLAUDE.md</code>, que no Ako só aponta para o <code>AGENTS.md</code>. O arquivo diz para a IA o que uma pessoa nova precisaria saber no primeiro dia.</p>
+  <div class="cmd"><pre># AGENTS.md
+
+## O que é
+Site de tarefas, HTML e JS puros, sem build.
+
+## Onde mexer
+| Quero...          | Arquivo          |
+| Mudar as tarefas  | tarefas/         |
+| Mudar as cores    | ds/rizzygo.css   |
+
+## Comandos
+python3 -m http.server 8000   # prévia
+node --check tarefas/regras.js
+
+## Nunca
+- Mover arquivo publicado sem redirecionamento.
+- Colocar senha ou token no repositório.</pre></div>
+  <p>Mantenha curto, umas cem linhas no máximo. O AGENTS.md funciona como mapa: ele aponta para os documentos, em vez de copiar tudo.</p>
+</section>
+
+<section id="junto">
+  <h2>6. Trabalhar junto com a IA</h2>
+  <p>O trabalho com IA segue cinco passos:</p>
+  <ol>
+    <li>Você entende o B.O. e escreve a spec.</li>
+    <li>A IA lê o AGENTS.md e a spec, e propõe o que vai mudar.</li>
+    <li>Você confere o plano antes de ela escrever o código.</li>
+    <li>Ela mexe só na fatia do assunto e roda os comandos de conferir.</li>
+    <li>Você lê, testa e abre o pull request dizendo que usou IA.</li>
+  </ol>
+  <div class="cuidado"><strong>Quem assina é você</strong>A IA escreve rápido e às vezes inventa: uma função que não existe, um número, uma biblioteca. Spec, AGENTS.md e testes ajudam a pegar o erro, mas a responsabilidade pelo que entra continua sendo sua.</div>
+</section>
+
+<section id="missao">
+  <h2>7. Missão final</h2>
+  <details class="exercicio"><summary>1. Desenhe as fatias</summary>
+    <p>Pegue um projeto seu, ou o do projeto final. Liste os assuntos dele e desenhe uma pasta para cada um.</p>
+  </details>
+  <details class="exercicio"><summary>2. Escreva um ADR</summary>
+    <p>Escolha a decisão mais difícil de desfazer do projeto e escreva o ADR no modelo da parte 4.</p>
+  </details>
+  <details class="exercicio"><summary>3. Escreva o AGENTS.md e teste</summary>
+    <p>Escreva o AGENTS.md no modelo da parte 5. Peça para uma IA fazer uma mudança pequena seguindo ele, e confira se ela mexeu só onde devia.</p>
+  </details>
+  <div class="faca"><strong>Para fixar</strong>Explique para alguém a diferença entre organizar por tipo de arquivo e por assunto. Depois, marque no tópico que você ensinou alguém.</div>
+  <div class="proximo"><a class="btn" href="../?trilha=desenvolvimento#/t/arquitetura">Voltar para o tópico e fazer o desafio</a><a class="btn btn-sec" href="../?trilha=desenvolvimento#/t/projeto-qual-e-o-bo">Ir para o projeto final</a></div>
+</section>
+
+<div class="credito">
+  <p>Lição baseada no texto <a href="https://www.jimmybogard.com/vertical-slice-architecture/">Vertical Slice Architecture</a>, de Jimmy Bogard, no modelo <a href="https://adr.github.io/madr/">MADR</a> e no formato aberto <a href="https://agents.md/">AGENTS.md</a>. Os exemplos vêm do <a href="https://github.com/rizzygo/ako">repositório público do Ako</a>. O texto é próprio, escrito em português pelo Ako, da Rizzygo All.</p>
+  <p>Conteúdo aberto sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR">CC BY 4.0</a>. Viu um erro? <a href="https://github.com/rizzygo/ako/issues">Abra uma issue</a>.</p>
+</div>
+</main>
+<footer class="rodape"><div class="rodape-in"><p><strong>Ako</strong>, da Rizzygo All, a parte aberta e gratuita da <a href="https://rizzygo.com.br/">Rizzygo</a>.</p><p>Estude junto na <a href="https://chat.whatsapp.com/CYpmolVr7a08Gqmj782yFi">comunidade gratuita no WhatsApp</a>.</p><p>Sugestão, dúvida ou problema? Escreva para <a href="mailto:suporte@rizzygo.com.br">suporte@rizzygo.com.br</a>.</p><div class="contribua"><p><strong>Contribuição voluntária.</strong> O Ako é gratuito e vai continuar assim. Você decide se quer contribuir, com qualquer valor, para agradecer, manter e ajudar o Ako a evoluir.</p><p class="contribua-pix"><span class="contribua-dados"><span>Chave Pix (CNPJ): <code>57.778.554/0001-31</code></span><span>Nome: <code>Ru Technology</code></span></span> <button type="button" class="contribua-copiar" data-pix="57778554000131" hidden>Copiar chave Pix</button></p></div><p class="credo"><a href="https://rizzygo.com.br/conceito#o-nome">Sou Zy</a>: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="materiais.js?v=2026103102"></script>
+<script src="../efeitos.js?v=2026110801" defer></script>
+<script src="/contribua.js?v=2026110901" defer></script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "65a6fb651cf942a695482421e9de912b"}'></script><!-- End Cloudflare Web Analytics -->
+<script src="/conta.js?v=2026111210" defer></script>
+</body>
+</html>

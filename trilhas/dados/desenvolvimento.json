@@ -1,0 +1,1377 @@
+{
+ "id": "desenvolvimento",
+ "titulo": "Desenvolvimento",
+ "versao": 1,
+ "descricao": "Do entender o B.O. até um site com API, banco e testes publicado de graça. HTML, CSS, JavaScript, HTTP, SQL, testes, code review e arquitetura para trabalhar junto com IA. Termina no projeto \"Qual é o B.O.?\".",
+ "cor": "#16855A",
+ "inicio": {
+  "titulo": "Antes do código, o B.O.",
+  "lead": "Quem desenvolve transforma o problema de alguém em software que funciona. Esta trilha começa entendendo o pedido, passa pela web por dentro, pela API, pelo banco e pelos testes, e termina com um projeto seu no ar, feito com ajuda de IA sem perder o controle. Lições próprias em português e materiais gratuitos, parte deles em inglês.",
+  "mini_mapa": [
+   "Entender o B.O.",
+   "A web por dentro",
+   "API e banco",
+   "Qualidade",
+   "Arquitetura",
+   "Publicar"
+  ],
+  "mini_mapa_rotulo": "Mapa da trilha Desenvolvimento: seis etapas, de entender o problema até publicar o projeto final",
+  "para_quem": [
+   "Para quem terminou a trilha Primeiros passos em TI e escolheu Desenvolvimento.",
+   "Para quem já programa um pouco e quer montar um projeto completo, do pedido ao deploy.",
+   "Para quem usa IA para programar e quer entender o que ela entrega.",
+   "Vai precisar de um computador com navegador, um editor de código e uma conta gratuita no GitHub."
+  ]
+ },
+ "momentos": [
+  {
+   "id": "quero",
+   "titulo": "Estou chegando agora",
+   "detalhe": "Terminei a Primeiros passos ou estou aprendendo a programar"
+  },
+  {
+   "id": "comecando",
+   "titulo": "Já programo",
+   "detalhe": "Já fiz sites ou sistemas e quero fechar as lacunas"
+  }
+ ],
+ "ja_sei": [
+  {
+   "id": "html",
+   "rotulo": "Já faço páginas com HTML e CSS",
+   "topicos": [
+    "html-css"
+   ]
+  },
+  {
+   "id": "js",
+   "rotulo": "Já uso JavaScript no navegador",
+   "topicos": [
+    "javascript"
+   ]
+  },
+  {
+   "id": "sql",
+   "rotulo": "Já escrevo consultas SQL com JOIN",
+   "topicos": [
+    "sql"
+   ]
+  },
+  {
+   "id": "testes",
+   "rotulo": "Já escrevo testes automatizados",
+   "topicos": [
+    "testes"
+   ]
+  }
+ ],
+ "mapa_antes": [
+  {
+   "id": "base-bo",
+   "titulo": "Qual é o B.O.?",
+   "trilha": "habilidades-humanas",
+   "topico": "qual-e-o-bo",
+   "resumo": "Na trilha Habilidades humanas: entender o problema antes do código. A trilha de Desenvolvimento começa daqui."
+  },
+  {
+   "id": "base-logica",
+   "titulo": "Lógica de programação",
+   "topico": "logica",
+   "resumo": "Quebrar um problema em passos é o trabalho de todo dia, em qualquer linguagem."
+  },
+  {
+   "id": "base-git",
+   "titulo": "Git e GitHub",
+   "topico": "git",
+   "resumo": "Branch, commit e pull request aparecem em todos os tópicos desta trilha."
+  },
+  {
+   "id": "base-web",
+   "titulo": "Como a web funciona",
+   "topico": "web",
+   "resumo": "Requisição, resposta e status: o caminho de todo site e de toda API."
+  },
+  {
+   "id": "mapa-humanas",
+   "titulo": "Trilha Habilidades humanas",
+   "resumo": "Comunicação, feedback, prioridade e emoção sob pressão. Cruza com esta trilha em todo pull request e em toda reunião.",
+   "mapa": "habilidades-humanas"
+  }
+ ],
+ "etapas": [
+  {
+   "id": "bo",
+   "titulo": "Entender o B.O.",
+   "conquista": "Pedido decifrado",
+   "descricao": "Transformar o pedido numa spec curta, com critérios de aceite."
+  },
+  {
+   "id": "web",
+   "titulo": "A web por dentro",
+   "conquista": "Página de pé",
+   "descricao": "HTML, CSS, JavaScript e acessibilidade: o que roda no navegador."
+  },
+  {
+   "id": "servidor",
+   "titulo": "Do outro lado: API e banco",
+   "conquista": "Dados no lugar",
+   "descricao": "HTTP, APIs e SQL: o que roda no servidor."
+  },
+  {
+   "id": "qualidade",
+   "titulo": "Código que outra pessoa entende",
+   "conquista": "Revisado e testado",
+   "descricao": "Testes automatizados, pull request e code review."
+  },
+  {
+   "id": "arquitetura",
+   "titulo": "Organizar para crescer",
+   "conquista": "Projeto em fatias",
+   "descricao": "Fatia vertical, ADR e AGENTS.md para trabalhar junto com IA."
+  },
+  {
+   "id": "publicar",
+   "titulo": "Publicar e mostrar",
+   "conquista": "B.O. resolvido",
+   "descricao": "Publicar de graça e fazer o projeto final \"Qual é o B.O.?\"."
+  }
+ ],
+ "areas": [],
+ "topicos": [
+  {
+   "id": "do-pedido-a-spec",
+   "etapa": "bo",
+   "titulo": "Do pedido à spec",
+   "horas": 3,
+   "resumo": "Todo software começa num pedido de alguém. Antes de abrir o editor, transforme o pedido numa spec curta: o problema, o resultado esperado, o que fica de fora e os critérios de aceite. Uma página basta. Ela vira o combinado entre você, quem pediu e a IA que vai te ajudar a codar.",
+   "essencial": [
+    "Spec é o combinado escrito do que vai ser feito e por quê. Escreva antes do código, não depois.",
+    "Critério de aceite no formato \"dado..., quando..., então...\" diz como saber que ficou pronto.",
+    "\"Fora do escopo\" é tão importante quanto o escopo: evita que a tarefa cresça sem ninguém perceber.",
+    "Com a spec, a IA erra menos. Ela recebe o problema e os limites, não só \"faz um botão\".",
+    "História de usuário é um jeito curto de escrever o pedido: \"como [quem], quero [o quê], para [por quê]\"."
+   ],
+   "alturas": [
+    {
+     "cargo": "Júnior",
+     "pergunta": "Antes de começar a última tarefa, você sabia como ia provar que ela estava pronta?"
+    },
+    {
+     "cargo": "Pleno",
+     "pergunta": "Os critérios de aceite das suas tarefas cobrem o caso de erro, ou só o caminho feliz?"
+    },
+    {
+     "cargo": "Sênior",
+     "pergunta": "Que pergunta da spec você faz que costuma mudar o tamanho da tarefa?"
+    },
+    {
+     "cargo": "Especialista",
+     "pergunta": "Que restrição técnica precisa estar na spec para o time não descobrir tarde demais?"
+    },
+    {
+     "cargo": "Tech lead",
+     "pergunta": "As specs do seu time são lidas por quem pediu antes de começar o código?"
+    },
+    {
+     "cargo": "Gestão",
+     "pergunta": "Quanto retrabalho o seu time teve no último mês por pedido mal entendido?"
+    }
+   ],
+   "checklist": [
+    "Li a lição \"Qual é o B.O.?\" e o tópico dela na trilha Habilidades humanas",
+    "Escrevi uma spec de uma página para um pedido real, com problema, resultado, fora do escopo e critérios de aceite",
+    "Escrevi pelo menos três critérios de aceite no formato dado, quando, então",
+    "Mostrei a spec para quem pediu e ajustei o que estava errado"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Qual é o melhor momento para escrever a spec?",
+     "opcoes": [
+      "Depois de terminar o código",
+      "Antes do código, logo depois de entender o problema",
+      "Nunca, o código é a spec",
+      "Só em projeto grande"
+     ],
+     "correta": 1,
+     "explicacao": "Escrita antes, a spec pega o mal-entendido quando ele ainda custa pouco."
+    },
+    {
+     "pergunta": "Qual destes é um critério de aceite bem escrito?",
+     "opcoes": [
+      "O sistema deve ser rápido",
+      "Dado que a tarefa não tem data, quando a pessoa abre a Rotina, então a tarefa aparece no grupo \"Sem data\"",
+      "Fazer a tela de tarefas",
+      "Ficar bonito"
+     ],
+     "correta": 1,
+     "explicacao": "Ele diz a situação, a ação e o resultado que dá para conferir."
+    },
+    {
+     "pergunta": "Para que serve a seção \"fora do escopo\"?",
+     "opcoes": [
+      "Para encher a página",
+      "Para deixar claro o que não vai ser feito agora e evitar que a tarefa cresça",
+      "Para listar bugs",
+      "Para culpar alguém depois"
+     ],
+     "correta": 1,
+     "explicacao": "Sem limite escrito, cada conversa acrescenta um pedaço e o prazo estoura."
+    },
+    {
+     "pergunta": "Por que uma spec ajuda quando você usa IA para programar?",
+     "opcoes": [
+      "Não ajuda",
+      "Porque a IA recebe o problema, os limites e os critérios, e erra menos",
+      "Porque a IA não lê código",
+      "Porque fica mais longo"
+     ],
+     "correta": 1,
+     "explicacao": "Pedido vago gera código vago. A spec dá contexto e um jeito de conferir o resultado."
+    },
+    {
+     "pergunta": "Complete a história de usuário: \"Como pessoa que estuda, quero marcar tarefas sem dia certo...\"",
+     "opcoes": [
+      "...porque sim",
+      "...para não esquecer o que preciso fazer mas não tem data",
+      "...com React",
+      "...até sexta"
+     ],
+     "correta": 1,
+     "explicacao": "O \"para\" diz o porquê. É ele que ajuda a escolher a melhor solução."
+    }
+   ],
+   "pergunta_ako": "Pense num projeto que deu errado. Qual frase numa spec teria evitado o problema?",
+   "recursos": [
+    {
+     "titulo": "Qual é o B.O.? Entender o problema antes do código",
+     "fonte": "Ako",
+     "url": "./materiais/qual-e-o-bo.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição do Ako com o mesmo pedido visto em seis cargos e o modelo de spec de uma página."
+    },
+    {
+     "titulo": "Histórias de usuário com exemplos e um template",
+     "fonte": "Atlassian",
+     "url": "https://www.atlassian.com/br/agile/project-management/user-stories",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "O que é uma história de usuário, como escrever e um modelo para copiar.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "What is acceptance criteria?",
+     "fonte": "Atlassian",
+     "url": "https://www.atlassian.com/work-management/project-management/acceptance-criteria",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Definição de critério de aceite, exemplos e dicas para escrever.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "Spec Kit",
+     "fonte": "GitHub",
+     "url": "https://github.com/github/spec-kit",
+     "tipo": "ferramenta",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Kit aberto do GitHub para desenvolver a partir de specs com agentes de IA. Opcional: o modelo de uma página do Ako já basta para começar.",
+     "verificado_em": "2026-11-12"
+    }
+   ]
+  },
+  {
+   "id": "html-css",
+   "etapa": "web",
+   "titulo": "HTML e CSS",
+   "horas": 6,
+   "resumo": "HTML dá estrutura e significado à página: título, parágrafo, lista, formulário. CSS cuida da aparência: cor, espaço, tamanho e layout que se adapta ao celular. Juntos, são a base de tudo que aparece no navegador.",
+   "essencial": [
+    "Use a tag pelo significado: <h1> para o título principal, <button> para botão, <nav> para menu. Não escolha pela aparência.",
+    "Todo formulário precisa de <label> ligado ao campo. Sem ele, quem usa leitor de tela não sabe o que preencher.",
+    "CSS em cascata: a regra mais específica ganha. Prefira classes a estilos soltos no HTML.",
+    "Flexbox alinha numa linha ou coluna. Grid monta a página em linhas e colunas ao mesmo tempo.",
+    "Comece pelo celular e aumente para telas maiores com media queries."
+   ],
+   "checklist": [
+    "Fiz uma página com cabeçalho, menu, conteúdo e rodapé usando tags com significado",
+    "Fiz um formulário com label em todos os campos",
+    "Montei um layout com Flexbox ou Grid que funciona no celular e no computador",
+    "Abri as ferramentas do navegador (F12) e mudei um estilo ao vivo"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Qual tag usar para um botão que envia um formulário?",
+     "opcoes": [
+      "<div onclick>",
+      "<button>",
+      "<span>",
+      "<a> sem link"
+     ],
+     "correta": 1,
+     "explicacao": "<button> já funciona com teclado e leitor de tela. Um <div> precisa de muito código para chegar perto."
+    },
+    {
+     "pergunta": "Para que serve o <label> num campo de formulário?",
+     "opcoes": [
+      "Para deixar bonito",
+      "Para dizer o que o campo pede e ligar o texto ao campo, inclusive para leitores de tela",
+      "Para validar o campo",
+      "Não serve"
+     ],
+     "correta": 1,
+     "explicacao": "Com o label ligado, clicar no texto foca o campo e o leitor de tela lê o nome dele."
+    },
+    {
+     "pergunta": "Você quer três cartões lado a lado no computador e um embaixo do outro no celular. O que usar?",
+     "opcoes": [
+      "Tabela",
+      "Flexbox ou Grid com media query",
+      "Espaços em branco",
+      "Imagens"
+     ],
+     "correta": 1,
+     "explicacao": "Flexbox e Grid com media query adaptam o layout ao tamanho da tela."
+    },
+    {
+     "pergunta": "Duas regras de CSS mudam a cor do mesmo texto. Qual vence?",
+     "opcoes": [
+      "A primeira do arquivo",
+      "A mais específica, e em empate a que vem por último",
+      "A mais curta",
+      "Nenhuma"
+     ],
+     "correta": 1,
+     "explicacao": "É a cascata: especificidade primeiro, ordem depois."
+    },
+    {
+     "pergunta": "Por que começar o layout pelo celular?",
+     "opcoes": [
+      "Porque é moda",
+      "Porque a maior parte das pessoas acessa pelo celular e é mais fácil crescer a tela do que encolher",
+      "Porque o CSS exige",
+      "Não faz diferença"
+     ],
+     "correta": 1,
+     "explicacao": "Começar pequeno força o essencial. Depois você aproveita o espaço extra."
+    }
+   ],
+   "pergunta_ako": "Abra um site que você usa todo dia e aperte F12. O que você descobriu sobre como ele foi montado?",
+   "recursos": [
+    {
+     "titulo": "Aprendendo desenvolvimento web",
+     "fonte": "MDN",
+     "url": "https://developer.mozilla.org/pt-BR/docs/Learn_web_development",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Área de estudo para iniciantes da MDN, a referência da web. Parte da tradução é da comunidade, e alguns links levam para o inglês.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "HTML",
+     "fonte": "MDN",
+     "url": "https://developer.mozilla.org/pt-BR/docs/Web/HTML",
+     "tipo": "referência",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Referência de todas as tags, com exemplos."
+    },
+    {
+     "titulo": "CSS",
+     "fonte": "MDN",
+     "url": "https://developer.mozilla.org/pt-BR/docs/Web/CSS",
+     "tipo": "referência",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Referência de propriedades, seletores e layout."
+    },
+    {
+     "titulo": "Crie um site simples usando HTML, CSS e JavaScript",
+     "fonte": "Fundação Bradesco, Escola Virtual",
+     "url": "https://www.ev.org.br/cursos/crie-um-site-simples-usando-html-css-e-javascript",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim, precisa criar conta",
+     "nota": "Curso de 2 horas, para iniciantes, sobre as partes de um site e as ferramentas para montar um.",
+     "verificado_em": "2026-11-12"
+    }
+   ]
+  },
+  {
+   "id": "javascript",
+   "etapa": "web",
+   "titulo": "JavaScript no navegador",
+   "horas": 6,
+   "resumo": "JavaScript deixa a página viva: responde a um clique, valida um formulário, busca dados sem recarregar. A lógica que você viu em Python vale aqui também. O que muda é o DOM, o jeito de o código mexer na página.",
+   "essencial": [
+    "Variável com const quando não muda e let quando muda. Evite var.",
+    "O DOM é a página como objeto: document.querySelector acha um elemento, addEventListener reage a um evento.",
+    "fetch busca dados de uma API. A resposta chega depois, por isso se usa await ou then.",
+    "Abra o console do navegador (F12) para ver erros e testar código.",
+    "Guarde dados pequenos no navegador com localStorage. A Rotina da Zumi faz isso."
+   ],
+   "checklist": [
+    "Fiz um botão que muda um texto da página quando clicado",
+    "Validei um campo de formulário antes de enviar",
+    "Busquei dados de uma API pública com fetch e mostrei na página",
+    "Achei e corrigi um erro olhando o console do navegador"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Qual é o jeito certo de reagir a um clique num botão?",
+     "opcoes": [
+      "botao.addEventListener('click', funcao)",
+      "botao.click = true",
+      "Colocar o código dentro do CSS",
+      "window.clique()"
+     ],
+     "correta": 0,
+     "explicacao": "addEventListener liga uma função a um evento do elemento."
+    },
+    {
+     "pergunta": "Por que usar await com fetch?",
+     "opcoes": [
+      "Para deixar mais lento",
+      "Porque a resposta da rede chega depois, e o código precisa esperar por ela",
+      "Porque é obrigatório em todo código",
+      "Para esconder erros"
+     ],
+     "correta": 1,
+     "explicacao": "Requisição de rede leva tempo. await espera sem travar a página."
+    },
+    {
+     "pergunta": "O botão não faz nada quando clicado. Onde olhar primeiro?",
+     "opcoes": [
+      "No CSS",
+      "No console do navegador, procurando erro",
+      "Reiniciar o computador",
+      "Trocar de navegador"
+     ],
+     "correta": 1,
+     "explicacao": "O console mostra o erro e a linha. É o primeiro lugar para investigar."
+    },
+    {
+     "pergunta": "Quando usar const?",
+     "opcoes": [
+      "Nunca",
+      "Quando a variável não vai receber outro valor",
+      "Só para números",
+      "Só dentro de funções"
+     ],
+     "correta": 1,
+     "explicacao": "const deixa claro que aquele nome não muda, e o JavaScript avisa se alguém tentar."
+    },
+    {
+     "pergunta": "Onde a Rotina da Zumi guarda as tarefas de quem não entrou com conta?",
+     "opcoes": [
+      "Num servidor da Rizzygo",
+      "No localStorage do navegador",
+      "Num arquivo no computador",
+      "Em lugar nenhum"
+     ],
+     "correta": 1,
+     "explicacao": "localStorage guarda dados pequenos no próprio navegador, sem precisar de servidor."
+    }
+   ],
+   "pergunta_ako": "Qual tarefa chata do seu dia um pedacinho de JavaScript numa página poderia resolver?",
+   "recursos": [
+    {
+     "titulo": "Guia de JavaScript",
+     "fonte": "MDN",
+     "url": "https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Guide",
+     "tipo": "referência",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Guia da linguagem, do básico às funções, objetos e promessas."
+    },
+    {
+     "titulo": "Aprendendo desenvolvimento web",
+     "fonte": "MDN",
+     "url": "https://developer.mozilla.org/pt-BR/docs/Learn_web_development",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "A parte de JavaScript do caminho de estudo da MDN, com exercícios no navegador.",
+     "verificado_em": "2026-11-12"
+    }
+   ]
+  },
+  {
+   "id": "acessibilidade",
+   "etapa": "web",
+   "titulo": "Acessibilidade",
+   "horas": 2,
+   "resumo": "Acessibilidade é fazer o site funcionar para todo mundo: quem usa leitor de tela, quem navega só pelo teclado, quem enxerga pouco ou quem está no sol com o celular. Quase tudo vem de HTML bem escrito e de contraste suficiente.",
+   "essencial": [
+    "Toda imagem com significado precisa de texto alternativo (alt). Imagem só decorativa leva alt vazio.",
+    "Tudo que se faz com mouse precisa dar para fazer com teclado: Tab, Enter, Esc.",
+    "Contraste entre texto e fundo precisa ser suficiente. Cinza claro em branco some.",
+    "Não use só cor para passar informação. Erro em vermelho também precisa de texto.",
+    "Teste navegando só com o teclado e com o leitor de tela do seu celular."
+   ],
+   "checklist": [
+    "Naveguei por uma página minha só com o teclado",
+    "Coloquei alt em todas as imagens com significado",
+    "Conferi o contraste de cores da página numa ferramenta do navegador",
+    "Ouvi uma página minha com o leitor de tela do celular"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Uma imagem só decorativa deve ter qual alt?",
+     "opcoes": [
+      "Uma descrição longa",
+      "alt vazio (alt=\"\")",
+      "O nome do arquivo",
+      "Nenhum atributo"
+     ],
+     "correta": 1,
+     "explicacao": "alt vazio diz ao leitor de tela que pode pular a imagem."
+    },
+    {
+     "pergunta": "Como testar acessibilidade sem ferramenta nenhuma?",
+     "opcoes": [
+      "Não dá",
+      "Navegar só com o teclado",
+      "Aumentar o volume",
+      "Trocar a fonte"
+     ],
+     "correta": 1,
+     "explicacao": "Se não dá para chegar num botão com Tab, alguém está ficando de fora."
+    },
+    {
+     "pergunta": "Um formulário mostra erro só deixando a borda vermelha. Qual é o problema?",
+     "opcoes": [
+      "Nenhum",
+      "Quem não distingue cores não percebe o erro",
+      "Vermelho é feio",
+      "A borda é fina"
+     ],
+     "correta": 1,
+     "explicacao": "Informação passada só por cor exclui pessoas com daltonismo. Escreva o erro também."
+    },
+    {
+     "pergunta": "Quem se beneficia de um site acessível?",
+     "opcoes": [
+      "Só pessoas com deficiência",
+      "Todo mundo, inclusive quem está com pressa, no sol ou com o braço ocupado",
+      "Só quem usa computador",
+      "Ninguém"
+     ],
+     "correta": 1,
+     "explicacao": "Acessibilidade melhora o uso para todas as pessoas."
+    }
+   ],
+   "pergunta_ako": "Tente usar um site que você gosta só com o teclado por cinco minutos. Onde você travou?",
+   "recursos": [
+    {
+     "titulo": "Acessibilidade",
+     "fonte": "MDN",
+     "url": "https://developer.mozilla.org/pt-BR/docs/Web/Accessibility",
+     "tipo": "referência",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Guia da MDN sobre acessibilidade na web, com o que fazer no HTML, no CSS e no JavaScript."
+    }
+   ]
+  },
+  {
+   "id": "apis-http",
+   "etapa": "servidor",
+   "titulo": "APIs e HTTP",
+   "horas": 4,
+   "resumo": "Quando o site busca dados, ele conversa com uma API pelo HTTP. O navegador manda uma requisição (método, endereço, cabeçalhos, às vezes um corpo) e o servidor devolve uma resposta com um código de status. Entender essa conversa ajuda a resolver muitos bugs entre frontend e backend.",
+   "essencial": [
+    "GET busca, POST cria, PUT ou PATCH atualiza, DELETE apaga.",
+    "Status 2xx deu certo, 4xx o pedido veio errado, 5xx o servidor falhou.",
+    "JSON é o formato mais comum para mandar e receber dados.",
+    "A aba Rede (Network) do navegador mostra cada requisição, o status e a resposta.",
+    "Nunca coloque senha ou chave de API no código do navegador: qualquer pessoa consegue ver."
+   ],
+   "checklist": [
+    "Li o tópico \"Como a web funciona\" da Primeiros passos",
+    "Abri a aba Rede do navegador e achei uma requisição com status 200 e uma com 404",
+    "Fiz uma API simples com uma rota GET que devolve JSON",
+    "Chamei a minha API pelo navegador e pelo terminal com curl"
+   ],
+   "quiz": [
+    {
+     "pergunta": "A API respondeu 404. O que isso quer dizer?",
+     "opcoes": [
+      "O servidor caiu",
+      "O endereço pedido não existe",
+      "Deu certo",
+      "Falta internet"
+     ],
+     "correta": 1,
+     "explicacao": "404 é \"não encontrado\": o pedido chegou, mas não há nada naquele endereço."
+    },
+    {
+     "pergunta": "Qual método HTTP usar para criar um novo cadastro?",
+     "opcoes": [
+      "GET",
+      "POST",
+      "DELETE",
+      "HEAD"
+     ],
+     "correta": 1,
+     "explicacao": "POST manda dados novos para o servidor criar algo."
+    },
+    {
+     "pergunta": "A tela mostra erro, mas você não sabe se o problema é no frontend ou na API. Onde olhar?",
+     "opcoes": [
+      "No CSS",
+      "Na aba Rede do navegador, vendo o status e a resposta da requisição",
+      "No banco direto",
+      "Em lugar nenhum"
+     ],
+     "correta": 1,
+     "explicacao": "Se a API devolveu 500, o problema está do lado do servidor. Se devolveu 200 com dados certos, está na tela."
+    },
+    {
+     "pergunta": "Por que não colocar a chave de uma API paga no JavaScript do site?",
+     "opcoes": [
+      "Porque fica lento",
+      "Porque qualquer pessoa vê o código do navegador e pode usar a chave",
+      "Porque o JavaScript não aceita",
+      "Não tem problema"
+     ],
+     "correta": 1,
+     "explicacao": "Tudo que vai para o navegador é público. Chave fica no servidor."
+    },
+    {
+     "pergunta": "O que significa um status 500?",
+     "opcoes": [
+      "Pedido errado de quem chamou",
+      "Erro dentro do servidor",
+      "Redirecionamento",
+      "Sucesso"
+     ],
+     "correta": 1,
+     "explicacao": "A família 5xx indica falha do lado do servidor."
+    }
+   ],
+   "pergunta_ako": "Abra a aba Rede num site que você usa. Quantas requisições ele faz para mostrar uma página? Alguma te surpreendeu?",
+   "recursos": [
+    {
+     "titulo": "Uma visão geral do HTTP",
+     "fonte": "MDN",
+     "url": "https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Guides/Overview",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Como funciona a conversa entre cliente e servidor na web.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "Códigos de status de respostas HTTP",
+     "fonte": "MDN",
+     "url": "https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Reference/Status",
+     "tipo": "referência",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lista dos status de 1xx a 5xx e o que cada um quer dizer.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "FastAPI",
+     "fonte": "FastAPI",
+     "url": "https://fastapi.tiangolo.com/pt/",
+     "tipo": "ferramenta",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Framework em Python para criar APIs, com tutorial em português."
+    },
+    {
+     "titulo": "Como a web funciona",
+     "fonte": "Ako",
+     "url": "./materiais/como-a-web-funciona.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição do Ako sobre requisição, resposta, status e cabeçalhos."
+    }
+   ]
+  },
+  {
+   "id": "sql",
+   "etapa": "servidor",
+   "titulo": "Banco de dados e SQL",
+   "horas": 5,
+   "resumo": "Quase todo sistema guarda dados num banco. O banco relacional organiza tudo em tabelas, e o SQL é a língua para perguntar e mudar esses dados. Com SELECT, WHERE, JOIN e GROUP BY você já responde a maior parte das perguntas do dia a dia.",
+   "essencial": [
+    "Tabela tem linhas (os registros) e colunas (os campos). Cada linha tem uma chave primária única.",
+    "SELECT escolhe as colunas, WHERE filtra as linhas, ORDER BY ordena.",
+    "JOIN junta tabelas pela chave: pedidos com clientes, tarefas com grupos.",
+    "GROUP BY com COUNT ou SUM responde \"quantos por...\".",
+    "Nunca monte SQL juntando texto que veio do usuário. Use parâmetros, para evitar SQL injection."
+   ],
+   "checklist": [
+    "Fiz as lições do SQLBolt até a parte de JOIN",
+    "Criei uma tabela no SQLite e inseri alguns registros",
+    "Escrevi uma consulta com JOIN e uma com GROUP BY",
+    "Liguei a minha API a um banco SQLite usando consulta com parâmetros"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Qual comando busca dados de uma tabela?",
+     "opcoes": [
+      "INSERT",
+      "SELECT",
+      "DELETE",
+      "DROP"
+     ],
+     "correta": 1,
+     "explicacao": "SELECT lê dados. Os outros criam, apagam ou destroem."
+    },
+    {
+     "pergunta": "Você quer só as tarefas sem data. Qual parte da consulta faz isso?",
+     "opcoes": [
+      "ORDER BY",
+      "WHERE data IS NULL",
+      "GROUP BY",
+      "LIMIT"
+     ],
+     "correta": 1,
+     "explicacao": "WHERE filtra as linhas. Para campo vazio, use IS NULL."
+    },
+    {
+     "pergunta": "Para mostrar cada tarefa com o nome do seu grupo, que estão em tabelas diferentes, você usa:",
+     "opcoes": [
+      "UNION",
+      "JOIN",
+      "DROP",
+      "Duas consultas e junta no olho"
+     ],
+     "correta": 1,
+     "explicacao": "JOIN liga as tabelas pela chave que elas têm em comum."
+    },
+    {
+     "pergunta": "Por que usar parâmetros em vez de juntar texto do usuário na consulta?",
+     "opcoes": [
+      "Fica mais bonito",
+      "Evita que alguém escreva SQL no campo e mexa no seu banco (SQL injection)",
+      "É mais rápido de digitar",
+      "Não precisa"
+     ],
+     "correta": 1,
+     "explicacao": "SQL injection é uma das falhas mais antigas e ainda das mais comuns."
+    },
+    {
+     "pergunta": "Como saber quantas tarefas cada grupo tem?",
+     "opcoes": [
+      "SELECT * e contar na mão",
+      "SELECT grupo, COUNT(*) ... GROUP BY grupo",
+      "ORDER BY grupo",
+      "DELETE grupo"
+     ],
+     "correta": 1,
+     "explicacao": "GROUP BY agrupa as linhas e COUNT conta quantas há em cada grupo."
+    }
+   ],
+   "pergunta_ako": "Que pergunta sobre a sua vida (gastos, estudos, treinos) você responderia se os dados estivessem numa tabela?",
+   "recursos": [
+    {
+     "titulo": "SQLBolt",
+     "fonte": "SQLBolt",
+     "url": "https://sqlbolt.com/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Lições curtas e interativas de SQL no navegador, sem instalar nada e sem conta.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "Administrando Banco de Dados",
+     "fonte": "Fundação Bradesco, Escola Virtual",
+     "url": "https://www.ev.org.br/cursos/administrando-banco-de-dados",
+     "tipo": "curso",
+     "idioma": "pt-BR",
+     "gratuito": "sim, precisa criar conta",
+     "nota": "Curso de 15 horas, mais puxado, sobre modelos de dados, tabelas e SQL. Bom depois do SQLBolt.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "OWASP Top 10",
+     "fonte": "OWASP",
+     "url": "https://owasp.org/www-project-top-ten/",
+     "tipo": "referência",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "A lista das falhas de segurança mais comuns em aplicações web, com injection entre elas."
+    }
+   ]
+  },
+  {
+   "id": "testes",
+   "etapa": "qualidade",
+   "titulo": "Testes automatizados",
+   "horas": 4,
+   "resumo": "Teste automatizado é código que confere se o seu código faz o que devia. Ele roda em segundos, toda vez que algo muda, e pega o erro antes do usuário. A maior parte dos testes deve ser pequena e rápida. Poucos testam o sistema inteiro.",
+   "essencial": [
+    "Teste de unidade confere uma função sozinha. É rápido e deve ser a maioria.",
+    "Teste de integração confere partes juntas, como a API com o banco.",
+    "Teste de ponta a ponta abre o sistema como o usuário. É lento: use para os caminhos principais.",
+    "Bom teste tem três partes: prepara, executa, confere.",
+    "Achou um bug? Escreva primeiro o teste que falha por causa dele. Depois corrija."
+   ],
+   "checklist": [
+    "Escrevi testes de unidade para três funções minhas com pytest",
+    "Escrevi um teste para um caso de erro, não só para o caminho feliz",
+    "Transformei um bug que achei num teste antes de corrigir",
+    "Fiz os testes rodarem sozinhos no GitHub Actions a cada push"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Que tipo de teste deve ser a maioria?",
+     "opcoes": [
+      "Ponta a ponta",
+      "De unidade",
+      "Manual",
+      "Nenhum"
+     ],
+     "correta": 1,
+     "explicacao": "Testes de unidade são rápidos e baratos. Dá para ter centenas rodando em segundos."
+    },
+    {
+     "pergunta": "Você achou um bug. Qual é a melhor ordem?",
+     "opcoes": [
+      "Corrigir e esquecer",
+      "Escrever um teste que falha por causa do bug, depois corrigir",
+      "Avisar o usuário",
+      "Apagar a função"
+     ],
+     "correta": 1,
+     "explicacao": "O teste prova que o bug existia e garante que ele não volta."
+    },
+    {
+     "pergunta": "Quais são as três partes de um bom teste?",
+     "opcoes": [
+      "Abrir, fechar, salvar",
+      "Preparar, executar, conferir",
+      "Ler, copiar, colar",
+      "Instalar, rodar, apagar"
+     ],
+     "correta": 1,
+     "explicacao": "Em inglês se fala arrange, act, assert. Deixa o teste fácil de ler."
+    },
+    {
+     "pergunta": "Por que não testar tudo pela interface, como o usuário?",
+     "opcoes": [
+      "Porque não funciona",
+      "Porque esses testes são lentos e quebram fácil quando a tela muda",
+      "Porque é proibido",
+      "Porque o usuário não deixa"
+     ],
+     "correta": 1,
+     "explicacao": "Ponta a ponta é valioso para o caminho principal, mas caro para cobrir tudo."
+    }
+   ],
+   "pergunta_ako": "Qual bug que você já viu (num app, num site, num jogo) um teste simples teria pegado?",
+   "recursos": [
+    {
+     "titulo": "The Practical Test Pyramid",
+     "fonte": "Ham Vocke, martinfowler.com",
+     "url": "https://martinfowler.com/articles/practical-test-pyramid.html",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "O artigo de referência sobre a pirâmide de testes, com exemplos de cada tipo.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "A pirâmide de teste prática (tradução)",
+     "fonte": "Tradução da comunidade, citada no artigo original",
+     "url": "https://github.com/paulojunior-ufla/piramide-de-teste-pratica",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Tradução para o português do artigo acima, indicada pelo próprio artigo.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "pytest",
+     "fonte": "pytest",
+     "url": "https://docs.pytest.org/en/stable/index.html",
+     "tipo": "ferramenta",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Documentação do pytest, o jeito mais simples de testar código em Python.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "Documentação do GitHub Actions",
+     "fonte": "GitHub Docs",
+     "url": "https://docs.github.com/pt/actions",
+     "tipo": "referência",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Para rodar os testes sozinhos a cada push."
+    }
+   ]
+  },
+  {
+   "id": "code-review",
+   "etapa": "qualidade",
+   "titulo": "Pull request e code review",
+   "horas": 2,
+   "resumo": "Code review é outra pessoa ler a sua mudança antes de ela entrar. Pega erro, espalha conhecimento e mantém o código parecido em todo o projeto. Um pull request pequeno, com uma boa descrição, é revisado rápido e bem.",
+   "essencial": [
+    "Pull request pequeno é revisado melhor. Mudança grande vira \"parece ok\" sem ninguém ler de verdade.",
+    "Descreva o porquê, o que mudou e como conferir.",
+    "Revisor olha primeiro se a mudança resolve o problema e se é segura. Estilo vem depois, e de preferência por ferramenta.",
+    "Comentário de review fala do código, explica o motivo e sugere um caminho.",
+    "Usou IA para escrever parte do código? Diga no PR, para quem revisa saber onde olhar com mais cuidado."
+   ],
+   "checklist": [
+    "Abri um pull request pequeno com descrição de porquê, o quê e como conferir",
+    "Revisei o pull request de outra pessoa com pelo menos um comentário útil e um elogio",
+    "Li o guia de code review do Google até a parte do que olhar",
+    "Respondi a todos os comentários de um review meu"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Por que preferir pull requests pequenos?",
+     "opcoes": [
+      "Porque contam mais commits",
+      "Porque são revisados com mais atenção e entram mais rápido",
+      "Porque o GitHub limita",
+      "Não faz diferença"
+     ],
+     "correta": 1,
+     "explicacao": "Mudança pequena cabe na cabeça de quem revisa."
+    },
+    {
+     "pergunta": "O que o revisor deve olhar primeiro?",
+     "opcoes": [
+      "Espaços e vírgulas",
+      "Se a mudança resolve o problema e se é segura",
+      "O nome de quem fez",
+      "Quantas linhas tem"
+     ],
+     "correta": 1,
+     "explicacao": "Estilo uma ferramenta confere. Lógica e segurança precisam de gente."
+    },
+    {
+     "pergunta": "Qual comentário de review ajuda mais?",
+     "opcoes": [
+      "Não gostei",
+      "Isso aqui pode quebrar quando a lista vier vazia. Que tal checar antes?",
+      "Refaz tudo",
+      "Por que você fez assim?!"
+     ],
+     "correta": 1,
+     "explicacao": "Explica o risco e sugere um caminho, sem atacar ninguém."
+    },
+    {
+     "pergunta": "Você usou IA para escrever uma parte do PR. O que fazer?",
+     "opcoes": [
+      "Esconder",
+      "Dizer no PR, entender e testar o código antes",
+      "Pedir para a IA aprovar",
+      "Nada"
+     ],
+     "correta": 1,
+     "explicacao": "Transparência ajuda o revisor a focar onde o risco é maior."
+    }
+   ],
+   "pergunta_ako": "Pense no último trabalho seu que outra pessoa revisou. O que ela viu que você não tinha visto?",
+   "recursos": [
+    {
+     "titulo": "Google Engineering Practices: code review",
+     "fonte": "Google",
+     "url": "https://google.github.io/eng-practices/review/",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Como o Google faz code review: o que o revisor olha, como comentar e como escrever a descrição.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "Primeiros passos no GitHub",
+     "fonte": "Ako",
+     "url": "./materiais/primeiros-passos-github.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição do Ako sobre repositório, branch, commit e pull request."
+    }
+   ]
+  },
+  {
+   "id": "arquitetura",
+   "etapa": "arquitetura",
+   "titulo": "Arquitetura para crescer, com IA junto",
+   "horas": 4,
+   "resumo": "Arquitetura é como o código está organizado e por quê. Organizar por assunto (fatia vertical) deixa cada mudança num lugar só. Escrever as decisões difíceis num ADR evita discutir a mesma coisa toda vez. E um AGENTS.md conta para qualquer IA como o projeto funciona, para ela ajudar sem quebrar nada.",
+   "essencial": [
+    "Fatia vertical: cada pasta é um assunto completo, com tela, regra e dados juntos. Mudar a Rotina mexe só na pasta da Rotina.",
+    "Organizar por tipo de arquivo (todos os controllers juntos, todos os models juntos) espalha uma mudança pelo projeto inteiro.",
+    "ADR (Architecture Decision Record) é uma página curta: o contexto, a decisão e as consequências. Só para o que é difícil de desfazer.",
+    "AGENTS.md é um mapa curto do projeto para agentes de IA: o que é, onde mexer, como testar, o que nunca fazer.",
+    "Comece simples. Arquitetura boa é a que o time entende e consegue mudar."
+   ],
+   "alturas": [
+    {
+     "cargo": "Júnior",
+     "pergunta": "No projeto em que você trabalha, você sabe onde mexer para mudar uma tela sem perguntar?"
+    },
+    {
+     "cargo": "Pleno",
+     "pergunta": "Sua última mudança mexeu em quantas pastas? Precisava?"
+    },
+    {
+     "cargo": "Sênior",
+     "pergunta": "Que decisão do time vive discutida de novo porque nunca foi escrita?"
+    },
+    {
+     "cargo": "Especialista",
+     "pergunta": "Que parte do sistema ninguém quer mexer, e o que deixaria ela mais fácil de mudar?"
+    },
+    {
+     "cargo": "Tech lead",
+     "pergunta": "Uma pessoa nova, ou uma IA, consegue fazer a primeira mudança no projeto em um dia?"
+    },
+    {
+     "cargo": "Gestão",
+     "pergunta": "Quanto tempo o time perde por mês com retrabalho causado pela organização do código?"
+    }
+   ],
+   "checklist": [
+    "Li a lição do Ako sobre arquitetura para crescer",
+    "Desenhei as fatias de um projeto meu: um assunto por pasta",
+    "Escrevi um ADR para uma decisão de um projeto meu",
+    "Escrevi um AGENTS.md para um projeto meu e pedi para uma IA fazer uma mudança seguindo ele"
+   ],
+   "quiz": [
+    {
+     "pergunta": "O que é organizar o código em fatias verticais?",
+     "opcoes": [
+      "Separar por tipo de arquivo",
+      "Juntar tudo de um assunto na mesma pasta: tela, regra e dados",
+      "Colocar tudo num arquivo só",
+      "Usar microsserviços"
+     ],
+     "correta": 1,
+     "explicacao": "Cada fatia é um assunto completo. A mudança fica num lugar só."
+    },
+    {
+     "pergunta": "Quando vale escrever um ADR?",
+     "opcoes": [
+      "Para toda mudança",
+      "Para uma decisão difícil de desfazer, como escolher um banco ou um jeito de publicar",
+      "Nunca",
+      "Só quando a gestão pede"
+     ],
+     "correta": 1,
+     "explicacao": "ADR é para o que custa caro mudar depois. O resto o commit explica."
+    },
+    {
+     "pergunta": "Para que serve um AGENTS.md?",
+     "opcoes": [
+      "Para guardar senhas",
+      "Para contar a qualquer agente de IA como o projeto funciona, onde mexer e como testar",
+      "Para listar as pessoas do time",
+      "Para substituir o README"
+     ],
+     "correta": 1,
+     "explicacao": "É um mapa curto para IA. O README continua sendo para pessoas."
+    },
+    {
+     "pergunta": "Qual é um sinal de arquitetura que atrapalha?",
+     "opcoes": [
+      "Mudanças pequenas mexem em muitas pastas",
+      "Testes rodam rápido",
+      "Cada pasta tem um assunto",
+      "Decisões estão escritas"
+     ],
+     "correta": 0,
+     "explicacao": "Se toda mudança espalha, o acoplamento está alto e o risco de quebrar sobe."
+    },
+    {
+     "pergunta": "Por que começar simples?",
+     "opcoes": [
+      "Porque arquitetura não importa",
+      "Porque complexidade antes da hora é cara de manter e o time pode nem precisar",
+      "Porque é mais bonito",
+      "Porque a IA não entende"
+     ],
+     "correta": 1,
+     "explicacao": "Dá para evoluir a arquitetura quando o problema aparecer. Desfazer complexidade é mais difícil."
+    }
+   ],
+   "pergunta_ako": "Se uma pessoa nova chegasse amanhã no seu projeto, o que ela precisaria saber que não está escrito em lugar nenhum?",
+   "recursos": [
+    {
+     "titulo": "Arquitetura para crescer: fatias, decisões e IA",
+     "fonte": "Ako",
+     "url": "./materiais/arquitetura-para-crescer.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Lição do Ako em português sobre fatia vertical, ADR e AGENTS.md, com exemplos do próprio repositório do Ako."
+    },
+    {
+     "titulo": "Vertical Slice Architecture",
+     "fonte": "Jimmy Bogard",
+     "url": "https://www.jimmybogard.com/vertical-slice-architecture/",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "O texto que deu nome à ideia: organizar o código por funcionalidade, não por camada técnica.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "MADR",
+     "fonte": "ADR, projeto aberto",
+     "url": "https://adr.github.io/madr/",
+     "tipo": "ferramenta",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Um modelo aberto de ADR em Markdown, o mesmo que os repositórios da Rizzygo usam.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "AGENTS.md",
+     "fonte": "Agentic AI Foundation, Linux Foundation",
+     "url": "https://agents.md/",
+     "tipo": "referência",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "O formato aberto do AGENTS.md, aceito por vários agentes de IA.",
+     "verificado_em": "2026-11-12"
+    }
+   ]
+  },
+  {
+   "id": "publicar",
+   "etapa": "publicar",
+   "titulo": "Publicar de graça",
+   "horas": 3,
+   "resumo": "Projeto que só roda no seu computador não aparece no currículo. Dá para publicar um site de graça direto do GitHub, com endereço próprio e HTTPS. A cada push, o site atualiza sozinho. É assim que o Ako é publicado.",
+   "essencial": [
+    "Site estático (HTML, CSS e JavaScript) publica de graça no GitHub Pages ou no Cloudflare Pages.",
+    "Ligue o repositório e cada push na branch principal vira uma nova versão no ar.",
+    "Prévia por pull request: o Cloudflare Pages monta um endereço de teste para cada PR, antes do merge.",
+    "Nunca coloque senha, token ou chave no repositório, nem em repositório privado.",
+    "Escreva um README com o que o projeto faz, o link no ar e como rodar no computador."
+   ],
+   "checklist": [
+    "Publiquei um site meu no GitHub Pages ou no Cloudflare Pages",
+    "Fiz uma mudança, dei push e vi o site atualizar sozinho",
+    "Conferi que nenhum segredo está no repositório",
+    "Escrevi o README com o link do site no ar"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Qual destes publica um site estático de graça a partir do GitHub?",
+     "opcoes": [
+      "GitHub Pages",
+      "Um servidor em casa",
+      "Pendrive",
+      "E-mail"
+     ],
+     "correta": 0,
+     "explicacao": "O GitHub Pages publica o site direto do repositório."
+    },
+    {
+     "pergunta": "O que acontece quando o site está ligado ao repositório e você dá push na main?",
+     "opcoes": [
+      "Nada",
+      "O site é publicado de novo com a mudança",
+      "O repositório é apagado",
+      "Você recebe uma cobrança"
+     ],
+     "correta": 1,
+     "explicacao": "É o deploy contínuo: o push dispara a nova versão."
+    },
+    {
+     "pergunta": "Você precisa de uma chave de API no projeto. Onde ela não pode ficar?",
+     "opcoes": [
+      "Num cofre de segredos da plataforma",
+      "No código do repositório",
+      "Na sua cabeça",
+      "Num gerenciador de senhas"
+     ],
+     "correta": 1,
+     "explicacao": "Repositório guarda histórico para sempre. Chave que entrou ali deve ser trocada."
+    },
+    {
+     "pergunta": "Para que serve o README do projeto?",
+     "opcoes": [
+      "Para nada",
+      "Para quem chega saber o que o projeto faz, ver o link e rodar no computador",
+      "Para guardar senhas",
+      "Para a IA"
+     ],
+     "correta": 1,
+     "explicacao": "Quem avalia o seu portfólio lê o README antes do código."
+    }
+   ],
+   "pergunta_ako": "Qual projeto seu merece estar no ar com um link para mostrar numa entrevista?",
+   "recursos": [
+    {
+     "titulo": "Documentação do GitHub Pages",
+     "fonte": "GitHub Docs",
+     "url": "https://docs.github.com/pt/pages",
+     "tipo": "referência",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Como transformar um repositório num site, sem contratar hospedagem.",
+     "verificado_em": "2026-11-12"
+    },
+    {
+     "titulo": "Cloudflare Pages",
+     "fonte": "Cloudflare",
+     "url": "https://developers.cloudflare.com/pages/",
+     "tipo": "referência",
+     "idioma": "en",
+     "gratuito": "sim, precisa criar conta",
+     "nota": "Hospedagem do Ako. O plano gratuito permite 500 deploys por mês. A página recomenda o Workers para projetos novos e tem um guia de migração.",
+     "verificado_em": "2026-11-12"
+    }
+   ]
+  },
+  {
+   "id": "projeto-qual-e-o-bo",
+   "etapa": "publicar",
+   "titulo": "Projeto final: Qual é o B.O.?",
+   "horas": 10,
+   "resumo": "O projeto final junta tudo: você recebe um pedido real, descobre qual é o B.O., escreve a spec, decide e registra, prepara o projeto para a IA ajudar, constrói em fatias, confere e ensina de volta. O pedido sugerido é o mesmo da lição: tarefas sem dia certo numa lista de tarefas. Pode trocar por um pedido seu.",
+   "essencial": [
+    "1. Entender o B.O.: converse com quem pediu e escreva o problema numa frase.",
+    "2. Spec: uma página com problema, resultado, fora do escopo e critérios de aceite.",
+    "3. Decidir e registrar: escreva um ADR para a escolha mais difícil, como onde guardar os dados.",
+    "4. Harness: prepare o projeto para a IA com um AGENTS.md (o que é o projeto, onde mexer, como testar, o que nunca fazer).",
+    "5. Fatiar com IA: construa uma fatia de cada vez. Dê à IA a spec e o AGENTS.md, e leia tudo o que ela escrever.",
+    "6. Conferir: testes passando, prévia no celular e os critérios de aceite marcados.",
+    "7. Ensinar de volta: um post ou README explicando o B.O. e o que você aprendeu."
+   ],
+   "alturas": [
+    {
+     "cargo": "Júnior",
+     "pergunta": "Entregue a fatia principal funcionando, com teste, e explique cada linha que a IA escreveu."
+    },
+    {
+     "cargo": "Pleno",
+     "pergunta": "Entregue o projeto inteiro, com spec e critérios de aceite que outra pessoa consegue conferir."
+    },
+    {
+     "cargo": "Sênior",
+     "pergunta": "Proponha uma solução mais simples que a pedida, justifique no ADR e meça o resultado."
+    },
+    {
+     "cargo": "Especialista",
+     "pergunta": "Ache o maior risco técnico do pedido e mostre como a sua arquitetura protege dele."
+    },
+    {
+     "cargo": "Tech lead",
+     "pergunta": "Faça o projeto com mais uma pessoa, dividindo as fatias, e conduza o review entre vocês."
+    },
+    {
+     "cargo": "Gestão",
+     "pergunta": "Escreva em uma página o custo, o prazo e o que fica de fora, como se fosse decidir se o time faz."
+    }
+   ],
+   "checklist": [
+    "Escrevi o problema numa frase e conferi com quem pediu",
+    "Escrevi a spec com critérios de aceite",
+    "Escrevi um ADR e um AGENTS.md para o projeto",
+    "Construí em fatias, com testes, e publiquei de graça",
+    "Marquei todos os critérios de aceite e escrevi um post ou README contando o B.O."
+   ],
+   "quiz": [
+    {
+     "pergunta": "Qual é a primeira etapa do projeto \"Qual é o B.O.?\"?",
+     "opcoes": [
+      "Escolher o framework",
+      "Entender o problema e escrever numa frase",
+      "Pedir o código para a IA",
+      "Publicar"
+     ],
+     "correta": 1,
+     "explicacao": "Sem entender o B.O., todas as outras etapas podem ir na direção errada."
+    },
+    {
+     "pergunta": "O que entra no ADR do projeto?",
+     "opcoes": [
+      "Todas as mudanças",
+      "A decisão mais difícil de desfazer, com contexto e consequências",
+      "A lista de tarefas",
+      "O código"
+     ],
+     "correta": 1,
+     "explicacao": "ADR registra o porquê de uma escolha que custaria caro mudar."
+    },
+    {
+     "pergunta": "Qual é o papel do AGENTS.md no projeto?",
+     "opcoes": [
+      "Enfeitar o repositório",
+      "Dar à IA o mapa do projeto, para ela ajudar sem quebrar nada",
+      "Substituir os testes",
+      "Guardar a senha"
+     ],
+     "correta": 1,
+     "explicacao": "Com o mapa, a IA sabe onde mexer e como conferir."
+    },
+    {
+     "pergunta": "Por que construir uma fatia de cada vez?",
+     "opcoes": [
+      "Para demorar mais",
+      "Para ter algo funcionando cedo e conferir cada parte antes de seguir",
+      "Porque a IA só faz uma coisa",
+      "Não precisa"
+     ],
+     "correta": 1,
+     "explicacao": "Fatia pronta e testada é progresso de verdade. Tudo pela metade não é."
+    },
+    {
+     "pergunta": "Como saber que o projeto acabou?",
+     "opcoes": [
+      "Quando cansar",
+      "Quando todos os critérios de aceite da spec estiverem marcados e conferidos",
+      "Quando a IA disser",
+      "Quando o código ficar grande"
+     ],
+     "correta": 1,
+     "explicacao": "Os critérios de aceite são a definição de pronto que você combinou no começo."
+    },
+    {
+     "pergunta": "Por que a última etapa é ensinar de volta?",
+     "opcoes": [
+      "Para ganhar curtida",
+      "Porque explicar fixa o que você aprendeu e ajuda quem vem depois",
+      "Porque é obrigatório",
+      "Não precisa"
+     ],
+     "correta": 1,
+     "explicacao": "É a mão de duas vias do Ako: quem aprende ensina."
+    }
+   ],
+   "pergunta_ako": "Qual foi o B.O. de verdade no seu projeto, e quanto ele era diferente do pedido do começo?",
+   "recursos": [
+    {
+     "titulo": "Qual é o B.O.? Entender o problema antes do código",
+     "fonte": "Ako",
+     "url": "./materiais/qual-e-o-bo.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "A lição traz o pedido sugerido visto em seis cargos e as sete etapas do projeto, com modelos para copiar."
+    },
+    {
+     "titulo": "Arquitetura para crescer: fatias, decisões e IA",
+     "fonte": "Ako",
+     "url": "./materiais/arquitetura-para-crescer.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Modelos de ADR e de AGENTS.md para usar nas etapas 3 e 4."
+    }
+   ]
+  }
+ ]
+}
