@@ -252,6 +252,15 @@
      "nota": "Lição do Ako com o mesmo pedido visto em seis cargos e o modelo de spec de uma página."
     },
     {
+     "titulo": "Skill entender-o-problema",
+     "fonte": "Favos, Rizzygo All",
+     "url": "../favos/entender-o-problema/",
+     "tipo": "ferramenta",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Uma skill gratuita para usar com a sua IA: ela faz as perguntas da sua altura sobre um pedido real e entrega o problema numa frase e uma spec de uma página."
+    },
+    {
      "titulo": "Histórias de usuário com exemplos e um template",
      "fonte": "Atlassian",
      "url": "https://www.atlassian.com/br/agile/project-management/user-stories",
@@ -1361,6 +1370,15 @@
      "idioma": "pt-BR",
      "gratuito": "sim",
      "nota": "A lição traz o pedido sugerido visto em seis cargos e as sete etapas do projeto, com modelos para copiar."
+    },
+    {
+     "titulo": "Skill entender-o-problema",
+     "fonte": "Favos, Rizzygo All",
+     "url": "../favos/entender-o-problema/",
+     "tipo": "ferramenta",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Uma skill gratuita para usar com a sua IA: ela faz as perguntas da sua altura sobre um pedido real e entrega o problema numa frase e uma spec de uma página."
     },
     {
      "titulo": "Arquitetura para crescer: fatias, decisões e IA",

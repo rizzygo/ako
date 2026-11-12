@@ -231,6 +231,15 @@
      "nota": "Lição do Ako: o mesmo pedido visto em seis cargos, do júnior à gestão, e um roteiro de perguntas para usar amanhã."
     },
     {
+     "titulo": "Skill entender-o-problema",
+     "fonte": "Favos, Rizzygo All",
+     "url": "../favos/entender-o-problema/",
+     "tipo": "ferramenta",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Uma skill gratuita para usar com a sua IA: ela faz as perguntas da sua altura sobre um pedido real e entrega o problema numa frase e uma spec de uma página."
+    },
+    {
      "titulo": "Guia completo do exercício dos 5 porquês",
      "fonte": "Atlassian, Team Playbook",
      "url": "https://www.atlassian.com/br/team-playbook/plays/5-whys",
