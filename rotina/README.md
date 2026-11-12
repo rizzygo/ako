@@ -27,7 +27,7 @@ Tarefas, metas e lembretes têm a caneta ✏️ para mudar o texto. No computado
 | Parte | Como funciona |
 | --- | --- |
 | Blocos do dia | Timer de foco e pausa para **trabalho** e **estudo**, e um bloco de **lazer** que também vale ponto. A pessoa ajusta todos os tempos. |
-| Lembretes | Água, respiração e pausa sem tela, cada um com o seu intervalo, só dentro do horário escolhido. Todos os avisos vêm desligados, inclusive o da revisão das metas: a pessoa liga em Ajustes (e nas Metas) o que quiser. |
+| Lembretes | Água, respiração e pausa sem tela, cada um com o seu intervalo, só dentro do horário escolhido. Todos os avisos vêm desligados, inclusive o da revisão das metas: a pessoa liga em Ajustes (e nas Metas) o que quiser. Quem já usava antes de 12/11/2026 também teve esses avisos desligados uma vez (`config.avisosDesligados`); os lembretes próprios, como o de remédio, não mudaram. |
 | Seus lembretes | A pessoa cria os dela, como tomar um remédio: todo dia num horário ou a cada X minutos. |
 | Respiração guiada | Um minuto: 4 segundos inspirando e 6 soltando, com uma bolha que cresce e diminui. |
 | Tempo sem tela | A pessoa escolhe 5, 10, 15 ou 30 minutos, 1 hora ou 2 horas, e, se quiser, para quê: família, saúde, descanso ou outra coisa. Pode bloquear o celular: na volta, a Zumi conta o tempo. Quem volta antes ganha os pontos do tempo que já cumpriu. |
