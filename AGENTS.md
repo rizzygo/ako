@@ -29,7 +29,7 @@ Cada pasta é uma funcionalidade completa. Para mexer numa fatia, leia o `AGENTS
 ## Comandos
 
 ```sh
-scripts/validar   # trilhas, mapas, lições, JavaScript, segredos e tamanho dos AGENTS.md
+scripts/validar   # trilhas, mapas, lições, JavaScript, Rotina no navegador, segredos e tamanho dos AGENTS.md
 scripts/previa    # prévia local em http://localhost:8000, igual ao Cloudflare Pages
 ```
 

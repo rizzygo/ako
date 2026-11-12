@@ -9,6 +9,8 @@ Vale para `rotina/`: o app Rotina com a Zumi, instalável no celular (PWA). As r
 | Mudar comportamento, abas ou textos do app | `rotina.js` |
 | Mudar visual | `rotina.css` (depois do `ds/rizzygo.css`) |
 | Mudar o que funciona sem internet | `sw.js` |
+| Funcionalidade nova ou mudança de comportamento | Primeiro uma spec em [`specs/`](specs/README.md), depois o código |
+| Teste de ponta a ponta | `testes/e2e.js` (critério de aceite que dá para automatizar vira um passo aqui) |
 
 ## Pegadinhas
 
@@ -21,7 +23,10 @@ Vale para `rotina/`: o app Rotina com a Zumi, instalável no celular (PWA). As r
 ## Conferir
 
 ```sh
-node --check rotina/rotina.js && node --check rotina/sw.js
+scripts/validar              # inclui node rotina/testes/e2e.js, que usa a Rotina num navegador de verdade
+node rotina/testes/e2e.js    # só o teste da Rotina (precisa do Playwright)
 ```
+
+O teste abre todas as abas, cria tarefa, item sem data, meta e lembrete, recarrega e confere que nada sumiu. Também abre com dados de uma versão anterior (`testes/estado-antigo.json`). Campo novo no estado salvo: atualize esse arquivo só acrescentando, nunca apagando.
 
 Na prévia: abra a Rotina com dados antigos salvos e confira que nada sumiu. Teste Hoje, Tarefas (Hoje, Agenda, Sem data) e Ajustes, no celular e no modo escuro. Se mudou o `sw.js`, recarregue duas vezes e confira a versão nova.
