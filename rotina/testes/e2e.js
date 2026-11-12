@@ -98,6 +98,21 @@ async function main() {
     await pagina.evaluate(() => { location.hash = '#/tarefas'; });
     confere((await pagina.textContent('#tarefas')).includes('Tarefa de teste e2e'), 'tarefa aparece depois de recarregar');
 
+    // 4b. Lembrete tocou: "Ignorar dessa vez" fecha o aviso e ele não volta logo depois.
+    await pagina.evaluate(k => {
+      const st = JSON.parse(localStorage.getItem(k));
+      const m = st.meus.find(x => x.nome === 'Lembrete de teste e2e');
+      st.adiados = Object.assign({}, st.adiados, { [m.id]: Date.now() - 1000 });
+      localStorage.setItem(k, JSON.stringify(st));
+    }, CHAVE);
+    await pagina.reload({ waitUntil: 'networkidle' });
+    await pagina.waitForSelector('#aviso:not([hidden])', { timeout: 5000 }).catch(() => {});
+    confere((await pagina.textContent('#aviso-txt')).includes('Lembrete de teste e2e'), 'aviso do lembrete aparece');
+    await pagina.click('#aviso-pular');
+    await pagina.waitForTimeout(2500);
+    confere(await pagina.isHidden('#aviso'), '"Ignorar dessa vez" fecha o aviso e ele não volta');
+    confere(Object.keys((await salvo(pagina)).adiados || {}).length === 0, '"Ignorar dessa vez" não deixa o lembrete adiado');
+
     // 5. Service worker registra (é ele que deixa o app abrir sem internet).
     const sw = await pagina.evaluate(() => Promise.race([navigator.serviceWorker.ready.then(r => r.active ? r.active.scriptURL : ''), new Promise(r => setTimeout(() => r(''), 5000))]));
     confere(sw.includes('/rotina/sw.js'), 'service worker ativo');

@@ -934,6 +934,13 @@
     falar('Seguimos de onde parou. A perda parou nos 7 primeiros dias e o título continua seu. Bora retomar?', 'ola');
   });
   $('aviso-depois').addEventListener('click', function () { S.adiados[atual] = Date.now() + 10 * MIN; salvar(); fecharAviso(); renderLembretes(); });
+  // Pula só esta vez: o próximo aviso já foi agendado quando este tocou (intervalo) ou é o do dia seguinte (horário).
+  $('aviso-pular').addEventListener('click', function () {
+    var k = atual;
+    delete S.adiados[k]; salvar(); fecharAviso(); renderLembretes();
+    if (registro && registro.getNotifications) registro.getNotifications({ tag: 'lem-' + k }).then(function (ns) { ns.forEach(function (n) { n.close(); }); }).catch(function () {});
+    falar('Tudo bem, pulei esse. O próximo vem no horário de sempre.', 'ola');
+  });
 
   $('b-refletir').addEventListener('click', function () {
     var txt = el.reflexao.value.trim();

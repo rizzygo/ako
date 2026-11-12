@@ -9,3 +9,4 @@ Uma spec por funcionalidade nova ou por mudança de comportamento, escrita antes
 | Spec | Estado |
 | --- | --- |
 | [Tarefas sem data](tarefas-sem-data.md) | No ar desde 10/11/2026. Escrita depois, como exemplo do formato |
+| [Ignorar um lembrete só dessa vez](lembrete-ignorar.md) | Em revisão (12/11/2026) |
