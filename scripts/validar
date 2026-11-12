@@ -13,6 +13,16 @@ etapa "JavaScript sem erro de sintaxe"
 git ls-files -z '*.js' | xargs -0 -n1 node --check
 echo "$(git ls-files '*.js' | wc -l) arquivos ok"
 
+etapa "Rotina de ponta a ponta (navegador)"
+# Precisa do Playwright: npm i --no-save playwright && npx playwright install chromium
+if NODE_PATH="${NODE_PATH:-}:$(npm root -g 2>/dev/null)" node -e "require('playwright')" >/dev/null 2>&1; then
+  NODE_PATH="${NODE_PATH:-}:$(npm root -g 2>/dev/null)" node rotina/testes/e2e.js
+elif [ -n "${CI:-}" ]; then
+  echo "falta o Playwright no CI"; exit 1
+else
+  echo "aviso: Playwright não está instalado, pulei. O CI roda esta etapa."
+fi
+
 etapa "Segredos"
 python3 scripts/segredos.py --test
 python3 scripts/segredos.py

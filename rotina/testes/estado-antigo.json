@@ -1,0 +1,154 @@
+{
+ "v": 1,
+ "config": {
+  "trabalho": {
+   "foco": 50,
+   "pausa": 10
+  },
+  "estudo": {
+   "foco": 25,
+   "pausa": 5
+  },
+  "lazer": {
+   "foco": 60
+  },
+  "pausaLonga": 15,
+  "ciclos": 4,
+  "pausas": {
+   "trabalho": true,
+   "estudo": true
+  },
+  "somTipo": "zumi",
+  "inicio": "08:00",
+  "fim": "22:00",
+  "som": true,
+  "somLembretes": true,
+  "somVitoria": true,
+  "lembrarMetas": false,
+  "avisosDesligados": true,
+  "lembretes": {
+   "agua": {
+    "on": false,
+    "min": 45
+   },
+   "respirar": {
+    "on": false,
+    "min": 90
+   },
+   "semTela": {
+    "on": false,
+    "min": 120
+   }
+  }
+ },
+ "meus": [
+  {
+   "id": "mmwdruvlb",
+   "nome": "Tomar o remédio",
+   "tipo": "hora",
+   "hora": "08:00",
+   "min": 120,
+   "on": true
+  }
+ ],
+ "tarefas": [
+  {
+   "id": "tmwdruuyl364",
+   "texto": "Revisar o PR do colega",
+   "prio": true,
+   "rotina": false,
+   "dia": "2026-11-12",
+   "feita": null,
+   "pos": -1
+  },
+  {
+   "id": "tmwdruv73550",
+   "texto": "Ler 20 minutos",
+   "prio": false,
+   "rotina": true,
+   "dia": "2026-11-12",
+   "feita": null,
+   "pos": 0
+  },
+  {
+   "id": "tmwdruv87761",
+   "texto": "Trocar a senha do roteador",
+   "prio": false,
+   "rotina": false,
+   "dia": null,
+   "feita": null,
+   "grupo": null,
+   "criada": "2026-11-12",
+   "pos": 1
+  }
+ ],
+ "metas": [
+  {
+   "id": "gmwdruv9a147",
+   "texto": "Tirar uma certificação de cloud",
+   "ano": 2026,
+   "criada": "2026-11-12",
+   "checkins": {}
+  }
+ ],
+ "diario": {},
+ "grupos": [
+  {
+   "id": "g-viagem",
+   "nome": "Viagem",
+   "emoji": "✈️"
+  },
+  {
+   "id": "g-mercado",
+   "nome": "Mercado",
+   "emoji": "🛒"
+  },
+  {
+   "id": "g-internet",
+   "nome": "Comprar na internet",
+   "emoji": "📦"
+  }
+ ],
+ "timer": {
+  "modo": "estudo",
+  "fase": "foco",
+  "ciclo": 1,
+  "rodando": false,
+  "fimEm": null,
+  "restante": null
+ },
+ "proximos": {},
+ "adiados": {},
+ "tocados": {
+  "mmwdruvlb": "2026-11-12"
+ },
+ "dias": {
+  "2026-11-12": {
+   "blocos": {
+    "trabalho": 0,
+    "estudo": 0,
+    "lazer": 0
+   },
+   "minutos": {
+    "trabalho": 0,
+    "estudo": 0,
+    "lazer": 0
+   },
+   "agua": 0,
+   "respirar": 0,
+   "semTela": 0,
+   "ex": {},
+   "meus": 0,
+   "reflexao": "",
+   "papel": false,
+   "feitas": {},
+   "tarefasPts": 0,
+   "metasPts": 0
+  }
+ },
+ "pontosAntigos": 0,
+ "criadoEm": "2026-11-12",
+ "fechadoAte": null,
+ "melhor": 0,
+ "semTelaAtivo": null
+}
