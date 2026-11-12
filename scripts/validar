@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Valida o repositório. O CI roda este mesmo script, então o que passa aqui passa no PR.
+# Uso: scripts/validar
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+etapa() { printf '\n== %s\n' "$1"; }
+
+etapa "Trilhas, mapas e lições"
+python3 trilhas/validar.py
+
+etapa "JavaScript sem erro de sintaxe"
+git ls-files -z '*.js' | xargs -0 -n1 node --check
+echo "$(git ls-files '*.js' | wc -l) arquivos ok"
+
+etapa "Segredos"
+python3 scripts/segredos.py --test
+python3 scripts/segredos.py
+
+etapa "Tamanho dos AGENTS.md"
+limite=100
+excedeu=0
+while IFS= read -r f; do
+  n=$(wc -l < "$f")
+  if [ "$n" -gt "$limite" ]; then
+    echo "$f tem $n linhas (limite: $limite). Mova a seção maior para um arquivo na fatia e deixe só o ponteiro."
+    excedeu=1
+  fi
+done < <(git ls-files '*AGENTS.md')
+[ "$excedeu" -eq 0 ] || exit 1
+echo "todos com até $limite linhas"
+
+printf '\nTudo certo.\n'

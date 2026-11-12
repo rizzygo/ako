@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Prévia local: serve os arquivos como estão, igual ao Cloudflare Pages.
+# Uso: scripts/previa            (porta 8000)
+#      PORTA=8080 scripts/previa
+# Confira no computador, no celular (mesma rede: http://<ip-do-computador>:<porta>) e no modo escuro.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+porta="${PORTA:-8000}"
+echo "Prévia em http://localhost:${porta}  (Ctrl+C para parar)"
+exec python3 -m http.server "$porta" --bind 0.0.0.0

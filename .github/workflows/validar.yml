@@ -9,13 +9,17 @@ permissions:
   contents: read
 
 jobs:
-  trilhas:
+  validar:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: python3 trilhas/validar.py
-      - name: JavaScript sem erro de sintaxe
-        run: node --check trilhas/app.js && node --check trilhas/materiais/materiais.js && node --check trilhas/mapas/mapas.js && node --check trilhas/efeitos.js && node --check favos/favos.js && node --check rotina/rotina.js && node --check rotina/sw.js && node --check ds/tema.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      # O mesmo script que roda local: trilhas, JavaScript, segredos e tamanho dos AGENTS.md.
+      - run: scripts/validar
+      - name: Shell
+        run: shellcheck scripts/validar scripts/previa

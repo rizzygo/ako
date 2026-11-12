@@ -29,13 +29,11 @@ Cada pasta é uma funcionalidade completa. Para mexer numa fatia, leia o `AGENTS
 ## Comandos
 
 ```sh
-python3 trilhas/validar.py      # dados das trilhas, mapas e lições
-for f in trilhas/app.js trilhas/materiais/materiais.js trilhas/mapas/mapas.js trilhas/efeitos.js \
-         favos/favos.js rotina/rotina.js rotina/sw.js ds/tema.js; do node --check "$f"; done
-python3 -m http.server 8000     # prévia local em http://localhost:8000
+scripts/validar   # trilhas, mapas, lições, JavaScript, segredos e tamanho dos AGENTS.md
+scripts/previa    # prévia local em http://localhost:8000, igual ao Cloudflare Pages
 ```
 
-O CI (`.github/workflows/validar.yml`) roda as mesmas verificações. Confira a prévia no computador, no celular e no modo escuro antes de pedir revisão.
+O CI (`.github/workflows/validar.yml`) roda o mesmo `scripts/validar`. Confira a prévia no computador, no celular e no modo escuro antes de pedir revisão.
 
 ## Regras
 
@@ -45,6 +43,7 @@ O CI (`.github/workflows/validar.yml`) roda as mesmas verificações. Confira a 
 - **Contagem de visitas:** página HTML nova leva o trecho do Cloudflare Web Analytics antes do `</body>` e entra no `sitemap.xml`.
 - **Família Rizzygo:** página nova leva a faixa `.familia` e segue o design system.
 - **Antes de apagar, mudar regra do Firestore ou mexer em produção:** explique e espere o OK.
+- **Git e segredos:** nada de `git push --force` nem push direto na `main`. Não leia nem versione arquivo de token, `.env` ou chave. No Claude Code, o `.claude/settings.json` já nega isso; o `scripts/segredos.py` barra no CI.
 
 ## Decisões e specs
 
