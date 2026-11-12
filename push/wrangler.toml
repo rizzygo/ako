@@ -1,0 +1,16 @@
+# Worker do push da Rotina. Passo a passo para publicar em push/README.md.
+name = "rotina-push"
+main = "worker.mjs"
+compatibility_date = "2026-11-01"
+workers_dev = true
+routes = [{ pattern = "rotina-push.rizzygo.com.br", custom_domain = true }]
+
+[triggers]
+crons = ["* * * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "rotina-push"
+database_id = "COLE-AQUI-O-ID-DO-D1"
+
+# Segredos (não ficam neste arquivo): VAPID_PUBLIC e VAPID_PRIVATE, com `npx wrangler secret put`.

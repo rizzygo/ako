@@ -119,6 +119,73 @@ async function main() {
     confere(erros.length === 0, 'nenhum erro de JavaScript' + (erros.length ? ': ' + erros.join(' | ') : ''));
     await ctx.close();
 
+    // 5b. Avisar com o app fechado (push): com o servidor fora do ar, a opção some; com ele no ar, liga e manda
+    // só horários, nunca o nome do lembrete. O servidor e o serviço de push do navegador são simulados aqui.
+    ({ ctx, pagina, erros } = await novaPagina(navegador));
+    await pagina.route('https://rotina-push.rizzygo.com.br/**', r => r.abort());
+    await pagina.goto(BASE + '/rotina/#/ajustes', { waitUntil: 'networkidle' });
+    await pagina.waitForTimeout(300);
+    confere(await pagina.isHidden('#push-bloco'), 'sem o servidor de push, a opção "Avisar com o app fechado" não aparece');
+    await ctx.close();
+
+    ({ ctx, pagina, erros } = await novaPagina(navegador));
+    await ctx.grantPermissions(['notifications'], { origin: BASE });
+    await ctx.addInitScript(() => {
+      const sub = { endpoint: 'https://fcm.googleapis.com/fcm/send/teste', toJSON() { return { endpoint: this.endpoint, keys: { p256dh: 'BPZ_teste_p256dh_aaaaaaaaaaaaaaaa', auth: 'auth_teste_aaaaaa' } }; }, unsubscribe() { window.__desassinou = true; return Promise.resolve(true); } };
+      let ativa = null;
+      PushManager.prototype.getSubscription = function () { return Promise.resolve(ativa); };
+      PushManager.prototype.subscribe = function () { ativa = sub; return Promise.resolve(sub); };
+    });
+    const recebidos = [];
+    await pagina.route('https://rotina-push.rizzygo.com.br/**', async r => {
+      const u = new URL(r.request().url());
+      if (u.pathname !== '/chave') recebidos.push({ caminho: u.pathname, corpo: r.request().postDataJSON() });
+      await r.fulfill({ status: 200, contentType: 'application/json', headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify(u.pathname === '/chave' ? { chave: 'BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U' } : { ok: true }) });
+    });
+    await pagina.goto(BASE + '/rotina/#/ajustes', { waitUntil: 'networkidle' });
+    await pagina.fill('#novo-nome', 'Tomar o remédio');
+    await pagina.click('#novo button[type="submit"]');
+    await pagina.waitForSelector('#push-bloco:not([hidden])', { timeout: 5000 }).catch(() => {});
+    confere(await pagina.isVisible('#push-bloco'), 'com o servidor de push no ar, a opção aparece em Ajustes');
+    await pagina.check('#push-on');
+    await pagina.waitForTimeout(1500);
+    const aparelho = recebidos.find(x => x.caminho === '/aparelho');
+    confere(!!aparelho && aparelho.corpo.agenda.lembretes.length === 1 && aparelho.corpo.assinatura.endpoint.includes('fcm'), 'ligar manda a agenda e a assinatura ao servidor');
+    confere(!!aparelho && !JSON.stringify(aparelho.corpo).includes('remédio'), 'o servidor não recebe o nome do lembrete');
+    const nomes = await pagina.evaluate(() => caches.open('zumi-push').then(c => c.match('/rotina/__push')).then(r => r && r.json()));
+    confere(!!nomes && Object.values(nomes.nomes || {}).some(n => n.includes('remédio')), 'o nome fica no aparelho para o service worker');
+    await pagina.uncheck('#push-on');
+    await pagina.waitForTimeout(500);
+    confere(recebidos.some(x => x.caminho === '/remover') && await pagina.evaluate(() => !!window.__desassinou), 'desligar avisa o servidor e cancela a assinatura');
+    confere(erros.length === 0, 'nenhum erro de JavaScript no push' + (erros.length ? ': ' + erros.join(' | ') : ''));
+    await ctx.close();
+
+    // 5c. O service worker recebe o push e mostra a notificação com o nome guardado no aparelho e os dois botões.
+    // Precisa do Chromium completo (o headless shell não mostra notificação); sem ele, o passo é pulado com aviso.
+    const completo = await chromium.launch({ channel: 'chromium' }).catch(() => null);
+    if (!completo) console.log('aviso: Chromium completo não está instalado, pulei o teste do push no service worker');
+    else {
+      try {
+        const c2 = await completo.newContext();
+        await c2.grantPermissions(['notifications'], { origin: BASE });
+        const p2 = await c2.newPage();
+        await p2.goto(BASE + '/rotina/', { waitUntil: 'networkidle' });
+        await p2.evaluate(() => navigator.serviceWorker.ready.then(() => caches.open('zumi-push')).then(c => c.put('/rotina/__push', new Response(JSON.stringify({ api: 'https://exemplo.invalid', id: 'x', nomes: { m1: 'Hora de: Tomar o remédio.' } })))));
+        const cdp = await c2.newCDPSession(p2);
+        const regs = new Promise(res => cdp.on('ServiceWorker.workerRegistrationUpdated', e => { if (e.registrations.length) res(e.registrations); }));
+        await cdp.send('ServiceWorker.enable');
+        const reg = (await regs).find(r => r.scopeURL.endsWith('/rotina/'));
+        await p2.goto(BASE + '/', { waitUntil: 'networkidle' }); // Rotina fechada
+        await cdp.send('ServiceWorker.deliverPushMessage', { origin: BASE, registrationId: reg.registrationId, data: JSON.stringify({ k: 'm1' }) });
+        await p2.waitForTimeout(800);
+        await p2.goto(BASE + '/rotina/', { waitUntil: 'networkidle' });
+        const ns = await p2.evaluate(() => navigator.serviceWorker.ready.then(r => r.getNotifications()).then(l => l.map(n => ({ titulo: n.title, corpo: n.body, tag: n.tag, botoes: n.actions.map(a => a.title) }))));
+        const n = ns.find(x => x.tag === 'lem-m1');
+        confere(!!n && n.corpo === 'Hora de: Tomar o remédio.', 'push com a Rotina fechada mostra a notificação com o nome do lembrete');
+        confere(!!n && n.botoes.join('|') === 'Daqui a 10 min|Ignorar dessa vez', 'a notificação do push tem "Daqui a 10 min" e "Ignorar dessa vez"');
+      } finally { await completo.close(); }
+    }
+
     // 6. Dados salvos por uma versão anterior abrem sem perda.
     const antigo = fs.readFileSync(path.join(__dirname, 'estado-antigo.json'), 'utf8');
     const esperado = JSON.parse(fs.readFileSync(path.join(__dirname, 'estado-antigo-textos.json'), 'utf8'));

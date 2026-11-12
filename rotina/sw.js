@@ -1,7 +1,8 @@
-// Service worker da Rotina com a Zumi: deixa o app abrir sem internet e mostra as notificações.
-var CACHE = 'rotina-2026111219';
+// Service worker da Rotina com a Zumi: deixa o app abrir sem internet, mostra as notificações e recebe o push
+// dos lembretes com o app fechado (servidor em /push).
+var CACHE = 'rotina-2026111222';
 var ARQUIVOS = [
-  '/rotina/', '/rotina/rotina.css?v=2026111202', '/rotina/rotina.js?v=2026111219', '/mesclar.js?v=2026111101', '/vitoria.js?v=2026111020', '/nuvem.js?v=2026111106', '/conta.js?v=2026111210', '/topo.css?v=2026110914', '/ds/rizzygo.css?v=2026111020', '/ds/tema.js?v=2026111020', '/contribua.js?v=2026110901',
+  '/rotina/', '/rotina/rotina.css?v=2026111222', '/rotina/rotina.js?v=2026111222', '/mesclar.js?v=2026111101', '/vitoria.js?v=2026111020', '/nuvem.js?v=2026111106', '/conta.js?v=2026111210', '/topo.css?v=2026110914', '/ds/rizzygo.css?v=2026111020', '/ds/tema.js?v=2026111020', '/contribua.js?v=2026110901',
   '/zumi/abelha-mini.png', '/zumi/abelha-icone.png',
   '/zumi/abelha-ola.png', '/zumi/abelha-ola-fundo-escuro.png',
   '/zumi/abelha-estudando.png', '/zumi/abelha-estudando-fundo-escuro.png',
@@ -29,11 +30,47 @@ self.addEventListener('fetch', function (e) {
   }).catch(function () { return caches.match(e.request, { ignoreSearch: e.request.mode === 'navigate' }); }));
 });
 
-// Tocar na notificação volta para o app.
+// Configuração do push que o app guarda neste aparelho: endereço do servidor, id e nomes dos lembretes.
+function dadosPush() {
+  return caches.open('zumi-push').then(function (c) { return c.match('/rotina/__push'); })
+    .then(function (r) { return r ? r.json() : {}; }).catch(function () { return {}; });
+}
+
+// Push do servidor: o corpo traz só a chave do lembrete; o nome vem do cache deste aparelho.
+self.addEventListener('push', function (e) {
+  var d = {};
+  try { d = e.data ? e.data.json() : {}; } catch (x) { /* push sem corpo */ }
+  var k = String(d.k || '');
+  e.waitUntil(Promise.all([dadosPush(), self.clients.matchAll({ type: 'window', includeUncontrolled: true })]).then(function (r) {
+    var nomes = r[0].nomes || {};
+    // Com a Rotina na frente, o próprio app já mostra o aviso. Só o Chrome deixa pular a notificação;
+    // Safari e Firefox cortam o push de quem recebe sem mostrar nada.
+    var naFrente = r[1].some(function (c) { return c.url.indexOf('/rotina/') >= 0 && c.focused; });
+    if (naFrente && /Chrome|Edg/.test(navigator.userAgent)) return;
+    return self.registration.showNotification('Zumi lembrando', {
+      body: nomes[k] || 'Hora de um lembrete seu.', icon: '/zumi/abelha-icone.png', badge: '/icones/icone-192.png',
+      tag: 'lem-' + k, renotify: true, data: { k: k },
+      actions: [{ action: 'depois', title: 'Daqui a 10 min' }, { action: 'pular', title: 'Ignorar dessa vez' }]
+    });
+  }));
+});
+
+// Tocar na notificação volta para o app. Os botões do push adiam ou pulam sem abrir o app.
 self.addEventListener('notificationclick', function (e) {
   e.notification.close();
+  var k = e.notification.data && e.notification.data.k;
+  if (e.action === 'pular') return;
+  if (e.action === 'depois') {
+    e.waitUntil(dadosPush().then(function (cfg) {
+      if (!cfg.api || !cfg.id || !k) return;
+      return fetch(cfg.api + '/adiar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: cfg.id, k: k, em: Date.now() + 10 * 60 * 1000 }) });
+    }).catch(function () {}));
+    return;
+  }
   e.waitUntil(self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function (cs) {
-    for (var i = 0; i < cs.length; i++) { if (cs[i].url.indexOf('/rotina/') >= 0) return cs[i].focus(); }
-    return self.clients.openWindow('/rotina/');
+    for (var i = 0; i < cs.length; i++) {
+      if (cs[i].url.indexOf('/rotina/') >= 0) { if (k) cs[i].postMessage({ lembrete: k }); return cs[i].focus(); }
+    }
+    return self.clients.openWindow('/rotina/' + (k ? '?lem=' + encodeURIComponent(k) : ''));
   }));
 });
