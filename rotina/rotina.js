@@ -62,7 +62,7 @@
         lazer: { foco: 60 },
         pausaLonga: 15, ciclos: 4,
         pausas: { trabalho: true, estudo: true }, somTipo: 'zumi',
-        inicio: '08:00', fim: '22:00', som: true, somLembretes: true, somVitoria: true, lembrarMetas: false,
+        inicio: '08:00', fim: '22:00', som: true, somLembretes: true, somVitoria: true, lembrarMetas: false, avisosDesligados: true,
         lembretes: { agua: { on: false, min: 45 }, respirar: { on: false, min: 90 }, semTela: { on: false, min: 120 } }
       },
       meus: [], tarefas: [], metas: [], diario: {}, grupos: gruposPadrao(),
@@ -87,10 +87,17 @@
     try { s = JSON.parse(localStorage.getItem(CHAVE)); } catch (e) { s = null; }
     var p = padrao();
     if (!s || s.v !== 1) return p;
+    // Avisos passaram a vir desligados (12/11/2026): quem já usava também começa com eles desligados, uma vez só.
+    // Depois disso, o que a pessoa ligar em Ajustes fica ligado.
+    var desligarAvisos = !(s.config && s.config.avisosDesligados);
     // completa campos que versões novas acrescentarem
     s.config = Object.assign({}, p.config, s.config || {});
     s.config.lembretes = Object.assign({}, p.config.lembretes, s.config.lembretes || {});
     s.config.pausas = Object.assign({}, p.config.pausas, s.config.pausas || {});
+    if (desligarAvisos) {
+      Object.keys(s.config.lembretes).forEach(function (k) { s.config.lembretes[k].on = false; });
+      s.config.lembrarMetas = false;
+    }
     ['meus', 'tarefas', 'metas', 'diario', 'grupos', 'proximos', 'adiados', 'tocados', 'dias', 'timer'].forEach(function (k) { if (!s[k]) s[k] = p[k]; });
     if (typeof s.pontosAntigos !== 'number') s.pontosAntigos = 0;
     if (!s.criadoEm) s.criadoEm = Object.keys(s.dias).sort()[0] || chaveDia();
