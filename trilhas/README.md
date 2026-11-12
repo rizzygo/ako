@@ -10,15 +10,21 @@ A primeira trilha é **Primeiros passos em TI**: 16 tópicos em 6 etapas, do "co
 
 A segunda trilha é **Platform Engineering**: 15 tópicos em 6 etapas, para quem já tem a base de infraestrutura. Ela mostra onde DevOps e SRE se encontram e termina com uma mini plataforma publicada no GitHub. Acesse em **https://ako.rizzygo.com.br/trilhas/?trilha=platform-engineering**
 
+A terceira é **Desenvolvimento**: 11 tópicos em 6 etapas, para quem escolheu programar. Começa entendendo o pedido, passa por HTML, CSS, JavaScript, HTTP, SQL, testes e arquitetura, e termina no projeto "Qual é o B.O.?". Acesse em **https://ako.rizzygo.com.br/trilhas/?trilha=desenvolvimento**
+
+A quarta é **Habilidades humanas**: 10 tópicos em 5 etapas, sobre entender o problema, comunicar, feedback, emoção sob pressão, prioridade e ensino. Ela cruza todas as outras: a Primeiros passos, a Platform Engineering, a Desenvolvimento e os mapas de Produto e Desenvolvimento apontam para ela. Cada tópico traz a seção "Na sua altura", com uma pergunta para cada cargo. Acesse em **https://ako.rizzygo.com.br/trilhas/?trilha=habilidades-humanas**
+
+A spec das trilhas que se cruzam está em [`specs/trilhas-que-se-cruzam.md`](specs/trilhas-que-se-cruzam.md).
+
 ## Mais de uma trilha
 
-Cada trilha tem um arquivo em `dados/` e abre pelo parâmetro `?trilha=` no endereço. Sem o parâmetro, abre a Primeiros passos. O progresso de cada trilha fica numa chave própria do navegador (`rizzygo-trilhas-v1` para a Primeiros passos, `rizzygo-trilha-platform-engineering-v1` para a Platform Engineering) e é exportado em arquivo próprio.
+Cada trilha tem um arquivo em `dados/` e abre pelo parâmetro `?trilha=` no endereço. Sem o parâmetro, abre a Primeiros passos. O progresso de cada trilha fica numa chave própria do navegador (`rizzygo-trilhas-v1` para a Primeiros passos e `rizzygo-trilha-<id>-v1` para as outras) e é exportado em arquivo próprio.
 
 Para criar uma trilha nova:
 
 1. Crie `dados/<id>.json` com os mesmos campos da Primeiros passos e `"areas": []`. Só a Primeiros passos tem áreas.
-2. Campos opcionais da trilha: `inicio` (título, texto, rótulos do mini mapa e a lista "Para quem é"), `momentos` e `ja_sei` (as perguntas de Montar meu roteiro), `cor` e `mapa_antes` (os nós da primeira seção do mapa, que podem apontar para tópicos da Primeiros passos ou para um mapa de área).
-3. Registre a trilha na lista `TRILHAS` de `app.js` e de `mapas/mapas.js`, e em `OUTRAS_TRILHAS` do `validar.py`. O mapa da trilha sai sozinho das etapas e tópicos.
+2. campos opcionais da trilha: `mapa_fim` (a frase no pé do mapa), `inicio` (título, texto, rótulos do mini mapa e a lista "Para quem é"), `momentos` e `ja_sei` (as perguntas de Montar meu roteiro), `cor` e `mapa_antes` (os nós da primeira seção do mapa, que podem apontar para tópicos da Primeiros passos, para o tópico de outra trilha com `"trilha"` e `"topico"`, ou para um mapa com `"mapa"`). No tópico, o campo opcional `alturas` traz uma pergunta para cada cargo (Júnior, Pleno, Sênior, Especialista, Tech lead e Gestão, nessa ordem) e aparece como "Na sua altura". Um recurso pode apontar para outra trilha com `./?trilha=<id>#/t/<tópico>`.
+3. Registre a trilha na lista `TRILHAS` de `app.js`, de `mapas/mapas.js` e de `/conta.js` (para o progresso ir para a conta), e em `OUTRAS_TRILHAS` do `validar.py`. O mapa da trilha sai sozinho das etapas e tópicos.
 4. Se a trilha continua uma área, ponha `"trilha"` e `"trilha_nome"` na área da Primeiros passos. O tópico Escolha seu próximo caminho passa a mostrar o link.
 
 ## Como o site funciona
@@ -73,6 +79,8 @@ O Ako escreve lições próprias em português, na pasta [materiais](materiais),
 | [Plataforma como produto: clientes, golden paths e portal](materiais/plataforma-como-produto.html) | Plataforma como produto interno e Golden paths |
 | [SLI, SLO e error budget, com contas](materiais/slo-e-error-budget.html) | SLI, SLO e error budget |
 | [Incidentes e postmortem sem culpa](materiais/incidentes-e-postmortem.html) | Incidentes e postmortem sem culpa |
+| [Qual é o B.O.? Entender o problema antes do código](materiais/qual-e-o-bo.html) | Qual é o B.O.?, Perguntar e escutar, Do pedido à spec e o projeto final da Desenvolvimento |
+| [Arquitetura para crescer: fatias, decisões e IA](materiais/arquitetura-para-crescer.html) | Arquitetura para crescer, com IA junto |
 
 ## Materiais pagos, sempre opcionais
 

@@ -327,7 +327,9 @@
          "url": "https://developer.mozilla.org/pt-BR/docs/Web/HTML",
          "idioma": "pt-BR"
         }
-       ]
+       ],
+       "trilha": "desenvolvimento",
+       "topico": "html-css"
       },
       {
        "id": "css",
@@ -341,7 +343,9 @@
          "url": "https://developer.mozilla.org/pt-BR/docs/Web/CSS",
          "idioma": "pt-BR"
         }
-       ]
+       ],
+       "trilha": "desenvolvimento",
+       "topico": "html-css"
       },
       {
        "id": "javascript",
@@ -355,7 +359,9 @@
          "url": "https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Guide",
          "idioma": "pt-BR"
         }
-       ]
+       ],
+       "trilha": "desenvolvimento",
+       "topico": "javascript"
       },
       {
        "id": "acessibilidade",
@@ -369,7 +375,9 @@
          "url": "https://developer.mozilla.org/pt-BR/docs/Web/Accessibility",
          "idioma": "pt-BR"
         }
-       ]
+       ],
+       "trilha": "desenvolvimento",
+       "topico": "acessibilidade"
       },
       {
        "id": "framework-front",
@@ -415,7 +423,9 @@
          "url": "https://sqlbolt.com/",
          "idioma": "en"
         }
-       ]
+       ],
+       "trilha": "desenvolvimento",
+       "topico": "sql"
       },
       {
        "id": "autenticacao",
@@ -441,7 +451,9 @@
          "url": "https://docs.pytest.org/",
          "idioma": "en"
         }
-       ]
+       ],
+       "trilha": "desenvolvimento",
+       "topico": "testes"
       },
       {
        "id": "code-review",
@@ -508,6 +520,23 @@
          "idioma": "pt-BR"
         }
        ]
+      }
+     ]
+    },
+    {
+     "titulo": "Depois da base",
+     "nos": [
+      {
+       "id": "trilha-desenvolvimento",
+       "titulo": "Trilha Desenvolvimento",
+       "resumo": "A trilha completa da área, com checklist e desafios: do entender o B.O. até um projeto seu publicado de graça.",
+       "mapa": "desenvolvimento"
+      },
+      {
+       "id": "trilha-humanas",
+       "titulo": "Trilha Habilidades humanas",
+       "resumo": "Comunicação, feedback e prioridade. Pesa tanto quanto o código, em qualquer cargo.",
+       "mapa": "habilidades-humanas"
       }
      ]
     }
@@ -1067,12 +1096,16 @@
        "id": "entrevistas",
        "titulo": "Conversar com quem usa",
        "resumo": "Pergunte sobre o que a pessoa já fez, não sobre o que faria. \"Como você resolveu isso da última vez?\" ensina mais que \"você usaria?\".",
-       "pratica": "Converse 15 minutos com alguém sobre como essa pessoa organiza as contas do mês. Anote só fatos."
+       "pratica": "Converse 15 minutos com alguém sobre como essa pessoa organiza as contas do mês. Anote só fatos.",
+       "trilha": "habilidades-humanas",
+       "topico": "perguntar-e-escutar"
       },
       {
        "id": "problema",
        "titulo": "Problema antes da solução",
-       "resumo": "Times perdem meses construindo a solução certa para o problema errado. Escreva o problema numa frase antes de discutir funcionalidades."
+       "resumo": "Times perdem meses construindo a solução certa para o problema errado. Escreva o problema numa frase antes de discutir funcionalidades.",
+       "trilha": "habilidades-humanas",
+       "topico": "qual-e-o-bo"
       },
       {
        "id": "metricas",
@@ -1088,7 +1121,9 @@
        "id": "priorizacao",
        "titulo": "Priorização",
        "resumo": "Sempre há mais ideias que tempo. Comparar valor para quem usa e esforço para construir ajuda a dizer \"agora não\" com argumento.",
-       "pratica": "Liste dez melhorias para um aplicativo e classifique cada uma em valor alto ou baixo e esforço alto ou baixo."
+       "pratica": "Liste dez melhorias para um aplicativo e classifique cada uma em valor alto ou baixo e esforço alto ou baixo.",
+       "trilha": "habilidades-humanas",
+       "topico": "prioridade"
       },
       {
        "id": "historias",
@@ -1169,6 +1204,17 @@
        "nivel": "opcional",
        "resumo": "SQL básico e um painel simples deixam você conferir as próprias métricas sem esperar ninguém. O mapa de Dados mostra o caminho.",
        "mapa": "dados"
+      }
+     ]
+    },
+    {
+     "titulo": "Depois da base",
+     "nos": [
+      {
+       "id": "trilha-humanas",
+       "titulo": "Trilha Habilidades humanas",
+       "resumo": "Entender o problema, escutar, comunicar e priorizar: o centro do trabalho de produto, numa trilha com checklist e desafios.",
+       "mapa": "habilidades-humanas"
       }
      ]
     }

@@ -9,7 +9,9 @@
   /* Mesmas chaves de trilhas/app.js e trilhas/mapas/mapas.js. Trilha nova: acrescente aqui também. */
   var TRILHAS = [
     { id: 'primeiros-passos', chave: 'rizzygo-trilhas-v1' },
-    { id: 'platform-engineering', chave: 'rizzygo-trilha-platform-engineering-v1' }
+    { id: 'platform-engineering', chave: 'rizzygo-trilha-platform-engineering-v1' },
+    { id: 'desenvolvimento', chave: 'rizzygo-trilha-desenvolvimento-v1' },
+    { id: 'habilidades-humanas', chave: 'rizzygo-trilha-habilidades-humanas-v1' }
   ];
   var MAPAS = 'rizzygo-mapas-v1';
   /* Ajustes do navegador que também vão para a conta: tema claro/escuro (/ds/tema.js) e som de vitória (/vitoria.js). */

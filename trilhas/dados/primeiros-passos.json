@@ -1884,6 +1884,15 @@
      "gratuito": "sim",
      "nota": "Curso de 12 horas para se comunicar melhor por escrito e falando no ambiente de trabalho.",
      "verificado_em": "2026-10-17"
+    },
+    {
+     "titulo": "Trilha Habilidades humanas",
+     "fonte": "Ako",
+     "url": "./?trilha=habilidades-humanas#/",
+     "tipo": "trilha",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Quer ir além? A trilha do Ako sobre entender o problema, comunicar, dar feedback, lidar com a pressão e priorizar, com uma pergunta para cada cargo."
     }
    ]
   },
@@ -2028,7 +2037,9 @@
    "nome": "Desenvolvimento",
    "cor": "#16855A",
    "descricao": "Sites, aplicativos e sistemas: frontend, backend ou os dois.",
-   "mapa": "mapas/#/dev"
+   "mapa": "mapas/#/dev",
+   "trilha": "desenvolvimento",
+   "trilha_nome": "Desenvolvimento"
   },
   {
    "id": "dados",

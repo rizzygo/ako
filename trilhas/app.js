@@ -11,7 +11,11 @@
     { id: 'primeiros-passos', dados: 'dados/primeiros-passos.json', chave: 'rizzygo-trilhas-v1', titulo: 'Primeiros passos em TI',
       resumo: 'Do como estudar até um primeiro projeto publicado no GitHub. Para quem está começando do zero.' },
     { id: 'platform-engineering', dados: 'dados/platform-engineering.json', chave: 'rizzygo-trilha-platform-engineering-v1', titulo: 'Platform Engineering',
-      resumo: 'Onde DevOps e SRE se encontram: contêineres, entrega contínua, confiabilidade e uma plataforma que os times usam sem abrir ticket.' }
+      resumo: 'Onde DevOps e SRE se encontram: contêineres, entrega contínua, confiabilidade e uma plataforma que os times usam sem abrir ticket.' },
+    { id: 'desenvolvimento', dados: 'dados/desenvolvimento.json', chave: 'rizzygo-trilha-desenvolvimento-v1', titulo: 'Desenvolvimento',
+      resumo: 'Do entender o B.O. até um site com API, banco e testes publicado de graça. Termina no projeto "Qual é o B.O.?".' },
+    { id: 'habilidades-humanas', dados: 'dados/habilidades-humanas.json', chave: 'rizzygo-trilha-habilidades-humanas-v1', titulo: 'Habilidades humanas',
+      resumo: 'Comunicação, feedback, emoção sob pressão e prioridade. Cruza todas as trilhas, com uma pergunta para cada cargo, do júnior à gestão.' }
   ];
   var TRILHA = (function () {
     var m = location.search.match(/[?&]trilha=([a-z0-9-]+)/);
@@ -524,6 +528,11 @@
     if (paraValidar(t) && !concluido(t)) html += '<div class="aviso">Você disse que já sabe este assunto. Faça o desafio: acertando, o checklist é marcado para você.</div>';
     html += '<section class="bloco"><h2>Em poucas palavras</h2><p class="resumo-texto">' + fmt(t.resumo) + '</p></section>';
     html += '<section class="bloco"><h2>O essencial</h2><ul class="essencial">' + t.essencial.map(function (x) { return '<li>' + fmt(x) + '</li>'; }).join('') + '</ul></section>';
+    // Campo opcional: uma pergunta para cada cargo, do júnior à gestão. O mesmo assunto pesa diferente em cada altura.
+    if (t.alturas && t.alturas.length) {
+      html += '<section class="bloco"><h2>Na sua altura</h2><p class="dica">O assunto é o mesmo, mas o problema muda com o cargo. Ache o seu e responda para você.</p><dl class="alturas">' +
+        t.alturas.map(function (x) { return '<dt>' + esc(x.cargo) + '</dt><dd>' + fmt(x.pergunta) + '</dd>'; }).join('') + '</dl></section>';
+    }
     if (!ramificacao(t)) {
       html += '<section class="bloco"><h2>Estudar com IA</h2><p>Copie um prompt pronto e cole na IA que você usa, no computador ou no celular. Ela vai te ensinar perguntando, em vez de entregar a resposta pronta.</p>' +
         '<p class="dica">O prompt leva só o conteúdo deste tópico, nada do seu progresso. O método vem da skill <a href="../favos/estudar-junto/">estudar-junto</a>, dos Favos.</p>' +
@@ -625,6 +634,10 @@
       '',
       'O essencial:'
     ].concat(t.essencial.map(function (x) { return '- ' + semCrase(x); }));
+    if (t.alturas && t.alturas.length) {
+      linhas.push('', 'Na sua altura (uma pergunta por cargo; pergunte o meu antes de usar):');
+      linhas = linhas.concat(t.alturas.map(function (x) { return '- ' + x.cargo + ': ' + semCrase(x.pergunta); }));
+    }
     linhas.push('', 'Checklist de prática do tópico:');
     linhas = linhas.concat(t.checklist.map(function (x) { return '- ' + semCrase(x); }));
     if (licao) linhas.push('', 'Lição do Ako sobre o tópico: ' + base + licao.url.replace(/^\.\//, ''));

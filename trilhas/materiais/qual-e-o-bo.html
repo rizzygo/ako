@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qual é o B.O.? Entender o problema antes do código | Rizzygo Ako</title>
+<meta name="description" content="Lição em português sobre entender o problema antes do código: o mesmo pedido visto em seis cargos, do júnior à gestão, um roteiro de perguntas, o problema numa frase e uma spec de uma página.">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:title" content="Qual é o B.O.? Entender o problema antes do código | Rizzygo Ako">
+<meta property="og:description" content="Lição em português sobre entender o problema antes do código: o mesmo pedido visto em seis cargos, do júnior à gestão, um roteiro de perguntas, o problema numa frase e uma spec de uma página.">
+<meta property="og:url" content="https://ako.rizzygo.com.br/trilhas/materiais/qual-e-o-bo.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rizzygo Ako">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ako.rizzygo.com.br/icones/og/licoes.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Lições do Ako: lições práticas em português, com a Zumi, abelha da Rizzygo All">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ako.rizzygo.com.br/trilhas/materiais/qual-e-o-bo.html">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Qual é o B.O.? Entender o problema antes do código", "description": "Lição em português sobre entender o problema antes do código: o mesmo pedido visto em seis cargos, do júnior à gestão, um roteiro de perguntas, o problema numa frase e uma spec de uma página.", "url": "https://ako.rizzygo.com.br/trilhas/materiais/qual-e-o-bo.html", "inLanguage": "pt-BR", "isAccessibleForFree": true, "learningResourceType": "lição", "license": "https://creativecommons.org/licenses/by/4.0/", "publisher": {"@type": "Organization", "name": "Rizzygo", "url": "https://rizzygo.com.br/"}}</script>
+<meta name="theme-color" content="#0B1B3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="/ds/rizzygo.css?v=2026111020">
+<script src="/ds/tema.js?v=2026111020"></script>
+<link rel="stylesheet" href="../app.css?v=2026111001">
+<link rel="stylesheet" href="materiais.css?v=2026110801">
+<link rel="stylesheet" href="/topo.css?v=2026110914">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<nav class="familia" aria-label="Sites da Rizzygo"><div class="familia-in"><a class="familia-item" href="https://rizzygo.com.br/" title="Site principal da Rizzygo"><svg viewBox="0 0 64 64" width="16" height="16" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/></svg>Rizzygo</a><a class="familia-item" href="https://ako.rizzygo.com.br/" aria-current="page"><img src="/zumi/abelha-mini.png" width="18" height="18" alt="">Ako</a></div></nav>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="/" aria-label="Rizzygo Ako, início"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="var(--azul)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/></svg><span>Rizzygo <b>Ako</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="/trilhas/?trilha=habilidades-humanas">Trilhas</a><a href="/trilhas/mapas/#/habilidades-humanas">Mapas</a><a href="/trilhas/materiais/" aria-current="page">Materiais</a><a href="/favos/">Favos</a><a href="/rotina/">Rotina</a></nav>
+</div></header>
+
+
+<main id="conteudo" class="licao">
+<div class="licao-cab">
+  <a class="voltar" href="../?trilha=habilidades-humanas#/t/qual-e-o-bo">Voltar para o tópico Qual é o B.O.?</a>
+  <h1>Qual é o B.O.? Entender o problema antes do código</h1>
+  <p class="lead">O pedido que chega quase nunca é o problema. É a solução que alguém imaginou. Esta lição mostra como achar o B.O. de verdade, com um pedido real visto em seis cargos, um roteiro de perguntas e um modelo de spec de uma página.</p>
+  <div class="ficha"><span class="etiqueta">Cerca de 1 hora</span><span class="etiqueta">Trilhas Habilidades humanas e Desenvolvimento</span><span class="etiqueta ambar">Material gratuito em português</span></div>
+</div>
+<nav class="indice" aria-label="Nesta lição">
+  <h2>Nesta lição</h2>
+  <ol>
+    <li><a href="#pedido">O pedido não é o problema</a></li>
+    <li><a href="#seis">O mesmo pedido, seis cargos</a></li>
+    <li><a href="#perguntas">Roteiro de perguntas</a></li>
+    <li><a href="#frase">O problema numa frase</a></li>
+    <li><a href="#spec">A spec de uma página</a></li>
+    <li><a href="#etapas">O projeto em sete etapas</a></li>
+    <li><a href="#missao">Missão final</a></li>
+  </ol>
+</nav>
+
+<section id="pedido">
+  <h2>1. O pedido não é o problema</h2>
+  <p>Alguém chega e diz: "coloca um botão de exportar para Excel". Dá para fazer o botão em uma tarde. Mas o que a pessoa faz com a planilha depois?</p>
+  <p>Às vezes ela soma uma coluna que a tela não mostra. Aí o problema é um total que falta, e o botão nem precisa existir. Às vezes ela manda a planilha para outra área toda segunda. Aí o problema é um relatório automático.</p>
+  <p>O pedido diz <strong>o que fazer</strong>. A necessidade diz <strong>por quê</strong>. Quem entende o porquê escolhe a melhor solução, e muitas vezes ela é menor que a pedida.</p>
+  <div class="faca"><strong>Teste rápido</strong>Pense no último pedido que você recebeu. Você sabe dizer por que a pessoa precisava daquilo? Se não sabe, você recebeu uma solução, não um problema.</div>
+</section>
+
+<section id="seis">
+  <h2>2. O mesmo pedido, seis cargos</h2>
+  <p>Um pedido que chegou para a Rotina da Zumi, o app de tarefas do Ako: <strong>"quero marcar tarefas que não têm dia certo"</strong>. Veja como cada cargo enxerga o mesmo pedido.</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Cargo</th><th>O que olha primeiro</th><th>A pergunta que faz</th></tr></thead>
+    <tbody>
+      <tr><td>Júnior</td><td>A tarefa: o campo de data pode ficar vazio?</td><td>"Onde a tarefa sem data aparece na tela?"</td></tr>
+      <tr><td>Pleno</td><td>O fluxo inteiro: criar, editar, concluir e sincronizar</td><td>"O que acontece com quem já tem tarefas salvas?"</td></tr>
+      <tr><td>Sênior</td><td>A solução mais simples que resolve a dor</td><td>"Isso é uma data vazia ou um tipo novo de lista? Qual é mais fácil de manter?"</td></tr>
+      <tr><td>Especialista</td><td>O risco que ninguém viu</td><td>"Os dados antigos no navegador e na nuvem continuam válidos? Como desfazer se der errado?"</td></tr>
+      <tr><td>Tech lead</td><td>O time e a ordem do trabalho</td><td>"Dá para entregar em fatias? Quem revisa? Como o time sabe que ficou pronto?"</td></tr>
+      <tr><td>Gestão</td><td>O valor e o custo</td><td>"Quantas pessoas pedem isso? É mais importante que o resto da fila?"</td></tr>
+    </tbody>
+  </table></div>
+  <p>Nenhuma pergunta está errada. Cada uma vê um pedaço. O B.O. completo aparece quando alguém responde as seis. No caso real, a resposta virou grupos de tarefas "Sem data", com emoji, separados da agenda do dia.</p>
+  <p>Em qualquer cargo, faça também a pergunta do cargo seguinte na tabela.</p>
+</section>
+
+<section id="perguntas">
+  <h2>3. Roteiro de perguntas</h2>
+  <p>Use na primeira conversa sobre qualquer pedido. São perguntas abertas: rendem história, não só "sim" ou "não".</p>
+  <ol>
+    <li><strong>Quem</strong> sente o problema? Uma pessoa, um grupo, um cliente?</li>
+    <li><strong>Quando</strong> ele aparece? "Me conta a última vez que aconteceu."</li>
+    <li><strong>O que acontece hoje</strong>, sem a solução? Como a pessoa se vira?</li>
+    <li><strong>Por que</strong> isso incomoda? Pergunte de novo a cada resposta, umas três a cinco vezes.</li>
+    <li><strong>Como saber</strong> que resolveu? O que muda no dia da pessoa?</li>
+    <li><strong>O que não pode</strong> acontecer? Perder dado, ficar lento, mudar o que já funciona.</li>
+  </ol>
+  <p>No fim, repita com suas palavras: "então, se entendi, o problema é...". Se estiver errado, a pessoa corrige na hora.</p>
+  <div class="cuidado"><strong>Por que não é culpa</strong>O 5 dos "5 porquês" é aproximado, e a técnica serve para achar a causa, não um culpado. Pergunte sobre o processo e o sistema, nunca sobre quem errou.</div>
+</section>
+
+<section id="frase">
+  <h2>4. O problema numa frase</h2>
+  <p>Escreva o problema sem a solução dentro. A frase tem três partes: quem sente, em que momento, o que acontece hoje.</p>
+  <div class="cmd"><pre>[Quem] [em que momento] [o que acontece hoje].
+
+Quem estuda com a Rotina, ao anotar algo que não tem dia certo,
+precisa inventar uma data, e a tarefa some da lista no dia seguinte.</pre></div>
+  <p>Repare: a frase não fala em botão, campo ou banco. Ela deixa a solução em aberto. Mostre a frase para quem pediu antes de seguir.</p>
+</section>
+
+<section id="spec">
+  <h2>5. A spec de uma página</h2>
+  <p>Com o problema confirmado, escreva a spec. Ela é o combinado entre você, quem pediu e a IA que vai te ajudar. Uma página basta.</p>
+  <div class="cmd"><pre># Spec: tarefas sem data
+
+## Problema
+Quem estuda com a Rotina, ao anotar algo sem dia certo,
+precisa inventar uma data, e a tarefa some no dia seguinte.
+
+## Resultado esperado
+A pessoa guarda tarefas sem data num lugar próprio e acha quando precisar.
+
+## Fora do escopo
+Lembrete por notificação. Compartilhar a lista com outra pessoa.
+
+## Critérios de aceite
+- [ ] Dado que a tarefa não tem data, quando a pessoa salva,
+      então ela aparece no grupo "Sem data".
+- [ ] Dado que a pessoa já tinha tarefas, quando abre a versão nova,
+      então nada some.
+
+## Como conferir
+Abrir no celular e no computador, criar, editar e concluir uma tarefa sem data.</pre></div>
+  <p>O modelo completo, com a parte de decisões, está em <a href="https://github.com/rizzygo/favos/blob/main/regras/modelo-spec.md">modelo-spec.md, nos Favos</a>.</p>
+  <div class="faca"><strong>Faça com a sua IA</strong>A skill <a href="/favos/entender-o-problema/">entender-o-problema</a>, dos Favos, faz as perguntas desta lição sobre um pedido seu, na altura do seu cargo, e entrega a spec pronta para você conferir.</div>
+</section>
+
+<section id="etapas">
+  <h2>6. O projeto em sete etapas</h2>
+  <p>Estas sete etapas formam o projeto final da trilha Desenvolvimento. Também serve para qualquer pedido do trabalho.</p>
+  <ol>
+    <li><strong>Entender o B.O.</strong> Converse com quem pediu usando o roteiro da parte 3 e escreva a frase da parte 4.</li>
+    <li><strong>Spec.</strong> Uma página, como na parte 5.</li>
+    <li><strong>Decidir e registrar.</strong> Escolha o que é difícil de desfazer, como onde guardar os dados, e escreva um ADR (o registro escrito da decisão).</li>
+    <li><strong>Harness: preparar o projeto para a IA ajudar.</strong> Escreva um AGENTS.md: o que é o projeto, onde mexer, como testar, o que nunca fazer.</li>
+    <li><strong>Fatiar com IA.</strong> Construa uma fatia por vez. Dê à IA a spec e o AGENTS.md, e leia tudo o que ela escrever.</li>
+    <li><strong>Conferir.</strong> Testes passando, prévia no celular e cada critério de aceite marcado.</li>
+    <li><strong>Ensinar de volta.</strong> Um post ou um README contando o B.O. e o que você aprendeu.</li>
+  </ol>
+  <p>As etapas 3 e 4 têm modelos na lição <a href="arquitetura-para-crescer.html">Arquitetura para crescer</a>.</p>
+</section>
+
+<section id="missao">
+  <h2>7. Missão final</h2>
+  <details class="exercicio"><summary>1. Ache um pedido</summary>
+    <p>Pegue um pedido real: do trabalho, da escola, da família. Pode ser "faz uma planilha", "arruma o computador", "cria um site".</p>
+  </details>
+  <details class="exercicio"><summary>2. Faça as perguntas</summary>
+    <p>Use o roteiro da parte 3 com quem pediu. Anote as respostas, principalmente os porquês.</p>
+  </details>
+  <details class="exercicio"><summary>3. Escreva e confira</summary>
+    <p>Escreva o problema numa frase e mostre para a pessoa. Depois, responda à pergunta do seu cargo na tabela da parte 2, e à do cargo seguinte. Se ainda não trabalha na área, use a linha Júnior.</p>
+  </details>
+  <div class="faca"><strong>Para fixar</strong>Explique para alguém a diferença entre o pedido e o problema, usando o exemplo do botão de Excel. Depois, marque no tópico que você ensinou alguém.</div>
+  <div class="proximo"><a class="btn" href="../?trilha=habilidades-humanas#/t/qual-e-o-bo">Voltar para o tópico e fazer o desafio</a><a class="btn btn-sec" href="../?trilha=desenvolvimento#/t/projeto-qual-e-o-bo">Ver o projeto final da trilha Desenvolvimento</a></div>
+</section>
+
+<div class="credito">
+  <p>Lição baseada nos exercícios de <a href="https://www.atlassian.com/br/team-playbook/plays/5-whys">5 porquês</a> e de <a href="https://www.atlassian.com/br/team-playbook/plays/problem-framing">enquadramento do problema</a> do Team Playbook da Atlassian e no modelo de spec dos Favos. O exemplo da Rotina vem de uma mudança real do Ako. O texto é próprio, escrito em português pelo Ako, da Rizzygo All.</p>
+  <p>Conteúdo aberto sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR">CC BY 4.0</a>. Viu um erro? <a href="https://github.com/rizzygo/ako/issues">Abra uma issue</a>.</p>
+</div>
+</main>
+<footer class="rodape"><div class="rodape-in"><p><strong>Ako</strong>, da Rizzygo All, a parte aberta e gratuita da <a href="https://rizzygo.com.br/">Rizzygo</a>.</p><p>Estude junto na <a href="https://chat.whatsapp.com/CYpmolVr7a08Gqmj782yFi">comunidade gratuita no WhatsApp</a>.</p><p>Sugestão, dúvida ou problema? Escreva para <a href="mailto:suporte@rizzygo.com.br">suporte@rizzygo.com.br</a>.</p><div class="contribua"><p><strong>Contribuição voluntária.</strong> O Ako é gratuito e vai continuar assim. Você decide se quer contribuir, com qualquer valor, para agradecer, manter e ajudar o Ako a evoluir.</p><p class="contribua-pix"><span class="contribua-dados"><span>Chave Pix (CNPJ): <code>57.778.554/0001-31</code></span><span>Nome: <code>Ru Technology</code></span></span> <button type="button" class="contribua-copiar" data-pix="57778554000131" hidden>Copiar chave Pix</button></p></div><p class="credo"><a href="https://rizzygo.com.br/conceito#o-nome">Sou Zy</a>: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="materiais.js?v=2026103102"></script>
+<script src="../efeitos.js?v=2026110801" defer></script>
+<script src="/contribua.js?v=2026110901" defer></script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "65a6fb651cf942a695482421e9de912b"}'></script><!-- End Cloudflare Web Analytics -->
+<script src="/conta.js?v=2026111210" defer></script>
+</body>
+</html>

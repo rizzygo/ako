@@ -6,7 +6,9 @@ import sys
 DADOS = pathlib.Path(__file__).parent / "dados"
 ARQ = DADOS / "primeiros-passos.json"
 # A primeira trilha traz as áreas. As outras ganham um mapa próprio, montado a partir delas.
-OUTRAS_TRILHAS = ["platform-engineering"]
+OUTRAS_TRILHAS = ["platform-engineering", "desenvolvimento", "habilidades-humanas"]
+# Campo opcional "alturas": uma pergunta por cargo, nesta ordem.
+CARGOS = ["Júnior", "Pleno", "Sênior", "Especialista", "Tech lead", "Gestão"]
 AREAS = {"infra", "dev", "dados", "qa", "seguranca", "produto"}
 erros = []
 
@@ -42,6 +44,11 @@ def validar_trilha(d, nome):
         for a in t.get("areas", []):
             if a not in AREAS:
                 erro(onde, f"área desconhecida: {a}")
+        if "alturas" in t and [x.get("cargo") for x in t["alturas"]] != CARGOS:
+            erro(onde, "'alturas' precisa de uma pergunta para cada cargo, nesta ordem: " + ", ".join(CARGOS))
+        for x in t.get("alturas", []):
+            if not x.get("pergunta"):
+                erro(onde, f"altura {x.get('cargo')} sem pergunta")
         if t.get("tipo") == "ramificacao":
             continue
         if len(t.get("checklist", [])) < 2:
@@ -59,7 +66,11 @@ def validar_trilha(d, nome):
                 erro(onde, f"pergunta {i} está sem explicação")
         for r in t.get("recursos", []):
             url = r.get("url", "")
-            if not (url.startswith("https://") or url.startswith("../") or url.startswith("./materiais/")):
+            if url.startswith("./?trilha="):
+                destino = url[len("./?trilha="):].split("#")[0]
+                if destino not in OUTRAS_TRILHAS:
+                    erro(onde, f"recurso '{r.get('titulo')}' aponta para a trilha {destino}, que não existe")
+            elif not (url.startswith("https://") or url.startswith("../") or url.startswith("./materiais/")):
                 erro(onde, f"recurso '{r.get('titulo')}' precisa de um link https")
             if not str(r.get("gratuito", "")).startswith(("sim", "não")):
                 erro(onde, f"recurso '{r.get('titulo')}': 'gratuito' deve começar com 'sim' ou 'não'")
@@ -87,9 +98,16 @@ for nome in OUTRAS_TRILHAS:
     if dx.get("areas"):
         erro(nome, "só a Primeiros passos tem áreas; deixe 'areas' vazio")
     extras[nome] = validar_trilha(dx, nome)
+    extras[nome] += (dx,)
+# Um nó de mapa_antes aponta para um tópico da Primeiros passos, para o tópico de outra trilha ("trilha" + "topico") ou para um mapa.
+for nome, (_, _, dx) in extras.items():
     for no in dx.get("mapa_antes", []):
-        if "topico" in no and no["topico"] not in ids:
-            erro(f"{nome}, mapa_antes {no.get('id')}", f"tópico da Primeiros passos {no['topico']} não existe")
+        onde = f"{nome}, mapa_antes {no.get('id')}"
+        if no.get("trilha") and no["trilha"] not in extras:
+            erro(onde, f"trilha {no['trilha']} não existe")
+        ids_alvo = extras[no["trilha"]][0] if no.get("trilha") in extras else ids
+        if "topico" in no and no["topico"] not in ids_alvo:
+            erro(onde, f"tópico {no['topico']} não existe na trilha {no.get('trilha', 'primeiros-passos')}")
 
 
 
@@ -145,5 +163,5 @@ if erros:
     for e in erros:
         print(" -", e)
     sys.exit(1)
-extra_txt = "".join(f", {len(i)} tópicos em {len(e)} etapas na trilha {n}" for n, (i, e) in extras.items())
+extra_txt = "".join(f", {len(i)} tópicos em {len(e)} etapas na trilha {n}" for n, (i, e, _) in extras.items())
 print(f"Tudo certo: {len(ids)} tópicos em {len(etapas)} etapas na Primeiros passos{extra_txt} e {len(ids_mapas)} mapas de área.")

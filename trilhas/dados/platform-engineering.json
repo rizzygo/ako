@@ -96,6 +96,12 @@
    "titulo": "Mapa de Infraestrutura e cloud",
    "resumo": "Se ainda não viu nuvem, contêineres e CI/CD, comece pelo mapa da área. Esta trilha aprofunda o que ele apresenta.",
    "mapa": "infra"
+  },
+  {
+   "id": "mapa-humanas",
+   "titulo": "Trilha Habilidades humanas",
+   "resumo": "Plataforma é produto, e produto é gente: entender o problema dos times, comunicar mudanças e manter a calma no incidente. Esta trilha cruza com a de Platform Engineering.",
+   "mapa": "habilidades-humanas"
   }
  ],
  "etapas": [
@@ -404,6 +410,15 @@
      "gratuito": "sim",
      "nota": "Quatro níveis de maturidade em cinco aspectos, como investimento, adoção e medição. Bom para saber onde uma empresa está.",
      "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Qual é o B.O.?",
+     "fonte": "Ako, trilha Habilidades humanas",
+     "url": "./?trilha=habilidades-humanas#/t/qual-e-o-bo",
+     "tipo": "trilha",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Como descobrir a dor de verdade por trás do pedido de um time, antes de construir qualquer coisa na plataforma."
     }
    ]
   },
@@ -1430,6 +1445,15 @@
      "gratuito": "sim",
      "nota": "Como conduzir um postmortem sem culpados, com linha do tempo do incidente e donos para cada ação.",
      "verificado_em": "2026-11-08"
+    },
+    {
+     "titulo": "Emoção sob pressão",
+     "fonte": "Ako, trilha Habilidades humanas",
+     "url": "./?trilha=habilidades-humanas#/t/emocao-sob-pressao",
+     "tipo": "trilha",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "O lado humano do incidente: manter a calma, avisar cedo e ajudar quem está mais nervoso, com uma pergunta para cada cargo."
     }
    ]
   },

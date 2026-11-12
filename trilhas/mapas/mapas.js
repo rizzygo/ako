@@ -9,7 +9,9 @@
   /* A primeira é a Primeiros passos, que traz as áreas. As outras trilhas viram mapas próprios. */
   var TRILHAS = [
     { id: 'primeiros-passos', dados: '../dados/primeiros-passos.json', chave: 'rizzygo-trilhas-v1', q: '' },
-    { id: 'platform-engineering', dados: '../dados/platform-engineering.json', chave: 'rizzygo-trilha-platform-engineering-v1', q: '?trilha=platform-engineering' }
+    { id: 'platform-engineering', dados: '../dados/platform-engineering.json', chave: 'rizzygo-trilha-platform-engineering-v1', q: '?trilha=platform-engineering' },
+    { id: 'desenvolvimento', dados: '../dados/desenvolvimento.json', chave: 'rizzygo-trilha-desenvolvimento-v1', q: '?trilha=desenvolvimento' },
+    { id: 'habilidades-humanas', dados: '../dados/habilidades-humanas.json', chave: 'rizzygo-trilha-habilidades-humanas-v1', q: '?trilha=habilidades-humanas' }
   ];
   var app = document.getElementById('conteudo');
   var trilha = null, mapas = null, atual = null;
@@ -131,7 +133,7 @@
     };
     var outras = TRILHAS.slice(1).filter(function (x) { return x.json; }).map(function (x) { return card(mapaDaTrilha(x), 'destaque'); }).join('');
     app.innerHTML = '<div class="casca"><div class="mapas-cab"><a class="voltar" href="../#/trilha">Voltar para a trilha</a>' +
-      '<h1>Mapas das áreas da TI</h1><p class="lead">Cada mapa mostra, em ordem, o que estudar numa área: do que a trilha Primeiros passos já ensina até o nível de quem procura a primeira vaga. As trilhas também têm o seu mapa, como a de Platform Engineering. Clique num tópico para ver o resumo, um exercício e os materiais.</p></div>' +
+      '<h1>Mapas das áreas da TI</h1><p class="lead">Cada mapa mostra, em ordem, o que estudar numa área: do que a trilha Primeiros passos já ensina até o nível de quem procura a primeira vaga. As trilhas também têm o seu mapa, como as de Platform Engineering, Desenvolvimento e Habilidades humanas. Clique num tópico para ver o resumo, um exercício e os materiais.</p></div>' +
       '<ul class="lista-mapas">' + card(pp, 'destaque') + outras + mapas.map(function (m) { return card(mapaPorId(m.id)); }).join('') + '</ul></div>';
     document.title = 'Mapas das áreas | Rizzygo Ako';
   }
@@ -141,7 +143,7 @@
     var html = '<div class="casca"><div class="mapas-cab"><a class="voltar" href="#/">Todos os mapas</a>' +
       '<h1>' + esc(m.titulo) + '</h1><p class="lead">' + esc(m.resumo) + '</p>' +
       '<div class="legenda" aria-label="Legenda"><span><i></i>Essencial</span><span><i class="l-opcional"></i>Opcional, para depois</span>' +
-      (m.id === 'primeiros-passos' ? '' : '<span><i class="l-base"></i>Já está na trilha Primeiros passos</span>') +
+      (m.id === 'primeiros-passos' ? '' : '<span><i class="l-base"></i>Vem de outra trilha do Ako</span>') +
       '<span><i class="l-feito"></i>Estudado</span></div>' +
       '<div class="progresso"><p id="progresso-txt"></p><div class="barra"><i id="progresso-barra"></i></div></div></div>' +
       '<div class="grafo" id="grafo" style="--cor:' + esc(m.cor) + '"><svg aria-hidden="true" id="linhas"></svg>';
@@ -158,7 +160,7 @@
     var fTrilha = TRILHAS.filter(function (x) { return x.id === m.id; })[0];
     html += '</div><p class="fim-grafo">' + (m.id === 'primeiros-passos'
       ? 'A trilha termina na escolha de um caminho. Cada caminho tem o seu mapa.'
-      : fTrilha ? 'A trilha termina num projeto seu, publicado no GitHub. <a href="../' + fTrilha.q + '#/trilha">Abrir a trilha, com checklist e desafios</a>.'
+      : fTrilha ? esc((fTrilha.json && fTrilha.json.mapa_fim) || 'A trilha termina num projeto seu, publicado no GitHub.') + ' <a href="../' + fTrilha.q + '#/trilha">Abrir a trilha, com checklist e desafios</a>.'
       : 'Achou algo faltando ou sobrando neste mapa? <a href="https://github.com/rizzygo/ako/issues">Conte numa issue</a>.') + '</p></div>';
     app.innerHTML = html;
     document.title = m.titulo + ' | Mapas | Rizzygo Ako';
@@ -224,7 +226,7 @@
     var t = topicoDo(n), f = fonte(n);
     var sit = situacao(atual, n);
     var etq = [];
-    if (tipoDoNo(atual, n) === 'base') etq.push('<span class="etiqueta">Na trilha Primeiros passos</span>');
+    if (tipoDoNo(atual, n) === 'base') etq.push('<span class="etiqueta">Na trilha ' + esc(f.json ? f.json.titulo : 'Primeiros passos') + '</span>');
     etq.push(n.nivel === 'opcional' ? '<span class="etiqueta ambar">Opcional</span>' : '<span class="etiqueta">Essencial</span>');
     var html = '<div class="painel-in"><div class="painel-topo"><div>' + etq.join(' ') + '</div><button type="button" class="fechar" data-fechar>Fechar</button></div>' +
       '<h2 id="painel-titulo">' + esc(n.titulo) + '</h2><p class="resumo-no">' + fmt(n.resumo) + '</p>';
