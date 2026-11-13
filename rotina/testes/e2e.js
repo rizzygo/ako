@@ -50,6 +50,60 @@ async function salvo(pagina) {
   return pagina.evaluate(k => JSON.parse(localStorage.getItem(k) || 'null'), CHAVE);
 }
 
+// Firebase de mentira para os passos da nuvem: dois contextos do navegador (dois "aparelhos") na mesma conta.
+// Os módulos do gstatic viram versões mínimas, e o Firestore é um mapa aqui no Node, igual para os dois.
+const FIRESTORE = 'https://firestore.teste';
+const MODULOS = {
+  'firebase-app.js': 'export const initializeApp = () => ({});',
+  'firebase-auth.js': `
+    const U = { uid: 'u-teste', email: 'teste@exemplo.com', displayName: 'Teste', providerData: [{ providerId: 'google.com' }] };
+    export const getAuth = () => ({ currentUser: U });
+    export class GoogleAuthProvider {}
+    export const EmailAuthProvider = { credential: () => ({}) };
+    const ok = async () => ({ user: U });
+    export const signInWithPopup = ok, signInWithEmailAndPassword = ok, createUserWithEmailAndPassword = ok;
+    export const reauthenticateWithPopup = ok, reauthenticateWithCredential = ok;
+    export const sendPasswordResetEmail = async () => {}, signOut = async () => {}, deleteUser = async () => {};
+    export function onAuthStateChanged(a, cb) { setTimeout(() => cb(U), 0); return () => {}; }`,
+  'firebase-firestore-lite.js': `
+    const URL_ = '${FIRESTORE}/';
+    export const getFirestore = () => ({});
+    export const doc = (db, ...p) => p.join('/');
+    export const serverTimestamp = () => null;
+    export async function getDoc(c) {
+      const d = await (await fetch(URL_ + c)).json();
+      return { exists: () => d !== null, data: () => d };
+    }
+    export async function setDoc(c, dados) { await fetch(URL_ + c, { method: 'POST', body: JSON.stringify(dados) }); }
+    export async function deleteDoc(c) { await fetch(URL_ + c, { method: 'DELETE' }); }`
+};
+async function nuvemDeMentira(ctx, banco) {
+  const cors = { 'Access-Control-Allow-Origin': '*' };
+  await ctx.route('https://www.gstatic.com/firebasejs/**', r => {
+    const nome = r.request().url().split('/').pop();
+    r.fulfill({ status: 200, contentType: 'application/javascript', headers: cors, body: MODULOS[nome] || '' });
+  });
+  await ctx.route(FIRESTORE + '/**', r => {
+    const req = r.request(), c = req.url().slice(FIRESTORE.length + 1);
+    if (req.method() === 'POST') banco[c] = JSON.parse(req.postData());
+    if (req.method() === 'DELETE') delete banco[c];
+    r.fulfill({ status: 200, contentType: 'application/json', headers: cors, body: JSON.stringify(banco[c] || null) });
+  });
+  // a conta já está ligada neste aparelho (a pessoa entrou e aceitou antes)
+  await ctx.addInitScript(() => {
+    if (sessionStorage.getItem('conta-semeada')) return;
+    localStorage.setItem('rizzygo-conta-v1', JSON.stringify({ ligado: true, desde: Date.now() }));
+    localStorage.setItem('rizzygo-nuvem-rotina-v1', JSON.stringify({ ligado: true, ultimo: null, aceites: { saude: false, reflexoes: false } }));
+    sessionStorage.setItem('conta-semeada', '1');
+  });
+}
+async function relogio(pagina) {
+  return pagina.evaluate(k => {
+    const t = (JSON.parse(localStorage.getItem(k) || 'null') || {}).timer || {};
+    return { tempo: document.getElementById('tempo').textContent, rodando: !!t.rodando, fimEm: t.fimEm, restante: t.restante };
+  }, CHAVE);
+}
+
 async function main() {
   const servidor = spawn('python3', ['-m', 'http.server', String(PORTA), '--bind', '127.0.0.1'], { cwd: RAIZ, stdio: 'ignore' });
   const navegador = await chromium.launch();
@@ -94,6 +148,46 @@ async function main() {
     await pagina.waitForTimeout(1200);
     confere((await pagina.textContent('#b-iniciar')) !== botaoAntes || (await pagina.textContent('#tempo')) !== tempoAntes, 'timer começa');
     await pagina.click('#b-zerar').catch(() => {});
+
+    // 3b. Foco em dois aparelhos na mesma conta: o relógio é um só. O segundo mostra o tempo do primeiro,
+    // a última ação vale nos dois (começar, pausar) e ninguém conta o próprio tempo.
+    {
+      const banco = {};
+      const A = await novaPagina(navegador), B = await novaPagina(navegador);
+      await nuvemDeMentira(A.ctx, banco); await nuvemDeMentira(B.ctx, banco);
+      await A.pagina.goto(BASE + '/rotina/#/foco', { waitUntil: 'networkidle' });
+      await A.pagina.waitForTimeout(500);
+      await A.pagina.click('#b-iniciar');
+      await A.pagina.waitForTimeout(1500);
+      const docRotina = banco['users/u-teste/apps/rotina'];
+      confere(!!docRotina && JSON.parse(docRotina.dados).timer && JSON.parse(docRotina.dados).timer.rodando, 'começar o Foco manda o relógio para a nuvem na hora');
+
+      await B.pagina.goto(BASE + '/rotina/#/foco', { waitUntil: 'networkidle' });
+      await B.pagina.waitForTimeout(1500);
+      let ra = await relogio(A.pagina), rb = await relogio(B.pagina);
+      confere(rb.rodando && rb.fimEm === ra.fimEm, 'o outro aparelho abre com o mesmo relógio (mesma hora de fim)');
+      confere(rb.tempo === ra.tempo || Math.abs(rb.fimEm - ra.fimEm) < 1000, `os dois mostram o mesmo tempo (${ra.tempo} e ${rb.tempo})`);
+
+      // B zera e começa de novo: depois de atualizar, A segue o B (a última ação vale).
+      await B.pagina.click('#b-zerar');
+      await B.pagina.waitForTimeout(1100);
+      await B.pagina.click('#b-iniciar');
+      await B.pagina.waitForTimeout(1500);
+      await A.pagina.evaluate(() => document.getElementById('nuvem-atualizar').click());
+      await A.pagina.waitForTimeout(1500);
+      ra = await relogio(A.pagina); rb = await relogio(B.pagina);
+      confere(ra.rodando && ra.fimEm === rb.fimEm, 'quando o outro aparelho começa de novo, este passa a mostrar o tempo dele');
+
+      // A pausa: B fica pausado com o mesmo restante.
+      await A.pagina.click('#b-iniciar');
+      await A.pagina.waitForTimeout(1500);
+      await B.pagina.evaluate(() => document.getElementById('nuvem-atualizar').click());
+      await B.pagina.waitForTimeout(1500);
+      ra = await relogio(A.pagina); rb = await relogio(B.pagina);
+      confere(!rb.rodando && rb.restante === ra.restante && (await B.pagina.textContent('#b-iniciar')) === 'Continuar', 'pausar num aparelho pausa no outro, no mesmo tempo');
+      confere(A.erros.length === 0 && B.erros.length === 0, 'nenhum erro de JavaScript com a nuvem' + (A.erros.concat(B.erros).length ? ': ' + A.erros.concat(B.erros).join(' | ') : ''));
+      await A.ctx.close(); await B.ctx.close();
+    }
 
     // 4. Recarregar não perde nada.
     await pagina.reload({ waitUntil: 'networkidle' });
