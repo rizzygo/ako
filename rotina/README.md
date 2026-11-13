@@ -92,7 +92,7 @@ Tarefa que não saiu continua na lista no dia seguinte, com a etiqueta "desde on
 - Os dados ficam no `localStorage` do aparelho, na chave `rizzygo-rotina-v1`. Entrar na conta é opcional: com ela, a Rotina guarda uma cópia na nuvem (`/nuvem.js`, Firebase), e remédios e reflexões só vão se a pessoa permitir. O app guarda os últimos 60 dias e mantém os pontos dos dias mais antigos. Tarefa concluída há mais de 60 dias sai dos dados.
 - Duas cópias abertas (duas abas, ou a aba e o atalho na tela inicial) e dois aparelhos na mesma conta não apagam a mudança um do outro: quando os dois lados mudaram, `/mesclar.js` junta campo a campo (o que só um lado mudou fica; contagem e pontos ficam com o maior; tarefa nova entra e tarefa apagada sai). A ordem das tarefas fica em `pos` de cada tarefa: mover muda só o `pos` da tarefa movida (o meio entre as vizinhas), então mexer na ordem num lado e marcar uma tarefa no outro não se perdem. Trilhas e mapas seguem a mesma regra.
 - É um PWA: `manifest.webmanifest` e `sw.js` deixam instalar na tela inicial e abrir sem internet.
-- O relógio usa o horário de término, não um contador. Se o navegador segurar a aba, o tempo continua certo quando ela volta.
+- O relógio usa o horário de término, não um contador. Se o navegador segurar a aba, o tempo continua certo quando ela volta. Com a conta ligada, esse horário vai para a nuvem na hora em que a pessoa começa, pausa ou zera, e o celular e o computador mostram o mesmo tempo. Se os dois mexeram no relógio, vale o que mexeu por último (`timer.mudouEm`), inteiro. Spec: [O mesmo relógio do Foco em todos os aparelhos](specs/foco-entre-aparelhos.md).
 
 ## O limite dos lembretes: app fechado não avisa
 
