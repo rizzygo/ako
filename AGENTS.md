@@ -24,6 +24,7 @@ Cada pasta é uma funcionalidade completa. Para mexer numa fatia, leia o `AGENTS
 
 - `ds/`: design system, idêntico ao `ds/` do `rizzygo-website`. Mudou aqui, copie para lá no mesmo dia. Guia em [`ds/README.md`](ds/README.md).
 - `conta.js`, `nuvem.js`, `mesclar.js`: conta Google opcional e progresso na nuvem (Firebase). Regras do Firestore em [`firebase/`](firebase/).
+- `push/`: Cloudflare Worker que manda o push dos lembretes da Rotina com o app fechado. Não é servido pelo Pages como app; publica com `wrangler`. Ver [`push/README.md`](push/README.md).
 - `vitoria.js`, `contribua.js`, `topo.css`: som de vitória, rodapé de contribuição, faixa do topo.
 
 ## Comandos

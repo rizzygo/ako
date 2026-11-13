@@ -126,6 +126,7 @@
     if (deOutraAba()) juntarOutraAba();
     try { gravado = JSON.stringify(S); localStorage.setItem(CHAVE, gravado); } catch (e) { /* modo privado: segue sem salvar */ }
     if (nuvem) nuvem.mudou();
+    sincronizarPush();
   }
   // Depois de juntar: dia que ficou com atividade não perde os 10 pontos de dia parado.
   function ajustarJunto(est) {
@@ -367,6 +368,79 @@
     else { el.notifEstado.textContent = 'Os avisos aparecem só nesta página até você ativar as notificações.'; }
   }
 
+  // ---------- Push: avisar com o app fechado ----------
+  // O Worker de /push guarda só os horários (sem os nomes) e manda o push na hora. O nome fica neste aparelho,
+  // no cache 'zumi-push', que o service worker lê para montar a notificação. Detalhes em /push/README.md.
+  var PUSH_API = 'https://rotina-push.rizzygo.com.br';
+  var CHAVE_PUSH = 'rizzygo-rotina-push-v1'; // só deste aparelho: não vai para a nuvem
+  var push = (function () { try { return JSON.parse(localStorage.getItem(CHAVE_PUSH)) || {}; } catch (e) { return {}; } })();
+  var pushChave = null, pushEnviado = '', pushTimer = null;
+  function salvarPush() { try { localStorage.setItem(CHAVE_PUSH, JSON.stringify(push)); } catch (e) { /* modo privado */ } }
+  function pushPossivel() { return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window; }
+  function idNovo() { var b = new Uint8Array(16); crypto.getRandomValues(b); return btoa(String.fromCharCode.apply(null, b)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+  function chaveBytes(t) { t = t.replace(/-/g, '+').replace(/_/g, '/'); while (t.length % 4) t += '='; return Uint8Array.from(atob(t), function (c) { return c.charCodeAt(0); }); }
+  function pedirPush(caminho, corpo) {
+    var op = corpo ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corpo) } : {};
+    return fetch(PUSH_API + caminho, op).then(function (r) { if (!r.ok) throw new Error('push ' + r.status); return r.json(); });
+  }
+  function buscarChave() {
+    if (pushChave) return Promise.resolve(pushChave);
+    return pedirPush('/chave').then(function (j) { pushChave = j.chave; return pushChave; });
+  }
+  function agendaPush() {
+    var lem = [];
+    Object.keys(S.config.lembretes).forEach(function (k) { var l = S.config.lembretes[k]; if (l.on) lem.push({ k: k, tipo: 'intervalo', min: l.min, prox: S.proximos[k] || null }); });
+    S.meus.forEach(function (m) {
+      if (!m.on) return;
+      if (m.tipo === 'intervalo') lem.push({ k: m.id, tipo: 'intervalo', min: m.min, prox: S.proximos[m.id] || null });
+      else { var x = { k: m.id, tipo: 'hora', hora: m.hora }; if (m.semana) x.semana = m.semana; lem.push(x); }
+    });
+    var ad = {};
+    lem.forEach(function (l) { if (S.adiados[l.k]) ad[l.k] = S.adiados[l.k]; });
+    return { inicio: S.config.inicio, fim: S.config.fim, lembretes: lem, adiados: ad };
+  }
+  function guardarNomes(agenda) {
+    if (!('caches' in window)) return Promise.resolve();
+    var nomes = {};
+    agenda.lembretes.forEach(function (l) { var i = lembreteInfo(l.k); if (i) nomes[l.k] = i.nome; });
+    var corpo = JSON.stringify({ api: PUSH_API, id: push.id, nomes: nomes });
+    return caches.open('zumi-push').then(function (c) { return c.put('/rotina/__push', new Response(corpo, { headers: { 'Content-Type': 'application/json' } })); }).catch(function () {});
+  }
+  function enviarAgenda(forcar) {
+    if (!push.on || !registro || !registro.pushManager) return Promise.resolve();
+    var agenda = agendaPush(), txt = JSON.stringify(agenda);
+    guardarNomes(agenda);
+    if (!forcar && txt === pushEnviado) return Promise.resolve();
+    return registro.pushManager.getSubscription().then(function (sub) {
+      return sub || buscarChave().then(function (ch) { return registro.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: chaveBytes(ch) }); });
+    }).then(function (sub) {
+      return pedirPush('/aparelho', { id: push.id, fuso: Intl.DateTimeFormat().resolvedOptions().timeZone, assinatura: sub.toJSON(), agenda: agenda });
+    }).then(function () { pushEnviado = txt; });
+  }
+  // Chamado a cada salvar(): manda a agenda só quando ela muda, e no máximo uma vez a cada 3 s.
+  function sincronizarPush() {
+    if (!push || !push.on) return;
+    clearTimeout(pushTimer);
+    pushTimer = setTimeout(function () { enviarAgenda(false).catch(function () {}); }, 3000);
+  }
+  function estadoPush(msg) {
+    var bloco = $('push-bloco');
+    if (!pushPossivel()) { bloco.hidden = true; return; }
+    $('push-on').checked = !!push.on;
+    if (msg) $('push-estado').textContent = msg;
+    buscarChave().then(function () {
+      bloco.hidden = false;
+      if (!msg) $('push-estado').textContent = push.on ? 'Ligado neste aparelho. A Zumi avisa mesmo com a Rotina fechada.' : '';
+    }).catch(function () {
+      bloco.hidden = !push.on;
+      if (push.on) $('push-estado').textContent = 'O serviço de avisos não respondeu agora. Com o app aberto, os lembretes continuam.';
+    });
+  }
+  // Fecha a notificação do sistema de um lembrete que já foi resolvido no app.
+  function fecharNotif(k) {
+    if (registro && registro.getNotifications) registro.getNotifications({ tag: 'lem-' + k }).then(function (ns) { ns.forEach(function (n) { n.close(); }); }).catch(function () {});
+  }
+
   // ---------- Timer ----------
   function duracao(modo, fase, ciclo) {
     var c = S.config;
@@ -471,7 +545,7 @@
     var info = lembreteInfo(chave);
     if (!info) return;
     fila.push(chave);
-    notificar('Zumi lembrando', info.nome, 'lem-' + chave);
+    if (!push.on) notificar('Zumi lembrando', info.nome, 'lem-' + chave); // com o push ligado, quem notifica é o service worker
     tocar(false, 'lembrete');
     mostrarAviso();
   }
@@ -913,7 +987,7 @@
 
   $('aviso-sim').addEventListener('click', function () {
     var k = atual, info = lembreteInfo(k);
-    fecharAviso();
+    fecharAviso(); fecharNotif(k);
     if (k === 'agua') { falar('Boa! No fim do dia, marque como foi a água.', 'ola'); }
     else if (k === 'respirar') abrirSobre(k);
     else if (k === 'semTela') escolherTela();
@@ -933,12 +1007,12 @@
     $('recomeco').hidden = true;
     falar('Seguimos de onde parou. A perda parou nos 7 primeiros dias e o título continua seu. Bora retomar?', 'ola');
   });
-  $('aviso-depois').addEventListener('click', function () { S.adiados[atual] = Date.now() + 10 * MIN; salvar(); fecharAviso(); renderLembretes(); });
+  $('aviso-depois').addEventListener('click', function () { var k = atual; S.adiados[k] = Date.now() + 10 * MIN; salvar(); fecharAviso(); fecharNotif(k); renderLembretes(); });
   // Pula só esta vez: o próximo aviso já foi agendado quando este tocou (intervalo) ou é o do dia seguinte (horário).
   $('aviso-pular').addEventListener('click', function () {
     var k = atual;
     delete S.adiados[k]; salvar(); fecharAviso(); renderLembretes();
-    if (registro && registro.getNotifications) registro.getNotifications({ tag: 'lem-' + k }).then(function (ns) { ns.forEach(function (n) { n.close(); }); }).catch(function () {});
+    fecharNotif(k);
     falar('Tudo bem, pulei esse. O próximo vem no horário de sempre.', 'ola');
   });
 
@@ -1036,6 +1110,31 @@
 
 
   // ---------- Nuvem (opcional) ----------
+  $('push-on').addEventListener('change', function () {
+    var cb = this;
+    if (cb.checked) {
+      cb.disabled = true;
+      Notification.requestPermission().then(function (p) {
+        if (p !== 'granted') throw new Error('permissao');
+        push.id = push.id || idNovo(); push.on = true; salvarPush();
+        return navigator.serviceWorker.ready.then(function (r) { registro = r; return enviarAgenda(true); });
+      }).then(function () {
+        estadoNotif(); estadoPush();
+        falar('Pronto! Agora eu aviso mesmo com a Rotina fechada.', 'comemorando', true);
+      }).catch(function (e) {
+        push.on = false; salvarPush(); cb.checked = false; estadoNotif();
+        estadoPush(e && e.message === 'permissao' ? 'Sem a permissão de notificação não dá para avisar com o app fechado. Libere nas configurações do navegador.' : 'Não deu para ligar agora. Confira a internet e tente de novo.');
+      }).then(function () { cb.disabled = false; });
+    } else {
+      var id = push.id;
+      push.on = false; salvarPush(); pushEnviado = '';
+      if (id) pedirPush('/remover', { id: id }).catch(function () {});
+      if (registro && registro.pushManager) registro.pushManager.getSubscription().then(function (s) { if (s) s.unsubscribe(); }).catch(function () {});
+      if ('caches' in window) caches.delete('zumi-push').catch(function () {});
+      estadoPush('Desligado. Os lembretes voltam a avisar só com o app aberto ou em segundo plano.');
+    }
+  });
+
   var CHAVE_NUVEM = 'rizzygo-nuvem-rotina-v1';
   var LOCAIS = ['timer', 'proximos', 'adiados', 'tocados', 'semTelaAtivo']; // ficam só no aparelho
   var metaNuvem = (function () { try { return JSON.parse(localStorage.getItem(CHAVE_NUVEM)) || {}; } catch (e) { return {}; } })();
@@ -1976,6 +2075,7 @@
     document.querySelectorAll('.aba').forEach(function (s) { s.hidden = s.dataset.aba !== a; });
     document.body.dataset.aba = a;
     mostrarParte();
+    if (a === 'ajustes') estadoPush();
     document.querySelectorAll('[data-ir]').forEach(function (l) { if (l.dataset.ir === a) l.setAttribute('aria-current', 'page'); else l.removeAttribute('aria-current'); });
     if (rolar) { var nav = document.querySelector('.abas-app'); if (nav.getBoundingClientRect().top < 0) window.scrollTo({ top: 0 }); }
   }
@@ -2003,8 +2103,16 @@
   window.addEventListener('pageshow', function (e) { if (e.persisted) { releSeMudou(); render(); } });
 
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/rotina/sw.js', { scope: '/rotina/' }).then(function (r) { registro = r; return navigator.serviceWorker.ready; }).then(function (r) { registro = r; }).catch(function () {});
+    navigator.serviceWorker.register('/rotina/sw.js', { scope: '/rotina/' }).then(function (r) { registro = r; return navigator.serviceWorker.ready; }).then(function (r) {
+      registro = r;
+      if (push.on) enviarAgenda(true).catch(function () {}); // renova a assinatura e a agenda a cada abertura
+    }).catch(function () {});
+    // Toque na notificação do push com o app já aberto: mostra o aviso para marcar Feito.
+    navigator.serviceWorker.addEventListener('message', function (e) { if (e.data && e.data.lembrete && lembreteInfo(e.data.lembrete)) disparar(e.data.lembrete); });
   }
+  // Toque na notificação do push com o app fechado: abre em /rotina/?lem=<chave>.
+  var lemUrl = new URLSearchParams(location.search).get('lem');
+  if (lemUrl) { history.replaceState(null, '', location.pathname + location.hash); setTimeout(function () { if (lembreteInfo(lemUrl)) disparar(lemUrl); }, 600); }
 
   gravado = textoGuardado();
   var fechamento = fecharDias();

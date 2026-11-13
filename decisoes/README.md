@@ -9,5 +9,6 @@ Este repositório é público. Aqui entram só decisões técnicas. Decisões de
 | [0001](0001-sem-build.md) | O Ako não tem build: o Pages serve os arquivos como estão | Aceita |
 | [0002](0002-design-system-copiado.md) | Um design system, copiado entre o Ako e o site principal | Aceita |
 | [0003](0003-firebase-opcional.md) | Conta e nuvem opcionais com Firebase, sem servidor próprio | Aceita |
+| [0004](0004-push-cloudflare-worker.md) | Push dos lembretes por um Cloudflare Worker, sem o nome do lembrete | Aceita |
 
 Decisão nova: copie o modelo, use o próximo número e acrescente a linha nesta tabela no mesmo PR.
