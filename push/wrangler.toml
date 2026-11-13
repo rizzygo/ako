@@ -11,6 +11,6 @@ crons = ["* * * * *"]
 [[d1_databases]]
 binding = "DB"
 database_name = "rotina-push"
-database_id = "COLE-AQUI-O-ID-DO-D1"
+database_id = "9ddbf304-dd6f-4cc8-b53d-05bf8201b7ab"
 
 # Segredos (não ficam neste arquivo): VAPID_PUBLIC e VAPID_PRIVATE, com `npx wrangler secret put`.

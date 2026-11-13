@@ -28,7 +28,7 @@ npx wrangler login                                   # abre o navegador para ent
 npx wrangler d1 create rotina-push                   # mostra um database_id
 ```
 
-Cole o `database_id` no `wrangler.toml`, no lugar de `COLE-AQUI-O-ID-DO-D1` (o id não é segredo; pode commitar).
+Cole o `database_id` no `wrangler.toml`, no lugar do que estiver lá. O id do banco que já está no ar (criado em 12/11/2026) já está no arquivo; só troque se criar outro banco. O id não é segredo; pode commitar.
 
 ```sh
 npx wrangler d1 execute rotina-push --remote --file=schema.sql
