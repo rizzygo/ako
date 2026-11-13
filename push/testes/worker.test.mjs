@@ -80,4 +80,49 @@ await caso('remover apaga o aparelho', async () => {
   assert.equal((await pedir('/remover', { id })).status, 200);
   assert.equal(db.prepare('SELECT COUNT(*) n FROM aparelhos').get().n, 0);
 });
+
+// ---------- IA da Zumi (/zumi) ----------
+const resumo = { dias: 7, ativos: 5, blocos: 9, focoMin: 300, lazerMin: 60, aguaBoa: 5, respirar: 4, semTelaMin: 45, pausaDias: 3, treinos: 2, reflexoes: 4, feitas: 12 };
+const semana = { id, tipo: 'semana', r: resumo, bem: 'agua', melhorar: 'paradas', paradas: 3, antes: 5 };
+let pedidosIA = [];
+const respostaOk = { abertura: 'Sua semana teve 9 blocos de foco, 4 a mais que a anterior.', bem: 'Água boa em 5 dos 7 dias. Lindo de ver!', melhorar: 'Tem 3 tarefas paradas há alguns dias.', conselho: 'Escolha uma e faça só o primeiro passo amanhã cedo.' };
+env.AI = { run: async (modelo, entrada) => { pedidosIA.push({ modelo, entrada }); return { response: 'Claro! ' + JSON.stringify(respostaOk) }; } };
+
+await caso('/zumi devolve a opinião da IA e manda só números ao modelo', async () => {
+  const r = await pedir('/zumi', semana);
+  assert.equal(r.status, 200);
+  assert.deepEqual(await r.json(), respostaOk);
+  const texto = JSON.stringify(pedidosIA[0].entrada);
+  assert.match(texto, /blocos de foco: 9/);
+  assert.match(texto, /tarefas paradas há 3 dias ou mais: 3/);
+});
+await caso('/zumi recusa número fora do formato e categoria desconhecida', async () => {
+  assert.equal((await pedir('/zumi', { ...semana, r: { ...resumo, blocos: 'nove' } })).status, 400);
+  assert.equal((await pedir('/zumi', { ...semana, melhorar: 'remedio' })).status, 400);
+  assert.equal((await pedir('/zumi', { ...semana, r: { ...resumo, texto: 'oi' } })).status, 200); // campo a mais é ignorado
+});
+await caso('/zumi recusa resposta da IA com link ou faltando parte', async () => {
+  env.AI = { run: async () => ({ response: JSON.stringify({ ...respostaOk, conselho: 'Veja em https://exemplo.com' }) }) };
+  assert.equal((await pedir('/zumi', { ...semana, id: b64u(nodeCrypto.randomBytes(16)) })).status, 502);
+  env.AI = { run: async () => ({ response: 'não sei' }) };
+  assert.equal((await pedir('/zumi', { ...semana, id: b64u(nodeCrypto.randomBytes(16)) })).status, 502);
+});
+await caso('/zumi do mês devolve a frase', async () => {
+  env.AI = { run: async () => ({ response: { frase: 'Novembro teve 22 dias de água boa. Leve esse ritmo para dezembro!' } }) };
+  const r = await pedir('/zumi', { id: b64u(nodeCrypto.randomBytes(16)), tipo: 'mes', r: resumo, mes: 'novembro', proximo: 'dezembro' });
+  assert.equal(r.status, 200);
+  assert.match((await r.json()).frase, /dezembro/);
+});
+await caso('/zumi limita 3 pedidos por aparelho por dia e para no limite do dia', async () => {
+  const outro = { ...semana, id: b64u(nodeCrypto.randomBytes(16)) };
+  for (let i = 0; i < 3; i++) assert.notEqual((await pedir('/zumi', outro)).status, 429);
+  assert.equal((await pedir('/zumi', outro)).status, 429);
+  const dia = new Date().toISOString().slice(0, 10);
+  db.prepare('UPDATE zumi_uso SET n = 900 WHERE chave = ?').run('g:' + dia);
+  assert.equal((await pedir('/zumi', { ...semana, id: b64u(nodeCrypto.randomBytes(16)) })).status, 429);
+});
+await caso('/zumi sem o binding da IA responde 503', async () => {
+  delete env.AI;
+  assert.equal((await pedir('/zumi', { ...semana, id: b64u(nodeCrypto.randomBytes(16)) })).status, 503);
+});
 console.log(`\nWorker ok (${ok} casos).`);

@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
 <link rel="stylesheet" href="/ds/rizzygo.css?v=2026111020">
 <script src="/ds/tema.js?v=2026111020"></script>
-<link rel="stylesheet" href="/rotina/rotina.css?v=2026111320">
+<link rel="stylesheet" href="/rotina/rotina.css?v=2026111321">
 <link rel="stylesheet" href="/topo.css?v=2026110914">
 </head>
 <body>
@@ -54,7 +54,11 @@
       <span class="titulo-meta" id="titulo-meta">0 pontos</span>
     </div>
   </div>
-  <nav class="atalhos-topo" aria-label="Mais"><a href="#/evolucao" data-ir="evolucao">📈 Evolução</a><a href="#/ajustes" data-ir="ajustes">⚙️ Ajustes</a></nav>
+  <nav class="matriz" aria-label="Opinião da Zumi, evolução e ajustes">
+    <a class="matriz-cel matriz-zumi" href="#/evolucao" data-zumi-ir><span class="ic" aria-hidden="true">🐝</span><b>Como estou indo?</b><small>Opinião da Zumi</small></a>
+    <a class="matriz-cel" href="#/evolucao" data-ir="evolucao"><span class="ic" aria-hidden="true">📈</span><b>Evolução</b><small>Semana e títulos</small></a>
+    <a class="matriz-cel" href="#/ajustes" data-ir="ajustes"><span class="ic" aria-hidden="true">⚙️</span><b>Ajustes</b><small>Lembretes e conta</small></a>
+  </nav>
   <ul class="resumo" aria-label="Resumo de hoje">
     <li><b id="r-pontos">0</b><span>pontos hoje</span></li>
     <li><b id="r-foco">0</b><span>min de foco</span></li>
@@ -68,6 +72,8 @@
 <h2 class="oculto">Hoje</h2>
 <!-- Painel de hoje -->
 <section class="painel-hoje" aria-label="Painel de hoje">
+  <div class="zumi-aviso" id="h-zumi-mes" hidden><span id="h-zumi-mes-txt"></span><button type="button" class="btn btn-claro" id="h-zumi-mes-ir">Ver meu mês</button></div>
+  <div class="zumi-aviso" id="h-zumi-op" hidden><span>🐝 A Zumi tem uma opinião sobre a sua semana.</span><button type="button" class="btn btn-claro" id="h-zumi-op-ir">Ver a opinião</button></div>
   <div class="fechar-dia" id="h-fechar" hidden><span>🌙 Hora de fechar o dia: reflexão e lista de amanhã.</span><a class="btn btn-claro" href="#fim-do-dia" id="h-fechar-ir">Fechar o dia</a></div>
   <div class="metas-aviso" id="h-metas" hidden><span id="h-metas-txt"></span> <button type="button" class="btn btn-sec btn-p" data-vai="metas">Revisar as metas</button></div>
   <div class="cartoes-hoje">
@@ -367,6 +373,26 @@
 
 <div class="aba" data-aba="evolucao" id="aba-evolucao">
 <h2 class="oculto">Evolução</h2>
+<!-- Opinião da Zumi: a Zumi é a IA. Só números somados saem do aparelho. Spec: specs/opiniao-da-zumi.md -->
+<section class="painel largo zumi-op" id="zumi-op" aria-labelledby="t-zumi-op">
+  <div class="zumi-cab"><img src="/zumi/abelha-ideia.png" width="64" height="64" alt=""><div><h2 id="t-zumi-op">Opinião da Zumi</h2><p class="nota" id="zumi-op-quando">Toda segunda-feira, a Zumi olha a sua semana e diz o que está indo bem e o que dá para ajustar antes de o mês acabar.</p></div></div>
+  <div id="zumi-op-corpo" aria-live="polite"></div>
+  <button type="button" class="btn" id="zumi-pedir">Pedir a opinião da Zumi</button>
+  <p class="nota zumi-priv"><span aria-hidden="true">🔒</span><span>A Zumi é uma IA e lê só os números da semana. Tarefas, lembretes e reflexões ficam no seu aparelho. Uma opinião nova por dia.</span></p>
+</section>
+
+<section class="painel largo zumi-mes" id="zumi-mes" aria-labelledby="t-zumi-mes" hidden>
+  <h2 id="t-zumi-mes">Meu mês com a Zumi</h2>
+  <p class="nota" id="zumi-mes-txt"></p>
+  <button type="button" class="btn" id="zumi-mes-fechar" hidden>Fechar o mês com a Zumi</button>
+  <div id="zumi-mes-card" hidden>
+    <img class="zumi-card" id="zumi-card-img" alt="">
+    <label class="zumi-opcao"><input type="checkbox" id="zumi-card-titulo" checked> Mostrar meu título no card</label>
+    <div class="zumi-acoes"><button type="button" class="btn" id="zumi-card-compartilhar">Compartilhar</button><button type="button" class="btn btn-sec" id="zumi-card-baixar">Baixar a imagem</button></div>
+    <p class="nota zumi-priv"><span aria-hidden="true">🔒</span><span>O card mostra só estes números. Nada de nome, e-mail, tarefas ou reflexões.</span></p>
+  </div>
+</section>
+
 <!-- Semana e títulos -->
 <section class="painel largo" aria-labelledby="t-semana">
   <h2 id="t-semana">Sua semana</h2>
@@ -551,10 +577,11 @@
   <div class="aviso-bt"><button type="button" class="btn" id="aviso-sim">Feito</button><button type="button" class="btn btn-sec" id="aviso-depois">Daqui a 10 min</button><button type="button" class="btn btn-sec" id="aviso-pular">Ignorar dessa vez</button></div>
 </div>
 
-<footer class="rodape"><div class="rodape-in"><p><strong>Rotina com a Zumi</strong>, do Ako, da Rizzygo All, a parte aberta e gratuita da <a href="https://rizzygo.com.br/">Rizzygo</a>.</p><p>Os lembretes ajudam a criar hábito. Eles não substituem orientação de profissional de saúde. Veja como cuidamos dos seus dados em <a href="/privacidade/">Privacidade</a>.</p><p>Estude junto na <a href="https://chat.whatsapp.com/CYpmolVr7a08Gqmj782yFi">comunidade gratuita no WhatsApp</a>.</p><p>Sugestão, dúvida ou problema? Escreva para <a href="mailto:suporte@rizzygo.com.br">suporte@rizzygo.com.br</a>.</p><div class="contribua"><p><strong>Contribuição voluntária.</strong> O Ako é gratuito e vai continuar assim. Você decide se quer contribuir, com qualquer valor, para agradecer, manter e ajudar o Ako a evoluir.</p><p class="contribua-pix"><span class="contribua-dados"><span>Chave Pix (CNPJ): <code>57.778.554/0001-31</code></span><span>Nome: <code>Ru Technology</code></span></span> <button type="button" class="contribua-copiar" data-pix="57778554000131" hidden>Copiar chave Pix</button></p></div><p class="credo"><a href="https://rizzygo.com.br/conceito#o-nome">Sou Zy</a>: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<footer class="rodape"><div class="rodape-in"><p><strong>Rotina com a Zumi</strong>, do Ako, da Rizzygo All, a parte aberta e gratuita da <a href="https://rizzygo.com.br/">Rizzygo</a>.</p><p><strong>Gratuita, e a ideia é continuar assim.</strong> A contribuição voluntária, aqui embaixo, ajuda a cobrir os custos. Se um dia a Rotina ou alguma função precisar de assinatura para se manter no ar, avisamos antes.</p><p>Os lembretes ajudam a criar hábito. Eles não substituem orientação de profissional de saúde. Veja como cuidamos dos seus dados em <a href="/privacidade/">Privacidade</a>.</p><p>Estude junto na <a href="https://chat.whatsapp.com/CYpmolVr7a08Gqmj782yFi">comunidade gratuita no WhatsApp</a>.</p><p>Sugestão, dúvida ou problema? Escreva para <a href="mailto:suporte@rizzygo.com.br">suporte@rizzygo.com.br</a>.</p><div class="contribua"><p><strong>Contribuição voluntária.</strong> O Ako é gratuito e vai continuar assim. Você decide se quer contribuir, com qualquer valor, para agradecer, manter e ajudar o Ako a evoluir.</p><p class="contribua-pix"><span class="contribua-dados"><span>Chave Pix (CNPJ): <code>57.778.554/0001-31</code></span><span>Nome: <code>Ru Technology</code></span></span> <button type="button" class="contribua-copiar" data-pix="57778554000131" hidden>Copiar chave Pix</button></p></div><p class="credo"><a href="https://rizzygo.com.br/conceito#o-nome">Sou Zy</a>: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
 <script src="/vitoria.js?v=2026111020" defer></script>
 <script src="/mesclar.js?v=2026111301" defer></script>
-<script src="/rotina/rotina.js?v=2026111320" defer></script>
+<script src="/rotina/opiniao.js?v=2026111321" defer></script>
+<script src="/rotina/rotina.js?v=2026111321" defer></script>
 <script src="/contribua.js?v=2026110901" defer></script>
 <script src="/conta.js?v=2026111310" defer></script>
 </body>

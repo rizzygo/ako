@@ -2,6 +2,7 @@
 // O servidor não sabe o nome do lembrete: recebe só a chave (ex.: "agua", "m1abc") e os horários.
 import { vencidos, juntarEstado, agendaValida, fusoValido } from './agenda.mjs';
 import { enviar } from './webpush.mjs';
+import { zumi, limparUso } from './zumi.mjs';
 
 const ORIGENS = /^(https:\/\/ako\.rizzygo\.com\.br|https:\/\/([a-z0-9-]+\.)?ako-7vx\.pages\.dev|http:\/\/(localhost|127\.0\.0\.1)(:\d+)?)$/;
 const ID_OK = /^[A-Za-z0-9_-]{22,64}$/;
@@ -71,7 +72,10 @@ async function rodarMinuto(env) {
   }
   // Uma vez por dia: aparelho que não abre a Rotina há 60 dias sai da lista.
   const d = new Date(agora);
-  if (d.getUTCHours() === 6 && d.getUTCMinutes() === 0) await env.DB.prepare('DELETE FROM aparelhos WHERE atualizado < ?').bind(agora - 60 * DIA).run();
+  if (d.getUTCHours() === 6 && d.getUTCMinutes() === 0) {
+    await env.DB.prepare('DELETE FROM aparelhos WHERE atualizado < ?').bind(agora - 60 * DIA).run();
+    await limparUso(env, agora);
+  }
 }
 
 export default {
@@ -86,6 +90,7 @@ export default {
     if (!b) return json({ erro: 'corpo' }, 400, origem);
     if (pathname === '/aparelho') return (await salvarAparelho(env, b)) ? json({ ok: true }, 200, origem) : json({ erro: 'dados' }, 400, origem);
     if (pathname === '/adiar') return (await adiar(env, b)) ? json({ ok: true }, 200, origem) : json({ erro: 'dados' }, 400, origem);
+    if (pathname === '/zumi') { const [st, corpo] = await zumi(env, b); return json(corpo, st, origem); }
     if (pathname === '/remover') {
       if (!ID_OK.test(b.id || '')) return json({ erro: 'dados' }, 400, origem);
       await env.DB.prepare('DELETE FROM aparelhos WHERE id = ?').bind(b.id).run();

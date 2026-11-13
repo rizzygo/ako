@@ -245,6 +245,24 @@ async function main() {
     confere(await pagina.isHidden('#aviso'), '"Ignorar dessa vez" fecha o aviso e ele não volta');
     confere(Object.keys((await salvo(pagina)).adiados || {}).length === 0, '"Ignorar dessa vez" não deixa o lembrete adiado');
 
+    // 4c. Matriz do topo, tela no topo ao trocar de aba e opinião da Zumi sem o Worker (texto pronto).
+    confere(await pagina.locator('.matriz .matriz-cel').count() === 3, 'matriz do topo tem três células');
+    await pagina.evaluate(() => { location.hash = '#/tarefas'; });
+    await pagina.evaluate(() => window.scrollTo(0, 600));
+    await pagina.evaluate(() => { location.hash = '#/metas'; });
+    await pagina.waitForTimeout(150);
+    confere(await pagina.evaluate(() => window.scrollY) === 0, 'trocar de aba leva a tela para o topo');
+    await pagina.click('.matriz-zumi');
+    await pagina.waitForTimeout(100);
+    confere(await abaVisivel(pagina) === 'evolucao', '"Como estou indo?" abre a Evolução');
+    await pagina.click('#zumi-pedir');
+    await pagina.waitForSelector('#zumi-op-corpo .zumi-lista', { timeout: 20000 }).catch(() => {});
+    const op = await pagina.textContent('#zumi-op-corpo');
+    confere(op.includes('O que dá para melhorar') && op.includes('Tmj! Zumi'), 'sem o Worker, a Zumi dá a opinião com o texto pronto');
+    confere(await pagina.isHidden('#zumi-pedir'), 'uma opinião por dia: o botão some depois de pedir');
+    await pagina.reload({ waitUntil: 'networkidle' });
+    confere(((await salvo(pagina)).zumi || {}).op?.ia === false, 'a opinião fica salva no aparelho');
+
     // 5. Service worker registra (é ele que deixa o app abrir sem internet).
     const sw = await pagina.evaluate(() => Promise.race([navigator.serviceWorker.ready.then(r => r.active ? r.active.scriptURL : ''), new Promise(r => setTimeout(() => r(''), 5000))]));
     confere(sw.includes('/rotina/sw.js'), 'service worker ativo');

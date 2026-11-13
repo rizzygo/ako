@@ -69,6 +69,7 @@
       timer: { modo: 'estudo', fase: 'foco', ciclo: 1, rodando: false, fimEm: null, restante: null },
       proximos: {}, adiados: {}, tocados: {},
       dias: {}, pontosAntigos: 0,
+      zumi: { op: null, mes: null },
       criadoEm: chaveDia(), fechadoAte: null, melhor: 0, semTelaAtivo: null
     };
   }
@@ -98,7 +99,7 @@
       Object.keys(s.config.lembretes).forEach(function (k) { s.config.lembretes[k].on = false; });
       s.config.lembrarMetas = false;
     }
-    ['meus', 'tarefas', 'metas', 'diario', 'grupos', 'proximos', 'adiados', 'tocados', 'dias', 'timer'].forEach(function (k) { if (!s[k]) s[k] = p[k]; });
+    ['meus', 'tarefas', 'metas', 'diario', 'grupos', 'proximos', 'adiados', 'tocados', 'dias', 'timer', 'zumi'].forEach(function (k) { if (!s[k]) s[k] = p[k]; });
     if (typeof s.pontosAntigos !== 'number') s.pontosAntigos = 0;
     if (!s.criadoEm) s.criadoEm = Object.keys(s.dias).sort()[0] || chaveDia();
     if (typeof s.melhor !== 'number') s.melhor = 0;
@@ -921,7 +922,7 @@
       el.titulos.appendChild(li);
     });
     renderLembretes();
-    renderTarefas(); renderMetas(); renderHoje();
+    renderTarefas(); renderMetas(); renderHoje(); renderZumi();
     voltarFoco(); focarEdicao();
   }
 
@@ -2210,6 +2211,153 @@
     });
   });
 
+
+  // ---------- Opinião da Zumi e Meu mês com a Zumi ----------
+  // A Zumi é a IA. O aparelho soma os números e escolhe o que está bem e o que pede atenção (opiniao.js);
+  // a IA, no Worker (/zumi), só escreve o texto. Sem resposta, vale o texto pronto. Spec: specs/opiniao-da-zumi.md
+  var Z = window.ZumiOpiniao;
+  var CHAVE_ZUMI = 'rizzygo-rotina-zumi-v1'; // id aleatório só deste aparelho, para o limite de pedidos por dia
+  var zumiOcupada = false, cardCanvas = null;
+  function zumiId() {
+    var id = null;
+    try { id = localStorage.getItem(CHAVE_ZUMI); } catch (e) { }
+    if (!id) { id = idNovo(); try { localStorage.setItem(CHAVE_ZUMI, id); } catch (e) { } }
+    return id;
+  }
+  function paradasAgora() { return S.tarefas.filter(function (t) { return !t.feita && tarefaParada(t); }).length; }
+  function pedirZumi(corpo) {
+    var ctl = window.AbortController ? new AbortController() : null, t = ctl && setTimeout(function () { ctl.abort(); }, 15000);
+    return fetch(PUSH_API + '/zumi', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corpo), signal: ctl ? ctl.signal : undefined })
+      .then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+      .then(function (j) { if (t) clearTimeout(t); return j; });
+  }
+  function semanaPendente() {
+    var hoje = chaveDia(), seg = Z.segunda(hoje);
+    return S.criadoEm < seg && (!S.zumi.op || S.zumi.op.em < seg);
+  }
+  function mesPendente() {
+    var hoje = chaveDia(), m = Z.mesAnterior(hoje);
+    if (S.zumi.mes && S.zumi.mes.chave === m.chave) return null;
+    if (+hoje.slice(8, 10) > 7) return null;
+    return Z.resumo(S, m.dias).ativos >= 3 ? m : null;
+  }
+  function pedirOpiniao() {
+    if (zumiOcupada) return;
+    zumiOcupada = true; renderZumi();
+    var hoje = chaveDia(), ks = Z.semana(hoje), r = Z.resumo(S, ks), ant = Z.resumo(S, Z.semanaAntes(hoje));
+    var par = paradasAgora(), esc = Z.escolher(r, par), antes = ant.ativos ? ant : null;
+    var pronto = Z.opiniaoRegras(r, antes, esc, par);
+    pedirZumi({ id: zumiId(), tipo: 'semana', r: r, bem: esc.bem, melhorar: esc.melhorar, paradas: par, antes: antes ? antes.blocos : null }).then(function (j) {
+      var ia = !!(j && Z.opiniaoValida(j, esc));
+      S.zumi.op = { em: hoje, de: ks[0], ate: ks[6], t: ia ? { abertura: j.abertura, bem: j.bem || '', melhorar: j.melhorar, conselho: j.conselho } : pronto, esc: esc, ia: ia };
+      zumiOcupada = false; salvar(); renderZumi(); falar('Pronto! Dei a minha opinião sobre a sua semana.', 'ideia');
+    });
+  }
+  function itemZumi(cls, ic, titulo, texto) {
+    var li = document.createElement('li'); li.className = cls;
+    var i = document.createElement('span'); i.className = 'ic'; i.setAttribute('aria-hidden', 'true'); i.textContent = ic;
+    var d = document.createElement('div'), b = document.createElement('b'), p = document.createElement('p');
+    b.textContent = titulo; p.textContent = texto; d.appendChild(b); d.appendChild(p); li.appendChild(i); li.appendChild(d);
+    return li;
+  }
+  function irAcao(a) {
+    irPara(a.vai);
+    if (a.alvo) setTimeout(function () { var c = $(a.alvo); if (c) c.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 80);
+    else if (a.vai === 'tarefas' && a.rotulo.indexOf('primeiro passo') >= 0) setTimeout(function () { var c = document.querySelector('#aba-tarefas .parada'); if (c) c.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 80);
+  }
+  function renderZumi() {
+    if (!Z || !$('zumi-op')) return;
+    var hoje = chaveDia(), op = S.zumi.op, corpo = $('zumi-op-corpo'), pedir = $('zumi-pedir');
+    $('h-zumi-op').hidden = !semanaPendente();
+    corpo.innerHTML = '';
+    if (zumiOcupada) {
+      var p = document.createElement('p'); p.className = 'fala zumi-pensando'; p.textContent = 'A Zumi está olhando a sua semana…'; corpo.appendChild(p);
+    } else if (op) {
+      $('zumi-op-quando').textContent = 'Sobre ' + dataCurta(op.de) + ' a ' + dataCurta(op.ate) + (op.em === hoje ? ', pedida hoje.' : ', pedida em ' + dataCurta(op.em) + '.');
+      var fala = document.createElement('p'); fala.className = 'fala'; fala.textContent = op.t.abertura; corpo.appendChild(fala);
+      var ul = document.createElement('ul'); ul.className = 'zumi-lista';
+      if (op.t.bem) ul.appendChild(itemZumi('bem', '👍', 'O que está indo bem', op.t.bem));
+      ul.appendChild(itemZumi('melhorar', '🔧', 'O que dá para melhorar', op.t.melhorar));
+      ul.appendChild(itemZumi('conselho', '🌅', 'Meu conselho', op.t.conselho));
+      corpo.appendChild(ul);
+      var fecho = document.createElement('p'); fecho.className = 'zumi-fecho';
+      fecho.appendChild(document.createTextNode(Z.FECHO)); fecho.appendChild(document.createElement('br'));
+      var ass = document.createElement('b'); ass.textContent = Z.ASSINATURA; fecho.appendChild(ass); corpo.appendChild(fecho);
+      var a = Z.acao(op.esc), bt = document.createElement('button');
+      bt.type = 'button'; bt.className = 'btn btn-sec'; bt.id = 'zumi-acao'; bt.textContent = a.rotulo;
+      bt.addEventListener('click', function () { irAcao(a); });
+      var ac = document.createElement('div'); ac.className = 'zumi-acoes'; ac.appendChild(bt); corpo.appendChild(ac);
+    }
+    pedir.hidden = zumiOcupada || !!(op && op.em === hoje);
+    pedir.textContent = op ? 'Pedir uma nova opinião' : 'Pedir a opinião da Zumi';
+    // Meu mês
+    var m = mesPendente(), feito = S.zumi.mes;
+    $('h-zumi-mes').hidden = !m;
+    if (m) $('h-zumi-mes-txt').textContent = '🐝 A Zumi pode fechar o seu ' + m.nome + '.';
+    $('zumi-mes').hidden = !m && !feito;
+    $('zumi-mes-fechar').hidden = !m || zumiOcupada;
+    if (m) $('zumi-mes-fechar').textContent = 'Fechar meu ' + m.nome + ' com a Zumi';
+    $('zumi-mes-txt').textContent = m ? 'O seu ' + m.nome + ' cabe num card. A Zumi junta os seus melhores números e escreve uma frase.' : feito ? 'O seu ' + feito.nome + ' com a Zumi. Baixe ou compartilhe.' : '';
+    $('zumi-mes-card').hidden = !feito || !!m;
+    if (feito && !m) desenharMes();
+  }
+  function fecharMes() {
+    var m = mesPendente();
+    if (!m || zumiOcupada) return;
+    zumiOcupada = true; renderZumi();
+    var r = Z.resumo(S, m.dias);
+    pedirZumi({ id: zumiId(), tipo: 'mes', r: r, mes: m.nome, proximo: m.proximo }).then(function (j) {
+      var ia = !!(j && Z.textoOk(j.frase, 240));
+      var i = tituloAtual();
+      S.zumi.mes = { chave: m.chave, nome: m.nome, numeros: Z.melhores(r), frase: ia ? j.frase : Z.fraseMes(r, m), titulo: VISUAL[i].ic + ' ' + TITULOS[i][1], ia: ia };
+      zumiOcupada = false; salvar(); renderZumi(); falar('Seu ' + m.nome + ' está no card. Que mês!', 'comemorando', true);
+    });
+  }
+  var cardDesenhado = '';
+  function desenharMes() {
+    var f = S.zumi.mes, comTitulo = $('zumi-card-titulo').checked, marca = JSON.stringify(f) + comTitulo;
+    if (marca === cardDesenhado) return;
+    cardDesenhado = marca;
+    var img = new Image();
+    img.src = '/zumi/abelha-comemorando-fundo-escuro.png';
+    var fontes = document.fonts && document.fonts.load ? Promise.all(['800 112px Outfit', '700 44px Outfit', '600 38px Outfit', '400 48px "Atkinson Hyperlegible"'].map(function (x) { return document.fonts.load(x).catch(function () { }); })) : Promise.resolve();
+    var carregou = new Promise(function (ok) { img.onload = ok; img.onerror = ok; });
+    Promise.all([fontes, carregou]).then(function () {
+      cardCanvas = cardCanvas || document.createElement('canvas');
+      Z.desenharCard(cardCanvas, { mes: f.nome, numeros: f.numeros, titulo: comTitulo ? f.titulo : null, frase: f.frase }, img.naturalWidth ? img : null);
+      $('zumi-card-img').src = cardCanvas.toDataURL('image/png');
+      $('zumi-card-img').alt = 'Card: meu ' + f.nome + ' com a Zumi. ' + f.numeros.map(function (x) { return x.n + ' ' + x.rotulo; }).join(', ') + '. ' + f.frase;
+    });
+  }
+  function arquivoCard() {
+    return new Promise(function (ok) { cardCanvas.toBlob(function (b) { ok(new File([b], 'meu-' + S.zumi.mes.nome.replace('ç', 'c') + '-com-a-zumi.png', { type: 'image/png' })); }, 'image/png'); });
+  }
+  function baixarCard() {
+    if (!cardCanvas) return;
+    arquivoCard().then(function (f) {
+      var a = document.createElement('a'); a.href = URL.createObjectURL(f); a.download = f.name;
+      document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+    });
+  }
+  $('zumi-pedir').addEventListener('click', pedirOpiniao);
+  $('h-zumi-op-ir').addEventListener('click', function () { irPara('evolucao'); if (semanaPendente()) pedirOpiniao(); });
+  $('h-zumi-mes-ir').addEventListener('click', function () { irPara('evolucao'); setTimeout(function () { $('zumi-mes').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 80); fecharMes(); });
+  $('zumi-mes-fechar').addEventListener('click', fecharMes);
+  $('zumi-card-titulo').addEventListener('change', desenharMes);
+  $('zumi-card-baixar').addEventListener('click', baixarCard);
+  $('zumi-card-compartilhar').addEventListener('click', function () {
+    if (!cardCanvas) return;
+    arquivoCard().then(function (f) {
+      var dados = { files: [f], title: 'Meu ' + S.zumi.mes.nome + ' com a Zumi', text: 'Meu ' + S.zumi.mes.nome + ' com a Zumi 🐝 ako.rizzygo.com.br/rotina' };
+      if (navigator.canShare && navigator.canShare(dados)) navigator.share(dados).catch(function () { });
+      else baixarCard();
+    });
+  });
+  // "Como estou indo?" leva para a opinião, mesmo já estando na Evolução
+  document.querySelectorAll('[data-zumi-ir]').forEach(function (l) {
+    l.addEventListener('click', function () { if (abaDaUrl() === 'evolucao') window.scrollTo({ top: 0, behavior: 'instant' }); });
+  });
+
   // ---------- Abas ----------
   var ABAS = ['hoje', 'foco', 'tarefas', 'bem-estar', 'metas', 'evolucao', 'ajustes'];
   var PARTES = ['hoje', 'agenda', 'sem-data'];
@@ -2230,7 +2378,7 @@
     if (a === 'ajustes') estadoPush();
     if (a === 'foco' && nuvem) nuvem.puxar(); // relógio de outro aparelho (no máximo uma leitura a cada 2 min)
     document.querySelectorAll('[data-ir]').forEach(function (l) { if (l.dataset.ir === a) l.setAttribute('aria-current', 'page'); else l.removeAttribute('aria-current'); });
-    if (rolar) { var nav = document.querySelector('.abas-app'); if (nav.getBoundingClientRect().top < 0) window.scrollTo({ top: 0 }); }
+    if (rolar) window.scrollTo({ top: 0, behavior: 'instant' }); // trocou de aba (ou de parte das Tarefas): a tela volta para o topo
   }
   function irPara(a) { location.hash = a === 'hoje' ? '#/' : '#/' + a; }
   window.addEventListener('hashchange', function () { mostrarAba(true); });

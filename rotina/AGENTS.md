@@ -11,6 +11,7 @@ Vale para `rotina/`: o app Rotina com a Zumi, instalável no celular (PWA). As r
 | Mudar o que funciona sem internet | `sw.js` |
 | Lembretes com o app fechado (push) | `sw.js` (evento `push`), `rotina.js` (bloco Push) e o Worker em [`../push/`](../push/README.md) |
 | Funcionalidade nova ou mudança de comportamento | Primeiro uma spec em [`specs/`](specs/README.md), depois o código |
+| Opinião da Zumi e card do mês (contas e textos prontos) | `opiniao.js`; a IA fica no Worker, em [`../push/zumi.mjs`](../push/zumi.mjs) |
 | Teste de ponta a ponta | `testes/e2e.js` (critério de aceite que dá para automatizar vira um passo aqui) |
 
 ## Pegadinhas

@@ -46,8 +46,23 @@ Confira: <https://rotina-push.rizzygo.com.br/chave> mostra `{"chave":"B..."}`. A
 
 Edite, rode `scripts/validar` e, com a PR mesclada, `cd push && npx wrangler deploy`. O Pages não publica o Worker.
 
+## IA da Zumi (rota /zumi)
+
+A opinião da semana e a frase do mês da Rotina vêm daqui (spec em [`rotina/specs/opiniao-da-zumi.md`](../rotina/specs/opiniao-da-zumi.md), decisão em [`decisoes/0005-ia-workers-ai.md`](../decisoes/0005-ia-workers-ai.md)). O aparelho manda só números somados; o Worker chama o Workers AI (binding `AI` no `wrangler.toml`), confere a resposta e devolve o texto. Não grava nada além do contador `zumi_uso`. Sem resposta boa, o app mostra um texto pronto.
+
+Para ligar, uma vez, com a PR mesclada:
+
+```sh
+cd push
+npx wrangler d1 execute rotina-push --remote --file=schema.sql   # cria a tabela zumi_uso (as outras ficam como estão)
+npx wrangler deploy
+```
+
+Para testar o modelo antes de soltar para todo mundo: `npx wrangler dev --remote` e mande um `POST /zumi` com `Origin: http://localhost:8000` (formato no teste `testes/worker.test.mjs`). Trocar de modelo é mudar `ZUMI_MODELO`.
+
 ## Limites do plano free
 
 - Workers: 100 mil requests por dia (o Cron gasta 1.440) e até 50 subrequests por execução. O Cron manda no máximo 40 push por minuto e deixa o resto para o minuto seguinte, em ordem aleatória.
 - D1: o Cron lê a tabela inteira a cada minuto. Com 1.000 aparelhos são 1,44 milhão de linhas lidas por dia, dentro dos 5 milhões do free. Passou disso, o plano pago do Workers (US$5/mês) cobre.
 - Aparelho que não manda a agenda há 60 dias sai da tabela. Assinatura que o serviço de push dá como morta (404 ou 410) sai na hora.
+- Workers AI: 10 mil neurons por dia, zerando à meia-noite UTC. Um pedido gasta perto de 10, e o Worker para em 900 pedidos por dia (3 por aparelho). Passou da cota, a Cloudflare devolve erro e não cobra.
