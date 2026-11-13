@@ -16,7 +16,7 @@ import {
 } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore-lite.js';
 
 // Junta duas versões que mudaram ao mesmo tempo (ver /mesclar.js, que também serve a Rotina entre abas).
-import '/mesclar.js?v=2026111101';
+import '/mesclar.js?v=2026111301';
 const mesclar = globalThis.RizzygoMesclar;
 
 const CONFIG = {

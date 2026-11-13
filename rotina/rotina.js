@@ -477,6 +477,11 @@
     if (t.rodando) return Math.max(0, Math.round((t.fimEm - Date.now()) / 1000));
     return t.restante == null ? duracao(t.modo, t.fase, t.ciclo) : t.restante;
   }
+  // Toda ação no relógio marca mudouEm. Com a conta ligada, o relógio vai para a nuvem na hora, e o outro
+  // aparelho fica com o que mudou por último (/mesclar.js). O restante sai sempre de fimEm (hora em que o
+  // bloco acaba), então os dois aparelhos mostram o mesmo tempo, sem cada um contar o seu.
+  function marcarTimer(quando) { S.timer.mudouEm = quando || Date.now(); }
+  function salvarTimer() { salvar(); if (nuvem) nuvem.agora(); }
   function mmss(s) { var m = Math.floor(s / 60); return String(m).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
 
   function iniciar() {
@@ -487,12 +492,18 @@
       if (t.fase === 'foco') falar(t.modo === 'lazer' ? 'Lazer também é rotina. Aproveita, sem culpa.' : 'Foco no ' + NOMES[t.modo] + '. Eu cuido do relógio.', t.modo === 'lazer' ? 'ola' : 'estudando');
       pedirAudio();
     }
-    salvar(); renderTimer();
+    marcarTimer(); salvarTimer(); renderTimer();
   }
   function pedirAudio() { try { audio = audio || new (window.AudioContext || window.webkitAudioContext)(); if (audio.state === 'suspended') audio.resume(); } catch (e) { } }
 
-  function concluir(pulou) {
+  // quando: hora em que o bloco acabou (fimEm). Se o app estava fechado, a conta parte dessa hora, como no
+  // outro aparelho, e um fim que já passou há mais de 1 min não toca som nem notificação de novo.
+  function concluir(pulou, quando) {
     var t = S.timer, modo = t.modo;
+    quando = quando || Date.now();
+    var tarde = Date.now() - quando > 60000;
+    function som() { if (!tarde) tocar(); }
+    function aviso(titulo, corpo) { if (!tarde) notificar(titulo, corpo, 'timer'); }
     if (t.fase === 'foco') {
       if (!pulou) {
         var minutos = Math.round(duracao(modo, 'foco', t.ciclo) / 60);
@@ -500,38 +511,38 @@
       }
       if (modo === 'lazer') {
         t.fase = 'foco'; t.rodando = false; t.fimEm = null; t.restante = null;
-        if (!pulou) { falar('Lazer feito. Voltou com a bateria mais cheia? +10', 'comemorando', true); notificar('Fim do lazer', 'Lazer feito. +10 pontos.', 'timer'); tocar(); }
+        if (!pulou) { falar('Lazer feito. Voltou com a bateria mais cheia? +10', 'comemorando', true); aviso('Fim do lazer', 'Lazer feito. +10 pontos.'); som(); }
       } else if (!S.config.pausas[modo]) {
         // Pausa desligada: o bloco conta, o ciclo avança e o próximo espera a pessoa.
         t.ciclo = t.ciclo >= S.config.ciclos ? 1 : t.ciclo + 1;
         t.rodando = false; t.fimEm = null; t.restante = null;
-        if (!pulou) { tocar(); notificar('Fim do bloco de ' + NOMES[modo], 'Bloco feito. +10', 'timer'); }
+        if (!pulou) { som(); aviso('Fim do bloco de ' + NOMES[modo], 'Bloco feito. +10'); }
         falar(pulou ? 'Pulei o bloco. Quando quiser, começa o próximo.' : 'Bloco feito, sem pausa como você pediu. +10. Quando quiser, começa o próximo.', pulou ? 'ola' : 'comemorando', !pulou);
       } else {
         t.fase = 'pausa'; t.restante = null;
         var frase = PAUSAS[Math.floor(Math.random() * PAUSAS.length)];
-        if (!pulou) { frase += ' +10'; tocar(); notificar('Fim do bloco de ' + NOMES[modo], frase, 'timer'); }
+        if (!pulou) { frase += ' +10'; som(); aviso('Fim do bloco de ' + NOMES[modo], frase); }
         falar(frase, 'ideia', !pulou);
-        t.fimEm = Date.now() + duracao(modo, 'pausa', t.ciclo) * 1000; t.rodando = true;
+        t.fimEm = quando + duracao(modo, 'pausa', t.ciclo) * 1000; t.rodando = true;
       }
     } else {
       t.fase = 'foco'; t.ciclo = t.ciclo >= S.config.ciclos ? 1 : t.ciclo + 1;
       t.rodando = false; t.fimEm = null; t.restante = null;
       falar('Pausa encerrada. Quando quiser, começa o próximo bloco.', 'ola');
-      if (!pulou) { tocar(); notificar('Fim da pausa', 'Quando quiser, começa o próximo bloco.', 'timer'); }
+      if (!pulou) { som(); aviso('Fim da pausa', 'Quando quiser, começa o próximo bloco.'); }
     }
-    salvar(); renderTimer();
+    marcarTimer(quando); salvarTimer(); renderTimer();
   }
   function zerar() {
     var t = S.timer; t.fase = 'foco'; t.ciclo = 1; t.rodando = false; t.fimEm = null; t.restante = null;
-    salvar(); renderTimer(); falar('Relógio zerado. Escolha um bloco e começa quando quiser.', 'ola');
+    marcarTimer(); salvarTimer(); renderTimer(); falar('Relógio zerado. Escolha um bloco e começa quando quiser.', 'ola');
   }
   function trocarModo(m) {
     var t = S.timer;
     if (m === t.modo) return;
     if (t.rodando && !confirm('Trocar de bloco zera o relógio de agora. Continuar?')) return;
     t.modo = m; t.fase = 'foco'; t.ciclo = 1; t.rodando = false; t.fimEm = null; t.restante = null;
-    salvar(); renderTimer();
+    marcarTimer(); salvarTimer(); renderTimer();
     falar(m === 'lazer' ? 'Lazer marcado. Descansar também conta ponto.' : 'Bloco de ' + NOMES[m] + '. Ajuste os tempos se precisar.', m === 'lazer' ? 'ola' : 'estudando');
   }
 
@@ -934,7 +945,7 @@
       if (inp.type === 'number') inp.value = nv;
       gravarCfg(c, nv);
       document.querySelectorAll('[data-cfg="' + c + '"]').forEach(function (o) { if (o !== inp) { if (o.type === 'checkbox') o.checked = !!nv; else o.value = nv; } });
-      if (!S.timer.rodando) S.timer.restante = null;
+      if (!S.timer.rodando && S.timer.restante != null) { S.timer.restante = null; marcarTimer(); }
       salvar(); renderTimer(); estadoTempos();
     });
   });
@@ -952,7 +963,7 @@
     b.addEventListener('click', function () {
       var m = b.dataset.pronto;
       S.config[m].foco = +b.dataset.foco; S.config[m].pausa = +b.dataset.pausa; S.config.pausas[m] = true;
-      if (!S.timer.rodando) S.timer.restante = null;
+      if (!S.timer.rodando && S.timer.restante != null) { S.timer.restante = null; marcarTimer(); }
       salvar(); preencherAjustes(); renderTimer();
       falar(NOMES[m].charAt(0).toUpperCase() + NOMES[m].slice(1) + ' em ' + b.dataset.foco + ' min de foco e ' + b.dataset.pausa + ' de pausa.', 'estudando');
     });
@@ -1186,7 +1197,7 @@
   });
 
   var CHAVE_NUVEM = 'rizzygo-nuvem-rotina-v1';
-  var LOCAIS = ['timer', 'proximos', 'adiados', 'tocados', 'semTelaAtivo']; // ficam só no aparelho
+  var LOCAIS = ['proximos', 'adiados', 'tocados', 'semTelaAtivo']; // ficam só no aparelho (o relógio do Foco vai para a nuvem desde 13/11/2026)
   var metaNuvem = (function () { try { return JSON.parse(localStorage.getItem(CHAVE_NUVEM)) || {}; } catch (e) { return {}; } })();
   if (!metaNuvem.aceites) metaNuvem.aceites = { saude: false, reflexoes: false };
   var carregandoNuvem = null;
@@ -1205,6 +1216,7 @@
   function daNuvem(rem, loc, aceites) {
     var r = copia(rem);
     LOCAIS.forEach(function (k) { r[k] = loc[k]; });
+    if (!r.timer) r.timer = loc.timer; // cópia gravada por uma versão de antes, sem o relógio: fica o deste aparelho
     if (!aceites.saude) r.meus = loc.meus;
     Object.keys(r.dias || {}).forEach(function (k) {
       var l = loc.dias && loc.dias[k];
@@ -1255,7 +1267,7 @@
   }
   function abrirNuvem() {
     if (nuvem) return Promise.resolve(nuvem);
-    if (!carregandoNuvem) carregandoNuvem = import('/nuvem.js?v=2026111106').then(function (m) {
+    if (!carregandoNuvem) carregandoNuvem = import('/nuvem.js?v=2026111310').then(function (m) {
       nuvemMod = m;
       nuvem = m.criar({
         app: 'rotina', meta: metaNuvem, salvarMeta: salvarMeta,
@@ -2126,6 +2138,7 @@
     document.body.dataset.aba = a;
     mostrarParte();
     if (a === 'ajustes') estadoPush();
+    if (a === 'foco' && nuvem) nuvem.puxar(); // relógio de outro aparelho (no máximo uma leitura a cada 2 min)
     document.querySelectorAll('[data-ir]').forEach(function (l) { if (l.dataset.ir === a) l.setAttribute('aria-current', 'page'); else l.removeAttribute('aria-current'); });
     if (rolar) { var nav = document.querySelector('.abas-app'); if (nav.getBoundingClientRect().top < 0) window.scrollTo({ top: 0 }); }
   }
@@ -2136,7 +2149,8 @@
   // ---------- Relógio central ----------
   var ultimoDia = chaveDia();
   function tick() {
-    if (S.timer.rodando && Date.now() >= S.timer.fimEm) concluir(false);
+    // Até duas voltas: o app fechado pode ter perdido o fim do foco e também o da pausa.
+    for (var i = 0; i < 2 && S.timer.rodando && Date.now() >= S.timer.fimEm; i++) concluir(false, S.timer.fimEm);
     checarLembretes();
     renderTimer();
     if (S.semTelaAtivo && Date.now() >= S.semTelaAtivo.fimEm) concluirTela(S.semTelaAtivo.min);

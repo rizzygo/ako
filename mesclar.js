@@ -7,7 +7,9 @@
   // - o que só um lado mudou fica com a mudança desse lado;
   // - número que os dois mudaram fica com o maior (pontos e contagens não somem);
   // - lista de itens com id junta pelos ids (item novo entra, item apagado de um lado sai);
-  // - lista de marcas (true/false) junta posição a posição; lista de textos vira união.
+  // - lista de marcas (true/false) junta posição a posição; lista de textos vira união;
+  // - objeto com o número mudouEm (ex.: o relógio do Foco) não se mistura: se os dois lados mudaram,
+  //   fica inteiro o que mudou por último (juntar campo a campo daria um relógio que ninguém ligou).
   // Sem base (primeira cópia perdida), vale a mesma regra, como se a base fosse vazia.
   const ehObj = (x) => x !== null && typeof x === 'object' && !Array.isArray(x);
   const igual = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -17,6 +19,7 @@
     if (igual(rem, base) || rem === undefined) return loc;
     if (loc === undefined) return igual(rem, base) ? undefined : rem;
     if (ehObj(rem) && ehObj(loc)) {
+      if (typeof rem.mudouEm === 'number' || typeof loc.mudouEm === 'number') return (rem.mudouEm || 0) > (loc.mudouEm || 0) ? rem : loc;
       const b = ehObj(base) ? base : {}, r = {};
       for (const k of new Set([...Object.keys(loc), ...Object.keys(rem)])) {
         // apagado de um lado e intocado do outro: sai
