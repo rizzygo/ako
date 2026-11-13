@@ -2378,7 +2378,21 @@
     if (a === 'ajustes') estadoPush();
     if (a === 'foco' && nuvem) nuvem.puxar(); // relógio de outro aparelho (no máximo uma leitura a cada 2 min)
     document.querySelectorAll('[data-ir]').forEach(function (l) { if (l.dataset.ir === a) l.setAttribute('aria-current', 'page'); else l.removeAttribute('aria-current'); });
-    if (rolar) window.scrollTo({ top: 0, behavior: 'instant' }); // trocou de aba (ou de parte das Tarefas): a tela volta para o topo
+    if (rolar) rolarParaAba(a); // trocou de aba (ou de parte das Tarefas): a tela vai para o começo do painel
+  }
+  // Leva o começo do painel da aba para logo abaixo do que fica preso no topo (o cabeçalho e, no computador, o menu de abas).
+  function rolarParaAba(a) {
+    var el = document.getElementById('aba-' + a);
+    if (!el || a === 'hoje') { window.scrollTo({ top: 0, behavior: 'instant' }); return; } // o Hoje começa com a Zumi e a matriz
+    var preso = 0;
+    ['.topo', '.abas-app'].forEach(function (sel) {
+      var x = document.querySelector(sel);
+      if (!x) return;
+      var cs = getComputedStyle(x), r = x.getBoundingClientRect();
+      if (cs.position === 'sticky') preso = Math.max(preso, parseFloat(cs.top) + r.height);
+    });
+    var y = el.getBoundingClientRect().top + window.scrollY - preso - 12;
+    window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
   }
   function irPara(a) { location.hash = a === 'hoje' ? '#/' : '#/' + a; }
   window.addEventListener('hashchange', function () { mostrarAba(true); });

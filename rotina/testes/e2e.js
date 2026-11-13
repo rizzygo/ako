@@ -251,7 +251,8 @@ async function main() {
     await pagina.evaluate(() => window.scrollTo(0, 600));
     await pagina.evaluate(() => { location.hash = '#/metas'; });
     await pagina.waitForTimeout(150);
-    confere(await pagina.evaluate(() => window.scrollY) === 0, 'trocar de aba leva a tela para o topo');
+    confere(await pagina.evaluate(() => { const t = document.getElementById('aba-metas').getBoundingClientRect().top; return t >= 0 && t < 260; }), 'trocar de aba leva a tela para o começo do painel');
+    confere(await pagina.locator('.abas-app [data-ir="evolucao"], .abas-app [data-ir="ajustes"]').count() === 0, 'Evolução e Ajustes ficam só na matriz, fora do menu de abas');
     await pagina.click('.matriz-zumi');
     await pagina.waitForTimeout(100);
     confere(await abaVisivel(pagina) === 'evolucao', '"Como estou indo?" abre a Evolução');
