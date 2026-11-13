@@ -317,23 +317,30 @@ textarea{width:100%;resize:vertical}
 .abas-app a{flex:1;display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.6rem .5rem;border-radius:10px;text-decoration:none;color:var(--suave);font:700 .95rem var(--f-texto);white-space:nowrap}
 .abas-app a:hover{background:var(--fundo);color:var(--tinta)}
 .abas-app a[aria-current="page"]{background:var(--azul);color:var(--azul-tinta)}
-.atalhos-topo{display:none;gap:.5rem;flex-wrap:wrap}
-.atalhos-topo a{font-weight:700;font-size:.92rem;text-decoration:none;border:1px solid var(--linha);border-radius:999px;padding:.3rem .8rem;color:var(--tinta)}
-.atalhos-topo a[aria-current="page"]{border-color:var(--azul);color:var(--azul)}
+/* Matriz do topo: Como estou indo?, Evolução e Ajustes, três células iguais numa moldura */
+.matriz{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--linha);border-radius:14px;overflow:hidden;background:var(--fundo)}
+.matriz-cel{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.1rem;padding:.65rem .4rem;text-decoration:none;color:var(--tinta);min-width:0}
+.matriz-cel+.matriz-cel{border-left:1px solid var(--linha)}
+.matriz-cel .ic{font-size:1.35rem;line-height:1.2}
+.matriz-cel b{font:700 .95rem/1.2 var(--f-titulo)}
+.matriz-cel small{color:var(--suave);font-size:.78rem;line-height:1.25}
+.matriz-cel:hover{background:var(--superficie)}
+.matriz-cel[aria-current="page"]{background:var(--azul-claro);box-shadow:inset 0 -3px 0 var(--azul)}
+.matriz-cel[aria-current="page"] b{color:var(--azul)}
+.matriz-zumi{background:var(--ambar-claro)}
+.matriz-zumi:hover{background:var(--ambar-claro);filter:brightness(.98)}
 @media (max-width:759px){
   .abas-app{position:fixed;top:auto;left:0;right:0;bottom:0;border-radius:0;border-width:1px 0 0;padding:.25rem .25rem calc(.25rem + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 16px -8px rgba(11,27,58,.25);z-index:40}
   .abas-app a{flex-direction:column;gap:.1rem;font-size:.72rem;padding:.4rem .1rem}
   .abas-app a span{font-size:1.25rem;line-height:1}
   .abas-app .so-largo{display:none}
-  .atalhos-topo{display:flex}
   body{padding-bottom:4.5rem}
   .aviso{bottom:5.2rem}
   .guia{grid-template-columns:auto 1fr}
   .guia-zumi img{width:80px;height:80px}
-  .guia .guia-texto,.guia .resumo,.guia .atalhos-topo{grid-column:1/-1}
+  .guia .guia-texto,.guia .resumo{grid-column:1/-1}
   .guia-zumi{grid-row:1}
 }
-@media (min-width:760px){.guia .atalhos-topo{display:none}}
 
 /* Painel Hoje */
 .painel-hoje{display:flex;flex-direction:column;gap:1rem}
@@ -370,7 +377,9 @@ textarea{width:100%;resize:vertical}
   .resumo li{padding:.45rem .4rem;min-width:0}
   .resumo b{font-size:1.3rem}
   .resumo span{font-size:.78rem;line-height:1.25;display:block}
-  .atalhos-topo a{font-size:.85rem;padding:.25rem .7rem}
+  .matriz-cel{padding:.55rem .25rem}
+  .matriz-cel b{font-size:.86rem}
+  .matriz-cel small{font-size:.72rem}
 }
 
 /* Contribuição voluntária (rodapé) */
@@ -613,3 +622,35 @@ textarea{width:100%;resize:vertical}
 .grupo-form input[type=text],.grupo-form .emoji-bt{background:var(--superficie)}
 .push-bloco{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--linha)}
 .push-bloco[hidden]{display:none}
+
+/* Opinião da Zumi e Meu mês com a Zumi (specs/opiniao-da-zumi.md) */
+.zumi-aviso{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem 1rem;background:var(--noite);color:var(--noite-texto);border-radius:var(--raio);padding:.9rem 1.1rem;font-weight:700}
+.zumi-aviso[hidden]{display:none}
+.zumi-cab{display:flex;gap:.8rem;align-items:center}
+.zumi-cab img{width:64px;height:64px;flex:none}
+.zumi-cab .nota{margin:.15rem 0 0}
+.zumi-lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.6rem}
+.zumi-lista li{display:grid;grid-template-columns:2rem 1fr;gap:.2rem .6rem;align-items:start;padding:.75rem .85rem;border-radius:12px;border:1px solid var(--linha)}
+.zumi-lista .ic{font-size:1.3rem;line-height:1.4}
+.zumi-lista b{display:block;font-family:var(--f-titulo);font-size:1rem}
+.zumi-lista p{margin:0;line-height:1.45}
+.zumi-lista .bem{background:#EAF7EE;border-color:#BFE5CB}
+.zumi-lista .melhorar{background:var(--ambar-claro);border-color:#F3D7A2}
+.zumi-lista .conselho{background:var(--azul-claro);border-color:#C8D6F8}
+#zumi-op-corpo{display:flex;flex-direction:column;gap:1rem}
+#zumi-op-corpo:empty{display:none}
+.zumi-fecho{margin:0;font-size:1.05rem;line-height:1.5}
+.zumi-fecho b{font-family:var(--f-titulo);font-size:1.15rem}
+.zumi-acoes{display:flex;flex-wrap:wrap;gap:.5rem}
+.zumi-priv{display:flex;gap:.45rem;align-items:flex-start;margin:0}
+.zumi-card{display:block;width:100%;max-width:26rem;aspect-ratio:4/5;border-radius:18px;background:#0B1B3A}
+#zumi-mes-card{display:flex;flex-direction:column;gap:1rem}
+#zumi-mes-card[hidden]{display:none}
+.zumi-opcao{display:flex;gap:.55rem;align-items:center;font-size:.95rem}
+.zumi-opcao input{width:1.2rem;height:1.2rem;accent-color:var(--azul)}
+.zumi-pensando{color:var(--suave);font-style:italic}
+@media (max-width:759px){.zumi-acoes .btn,#zumi-pedir,#zumi-mes-fechar{width:100%}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .zumi-lista .bem{background:#16352A;border-color:#24543F}:root:not([data-theme="light"]) .zumi-lista .melhorar{border-color:#5A4720}:root:not([data-theme="light"]) .zumi-lista .conselho{border-color:#2B3F78}}
+:root[data-theme="dark"] .zumi-lista .bem{background:#16352A;border-color:#24543F}
+:root[data-theme="dark"] .zumi-lista .melhorar{border-color:#5A4720}
+:root[data-theme="dark"] .zumi-lista .conselho{border-color:#2B3F78}

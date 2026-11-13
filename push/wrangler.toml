@@ -13,4 +13,11 @@ binding = "DB"
 database_name = "rotina-push"
 database_id = "9ddbf304-dd6f-4cc8-b53d-05bf8201b7ab"
 
+# IA da Zumi (rota /zumi). Trocar o modelo é só mudar ZUMI_MODELO.
+[ai]
+binding = "AI"
+
+[vars]
+ZUMI_MODELO = "@cf/google/gemma-4-26b-a4b-it"
+
 # Segredos (não ficam neste arquivo): VAPID_PUBLIC e VAPID_PRIVATE, com `npx wrangler secret put`.

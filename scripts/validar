@@ -17,6 +17,9 @@ etapa "Push da Rotina (Worker)"
 node push/testes/push.test.mjs
 node --no-warnings push/testes/worker.test.mjs
 
+etapa "Opinião da Zumi (contas e textos prontos)"
+node rotina/testes/opiniao.test.js
+
 etapa "Rotina de ponta a ponta (navegador)"
 # Precisa do Playwright: npm i --no-save playwright && npx playwright install chromium
 if NODE_PATH="${NODE_PATH:-}:$(npm root -g 2>/dev/null)" node -e "require('playwright')" >/dev/null 2>&1; then

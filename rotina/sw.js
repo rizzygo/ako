@@ -1,8 +1,8 @@
 // Service worker da Rotina com a Zumi: deixa o app abrir sem internet, mostra as notificações e recebe o push
 // dos lembretes com o app fechado (servidor em /push).
-var CACHE = 'rotina-2026111301';
+var CACHE = 'rotina-2026111302';
 var ARQUIVOS = [
-  '/rotina/', '/rotina/rotina.css?v=2026111222', '/rotina/rotina.js?v=2026111301', '/mesclar.js?v=2026111101', '/vitoria.js?v=2026111020', '/nuvem.js?v=2026111106', '/conta.js?v=2026111210', '/topo.css?v=2026110914', '/ds/rizzygo.css?v=2026111020', '/ds/tema.js?v=2026111020', '/contribua.js?v=2026110901',
+  '/rotina/', '/rotina/rotina.css?v=2026111302', '/rotina/opiniao.js?v=2026111302', '/rotina/rotina.js?v=2026111302', '/mesclar.js?v=2026111101', '/vitoria.js?v=2026111020', '/nuvem.js?v=2026111106', '/conta.js?v=2026111210', '/topo.css?v=2026110914', '/ds/rizzygo.css?v=2026111020', '/ds/tema.js?v=2026111020', '/contribua.js?v=2026110901',
   '/zumi/abelha-mini.png', '/zumi/abelha-icone.png',
   '/zumi/abelha-ola.png', '/zumi/abelha-ola-fundo-escuro.png',
   '/zumi/abelha-estudando.png', '/zumi/abelha-estudando-fundo-escuro.png',
