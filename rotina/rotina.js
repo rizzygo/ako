@@ -1496,7 +1496,7 @@
     if (campo) { li.classList.add('editando'); li.appendChild(campo); }
     else {
       var txt = document.createElement('span'); txt.className = 'tarefa-txt'; txt.textContent = t.texto;
-      if (t.rotina) { var r = document.createElement('small'); r.textContent = t.repete ? '🔁 ' + textoRepete(t.repete) : 'Rotina'; if (t.repete) r.className = 'repete'; txt.appendChild(r); }
+      if (t.rotina) { var r = document.createElement('small'); r.textContent = t.repete ? '🔁 ' + textoRepete(t.repete).replace(t.repete.dias ? /^$/ : /^tod[ao] /, '') : 'Rotina'; if (t.repete) { r.className = 'repete'; r.title = textoRepete(t.repete); } txt.appendChild(r); }
       else if (!opcoes.amanha && t.dia && t.dia < hoje) {
         var n = diasDesde(t.dia), v = document.createElement('small');
         v.className = 'idade' + (n >= PARADA ? ' forte' : ''); v.textContent = idadeTexto(n); txt.appendChild(v);
@@ -1786,7 +1786,7 @@
       var sm = document.createElement('small');
       sm.textContent = textoRepete(t.repete) + (t.repete.desde > hoje ? ', a partir de ' + dataCurta(t.repete.desde) : '');
       sp.appendChild(sm);
-      var x = document.createElement('button'); x.type = 'button'; x.className = 'btn btn-perigo btn-mini'; x.textContent = 'Parar de repetir';
+      var x = document.createElement('button'); x.type = 'button'; x.className = 'btn btn-perigo btn-mini'; x.textContent = 'Parar';
       x.setAttribute('aria-label', 'Parar de repetir: ' + t.texto);
       x.addEventListener('click', function () { tirarTarefa(t); falar('"' + t.texto + '" não se repete mais.', 'ola'); });
       li.appendChild(sp); li.appendChild(x); ul.appendChild(li);
