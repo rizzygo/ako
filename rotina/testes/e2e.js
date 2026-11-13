@@ -86,6 +86,40 @@ async function main() {
     await pagina.click('#novo button[type="submit"]');
     confere((await pagina.textContent('#meus')).includes('Lembrete de teste e2e'), 'lembrete entra na lista');
 
+    // 2b. Repetir na Agenda (relógio falso: terça, 17/11/2026). Toda última terça do mês e todo sábado.
+    {
+      const r = await novaPagina(navegador);
+      await r.pagina.clock.install({ time: new Date('2026-11-17T09:00:00') });
+      await r.pagina.goto(BASE + '/rotina/#/tarefas/agenda', { waitUntil: 'networkidle' });
+      const lista = () => r.pagina.textContent('#cal-lista');
+      const dia = async (k) => { await r.pagina.click(`.cal-d[data-dia="${k}"]`); return lista(); };
+      await r.pagina.click('.cal-d[data-dia="2026-11-24"]');
+      const ops = await r.pagina.$$eval('#cal-repete option', os => os.map(o => o.textContent));
+      confere(ops.includes('Toda terça') && ops.includes('Toda 4ª terça do mês') && ops.includes('Toda última terça do mês'), 'Repetir oferece as opções do dia escolhido: ' + ops.join(' | '));
+      await r.pagina.fill('#cal-txt', 'Reunião do fim do mês');
+      await r.pagina.selectOption('#cal-repete', 'ult');
+      await r.pagina.click('#cal-add');
+      await r.pagina.click('.cal-d[data-dia="2026-11-21"]');
+      await r.pagina.fill('#cal-txt', 'Feira de sábado');
+      await r.pagina.selectOption('#cal-repete', 'dias');
+      confere(await r.pagina.isVisible('#cal-rep-dias'), '"Escolher os dias" mostra os dias da semana');
+      await r.pagina.click('#cal-add');
+      confere((await dia('2026-11-28')).includes('Feira de sábado') && !(await dia('2026-11-27')).includes('Feira de sábado'), 'tarefa de todo sábado aparece só aos sábados');
+      confere((await dia('2026-11-24')).includes('Reunião do fim do mês') && !(await dia('2026-11-18')).includes('Reunião do fim do mês'), 'última terça do mês aparece no dia certo da Agenda');
+      confere((await r.pagina.textContent('#rep-lista')).includes('toda última terça do mês'), 'a lista do que se repete mostra a regra');
+      await r.pagina.evaluate(() => { location.hash = '#/tarefas'; });
+      confere(!(await r.pagina.textContent('#tarefas')).includes('Reunião do fim do mês'), 'antes do dia, a repetição não entra na lista de hoje');
+      await r.pagina.clock.setSystemTime(new Date('2026-12-29T09:00:00'));
+      await r.pagina.reload({ waitUntil: 'networkidle' });
+      await r.pagina.evaluate(() => { location.hash = '#/tarefas'; });
+      const hoje = await r.pagina.textContent('#tarefas');
+      confere(hoje.includes('Reunião do fim do mês') && !hoje.includes('Feira de sábado'), 'na última terça de dezembro, só ela entra na lista de hoje');
+      await r.pagina.click('#tarefas .tarefa:has-text("Reunião do fim do mês") .marca-tarefa');
+      confere((await r.pagina.getAttribute('#tarefas .tarefa:has-text("Reunião do fim do mês") .marca-tarefa', 'aria-pressed')) === 'true', 'a repetição de hoje pode ser marcada como feita');
+      confere(r.erros.length === 0, 'nenhum erro de JavaScript ao repetir' + (r.erros.length ? ': ' + r.erros.join(' | ') : ''));
+      await r.ctx.close();
+    }
+
     // 3. Timer começa e o botão muda.
     await pagina.evaluate(() => { location.hash = '#/foco'; });
     const tempoAntes = await pagina.textContent('#tempo');

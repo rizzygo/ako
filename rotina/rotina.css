@@ -613,3 +613,14 @@ textarea{width:100%;resize:vertical}
 .grupo-form input[type=text],.grupo-form .emoji-bt{background:var(--superficie)}
 .push-bloco{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--linha)}
 .push-bloco[hidden]{display:none}
+
+/* Repetir (Agenda): dias da semana da regra, etiqueta na tarefa e a lista das que se repetem */
+.rep-dias{margin-top:.6rem}
+.rep-dias[hidden]{display:none}
+.tarefa-txt small.repete{color:var(--tinta);background:var(--ambar-claro)}
+.repeticoes{margin-top:1rem;border-top:1px solid var(--linha);padding-top:.8rem}
+.repeticoes[hidden]{display:none}
+.repeticoes summary{cursor:pointer;font-weight:700;display:flex;align-items:center;gap:.5rem;min-height:2.4rem}
+.rep-lista{list-style:none;margin:.5rem 0 0;padding:0;display:grid;gap:.4rem}
+.rep-lista li{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.4rem .8rem;background:var(--superficie);border:1px solid var(--linha);border-radius:12px;padding:.5rem .7rem}
+.rep-lista small{display:block;color:var(--suave);font-size:.85rem}
