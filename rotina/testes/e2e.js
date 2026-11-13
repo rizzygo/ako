@@ -30,6 +30,10 @@ async function esperarServidor() {
 
 async function novaPagina(navegador, estado) {
   const ctx = await navegador.newContext({ serviceWorkers: 'allow' });
+  // O teste não fala com o Worker de produção: sem isso, o resultado dependeria da internet e de a Cloudflare aceitar
+  // o IP de quem roda (o CI recebeu uma resposta sem CORS). Os passos do push registram a própria resposta na página,
+  // e a rota da página vale mais que esta, do contexto.
+  await ctx.route('https://rotina-push.rizzygo.com.br/**', r => r.abort());
   if (estado) await ctx.addInitScript(([k, v]) => { if (!sessionStorage.getItem('semeado')) { localStorage.setItem(k, v); sessionStorage.setItem('semeado', '1'); } }, [CHAVE, estado]);
   const pagina = await ctx.newPage();
   const erros = [];
