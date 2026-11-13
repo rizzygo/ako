@@ -137,6 +137,8 @@ async function main() {
     await ctx.addInitScript(() => {
       const sub = { endpoint: 'https://fcm.googleapis.com/fcm/send/teste', toJSON() { return { endpoint: this.endpoint, keys: { p256dh: 'BPZ_teste_p256dh_aaaaaaaaaaaaaaaa', auth: 'auth_teste_aaaaaa' } }; }, unsubscribe() { window.__desassinou = true; return Promise.resolve(true); } };
       let ativa = null;
+      // o Chromium sem janela relata 'denied' mesmo com a permissão dada; aqui a página enxerga 'granted', como num celular
+      Object.defineProperty(Notification, 'permission', { get: () => 'granted', configurable: true });
       PushManager.prototype.getSubscription = function () { return Promise.resolve(ativa); };
       PushManager.prototype.subscribe = function () { ativa = sub; return Promise.resolve(sub); };
     });
@@ -161,6 +163,20 @@ async function main() {
     await pagina.uncheck('#push-on');
     await pagina.waitForTimeout(500);
     confere(recebidos.some(x => x.caminho === '/remover') && await pagina.evaluate(() => !!window.__desassinou), 'desligar avisa o servidor e cancela a assinatura');
+    // chave "Notificações": desligar desliga o push junto e persiste; ligar de novo funciona sem apagar nada
+    await pagina.check('#push-on');
+    await pagina.waitForTimeout(800);
+    const removeAntes = recebidos.filter(x => x.caminho === '/remover').length;
+    confere(await pagina.isChecked('#notif-on'), 'com a permissão dada, a chave Notificações aparece ligada');
+    await pagina.uncheck('#notif-on');
+    await pagina.waitForTimeout(500);
+    const prefs = await pagina.evaluate(() => JSON.parse(localStorage.getItem('rizzygo-rotina-push-v1') || '{}'));
+    confere(prefs.notifOff === true && prefs.on === false, 'desligar as notificações fica salvo e desliga o push junto');
+    confere(!(await pagina.isChecked('#push-on')) && recebidos.filter(x => x.caminho === '/remover').length > removeAntes, 'desligar as notificações avisa o servidor');
+    await pagina.check('#notif-on');
+    await pagina.waitForTimeout(300);
+    const prefs2 = await pagina.evaluate(() => JSON.parse(localStorage.getItem('rizzygo-rotina-push-v1') || '{}'));
+    confere(prefs2.notifOff === undefined && await pagina.isChecked('#notif-on'), 'ligar as notificações de novo funciona');
     confere(erros.length === 0, 'nenhum erro de JavaScript no push' + (erros.length ? ': ' + erros.join(' | ') : ''));
     await ctx.close();
 
