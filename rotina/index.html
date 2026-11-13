@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
 <link rel="stylesheet" href="/ds/rizzygo.css?v=2026111020">
 <script src="/ds/tema.js?v=2026111020"></script>
-<link rel="stylesheet" href="/rotina/rotina.css?v=2026111302">
+<link rel="stylesheet" href="/rotina/rotina.css?v=2026111321">
 <link rel="stylesheet" href="/topo.css?v=2026110914">
 </head>
 <body>
@@ -241,7 +241,7 @@
 <!-- Agenda -->
 <section class="painel largo" aria-labelledby="t-agenda" id="agenda" data-parte="agenda">
   <h2 id="t-agenda">Agenda</h2>
-  <p class="nota">Escolha o dia e deixe a tarefa pronta. Ela entra na lista de hoje quando o dia chegar.</p>
+  <p class="nota">Escolha o dia e deixe a tarefa pronta. Ela entra na lista de hoje quando o dia chegar. Use Repetir para o que volta, como toda terça.</p>
   <div class="agenda">
     <div class="cal">
       <div class="cal-topo">
@@ -256,9 +256,19 @@
       <h3 id="cal-titulo">Amanhã</h3>
       <ul class="tarefas amanha" id="cal-lista"></ul>
       <p class="nota" id="cal-vazio">Nada marcado para esse dia.</p>
-      <form class="nova-tarefa" id="cal-nova">
+      <form class="nova-tarefa cal-form" id="cal-nova">
         <label class="oculto" for="cal-txt">Nova tarefa para o dia escolhido</label>
         <input type="text" id="cal-txt" maxlength="80" placeholder="O que fazer nesse dia?" required>
+        <label class="cal-repetir"><span>🔁 Repetir</span> <select id="cal-repete"><option value="">Não repetir</option></select></label>
+        <div class="dias-semana rep-dias" id="cal-rep-dias" role="group" aria-label="Dias da semana da repetição" hidden>
+          <button type="button" data-rdia="1" aria-pressed="false" aria-label="Segunda">Seg</button>
+          <button type="button" data-rdia="2" aria-pressed="false" aria-label="Terça">Ter</button>
+          <button type="button" data-rdia="3" aria-pressed="false" aria-label="Quarta">Qua</button>
+          <button type="button" data-rdia="4" aria-pressed="false" aria-label="Quinta">Qui</button>
+          <button type="button" data-rdia="5" aria-pressed="false" aria-label="Sexta">Sex</button>
+          <button type="button" data-rdia="6" aria-pressed="false" aria-label="Sábado">Sáb</button>
+          <button type="button" data-rdia="0" aria-pressed="false" aria-label="Domingo">Dom</button>
+        </div>
         <div class="nova-opcoes">
           <label class="opcao"><input type="checkbox" id="cal-prio"> Prioridade</label>
           <button type="submit" class="btn" id="cal-add">Adicionar</button>
@@ -266,6 +276,10 @@
       </form>
     </div>
   </div>
+  <details class="repeticoes" id="repeticoes" hidden>
+    <summary>🔁 Tarefas que se repetem <b class="parte-n" id="rep-n"></b></summary>
+    <ul class="rep-lista" id="rep-lista"></ul>
+  </details>
 </section>
 
 <!-- Sem data: o que a pessoa não quer esquecer, sem prazo, separado em grupos -->
@@ -565,10 +579,10 @@
 
 <footer class="rodape"><div class="rodape-in"><p><strong>Rotina com a Zumi</strong>, do Ako, da Rizzygo All, a parte aberta e gratuita da <a href="https://rizzygo.com.br/">Rizzygo</a>.</p><p>Os lembretes ajudam a criar hábito. Eles não substituem orientação de profissional de saúde. Veja como cuidamos dos seus dados em <a href="/privacidade/">Privacidade</a>.</p><p>Estude junto na <a href="https://chat.whatsapp.com/CYpmolVr7a08Gqmj782yFi">comunidade gratuita no WhatsApp</a>.</p><p>Sugestão, dúvida ou problema? Escreva para <a href="mailto:suporte@rizzygo.com.br">suporte@rizzygo.com.br</a>.</p><div class="contribua"><p><strong>Contribuição voluntária.</strong> O Ako é gratuito e vai continuar assim. Você decide se quer contribuir, com qualquer valor, para agradecer, manter e ajudar o Ako a evoluir.</p><p class="contribua-pix"><span class="contribua-dados"><span>Chave Pix (CNPJ): <code>57.778.554/0001-31</code></span><span>Nome: <code>Ru Technology</code></span></span> <button type="button" class="contribua-copiar" data-pix="57778554000131" hidden>Copiar chave Pix</button></p></div><p class="credo"><a href="https://rizzygo.com.br/conceito#o-nome">Sou Zy</a>: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
 <script src="/vitoria.js?v=2026111020" defer></script>
-<script src="/mesclar.js?v=2026111101" defer></script>
-<script src="/rotina/opiniao.js?v=2026111302" defer></script>
-<script src="/rotina/rotina.js?v=2026111302" defer></script>
+<script src="/mesclar.js?v=2026111301" defer></script>
+<script src="/rotina/opiniao.js?v=2026111321" defer></script>
+<script src="/rotina/rotina.js?v=2026111321" defer></script>
 <script src="/contribua.js?v=2026110901" defer></script>
-<script src="/conta.js?v=2026111210" defer></script>
+<script src="/conta.js?v=2026111310" defer></script>
 </body>
 </html>

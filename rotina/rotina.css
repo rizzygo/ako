@@ -174,7 +174,7 @@ textarea{width:100%;resize:vertical}
 }
 
 /* Tarefas e rotinas */
-.tarefas{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
+.tarefas{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:.4rem}
 .tarefas:empty{display:none}
 .tarefa{display:flex;align-items:center;gap:.6rem;background:var(--fundo);border-radius:12px;padding:.55rem .6rem;border-left:4px solid transparent}
 .tarefa.prio{border-left-color:var(--ambar)}
@@ -460,7 +460,7 @@ textarea{width:100%;resize:vertical}
 
 /* Agenda */
 .grade > .largo{grid-column:1/-1}
-.agenda{display:grid;gap:1.25rem}
+.agenda{display:grid;grid-template-columns:minmax(0,1fr);gap:1.25rem}
 @media (min-width:760px){.agenda{grid-template-columns:minmax(16rem,22rem) 1fr;align-items:start}}
 .cal{background:var(--fundo);border-radius:14px;padding:.75rem}
 .cal-topo{display:flex;align-items:center;justify-content:space-between;margin-bottom:.4rem}
@@ -476,7 +476,7 @@ textarea{width:100%;resize:vertical}
 .cal-d.tem::after{content:"";position:absolute;left:50%;bottom:4px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:var(--azul)}
 .cal-d[aria-pressed="true"]{background:var(--azul);color:var(--azul-tinta)}
 .cal-d[aria-pressed="true"].tem::after{background:var(--azul-tinta)}
-.cal-dia{display:grid;gap:.6rem;min-width:0}
+.cal-dia{display:grid;grid-template-columns:minmax(0,1fr);gap:.6rem;min-width:0}
 .cal-dia h3{margin:0}
 
 /* Lembrete no horário: dias da semana */
@@ -622,6 +622,27 @@ textarea{width:100%;resize:vertical}
 .grupo-form input[type=text],.grupo-form .emoji-bt{background:var(--superficie)}
 .push-bloco{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--linha)}
 .push-bloco[hidden]{display:none}
+
+/* Repetir (Agenda): formulário em cartão, dias numa linha só, etiqueta embaixo do texto e a lista das que se repetem */
+.cal-form{background:var(--fundo);border:1px solid var(--linha);border-radius:14px;padding:.75rem}
+.cal-form input[type="text"]{background:var(--superficie)}
+.cal-repetir{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:.6rem;font-size:.95rem;font-weight:600}
+.cal-repetir select{width:100%;font:inherit;font-weight:400;font-size:16px;padding:.5rem .6rem;border-radius:10px;border:1px solid var(--linha);background:var(--superficie);color:inherit;min-height:2.6rem}
+.rep-dias{display:grid;grid-template-columns:repeat(7,1fr);gap:.25rem}
+.rep-dias[hidden]{display:none}
+.rep-dias button{padding:.45rem 0;min-width:0;min-height:2.4rem;font-size:.8rem;text-align:center}
+.cal-form .nova-opcoes{justify-content:space-between}
+.tarefa-txt small.repete{display:block;width:fit-content;max-width:100%;margin:.25rem 0 0;color:var(--tinta);background:var(--ambar-claro);line-height:1.6}
+.repeticoes{margin-top:1rem;border-top:1px solid var(--linha);padding-top:.8rem}
+.repeticoes[hidden]{display:none}
+.repeticoes summary{cursor:pointer;font-weight:700;display:flex;align-items:center;gap:.5rem;min-height:2.4rem}
+.rep-lista{list-style:none;margin:.5rem 0 0;padding:0;display:grid;gap:.4rem}
+.rep-lista li{display:grid;grid-template-columns:1fr auto;align-items:center;gap:.6rem;background:var(--superficie);border:1px solid var(--linha);border-radius:12px;padding:.55rem .7rem}
+.rep-lista span{min-width:0;overflow-wrap:anywhere}
+.rep-lista small{display:block;color:var(--suave);font-size:.85rem}
+.rep-lista .btn{white-space:nowrap}
+.cal-form .nova-opcoes .btn{white-space:nowrap}
+@media (max-width:420px){.cal-form .nova-opcoes .btn{margin-left:0;flex:1;justify-content:center}}
 
 /* Opinião da Zumi e Meu mês com a Zumi (specs/opiniao-da-zumi.md) */
 .zumi-aviso{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.6rem 1rem;background:var(--noite);color:var(--noite-texto);border-radius:var(--raio);padding:.9rem 1.1rem;font-weight:700}
