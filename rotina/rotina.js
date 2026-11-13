@@ -355,17 +355,28 @@
 
   var registro = null;
   function notificar(titulo, corpo, tag) {
-    if (!('Notification' in window) || Notification.permission !== 'granted' || !document.hidden) return;
+    if (!('Notification' in window) || Notification.permission !== 'granted' || push.notifOff || !document.hidden) return;
     var op = { body: corpo, icon: '/zumi/abelha-icone.png', badge: '/icones/icone-192.png', tag: tag || 'rotina', renotify: true };
     if (registro && registro.showNotification) registro.showNotification(titulo, op).catch(function () {});
     else { try { new Notification(titulo, op); } catch (e) { /* celular exige o service worker */ } }
   }
+  // Como liberar de novo quando o navegador bloqueou: o site não consegue pedir outra vez, só a pessoa, no sistema.
+  function comoLiberar() {
+    var ua = navigator.userAgent;
+    if (/iPhone|iPad|iPod/.test(ua)) return 'No iPhone: Ajustes, Notificações, Rotina, e ligue "Permitir Notificações".';
+    if (/Android/.test(ua)) return 'No Android: toque no cadeado ao lado do endereço, depois em Permissões ou Configurações do site, Notificações, e escolha Permitir.';
+    return 'No computador: clique no cadeado ao lado do endereço, procure Notificações e escolha Permitir.';
+  }
   function estadoNotif() {
-    var b = $('b-notif');
-    if (!('Notification' in window)) { el.notifEstado.textContent = 'Este navegador não mostra notificações. No iPhone, crie o atalho na tela inicial primeiro (veja Ajustes).'; b.hidden = true; return; }
-    if (Notification.permission === 'granted') { el.notifEstado.textContent = 'Notificações ligadas. A Zumi avisa enquanto o app estiver aberto, mesmo em outra aba ou minimizado.'; b.hidden = true; }
-    else if (Notification.permission === 'denied') { el.notifEstado.textContent = 'As notificações estão bloqueadas. Libere nas configurações do navegador para este site.'; b.hidden = true; }
-    else { el.notifEstado.textContent = 'Os avisos aparecem só nesta página até você ativar as notificações.'; }
+    var cb = $('notif-on');
+    if (!('Notification' in window)) { el.notifEstado.textContent = 'Este navegador não mostra notificações. No iPhone, crie o atalho na tela inicial primeiro (veja Ajustes).'; cb.checked = false; cb.disabled = true; return; }
+    cb.disabled = false;
+    cb.checked = Notification.permission === 'granted' && !push.notifOff;
+    if (Notification.permission === 'denied') el.notifEstado.textContent = 'As notificações estão bloqueadas neste aparelho. O site não consegue pedir de novo: ' + comoLiberar() + ' Depois, volte aqui e ligue a chave.';
+    else if (Notification.permission === 'granted') el.notifEstado.textContent = push.notifOff
+      ? 'Desligadas na Rotina. Ligue a chave quando quiser receber de novo.'
+      : 'Ligadas. A Zumi avisa enquanto o app estiver aberto, mesmo em outra aba ou minimizado.';
+    else el.notifEstado.textContent = 'Os avisos aparecem só nesta página até você ligar as notificações.';
   }
 
   // ---------- Push: avisar com o app fechado ----------
@@ -425,7 +436,20 @@
   }
   function estadoPush(msg) {
     var bloco = $('push-bloco');
-    if (!pushPossivel()) { bloco.hidden = true; return; }
+    if (!pushPossivel()) {
+      // No iPhone o Safari não tem push: só o atalho na tela inicial tem (iOS 16.4+). Em vez de esconder, explica.
+      var ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      if (ios) {
+        var instalado = navigator.standalone === true || (window.matchMedia && matchMedia('(display-mode: standalone)').matches);
+        $('push-on').checked = false; $('push-on').disabled = true;
+        $('push-estado').textContent = instalado
+          ? 'O seu iPhone precisa do iOS 16.4 ou mais novo para avisar com o app fechado. Atualize o iOS em Ajustes, Geral, Atualização de Software.'
+          : 'No iPhone, esta opção só funciona abrindo a Rotina pelo ícone na tela inicial. No Safari, toque em Compartilhar, depois em Adicionar à Tela de Início, e abra a Rotina por esse ícone. Precisa do iOS 16.4 ou mais novo.';
+        bloco.hidden = false;
+      } else bloco.hidden = true;
+      return;
+    }
+    $('push-on').disabled = false;
     $('push-on').checked = !!push.on;
     if (msg) $('push-estado').textContent = msg;
     buscarChave().then(function () {
@@ -1098,9 +1122,26 @@
     return nomes.length === 1 ? 'toda ' + nomes[0] : nomes.slice(0, -1).join(', ') + ' e ' + nomes[nomes.length - 1];
   }
 
-  $('b-notif').addEventListener('click', function () {
-    if (!('Notification' in window)) return;
-    Notification.requestPermission().then(function () { estadoNotif(); if (Notification.permission === 'granted') falar('Notificações ligadas. Agora eu aviso com o app em segundo plano.', 'comemorando', true); });
+  // Chave "Notificações": liga e desliga neste aparelho. Desligar não revoga a permissão do navegador (o site não
+  // consegue); só para de mostrar. Desligar também desliga o aviso com o app fechado.
+  $('notif-on').addEventListener('change', function () {
+    var cb = this;
+    if (!('Notification' in window)) { cb.checked = false; return; }
+    if (!cb.checked) {
+      push.notifOff = true; salvarPush();
+      if (push.on) desligarPush(); else estadoPush();
+      estadoNotif();
+      falar('Notificações desligadas. Os lembretes ainda aparecem na tela quando a Rotina está aberta.', 'ola');
+      return;
+    }
+    if (Notification.permission === 'denied') { cb.checked = false; estadoNotif(); return; }
+    var pronto = function () {
+      if (Notification.permission !== 'granted') { estadoNotif(); return; }
+      delete push.notifOff; salvarPush(); estadoNotif(); estadoPush();
+      falar('Notificações ligadas. Agora eu aviso com o app em segundo plano.', 'comemorando', true);
+    };
+    if (Notification.permission === 'granted') pronto();
+    else Notification.requestPermission().then(pronto);
   });
   $('b-apagar').addEventListener('click', function () {
     if (!confirm('Apagar pontos, títulos, reflexões e lembretes deste aparelho? Não tem como desfazer.')) return;
@@ -1110,13 +1151,21 @@
 
 
   // ---------- Nuvem (opcional) ----------
+  function desligarPush() {
+    var id = push.id;
+    push.on = false; salvarPush(); pushEnviado = '';
+    if (id) pedirPush('/remover', { id: id }).catch(function () {});
+    if (registro && registro.pushManager) registro.pushManager.getSubscription().then(function (sub) { if (sub) sub.unsubscribe(); }).catch(function () {});
+    if ('caches' in window) caches.delete('zumi-push').catch(function () {});
+    estadoPush('Desligado. Os lembretes voltam a avisar só com o app aberto ou em segundo plano.');
+  }
   $('push-on').addEventListener('change', function () {
     var cb = this;
     if (cb.checked) {
       cb.disabled = true;
       Notification.requestPermission().then(function (p) {
         if (p !== 'granted') throw new Error('permissao');
-        push.id = push.id || idNovo(); push.on = true; salvarPush();
+        push.id = push.id || idNovo(); push.on = true; delete push.notifOff; salvarPush();
         return navigator.serviceWorker.ready.then(function (r) { registro = r; return enviarAgenda(true); });
       }).then(function () {
         estadoNotif(); estadoPush();
@@ -1125,14 +1174,7 @@
         push.on = false; salvarPush(); cb.checked = false; estadoNotif();
         estadoPush(e && e.message === 'permissao' ? 'Sem a permissão de notificação não dá para avisar com o app fechado. Libere nas configurações do navegador.' : 'Não deu para ligar agora. Confira a internet e tente de novo.');
       }).then(function () { cb.disabled = false; });
-    } else {
-      var id = push.id;
-      push.on = false; salvarPush(); pushEnviado = '';
-      if (id) pedirPush('/remover', { id: id }).catch(function () {});
-      if (registro && registro.pushManager) registro.pushManager.getSubscription().then(function (s) { if (s) s.unsubscribe(); }).catch(function () {});
-      if ('caches' in window) caches.delete('zumi-push').catch(function () {});
-      estadoPush('Desligado. Os lembretes voltam a avisar só com o app aberto ou em segundo plano.');
-    }
+    } else desligarPush();
   });
 
   var CHAVE_NUVEM = 'rizzygo-nuvem-rotina-v1';

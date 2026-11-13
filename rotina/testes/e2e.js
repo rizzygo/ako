@@ -30,6 +30,10 @@ async function esperarServidor() {
 
 async function novaPagina(navegador, estado) {
   const ctx = await navegador.newContext({ serviceWorkers: 'allow' });
+  // O teste não fala com o Worker de produção: sem isso, o resultado dependeria da internet e de a Cloudflare aceitar
+  // o IP de quem roda (o CI recebeu uma resposta sem CORS). Os passos do push registram a própria resposta na página,
+  // e a rota da página vale mais que esta, do contexto.
+  await ctx.route('https://rotina-push.rizzygo.com.br/**', r => r.abort());
   if (estado) await ctx.addInitScript(([k, v]) => { if (!sessionStorage.getItem('semeado')) { localStorage.setItem(k, v); sessionStorage.setItem('semeado', '1'); } }, [CHAVE, estado]);
   const pagina = await ctx.newPage();
   const erros = [];
@@ -133,6 +137,8 @@ async function main() {
     await ctx.addInitScript(() => {
       const sub = { endpoint: 'https://fcm.googleapis.com/fcm/send/teste', toJSON() { return { endpoint: this.endpoint, keys: { p256dh: 'BPZ_teste_p256dh_aaaaaaaaaaaaaaaa', auth: 'auth_teste_aaaaaa' } }; }, unsubscribe() { window.__desassinou = true; return Promise.resolve(true); } };
       let ativa = null;
+      // o Chromium sem janela relata 'denied' mesmo com a permissão dada; aqui a página enxerga 'granted', como num celular
+      Object.defineProperty(Notification, 'permission', { get: () => 'granted', configurable: true });
       PushManager.prototype.getSubscription = function () { return Promise.resolve(ativa); };
       PushManager.prototype.subscribe = function () { ativa = sub; return Promise.resolve(sub); };
     });
@@ -157,8 +163,31 @@ async function main() {
     await pagina.uncheck('#push-on');
     await pagina.waitForTimeout(500);
     confere(recebidos.some(x => x.caminho === '/remover') && await pagina.evaluate(() => !!window.__desassinou), 'desligar avisa o servidor e cancela a assinatura');
+    // chave "Notificações": desligar desliga o push junto e persiste; ligar de novo funciona sem apagar nada
+    await pagina.check('#push-on');
+    await pagina.waitForTimeout(800);
+    const removeAntes = recebidos.filter(x => x.caminho === '/remover').length;
+    confere(await pagina.isChecked('#notif-on'), 'com a permissão dada, a chave Notificações aparece ligada');
+    await pagina.uncheck('#notif-on');
+    await pagina.waitForTimeout(500);
+    const prefs = await pagina.evaluate(() => JSON.parse(localStorage.getItem('rizzygo-rotina-push-v1') || '{}'));
+    confere(prefs.notifOff === true && prefs.on === false, 'desligar as notificações fica salvo e desliga o push junto');
+    confere(!(await pagina.isChecked('#push-on')) && recebidos.filter(x => x.caminho === '/remover').length > removeAntes, 'desligar as notificações avisa o servidor');
+    await pagina.check('#notif-on');
+    await pagina.waitForTimeout(300);
+    const prefs2 = await pagina.evaluate(() => JSON.parse(localStorage.getItem('rizzygo-rotina-push-v1') || '{}'));
+    confere(prefs2.notifOff === undefined && await pagina.isChecked('#notif-on'), 'ligar as notificações de novo funciona');
     confere(erros.length === 0, 'nenhum erro de JavaScript no push' + (erros.length ? ': ' + erros.join(' | ') : ''));
     await ctx.close();
+
+    // 5b2. iPhone no Safari (sem PushManager): a opção aparece desligada, com a explicação de abrir pelo ícone.
+    const ctxIos = await navegador.newContext({ userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1' });
+    await ctxIos.addInitScript(() => { delete window.PushManager; });
+    const pIos = await ctxIos.newPage();
+    await pIos.goto(BASE + '/rotina/#/ajustes', { waitUntil: 'networkidle' });
+    confere(await pIos.isVisible('#push-bloco') && await pIos.isDisabled('#push-on'), 'no iPhone fora do atalho, a opção de push aparece desligada');
+    confere((await pIos.textContent('#push-estado')).includes('Adicionar à Tela de Início'), 'no iPhone fora do atalho, o app explica como instalar');
+    await ctxIos.close();
 
     // 5c. O service worker recebe o push e mostra a notificação com o nome guardado no aparelho e os dois botões.
     // Precisa do Chromium completo (o headless shell não mostra notificação); sem ele, o passo é pulado com aviso.
