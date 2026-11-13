@@ -2383,7 +2383,7 @@
   // Leva o começo do painel da aba para logo abaixo do que fica preso no topo (o cabeçalho e, no computador, o menu de abas).
   function rolarParaAba(a) {
     var el = document.getElementById('aba-' + a);
-    if (!el || a === 'hoje') { window.scrollTo({ top: 0, behavior: 'instant' }); return; } // o Hoje começa com a Zumi e a matriz
+    if (!el || a === 'hoje' || a === 'evolucao') { window.scrollTo({ top: 0, behavior: 'instant' }); return; } // Hoje e Evolução voltam ao topo, onde ficam a Zumi e a matriz
     var preso = 0;
     ['.topo', '.abas-app'].forEach(function (sel) {
       var x = document.querySelector(sel);

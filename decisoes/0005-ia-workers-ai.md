@@ -22,4 +22,5 @@ O Worker que já manda o push ganha a rota `POST /zumi`, que chama o Workers AI 
 - Um pedido gasta perto de 10 neurons, então a cota dá cerca de 900 pedidos por dia. O Worker para em 900 e o aparelho mostra o texto pronto.
 - Publicar o Worker exige rodar de novo o `schema.sql` no D1 (tabela `zumi_uso`) e o `wrangler deploy` (passo a passo em [`push/README.md`](../push/README.md)).
 - Trocar de modelo é mudar `ZUMI_MODELO` no `wrangler.toml`, sem mexer no app.
+- 13/11/2026: o primeiro modelo, `@cf/google/gemma-4-26b-a4b-it`, raciocina antes de responder e gastou todos os tokens nisso, devolvendo o texto vazio. Trocamos por `@cf/meta/llama-3.1-8b-instruct-fp8-fast`, que responde direto e custa cerca de 10 neurons por pedido. Evite modelos de raciocínio aqui.
 - A página de Privacidade explica o que vai para a IA.

@@ -4,7 +4,8 @@
 
 export const LIMITE_DIA = 900;        // ~10 neurons por pedido; a cota grátis é 10.000 por dia
 export const LIMITE_APARELHO = 3;     // pedidos por aparelho por dia (tenta de novo se a rede falhar)
-const MODELO = '@cf/google/gemma-4-26b-a4b-it';
+// Modelo sem "pensar antes": o Gemma 4 gastava todos os tokens raciocinando e devolvia a resposta vazia (13/11/2026).
+const MODELO = '@cf/meta/llama-3.1-8b-instruct-fp8-fast';
 const NUMEROS = ['dias', 'ativos', 'blocos', 'focoMin', 'lazerMin', 'aguaBoa', 'respirar', 'semTelaMin', 'pausaDias', 'treinos', 'reflexoes', 'feitas'];
 const CATEGORIAS = ['foco', 'agua', 'corpo', 'pausa', 'reflexao', 'tarefas', 'paradas', 'recomeco'];
 const MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
@@ -130,7 +131,7 @@ export async function zumi(env, b) {
   if (!env.AI) return [503, { erro: 'sem ia' }];
   if (!(await contar(env, p.id))) return [429, { erro: 'cota' }];
   let saida;
-  try { saida = await env.AI.run(env.ZUMI_MODELO || MODELO, { messages: mensagens(p), max_tokens: 700, temperature: 0.6 }); }
+  try { saida = await env.AI.run(env.ZUMI_MODELO || MODELO, { messages: mensagens(p), max_tokens: 500, temperature: 0.6 }); }
   catch (e) { return [502, { erro: 'ia' }]; }
   const r = lerResposta(saida, p);
   if (!r) console.log('zumi: resposta recusada', JSON.stringify(saida).slice(0, 600));
