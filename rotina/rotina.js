@@ -425,7 +425,20 @@
   }
   function estadoPush(msg) {
     var bloco = $('push-bloco');
-    if (!pushPossivel()) { bloco.hidden = true; return; }
+    if (!pushPossivel()) {
+      // No iPhone o Safari não tem push: só o atalho na tela inicial tem (iOS 16.4+). Em vez de esconder, explica.
+      var ios = /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      if (ios) {
+        var instalado = navigator.standalone === true || (window.matchMedia && matchMedia('(display-mode: standalone)').matches);
+        $('push-on').checked = false; $('push-on').disabled = true;
+        $('push-estado').textContent = instalado
+          ? 'O seu iPhone precisa do iOS 16.4 ou mais novo para avisar com o app fechado. Atualize o iOS em Ajustes, Geral, Atualização de Software.'
+          : 'No iPhone, esta opção só funciona abrindo a Rotina pelo ícone na tela inicial. No Safari, toque em Compartilhar, depois em Adicionar à Tela de Início, e abra a Rotina por esse ícone. Precisa do iOS 16.4 ou mais novo.';
+        bloco.hidden = false;
+      } else bloco.hidden = true;
+      return;
+    }
+    $('push-on').disabled = false;
     $('push-on').checked = !!push.on;
     if (msg) $('push-estado').textContent = msg;
     buscarChave().then(function () {

@@ -19,6 +19,7 @@ Quem liga "Avisar com o app fechado" recebe a notificação na hora, com a Rotin
 ## Critérios de aceite
 
 - [ ] A opção fica em Ajustes, em Lembretes, desligada para todo mundo. Some quando o navegador não tem push ou o servidor não responde.
+- [ ] No iPhone fora do atalho na tela inicial (Safari, sem push), a opção aparece desligada e explica como adicionar à Tela de Início; com iOS antes do 16.4, explica que precisa atualizar.
 - [ ] Ligar pede a permissão de notificação, assina o push e manda ao servidor a agenda (horários, intervalos, dias, fuso) sem o nome do lembrete.
 - [ ] O nome do lembrete fica num cache do aparelho, que o service worker usa no texto da notificação.
 - [ ] Com a Rotina fechada, o lembrete no horário toca uma vez no dia escolhido; o por intervalo toca dentro do horário de avisos.

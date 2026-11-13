@@ -164,6 +164,15 @@ async function main() {
     confere(erros.length === 0, 'nenhum erro de JavaScript no push' + (erros.length ? ': ' + erros.join(' | ') : ''));
     await ctx.close();
 
+    // 5b2. iPhone no Safari (sem PushManager): a opção aparece desligada, com a explicação de abrir pelo ícone.
+    const ctxIos = await navegador.newContext({ userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1' });
+    await ctxIos.addInitScript(() => { delete window.PushManager; });
+    const pIos = await ctxIos.newPage();
+    await pIos.goto(BASE + '/rotina/#/ajustes', { waitUntil: 'networkidle' });
+    confere(await pIos.isVisible('#push-bloco') && await pIos.isDisabled('#push-on'), 'no iPhone fora do atalho, a opção de push aparece desligada');
+    confere((await pIos.textContent('#push-estado')).includes('Adicionar à Tela de Início'), 'no iPhone fora do atalho, o app explica como instalar');
+    await ctxIos.close();
+
     // 5c. O service worker recebe o push e mostra a notificação com o nome guardado no aparelho e os dois botões.
     // Precisa do Chromium completo (o headless shell não mostra notificação); sem ele, o passo é pulado com aviso.
     const completo = await chromium.launch({ channel: 'chromium' }).catch(() => null);
