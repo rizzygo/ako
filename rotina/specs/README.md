@@ -12,3 +12,4 @@ Uma spec por funcionalidade nova ou por mudança de comportamento, escrita antes
 | [Ignorar um lembrete só dessa vez](lembrete-ignorar.md) | No ar desde 12/11/2026 (ako#50) |
 | [Avisar com o app fechado](lembretes-app-fechado.md) | Em revisão (12/11/2026) |
 | [O mesmo relógio do Foco em todos os aparelhos](foco-entre-aparelhos.md) | Em revisão (13/11/2026) |
+| [Tarefas que se repetem](tarefas-que-se-repetem.md) | Em revisão (13/11/2026) |

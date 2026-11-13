@@ -1381,7 +1381,7 @@
   }
   function renderAmanhaFim() {
     var am = amanhaChave(), ul = $('fim-amanha-lista'); ul.innerHTML = '';
-    S.tarefas.filter(function (t) { return !t.rotina && t.dia === am; }).sort(porPos).forEach(function (t) { ul.appendChild(linhaTarefa(t, { amanha: true })); });
+    doDiaFuturo(am).forEach(function (t) { ul.appendChild(linhaTarefa(t, { amanha: true })); });
     var n = ul.children.length;
     $('b-amanha').textContent = n ? '📝 Amanhã: ' + n + (n === 1 ? ' tarefa' : ' tarefas') + '. Mais alguma?' : '📝 Tem algo para amanhã?';
   }
@@ -1430,7 +1430,7 @@
   function feitaHoje(t) { return t.rotina ? !!dia().feitas[t.id] : t.feita === chaveDia(); }
   function visiveisHoje() {
     var hoje = chaveDia();
-    return S.tarefas.filter(function (t) { return t.rotina || (!!t.dia && t.dia <= hoje && (!t.feita || t.feita === hoje)); })
+    return S.tarefas.filter(function (t) { return t.rotina ? repeteEm(t, hoje) : (!!t.dia && t.dia <= hoje && (!t.feita || t.feita === hoje)); })
       .sort(function (a, b) { return (feitaHoje(a) - feitaHoje(b)) || porPos(a, b); });
   }
   function marcarTarefa(t) {
@@ -1508,7 +1508,7 @@
     if (campo) { li.classList.add('editando'); li.appendChild(campo); }
     else {
       var txt = document.createElement('span'); txt.className = 'tarefa-txt'; txt.textContent = t.texto;
-      if (t.rotina) { var r = document.createElement('small'); r.textContent = 'Rotina'; txt.appendChild(r); }
+      if (t.rotina) { var r = document.createElement('small'); r.textContent = t.repete ? '🔁 ' + textoRepete(t.repete).replace(t.repete.dias ? /^$/ : /^tod[ao] /, '') : 'Rotina'; if (t.repete) { r.className = 'repete'; r.title = textoRepete(t.repete); } txt.appendChild(r); }
       else if (!opcoes.amanha && t.dia && t.dia < hoje) {
         var n = diasDesde(t.dia), v = document.createElement('small');
         v.className = 'idade' + (n >= PARADA ? ' forte' : ''); v.textContent = idadeTexto(n); txt.appendChild(v);
@@ -1523,9 +1523,9 @@
     pr.addEventListener('click', function () { t.prio = !t.prio; if (t.prio) proTopo(t); salvar(); render(); });
     li.appendChild(pr);
     var x = document.createElement('button'); x.type = 'button'; x.className = 'tirar-bt'; x.textContent = '×';
-    x.setAttribute('aria-label', 'Remover: ' + t.texto);
+    x.setAttribute('aria-label', (t.repete ? 'Remover de todos os dias: ' : 'Remover: ') + t.texto);
     x.addEventListener('click', function () { S.tarefas = S.tarefas.filter(function (y) { return y.id !== t.id; }); salvar(); render(); });
-    if (!opcoes.curta) li.appendChild(x);
+    if (!opcoes.curta && !(opcoes.amanha && t.repete)) li.appendChild(x);
     if (!opcoes.curta && !opcoes.amanha && !feita && tarefaParada(t)) li.appendChild(perguntaParada(t));
     return li;
   }
@@ -1695,11 +1695,13 @@
     $('cal-ant').disabled = calMes <= chaveMes(new Date());
     var conta = {};
     S.tarefas.forEach(function (t) { if (!t.rotina && !t.feita && t.dia && t.dia >= hoje) conta[t.dia] = (conta[t.dia] || 0) + 1; });
+    var repetem = S.tarefas.filter(function (t) { return t.repete; });
     var box = $('cal-dias'); box.innerHTML = '';
     for (var i = 0; i < calMes.getDay(); i++) box.appendChild(document.createElement('span'));
     var ultimo = new Date(calMes.getFullYear(), calMes.getMonth() + 1, 0).getDate();
     for (var n = 1; n <= ultimo; n++) {
       var k = chaveDia(new Date(calMes.getFullYear(), calMes.getMonth(), n));
+      if (k >= hoje) repetem.forEach(function (t) { if (repeteEm(t, k) && !(k === hoje && feitaHoje(t))) conta[k] = (conta[k] || 0) + 1; });
       var b = document.createElement('button'); b.type = 'button'; b.className = 'cal-d'; b.dataset.dia = k;
       b.textContent = n;
       if (k < hoje) b.disabled = true;
@@ -1711,11 +1713,96 @@
     }
     $('cal-titulo').textContent = calDia === hoje ? 'Hoje' : calDia === am ? 'Amanhã, ' + dataCurta(calDia) : dataCurta(calDia).replace(/^./, function (c) { return c.toUpperCase(); });
     var ul = $('cal-lista'); ul.innerHTML = '';
-    var doDia = calDia === hoje ? visiveisHoje().filter(function (t) { return !t.rotina; }) : S.tarefas.filter(function (t) { return !t.rotina && t.dia === calDia; }).sort(porPos);
+    var doDia = calDia === hoje ? visiveisHoje().filter(function (t) { return !t.rotina || t.repete; }) : doDiaFuturo(calDia);
     var moveis = calDia === hoje ? doDia.filter(function (t) { return !feitaHoje(t); }) : doDia;
     doDia.forEach(function (t) { ul.appendChild(linhaTarefa(t, calDia === hoje ? { lista: moveis } : { amanha: true, lista: moveis })); });
     $('cal-vazio').hidden = doDia.length > 0;
     $('cal-add').textContent = calDia === hoje ? 'Adicionar hoje' : 'Adicionar em ' + dataCurta(calDia).split(',')[1].trim();
+    opcoesRepete();
+    renderRepeticoes();
+  }
+  // Tarefas de um dia que ainda vai chegar: as marcadas nele e as que se repetem nele.
+  function doDiaFuturo(k) {
+    return S.tarefas.filter(function (t) { return t.rotina ? !!t.repete && repeteEm(t, k) : t.dia === k; }).sort(porPos);
+  }
+
+  // ---------- Repetir ----------
+  // Tarefa que se repete é uma rotina (rotina: true) com a regra em repete:
+  //   { dias: [2, 6], desde }          toda terça e sábado (0 = domingo)
+  //   { ordem: 3, dia: 1, desde }      toda 3ª segunda do mês (ordem -1 = a última)
+  // Sem repete, a rotina volta todo dia, como antes. Cada dia é marcado à parte (dias[k].feitas).
+  var DSEM_NOME = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+  var DSEM_PLURAL = ['domingos', 'segundas', 'terças', 'quartas', 'quintas', 'sextas', 'sábados'];
+  function dataDe(k) { var a = k.split('-'); return new Date(+a[0], a[1] - 1, +a[2], 12); }
+  function ordemNoMes(d) { return Math.ceil(d.getDate() / 7); }
+  function ultimaNoMes(d) { return d.getDate() + 7 > new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate(); }
+  function repeteEm(t, k) {
+    var r = t.repete;
+    if (!r) return true;
+    if (r.desde && k < r.desde) return false;
+    var d = dataDe(k);
+    if (r.dias) return r.dias.indexOf(d.getDay()) >= 0;
+    if (d.getDay() !== r.dia) return false;
+    return r.ordem === -1 ? ultimaNoMes(d) : ordemNoMes(d) === r.ordem;
+  }
+  function textoRepete(r) {
+    if (r.dias) {
+      var ds = [1, 2, 3, 4, 5, 6, 0].filter(function (x) { return r.dias.indexOf(x) >= 0; }), k = ds.join(',');
+      if (ds.length === 7) return 'todo dia';
+      if (k === '1,2,3,4,5') return 'de segunda a sexta';
+      if (k === '6,0') return 'todo fim de semana';
+      if (ds.length === 1) return (ds[0] === 0 || ds[0] === 6 ? 'todo ' : 'toda ') + DSEM_NOME[ds[0]];
+      var nomes = ds.map(function (x) { return DSEM_PLURAL[x]; });
+      return nomes.slice(0, -1).join(', ') + ' e ' + nomes[nomes.length - 1];
+    }
+    var m = r.dia === 0 || r.dia === 6;
+    return (m ? 'todo ' : 'toda ') + (r.ordem === -1 ? (m ? 'último ' : 'última ') : r.ordem + (m ? 'º ' : 'ª ')) + DSEM_NOME[r.dia] + ' do mês';
+  }
+  function maiuscula(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
+  // As opções saem do dia escolhido no calendário: terça, 18/11 oferece "Toda terça", "Toda 3ª terça do mês"...
+  function opcoesRepete() {
+    var sel = $('cal-repete'), antes = sel.value, d = dataDe(calDia), w = d.getDay(), n = ordemNoMes(d);
+    var ops = [['', 'Não repetir'], ['sem', maiuscula(textoRepete({ dias: [w] }))], ['dias', 'Escolher os dias']];
+    if (n <= 4) ops.push(['mes', maiuscula(textoRepete({ ordem: n, dia: w }))]);
+    if (ultimaNoMes(d)) ops.push(['ult', maiuscula(textoRepete({ ordem: -1, dia: w }))]);
+    sel.innerHTML = '';
+    ops.forEach(function (o) { var op = document.createElement('option'); op.value = o[0]; op.textContent = o[1]; sel.appendChild(op); });
+    sel.value = ops.some(function (o) { return o[0] === antes; }) ? antes : '';
+    mostrarDiasRepete();
+  }
+  var repDias = document.querySelectorAll('#cal-rep-dias [data-rdia]');
+  function diasRepete() { return [].filter.call(repDias, function (b) { return b.getAttribute('aria-pressed') === 'true'; }).map(function (b) { return +b.dataset.rdia; }); }
+  function mostrarDiasRepete() {
+    var box = $('cal-rep-dias'), abrir = $('cal-repete').value === 'dias';
+    // ao abrir, já vem marcado o dia da semana escolhido no calendário
+    if (abrir && box.hidden && !diasRepete().length) { var w = dataDe(calDia).getDay(); repDias.forEach(function (b) { b.setAttribute('aria-pressed', String(+b.dataset.rdia === w)); }); }
+    box.hidden = !abrir;
+  }
+  $('cal-repete').addEventListener('change', mostrarDiasRepete);
+  repDias.forEach(function (b) { b.addEventListener('click', function () { b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true')); }); });
+  function regraEscolhida() {
+    var v = $('cal-repete').value, d = dataDe(calDia), w = d.getDay();
+    if (!v) return null;
+    if (v === 'sem') return { dias: [w], desde: calDia };
+    if (v === 'dias') { var ds = diasRepete(); return ds.length ? { dias: ds.sort(), desde: calDia } : false; }
+    return { ordem: v === 'ult' ? -1 : ordemNoMes(d), dia: w, desde: calDia };
+  }
+  function renderRepeticoes() {
+    var lista = S.tarefas.filter(function (t) { return t.repete; }).sort(porPos), hoje = chaveDia();
+    var box = $('repeticoes'), ul = $('rep-lista'); ul.innerHTML = '';
+    box.hidden = !lista.length;
+    $('rep-n').textContent = lista.length;
+    lista.forEach(function (t) {
+      var li = document.createElement('li'), sp = document.createElement('span');
+      sp.textContent = (t.prio ? '★ ' : '') + t.texto;
+      var sm = document.createElement('small');
+      sm.textContent = textoRepete(t.repete) + (t.repete.desde > hoje ? ', a partir de ' + dataCurta(t.repete.desde) : '');
+      sp.appendChild(sm);
+      var x = document.createElement('button'); x.type = 'button'; x.className = 'btn btn-perigo btn-mini'; x.textContent = 'Parar';
+      x.setAttribute('aria-label', 'Parar de repetir: ' + t.texto);
+      x.addEventListener('click', function () { tirarTarefa(t); falar('"' + t.texto + '" não se repete mais.', 'ola'); });
+      li.appendChild(sp); li.appendChild(x); ul.appendChild(li);
+    });
   }
   $('cal-dias').addEventListener('click', function (e) {
     var b = e.target.closest('.cal-d'); if (!b || b.disabled) return;
@@ -1726,13 +1813,16 @@
   $('cal-nova').addEventListener('submit', function (e) {
     e.preventDefault();
     var txt = $('cal-txt').value.trim(); if (!txt) return;
-    var quando = calDia;
-    addTarefa(txt, $('cal-prio').checked, false, quando);
-    $('cal-txt').value = ''; $('cal-prio').checked = false;
-    falar(quando === chaveDia() ? 'Anotado na lista de hoje.' : 'Anotado para ' + dataCurta(quando) + '. Nesse dia ela aparece na sua lista.', 'ideia');
+    var quando = calDia, regra = regraEscolhida();
+    if (regra === false) { falar('Escolha pelo menos um dia da semana para repetir.', 'ideia'); return; }
+    addTarefa(txt, $('cal-prio').checked, !!regra, quando, null, regra);
+    $('cal-txt').value = ''; $('cal-prio').checked = false; $('cal-repete').value = ''; repDias.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); }); mostrarDiasRepete();
+    if (regra) falar('Combinado: "' + txt + '" aparece na sua lista ' + textoRepete(regra) + (quando === chaveDia() ? ', começando hoje.' : ', a partir de ' + dataCurta(quando) + '.'), 'ideia');
+    else falar(quando === chaveDia() ? 'Anotado na lista de hoje.' : 'Anotado para ' + dataCurta(quando) + '. Nesse dia ela aparece na sua lista.', 'ideia');
   });
-  function addTarefa(texto, prio, rotina, quando, grupo) {
+  function addTarefa(texto, prio, rotina, quando, grupo, repete) {
     var t = { id: novoId('t'), texto: texto, prio: prio, rotina: rotina, dia: quando, feita: null };
+    if (repete) t.repete = repete;
     if (!quando) { t.grupo = grupo || null; t.criada = chaveDia(); }
     if (prio) proTopo(t); else t.pos = limitesPos(S.tarefas)[1] + 1;
     S.tarefas.push(t);
