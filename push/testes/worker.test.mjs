@@ -113,6 +113,19 @@ await caso('/zumi do mês devolve a frase', async () => {
   assert.equal(r.status, 200);
   assert.match((await r.json()).frase, /dezembro/);
 });
+await caso('/zumi lê a resposta no formato de chat, com ```json e com o modelo pensando antes', async () => {
+  const fmt = [
+    { choices: [{ message: { content: '```json\n' + JSON.stringify(respostaOk) + '\n```' } }] },
+    { result: { response: '<think>Vou montar {um rascunho}.</think>\n' + JSON.stringify(respostaOk) } },
+    { response: 'Pensei em {"abertura": 1}. Resposta final: ' + JSON.stringify(respostaOk) }
+  ];
+  for (const f of fmt) {
+    env.AI = { run: async () => f };
+    const r = await pedir('/zumi', { ...semana, id: b64u(nodeCrypto.randomBytes(16)) });
+    assert.equal(r.status, 200);
+    assert.equal((await r.json()).conselho, respostaOk.conselho);
+  }
+});
 await caso('/zumi limita 3 pedidos por aparelho por dia e para no limite do dia', async () => {
   const outro = { ...semana, id: b64u(nodeCrypto.randomBytes(16)) };
   for (let i = 0; i < 3; i++) assert.notEqual((await pedir('/zumi', outro)).status, 429);
