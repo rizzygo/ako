@@ -68,15 +68,36 @@ export function mensagens(p) {
 
 const limpo = (t, max) => typeof t === 'string' && t.trim().length >= (max > 0 ? 8 : 0) && t.length <= 240 && !/[<>]|https?:|www\./i.test(t);
 
-// Lê o JSON da resposta do modelo (às vezes vem com texto em volta) e confere cada parte.
-export function lerResposta(saida, p) {
-  let o = saida && typeof saida.response === 'object' ? saida.response : null;
-  if (!o) {
-    const t = saida && typeof saida.response === 'string' ? saida.response : '';
-    const m = t.match(/\{[\s\S]*\}/);
-    if (!m) return null;
-    try { o = JSON.parse(m[0]); } catch (e) { return null; }
+// Texto que o modelo devolveu. Cada modelo do Workers AI responde num formato:
+// { response: "..." }, { response: {...} }, { result: { response } } ou o formato de chat { choices: [{ message: { content } }] }.
+export function textoDaSaida(saida) {
+  if (!saida) return null;
+  if (typeof saida === 'string') return saida;
+  if (saida.result) return textoDaSaida(saida.result);
+  if (saida.response !== undefined && saida.response !== null) return saida.response;
+  const c = saida.choices && saida.choices[0];
+  if (c && c.message && c.message.content !== undefined) return c.message.content;
+  if (c && typeof c.text === 'string') return c.text;
+  return null;
+}
+
+// Acha o último objeto JSON que dá para ler no texto (o modelo às vezes pensa em voz alta ou põe ```json em volta).
+function ultimoJson(t) {
+  t = t.replace(/<think>[\s\S]*?<\/think>/g, '');
+  for (let fim = t.lastIndexOf('}'); fim >= 0; fim = t.lastIndexOf('}', fim - 1)) {
+    for (let ini = t.lastIndexOf('{', fim); ini >= 0; ini = t.lastIndexOf('{', ini - 1)) {
+      try { const o = JSON.parse(t.slice(ini, fim + 1)); if (o && typeof o === 'object') return o; } catch (e) { /* tenta o próximo */ }
+    }
   }
+  return null;
+}
+
+// Lê o JSON da resposta do modelo e confere cada parte.
+export function lerResposta(saida, p) {
+  const bruto = textoDaSaida(saida);
+  let o = bruto && typeof bruto === 'object' ? bruto : null;
+  if (!o && typeof bruto === 'string') o = ultimoJson(bruto);
+  if (!o) return null;
   if (p.tipo === 'mes') return limpo(o.frase, 1) ? { frase: o.frase.trim() } : null;
   const r = {};
   for (const k of ['abertura', 'melhorar', 'conselho']) { if (!limpo(o[k], 1)) return null; r[k] = o[k].trim(); }
@@ -109,8 +130,9 @@ export async function zumi(env, b) {
   if (!env.AI) return [503, { erro: 'sem ia' }];
   if (!(await contar(env, p.id))) return [429, { erro: 'cota' }];
   let saida;
-  try { saida = await env.AI.run(env.ZUMI_MODELO || MODELO, { messages: mensagens(p), max_tokens: 400, temperature: 0.6 }); }
+  try { saida = await env.AI.run(env.ZUMI_MODELO || MODELO, { messages: mensagens(p), max_tokens: 700, temperature: 0.6 }); }
   catch (e) { return [502, { erro: 'ia' }]; }
   const r = lerResposta(saida, p);
+  if (!r) console.log('zumi: resposta recusada', JSON.stringify(saida).slice(0, 600));
   return r ? [200, r] : [502, { erro: 'resposta' }];
 }

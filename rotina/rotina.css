@@ -333,7 +333,6 @@ textarea{width:100%;resize:vertical}
   .abas-app{position:fixed;top:auto;left:0;right:0;bottom:0;border-radius:0;border-width:1px 0 0;padding:.25rem .25rem calc(.25rem + env(safe-area-inset-bottom,0px));box-shadow:0 -4px 16px -8px rgba(11,27,58,.25);z-index:40}
   .abas-app a{flex-direction:column;gap:.1rem;font-size:.72rem;padding:.4rem .1rem}
   .abas-app a span{font-size:1.25rem;line-height:1}
-  .abas-app .so-largo{display:none}
   body{padding-bottom:4.5rem}
   .aviso{bottom:5.2rem}
   .guia{grid-template-columns:auto 1fr}
