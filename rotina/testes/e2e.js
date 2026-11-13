@@ -180,6 +180,23 @@ async function main() {
     confere(erros.length === 0, 'nenhum erro de JavaScript no push' + (erros.length ? ': ' + erros.join(' | ') : ''));
     await ctx.close();
 
+    // 5b1. Não conseguiu assinar o push (ex.: janela anônima): a mensagem diz a causa, não "confira a internet".
+    ({ ctx, pagina, erros } = await novaPagina(navegador));
+    await ctx.addInitScript(() => {
+      Object.defineProperty(Notification, 'permission', { get: () => 'granted', configurable: true });
+      Notification.requestPermission = () => Promise.resolve('granted');
+      PushManager.prototype.getSubscription = () => Promise.resolve(null);
+      PushManager.prototype.subscribe = () => Promise.reject(new DOMException('push service error', 'AbortError'));
+    });
+    await pagina.route('https://rotina-push.rizzygo.com.br/**', r => r.fulfill({ status: 200, contentType: 'application/json', headers: { 'Access-Control-Allow-Origin': '*' }, body: '{"chave":"BEl62iUYgUivxIkv69yViEuiBIa-Ib9-SkvMeAtA3LFgDzkrxZJjSgSnfckjBJuBkr3qBUYIHBQFLXYp5Nksh8U"}' }));
+    await pagina.goto(BASE + '/rotina/#/ajustes', { waitUntil: 'networkidle' });
+    await pagina.waitForSelector('#push-bloco:not([hidden])', { timeout: 5000 }).catch(() => {});
+    await pagina.click('#push-on');
+    await pagina.waitForTimeout(1200);
+    const msgErro = await pagina.textContent('#push-estado');
+    confere(msgErro.includes('janela anônima') && msgErro.includes('AbortError') && !await pagina.isChecked('#push-on'), 'se o navegador não assina o push, a mensagem diz a causa e a chave volta desligada');
+    await ctx.close();
+
     // 5b2. iPhone no Safari (sem PushManager): a opção aparece desligada, com a explicação de abrir pelo ícone.
     const ctxIos = await navegador.newContext({ userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1' });
     await ctxIos.addInitScript(() => { delete window.PushManager; });

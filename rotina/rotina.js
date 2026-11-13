@@ -1151,6 +1151,14 @@
 
 
   // ---------- Nuvem (opcional) ----------
+  // Diz a causa de verdade em vez de "confira a internet": a pessoa precisa saber o que mudar.
+  function motivoPush(e) {
+    var nome = (e && e.name) || 'erro', msg = (e && e.message) || '';
+    if (msg === 'permissao' || nome === 'NotAllowedError') return 'Sem a permissão de notificação não dá para avisar com o app fechado. Libere nas configurações do navegador.';
+    if (/^push \d/.test(msg)) return 'O servidor de avisos recusou o pedido (' + msg + '). Tente de novo em instantes.';
+    if (nome === 'AbortError' || nome === 'NotSupportedError' || nome === 'InvalidStateError') return 'O navegador não conseguiu criar a assinatura de push. Isso acontece em janela anônima ou privada, e quando o navegador está sem acesso ao serviço de push (Google, Apple ou Mozilla). Abra em uma janela normal e tente de novo. (' + nome + ')';
+    return 'Não deu para ligar agora. Confira a internet e tente de novo. (' + nome + (msg ? ': ' + msg.slice(0, 80) : '') + ')';
+  }
   function desligarPush() {
     var id = push.id;
     push.on = false; salvarPush(); pushEnviado = '';
@@ -1172,7 +1180,7 @@
         falar('Pronto! Agora eu aviso mesmo com a Rotina fechada.', 'comemorando', true);
       }).catch(function (e) {
         push.on = false; salvarPush(); cb.checked = false; estadoNotif();
-        estadoPush(e && e.message === 'permissao' ? 'Sem a permissão de notificação não dá para avisar com o app fechado. Libere nas configurações do navegador.' : 'Não deu para ligar agora. Confira a internet e tente de novo.');
+        estadoPush(motivoPush(e));
       }).then(function () { cb.disabled = false; });
     } else desligarPush();
   });
