@@ -28,13 +28,16 @@ async function esperarServidor() {
   throw new Error('servidor local não subiu');
 }
 
-async function novaPagina(navegador, estado) {
+// A edição de novidades mais nova: os passos comuns já a marcam como vista, para o pop-up não cobrir a tela.
+const NOVIDADES = require('../novidades.js');
+async function novaPagina(navegador, estado, opcoes) {
   const ctx = await navegador.newContext({ serviceWorkers: 'allow' });
   // O teste não fala com o Worker de produção: sem isso, o resultado dependeria da internet e de a Cloudflare aceitar
   // o IP de quem roda (o CI recebeu uma resposta sem CORS). Os passos do push registram a própria resposta na página,
   // e a rota da página vale mais que esta, do contexto.
   await ctx.route('https://rotina-push.rizzygo.com.br/**', r => r.abort());
   if (estado) await ctx.addInitScript(([k, v]) => { if (!sessionStorage.getItem('semeado')) { localStorage.setItem(k, v); sessionStorage.setItem('semeado', '1'); } }, [CHAVE, estado]);
+  if (!(opcoes && opcoes.novidades)) await ctx.addInitScript(([k, v]) => { localStorage.setItem(k, v); }, [NOVIDADES.CHAVE, NOVIDADES.EDICOES[0].id]);
   const pagina = await ctx.newPage();
   const erros = [];
   pagina.on('pageerror', e => erros.push(e.message));
@@ -390,6 +393,29 @@ async function main() {
     await pagina.evaluate(() => { location.hash = '#/tarefas/sem-data'; });
     confere((await pagina.textContent('#semdata-lista')).length > 0, 'lista sem data aparece com dados antigos');
     confere(erros.length === 0, 'nenhum erro de JavaScript com dados antigos' + (erros.length ? ': ' + erros.join(' | ') : ''));
+    await ctx.close();
+
+    // 7. Ajuda: botão ? no topo, links no rodapé, pop-up de novidades uma vez só e as páginas do manual e das novidades.
+    ({ ctx, pagina, erros } = await novaPagina(navegador, antigo, { novidades: true }));
+    await pagina.goto(BASE + '/rotina/', { waitUntil: 'networkidle' });
+    confere(await pagina.getAttribute('.familia .ajuda-botao', 'href') === '/rotina/manual/', 'o botão ? do topo leva ao manual');
+    confere(await pagina.locator('.rodape a[href="/rotina/manual/"]').count() === 1 && await pagina.locator('.rodape a[href="/rotina/novidades/"]').count() === 1, 'o rodapé tem Manual da Rotina e Novidades');
+    await pagina.waitForSelector('.novas', { timeout: 5000 }).catch(() => {});
+    confere(await pagina.locator('.novas .novas-lista li').count() === Math.min(3, NOVIDADES.EDICOES[0].itens.length), 'quem já usava vê o pop-up de novidades com até 3 itens');
+    await pagina.click('.novas .btn-sec');
+    await pagina.reload({ waitUntil: 'networkidle' });
+    await pagina.waitForTimeout(1800);
+    confere(await pagina.locator('.novas').count() === 0, 'depois de "Entendi", o pop-up não volta');
+    await pagina.goto(BASE + '/rotina/manual/', { waitUntil: 'networkidle' });
+    confere(await pagina.locator('.ajuda-secao').count() >= 10 && await pagina.locator('.ajuda-fig img').count() >= 12, 'o manual tem as seções e as imagens');
+    await pagina.goto(BASE + '/rotina/novidades/', { waitUntil: 'networkidle' });
+    confere(await pagina.locator('.novas-edicao').count() === NOVIDADES.EDICOES.length, 'a página de novidades mostra todas as edições');
+    confere(erros.length === 0, 'nenhum erro de JavaScript na ajuda' + (erros.length ? ': ' + erros.join(' | ') : ''));
+    await ctx.close();
+    ({ ctx, pagina, erros } = await novaPagina(navegador, null, { novidades: true }));
+    await pagina.goto(BASE + '/rotina/', { waitUntil: 'networkidle' });
+    await pagina.waitForTimeout(1800);
+    confere(await pagina.locator('.novas').count() === 0, 'quem abre a Rotina pela primeira vez não vê o pop-up');
     await ctx.close();
   } finally {
     await navegador.close();
