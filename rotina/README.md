@@ -107,6 +107,9 @@ Próximo passo, se o MVP pegar: um Cloudflare Worker com Cron Trigger que guarda
 | `index.html` | A página |
 | `rotina.css` | O estilo só desta página |
 | `rotina.js` | Timer, lembretes, pontos, títulos e reflexão |
+| `novidades.js` | Novidades de cada mês: o pop-up que aparece uma vez só e a página `novidades/` |
+| `ajuda.css` | Botão ? do topo, pop-up de novidades, manual e novidades |
+| `manual/` | Manual com um print de cada parte (`manual/img/`) |
 | `sw.js` | Service worker: cache para abrir sem internet e clique na notificação |
 | `manifest.webmanifest` | Nome, ícones e modo de tela cheia do app instalado |
 

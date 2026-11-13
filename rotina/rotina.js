@@ -107,6 +107,8 @@
     return s;
   }
 
+  // Primeira vez nesta Rotina (nada salvo ainda): o pop-up de novidades não aparece.
+  var primeiraVez = (function () { try { return localStorage.getItem(CHAVE) === null; } catch (e) { return false; } })();
   var S = carregar();
   var nuvem = null; // módulo da nuvem, só quando a pessoa liga
   // Duas cópias da Rotina abertas no mesmo aparelho (duas abas, ou a aba e o atalho na tela inicial)
@@ -2397,6 +2399,14 @@
   function irPara(a) { location.hash = a === 'hoje' ? '#/' : '#/' + a; }
   window.addEventListener('hashchange', function () { mostrarAba(true); });
   mostrarAba(false);
+  // Novidades do mês: pop-up uma vez só por edição (novidades.js, spec manual-e-novidades.md).
+  (function novidades(tentativa) {
+    setTimeout(function () {
+      if (!window.RotinaNovidades) return;
+      var r = window.RotinaNovidades.talvezMostrar({ novo: primeiraVez });
+      if (r === 'depois' && tentativa < 30) novidades(tentativa + 1); // espera o outro aviso fechar (até uns 2 min)
+    }, tentativa ? 4000 : 1200);
+  })(0);
 
   // ---------- Relógio central ----------
   var ultimoDia = chaveDia();
