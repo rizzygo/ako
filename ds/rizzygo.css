@@ -89,6 +89,10 @@ main{display:block;outline:none}
 .familia-item:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5);color:#FFFFFF}
 .familia-item[aria-current="page"]{background:rgba(255,255,255,.14);border-color:transparent;color:#FFFFFF}
 .familia-item svg{width:16px;height:16px;flex:none}
+/* Os sites da família (Rizzygo, Ako, Rotina) com o mesmo tamanho. No celular, ficam sozinhos na primeira linha, dividindo a largura, e conta, ajuda e tema vão para a linha de baixo, à direita */
+.familia-site{justify-content:center;min-width:7rem}
+.familia-item img{width:18px;height:18px;flex:none}
+@media (max-width:30rem){.familia-in{flex-wrap:wrap;row-gap:.4rem}.familia-site{flex:0 0 calc((100% - .7rem) / 3);min-width:0;padding:.35rem .5rem}}
 /* Botão de tema claro e escuro (ds/tema.js): sempre no fim da faixa, depois da conta */
 .familia-in::after{content:"";order:50;flex:1 1 auto}
 .familia-conta,.conta-entrar,.conta-sair{order:60}

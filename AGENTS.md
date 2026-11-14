@@ -4,7 +4,7 @@ Este arquivo vale para qualquer agente de IA (Claude Code, Codex, Gemini CLI, Gi
 
 ## O que é este repositório
 
-O site **ako.rizzygo.com.br**: trilhas, mapas, lições, Rotina com a Zumi e a vitrine dos Favos. Repositório **público** (CC BY 4.0). HTML, CSS e JavaScript puros, **sem build**: o Cloudflare Pages publica os arquivos como estão a cada commit na `main` e cria uma prévia em cada pull request.
+O site **ako.rizzygo.com.br**: trilhas, mapas, lições e a vitrine dos Favos. A Rotina com a Zumi mora em rotina.rizzygo.com.br desde 14/11/2026; aqui fica só a ponte `/rotina/`. Repositório **público** (CC BY 4.0). HTML, CSS e JavaScript puros, **sem build**: o Cloudflare Pages publica os arquivos como estão a cada commit na `main` e cria uma prévia em cada pull request.
 
 **Todo caminho é uma URL publicada.** Não mova nem renomeie arquivo servido sem uma regra 301 no `_redirects` no mesmo PR.
 
@@ -29,7 +29,7 @@ Cada pasta é uma funcionalidade completa. Para mexer numa fatia, leia o `AGENTS
 ## Comandos
 
 ```sh
-scripts/validar   # trilhas, mapas, lições, JavaScript, Rotina no navegador, segredos e tamanho dos AGENTS.md
+scripts/validar   # trilhas, mapas, lições, JavaScript, segredos e tamanho dos AGENTS.md
 scripts/previa    # prévia local em http://localhost:8000, igual ao Cloudflare Pages
 ```
 
@@ -41,7 +41,7 @@ O CI (`.github/workflows/validar.yml`) roda o mesmo `scripts/validar`. Confira a
 - **Público:** nada de dado de pessoa, decisão de negócio, preço, token ou id de projeto. O "porquê" interno fica no repositório privado `rizzygo-docs`.
 - **Conteúdo:** fonte só depois de aberta e conferida. Material pago nunca é obrigatório. Termos técnicos em inglês ficam em inglês.
 - **Contagem de visitas:** página HTML nova leva o trecho do Cloudflare Web Analytics antes do `</body>` e entra no `sitemap.xml`.
-- **Família Rizzygo:** página nova leva a faixa `.familia` e segue o design system.
+- **Família Rizzygo:** página nova leva a faixa `.familia` com Rizzygo, Ako e Rotina (classe `familia-site`, mesmo tamanho; a Rotina aponta para `/rotina/`, a ponte) e segue o design system. A faixa é igual no rizzygo.com.br e na Rotina.
 - **Antes de apagar, mudar regra do Firestore ou mexer em produção:** explique e espere o OK.
 - **Git e segredos:** nada de `git push --force` nem push direto na `main`. Não leia nem versione arquivo de token, `.env` ou chave. No Claude Code, o `.claude/settings.json` já nega isso; o `scripts/segredos.py` barra no CI.
 
