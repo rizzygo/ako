@@ -9,4 +9,4 @@ Projeto `rizzygo-webapp`, plano Spark (gratuito). Usado para a cópia opcional n
 - Regras: [`firestore.rules`](firestore.rules). O mesmo projeto guarda o cadastro de leitores dos ebooks do rizzygo.com.br (`leitores/<uid>`), e o Firestore tem um arquivo de regras só: este arquivo junta os dois lados e precisa ficar igual à cópia do repositório `rizzygo-website`. Mudou? Atualize os dois, cole no console (Firestore Database > Regras) e publique.
 - O que vai para a nuvem e como apagar: página [/privacidade/](../privacidade/index.html).
 
-No console, em Authentication > Configurações > Domínios autorizados, ficam `ako.rizzygo.com.br` e `ako-7vx.pages.dev`.
+No console, em Authentication > Configurações > Domínios autorizados, ficam `ako.rizzygo.com.br`, `ako-7vx.pages.dev`, `rotina.rizzygo.com.br` e `rizzygo-rotina.pages.dev` (a Rotina, desde 14/11/2026, usa o mesmo projeto).

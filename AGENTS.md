@@ -15,7 +15,7 @@ Cada pasta é uma funcionalidade completa. Para mexer numa fatia, leia o `AGENTS
 | Fatia | O que é | Mapa próprio |
 | --- | --- | --- |
 | `trilhas/` | Trilhas, mapas das áreas e lições | [`trilhas/AGENTS.md`](trilhas/AGENTS.md) |
-| `rotina/` | App Rotina com a Zumi (PWA, service worker) | [`rotina/AGENTS.md`](rotina/AGENTS.md) |
+| `rotina/` | Só a ponte para rotina.rizzygo.com.br: o app e o Worker dos lembretes moram em outro repositório desde 14/11/2026 | |
 | `favos/` | Uma página por skill dos Favos | README do repositório `favos` |
 | `privacidade/`, `guias/` | Política de privacidade e guias soltos | |
 | `index.html` + `inicio.css` | Página inicial | |
@@ -24,7 +24,6 @@ Cada pasta é uma funcionalidade completa. Para mexer numa fatia, leia o `AGENTS
 
 - `ds/`: design system, idêntico ao `ds/` do `rizzygo-website`. Mudou aqui, copie para lá no mesmo dia. Guia em [`ds/README.md`](ds/README.md).
 - `conta.js`, `nuvem.js`, `mesclar.js`: conta Google opcional e progresso na nuvem (Firebase). Regras do Firestore em [`firebase/`](firebase/).
-- `push/`: Cloudflare Worker que manda o push dos lembretes da Rotina com o app fechado. Não é servido pelo Pages como app; publica com `wrangler`. Ver [`push/README.md`](push/README.md).
 - `vitoria.js`, `contribua.js`, `topo.css`: som de vitória, rodapé de contribuição, faixa do topo.
 
 ## Comandos
@@ -38,7 +37,7 @@ O CI (`.github/workflows/validar.yml`) roda o mesmo `scripts/validar`. Confira a
 
 ## Regras
 
-- **Cache:** mudou CSS ou JS, troque o `?v=` nas páginas que carregam o arquivo. Na Rotina, troque também o `CACHE` e a lista do `rotina/sw.js`.
+- **Cache:** mudou CSS ou JS, troque o `?v=` nas páginas que carregam o arquivo.
 - **Público:** nada de dado de pessoa, decisão de negócio, preço, token ou id de projeto. O "porquê" interno fica no repositório privado `rizzygo-docs`.
 - **Conteúdo:** fonte só depois de aberta e conferida. Material pago nunca é obrigatório. Termos técnicos em inglês ficam em inglês.
 - **Contagem de visitas:** página HTML nova leva o trecho do Cloudflare Web Analytics antes do `</body>` e entra no `sitemap.xml`.
@@ -53,4 +52,4 @@ O CI (`.github/workflows/validar.yml`) roda o mesmo `scripts/validar`. Confira a
 
 ## Commits
 
-Conventional Commits em português, com a fatia no escopo: `feat(rotina): ...`, `fix(trilhas): ...`, `docs(ako): ...`.
+Conventional Commits em português, com a fatia no escopo: `feat(trilhas): ...`, `fix(favos): ...`, `docs(ako): ...`.
