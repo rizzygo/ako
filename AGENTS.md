@@ -41,7 +41,7 @@ O CI (`.github/workflows/validar.yml`) roda o mesmo `scripts/validar`. Confira a
 - **Público:** nada de dado de pessoa, decisão de negócio, preço, token ou id de projeto. O "porquê" interno fica no repositório privado `rizzygo-docs`.
 - **Conteúdo:** fonte só depois de aberta e conferida. Material pago nunca é obrigatório. Termos técnicos em inglês ficam em inglês.
 - **Contagem de visitas:** página HTML nova leva o trecho do Cloudflare Web Analytics antes do `</body>` e entra no `sitemap.xml`.
-- **Família Rizzygo:** página nova leva a faixa `.familia` com Rizzygo, Ako e Rotina (classe `familia-site`, mesmo tamanho; a Rotina aponta para `/rotina/`, a ponte) e segue o design system. A faixa é igual no rizzygo.com.br e na Rotina.
+- **Família Rizzygo:** página nova leva a faixa `.familia` com Rizzygo, Ako e Rotina (classe `familia-site`, mesmo tamanho; a Rotina aponta direto para https://rotina.rizzygo.com.br/; a ponte `/rotina/` fica para links antigos) e segue o design system. A faixa é igual no rizzygo.com.br e na Rotina.
 - **Antes de apagar, mudar regra do Firestore ou mexer em produção:** explique e espere o OK.
 - **Git e segredos:** nada de `git push --force` nem push direto na `main`. Não leia nem versione arquivo de token, `.env` ou chave. No Claude Code, o `.claude/settings.json` já nega isso; o `scripts/segredos.py` barra no CI.
 
