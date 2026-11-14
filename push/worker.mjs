@@ -9,6 +9,10 @@ const ID_OK = /^[A-Za-z0-9_-]{22,64}$/;
 const B64_OK = /^[A-Za-z0-9_-]{16,128}$/;
 const MAX_PUSH_POR_MINUTO = 40; // plano free: até 50 subrequests por execução
 const DIA = 24 * 60 * 60 * 1000;
+// Freios contra robô (decisão 0006). O Cron lê a tabela inteira a cada minuto: 3.000 aparelhos = 4,3 milhões
+// de linhas lidas por dia, abaixo dos 5 milhões do D1 free. Aparelho novo além disso recebe 429 e o app avisa.
+export const MAX_APARELHOS = 3000;
+export const MAX_NOVOS_DIA = 300;   // aparelhos novos por dia, somando todo mundo
 
 function cabecalhos(origem) {
   const h = { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' };
@@ -31,6 +35,7 @@ async function salvarAparelho(env, b) {
   if (typeof a.endpoint !== 'string' || a.endpoint.length > 1024 || !/^https:\/\//.test(a.endpoint)) return false;
   if (!a.keys || !B64_OK.test(a.keys.p256dh || '') || !B64_OK.test(a.keys.auth || '')) return false;
   const velho = await env.DB.prepare('SELECT estado FROM aparelhos WHERE id = ?').bind(b.id).first();
+  if (!velho && !(await cabeNovo(env))) return 'cheio';
   const estado = juntarEstado(velho ? JSON.parse(velho.estado) : {}, agenda);
   await env.DB.prepare(
     `INSERT INTO aparelhos (id, endpoint, p256dh, auth, fuso, agenda, estado, atualizado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
@@ -38,6 +43,25 @@ async function salvarAparelho(env, b) {
        fuso = excluded.fuso, agenda = excluded.agenda, estado = excluded.estado, atualizado = excluded.atualizado`
   ).bind(b.id, a.endpoint, a.keys.p256dh, a.keys.auth, b.fuso, JSON.stringify(agenda), JSON.stringify(estado), Date.now()).run();
   return true;
+}
+
+// Aparelho novo só entra se o dia e a tabela ainda têm vaga. O contador do dia fica na zumi_uso ('novos:<dia>').
+async function cabeNovo(env) {
+  const dia = new Date().toISOString().slice(0, 10);
+  const hoje = await env.DB.prepare('SELECT n FROM zumi_uso WHERE chave = ?').bind('novos:' + dia).first();
+  if (hoje && hoje.n >= MAX_NOVOS_DIA) return false;
+  const total = await env.DB.prepare('SELECT COUNT(*) AS n FROM aparelhos').first();
+  if (total && total.n >= MAX_APARELHOS) return false;
+  await env.DB.prepare('INSERT INTO zumi_uso (chave, dia, n) VALUES (?, ?, 1) ON CONFLICT(chave) DO UPDATE SET n = n + 1').bind('novos:' + dia, dia).run();
+  return true;
+}
+
+// Limite por IP com o binding de rate limit da Cloudflare (LIMITE no wrangler.toml). O IP não é gravado em lugar nenhum.
+// Sem o binding (testes, wrangler dev antigo) ou se ele falhar, deixa passar: o freio não pode derrubar o lembrete.
+async function passou(env, req, rota) {
+  if (!env.LIMITE) return true;
+  const ip = req.headers.get('CF-Connecting-IP') || 'sem-ip';
+  try { return (await env.LIMITE.limit({ key: rota + ':' + ip })).success; } catch (e) { return true; }
 }
 
 async function adiar(env, b) {
@@ -88,7 +112,12 @@ export default {
     if (!origem || !ORIGENS.test(origem)) return json({ erro: 'origem' }, 403, origem);
     const b = await lerJson(req);
     if (!b) return json({ erro: 'corpo' }, 400, origem);
-    if (pathname === '/aparelho') return (await salvarAparelho(env, b)) ? json({ ok: true }, 200, origem) : json({ erro: 'dados' }, 400, origem);
+    if (!(await passou(env, req, pathname === '/zumi' ? 'zumi' : 'post'))) return json({ erro: 'devagar' }, 429, origem);
+    if (pathname === '/aparelho') {
+      const r = await salvarAparelho(env, b);
+      if (r === 'cheio') return json({ erro: 'cheio' }, 429, origem);
+      return r ? json({ ok: true }, 200, origem) : json({ erro: 'dados' }, 400, origem);
+    }
     if (pathname === '/adiar') return (await adiar(env, b)) ? json({ ok: true }, 200, origem) : json({ erro: 'dados' }, 400, origem);
     if (pathname === '/zumi') { const [st, corpo] = await zumi(env, b); return json(corpo, st, origem); }
     if (pathname === '/remover') {
