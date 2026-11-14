@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS aparelhos (
 );
 
 -- Contador da IA da Zumi (rota /zumi). Só números: 'g:<dia>' é o total do dia, 'a:<id>:<dia>' é o de um aparelho.
+-- 'novos:<dia>' conta os aparelhos novos do dia no /aparelho (freio contra robô, decisão 0006).
 -- Não guarda o que a pessoa mandou nem o que a Zumi respondeu. Linhas com mais de 2 dias saem às 6h UTC.
 CREATE TABLE IF NOT EXISTS zumi_uso (
   chave TEXT PRIMARY KEY,

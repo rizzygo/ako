@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import nodeCrypto from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
-import worker from '../worker.mjs';
+import worker, { MAX_NOVOS_DIA } from '../worker.mjs';
 import { b64u } from '../webpush.mjs';
 
 // D1 mínimo: prepare().bind().first()/all()/run()
@@ -137,5 +137,30 @@ await caso('/zumi limita 3 pedidos por aparelho por dia e para no limite do dia'
 await caso('/zumi sem o binding da IA responde 503', async () => {
   delete env.AI;
   assert.equal((await pedir('/zumi', { ...semana, id: b64u(nodeCrypto.randomBytes(16)) })).status, 503);
+});
+// ---------- Freios contra robô (decisão 0006) ----------
+await caso('rate limit por IP devolve 429 e não grava nada', async () => {
+  const chaves = [];
+  env.LIMITE = { limit: async ({ key }) => { chaves.push(key); return { success: false }; } };
+  const r = await worker.fetch(new Request('https://rotina-push.rizzygo.com.br/aparelho', { method: 'POST', headers: { Origin: ORIGEM, 'Content-Type': 'application/json', 'CF-Connecting-IP': '203.0.113.9' }, body: JSON.stringify(aparelho) }), env);
+  assert.equal(r.status, 429);
+  assert.equal(r.headers.get('Access-Control-Allow-Origin'), ORIGEM); // o app consegue ler o 429
+  assert.deepEqual(chaves, ['post:203.0.113.9']);
+  assert.equal(db.prepare('SELECT COUNT(*) n FROM aparelhos').get().n, 0);
+  assert.equal((await pedir('/chave')).status, 200); // GET /chave não passa pelo freio
+});
+await caso('rate limit que falha deixa passar', async () => {
+  env.LIMITE = { limit: async () => { throw new Error('fora'); } };
+  assert.equal((await pedir('/remover', { id })).status, 200);
+  delete env.LIMITE;
+});
+await caso('aparelho novo além do limite do dia recebe 429; quem já existe continua', async () => {
+  globalThis.fetch = async () => new Response(null, { status: 201 });
+  assert.equal((await pedir('/aparelho', aparelho)).status, 200);
+  const dia = new Date().toISOString().slice(0, 10);
+  db.prepare('UPDATE zumi_uso SET n = ? WHERE chave = ?').run(MAX_NOVOS_DIA, 'novos:' + dia);
+  assert.equal((await pedir('/aparelho', { ...aparelho, id: b64u(nodeCrypto.randomBytes(16)) })).status, 429);
+  assert.equal((await pedir('/aparelho', aparelho)).status, 200);
+  assert.equal(db.prepare('SELECT COUNT(*) n FROM aparelhos').get().n, 1);
 });
 console.log(`\nWorker ok (${ok} casos).`);

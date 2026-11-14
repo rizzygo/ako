@@ -1169,6 +1169,7 @@
   function motivoPush(e) {
     var nome = (e && e.name) || 'erro', msg = (e && e.message) || '';
     if (msg === 'permissao' || nome === 'NotAllowedError') return 'Sem a permissão de notificação não dá para avisar com o app fechado. Libere nas configurações do navegador.';
+    if (msg === 'push 429') return 'O servidor de avisos chegou ao limite de agora. Tente de novo mais tarde, os lembretes continuam com o app aberto.';
     if (/^push \d/.test(msg)) return 'O servidor de avisos recusou o pedido (' + msg + '). Tente de novo em instantes.';
     if (nome === 'AbortError' || nome === 'NotSupportedError' || nome === 'InvalidStateError') return 'O navegador não conseguiu criar a assinatura de push. Isso acontece em janela anônima ou privada, e quando o navegador está sem acesso ao serviço de push (Google, Apple ou Mozilla). Abra em uma janela normal e tente de novo. (' + nome + ')';
     return 'Não deu para ligar agora. Confira a internet e tente de novo. (' + nome + (msg ? ': ' + msg.slice(0, 80) : '') + ')';

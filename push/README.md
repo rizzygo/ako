@@ -11,7 +11,7 @@ Cloudflare Worker que faz os lembretes da [Rotina](../rotina/) avisarem com o ap
 
 | Arquivo | O que faz |
 | --- | --- |
-| `worker.mjs` | Rotas (`GET /chave`, `POST /aparelho`, `/adiar`, `/remover`) e o Cron |
+| `worker.mjs` | Rotas (`GET /chave`, `POST /aparelho`, `/adiar`, `/remover`, `/zumi`), freios contra robô e o Cron |
 | `agenda.mjs` | Decide o que toca agora; confere a agenda que chega |
 | `webpush.mjs` | VAPID (RFC 8292) e cifra aes128gcm (RFC 8291) só com WebCrypto |
 | `schema.sql` | Tabela `aparelhos` do D1 |
@@ -66,3 +66,34 @@ Para testar o modelo antes de soltar para todo mundo: `npx wrangler dev --remote
 - D1: o Cron lê a tabela inteira a cada minuto. Com 1.000 aparelhos são 1,44 milhão de linhas lidas por dia, dentro dos 5 milhões do free. Passou disso, o plano pago do Workers (US$5/mês) cobre.
 - Aparelho que não manda a agenda há 60 dias sai da tabela. Assinatura que o serviço de push dá como morta (404 ou 410) sai na hora.
 - Workers AI: 10 mil neurons por dia, zerando à meia-noite UTC. Um pedido gasta perto de 10, e o Worker para em 900 pedidos por dia (3 por aparelho). Passou da cota, a Cloudflare devolve erro e não cobra.
+
+## Freios contra robô
+
+No plano grátis, passar da cota não gera conta: o Worker só para até 00:00 UTC. Os freios evitam que um robô deixe todo mundo sem lembrete. Por quê e o que ficou de fora: [decisão 0006](../decisoes/0006-freios-plano-gratis.md).
+
+| Camada | Onde | O que barra |
+| --- | --- | --- |
+| Regra de rate limiting | Painel da Cloudflare (WAF) | Mais de 15 pedidos em 10 s do mesmo IP nos caminhos do Worker. Barrado ali, nem chega ao Worker |
+| Binding `LIMITE` | `wrangler.toml` + `worker.mjs` | Mais de 20 POST por minuto por IP e por rota. Devolve 429 |
+| Teto de aparelhos | `worker.mjs` | Mais de 300 aparelhos novos por dia ou 3.000 no total. Quem já está na lista continua recebendo |
+
+O `workers_dev = false` tira o endereço `*.workers.dev`, que passaria por fora do WAF. O app só usa `rotina-push.rizzygo.com.br`.
+
+### A regra do WAF (uma vez, no painel)
+
+O plano Free tem uma regra de rate limiting, conta por IP, em janelas de 10 s, e a expressão só pode usar o caminho. Os caminhos do Worker não existem nos sites, então a regra não atrapalha o Ako nem o rizzygo.com.br.
+
+1. Painel da Cloudflare > domínio `rizzygo.com.br` > **Security** > **WAF** > aba **Rate limiting rules** > **Create rule**.
+2. Nome: `Freio do push da Rotina`.
+3. Em **If incoming requests match**, clique em **Edit expression** e cole:
+
+   ```text
+   (http.request.uri.path in {"/aparelho" "/adiar" "/zumi" "/remover" "/chave"})
+   ```
+
+4. **With the same characteristics:** IP.
+5. **When rate exceeds:** 15 requests, period 10 seconds.
+6. **Then take action:** Block. **Duration:** 10 seconds.
+7. **Deploy**.
+
+Confira: abra <https://rotina-push.rizzygo.com.br/chave> e aperte F5 umas 20 vezes seguidas. Depois de umas 15, a Cloudflare mostra a página de bloqueio; 10 s depois volta ao normal.
