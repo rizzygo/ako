@@ -1,3 +1,8 @@
 # Regras do Cloudflare Pages para ako.rizzygo.com.br.
 # O guia Dicas antes de rodar e a skill antes-de-rodar passaram para os Favos (/favos/).
 /guias/dicas-antes-de-rodar-prompt/pagina.html /favos/dicas-antes-de-rodar/ 301
+# A Rotina mudou para rotina.rizzygo.com.br em 14/11/2026. /rotina/ continua aqui como ponte (leva os
+# dados do aparelho); as outras páginas vão direto.
+/rotina/manual/* https://rotina.rizzygo.com.br/rotina/manual/:splat 301
+/rotina/novidades/* https://rotina.rizzygo.com.br/rotina/novidades/:splat 301
+/rotina/manifest.webmanifest https://rotina.rizzygo.com.br/rotina/manifest.webmanifest 301

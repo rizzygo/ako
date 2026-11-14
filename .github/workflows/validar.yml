@@ -19,14 +19,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      # Navegador para o teste de ponta a ponta da Rotina (rotina/testes/e2e.js).
-      - name: Playwright
-        run: |
-          npm install --no-save --no-package-lock playwright@1.63.0
-          npx playwright install --with-deps chromium
       # O mesmo script que roda local: trilhas, JavaScript, segredos e tamanho dos AGENTS.md.
       - run: scripts/validar
-        env:
-          NODE_PATH: ${{ github.workspace }}/node_modules
       - name: Shell
         run: shellcheck scripts/validar scripts/previa
