@@ -48,15 +48,17 @@
     if (window.caches) caches.keys().then(function (ks) { ks.forEach(function (k) { if (k.indexOf('rotina-') === 0) caches.delete(k); }); });
   } catch (e) { /* segue */ }
 
+  // Os dados vão sempre (o outro lado só troca a Rotina que nunca foi usada lá; o resto ele não mexe).
+  // LEVOU só evita avisar o Worker de novo.
   var parar = Promise.resolve();
+  var dados = {}, tem = false;
+  CHAVES.forEach(function (k) { var v = ler(k); if (v !== null) { dados[k] = v; if (k.indexOf('rizzygo-rotina') === 0) tem = true; } });
+  var push = null;
+  try { push = JSON.parse(ler(PUSH) || 'null'); } catch (e) { push = null; }
+  var conta = false;
+  try { conta = !!(JSON.parse(ler('rizzygo-conta-v1') || 'null') || {}).ligado; } catch (e) { conta = false; }
+  if (tem) url = DESTINO + '#migrar=' + encodeURIComponent(JSON.stringify({ v: 1, dados: dados, conta: conta, push: !!(push && push.on) }));
   if (!ler(LEVOU)) {
-    var dados = {}, tem = false;
-    CHAVES.forEach(function (k) { var v = ler(k); if (v !== null) { dados[k] = v; if (k.indexOf('rizzygo-rotina') === 0) tem = true; } });
-    var push = null;
-    try { push = JSON.parse(ler(PUSH) || 'null'); } catch (e) { push = null; }
-    var conta = false;
-    try { conta = !!(JSON.parse(ler('rizzygo-conta-v1') || 'null') || {}).ligado; } catch (e) { conta = false; }
-    if (tem) url = DESTINO + '#migrar=' + encodeURIComponent(JSON.stringify({ v: 1, dados: dados, conta: conta, push: !!(push && push.on) }));
     // Os lembretes com o app fechado deste endereço param: o aparelho liga de novo no endereço novo.
     if (push && push.id) {
       parar = Promise.race([
@@ -64,7 +66,7 @@
         new Promise(function (r) { setTimeout(r, 1500); })
       ]);
     }
-    try { localStorage.setItem(LEVOU, new Date().toISOString()); } catch (e) { /* modo privado: leva de novo na próxima, e o outro lado ignora o que já tem */ }
+    try { localStorage.setItem(LEVOU, new Date().toISOString()); } catch (e) { /* modo privado: avisa de novo na próxima */ }
   }
   document.getElementById('ir').href = url;
   parar.then(function () { location.replace(url); });
