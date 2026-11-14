@@ -51,7 +51,8 @@ O modo escuro segue o sistema (`prefers-color-scheme`) e aceita `data-theme="lig
 
 | Classe | O que é |
 | --- | --- |
-| `.familia` | Faixa azul-noite no topo, com os botões Rizzygo e Ako. Leva de um site ao outro em todas as páginas. |
+| `.familia` | Faixa azul-noite no topo, com os botões Rizzygo, Ako e Rotina. Leva de um site ao outro em todas as páginas. |
+| `.familia-site` | Os botões dos sites na faixa, todos com o mesmo tamanho. No celular, dividem a largura. |
 | `.topo`, `.marca`, `.menu` | Cabeçalho fixo com o logo e o menu |
 | `.btn`, `.btn-sec`, `.btn-claro`, `.btn-contorno-claro` | Botão principal, secundário, âmbar (em fundo escuro) e contorno claro |
 | `.status.no-ar`, `.status.construcao` | Selo de situação de um projeto |
