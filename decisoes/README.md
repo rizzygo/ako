@@ -9,6 +9,7 @@ Este repositório é público. Aqui entram só decisões técnicas. Decisões de
 | [0001](0001-sem-build.md) | O Ako não tem build: o Pages serve os arquivos como estão | Aceita |
 | [0002](0002-design-system-copiado.md) | Um design system, copiado entre o Ako e o site principal | Aceita |
 | [0003](0003-firebase-opcional.md) | Conta e nuvem opcionais com Firebase, sem servidor próprio | Aceita |
+| [0004](0004-ficha-da-conta-e-plano.md) | Ficha da conta e plano no Firestore, lidos só pelo admin | Aceita |
 | 0004 | Push dos lembretes por um Cloudflare Worker, sem o nome do lembrete | Movida para o repositório da Rotina em 14/11/2026 |
 | 0005 | A IA da Zumi roda no Cloudflare Workers AI | Movida para o repositório da Rotina em 14/11/2026 |
 | 0006 | Freios contra robô para o plano grátis não acabar | Movida para o repositório da Rotina em 14/11/2026 |
