@@ -4,6 +4,8 @@
 // O aparelho continua sendo a fonte do dia a dia; a nuvem guarda uma cópia por app em
 // users/<uid>/apps/<app>, com os dados como texto JSON: 'rotina' e 'ako' (trilhas, mapas e ajustes
 // juntos, desde 11/11/2026; antes eram três documentos). Detalhes em /privacidade/.
+// Desde 20/11/2026 a conta também grava contas/<uid> (e-mail, nome e o dia em que usou cada app), no máximo
+// uma vez por dia por app, para o admin contar as contas e dar o plano Zumi+. Nada do conteúdo vai junto.
 // Cota do plano gratuito (Spark): 50 mil leituras e 20 mil gravações por dia, para todo mundo junto.
 // Por isso cada aba relê a nuvem no máximo uma vez a cada cfg.releitura, e o aviso de cota cheia é claro.
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
@@ -35,6 +37,7 @@ const APPS = ['rotina', 'ako', 'trilhas', 'mapas', 'ajustes']; // trilhas, mapas
 const ESPERA = 5000; // junta as mudanças e grava uma vez
 const INTERVALO = 120000; // no máximo uma gravação a cada 2 min, fora ao sair do app
 const CONTA = 'rizzygo-conta-v1'; // a pessoa aceitou e entrou: todos os apps do Ako sincronizam
+const VISTA = 'rizzygo-conta-vista'; // uid + dia + app da última marca em contas/<uid>, para gravar uma vez por dia
 const RELEITURA = 120000; // padrão: esta aba relê a nuvem no máximo a cada 2 min (abrir uma aba nova sempre lê)
 
 // A cota grátis do Firestore acabou: a nuvem volta quando a cota zera (meia-noite no Pacífico, de madrugada no Brasil).
@@ -85,7 +88,30 @@ onAuthStateChanged(auth, (u) => {
   if (pedindo) return; // quem anuncia a entrada é entrarCom
   if (!u) marcarConta(false);
   anunciar(u);
+  if (u && contaLigada()) marcarVista(u);
 });
+
+// Marca em contas/<uid> que a conta usou este app hoje. Uma gravação por dia por app e aparelho;
+// na primeira vez a regra pede criadaEm, então a segunda tentativa cria o documento.
+// Falhar aqui não atrapalha nada: o progresso segue no aparelho e na nuvem.
+const APP_ATUAL = location.hostname.startsWith('rotina.') || location.hostname.startsWith('rizzygo-rotina') ? 'rotina' : 'ako';
+function hojeLocal() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+async function marcarVista(u) {
+  const hoje = hojeLocal(), chave = u.uid + '|' + APP_ATUAL + '|' + hoje;
+  try { if (localStorage.getItem(VISTA) === chave) return; } catch (e) { }
+  const base = { email: u.email || null, emailVerificado: !!u.emailVerified, nome: u.displayName ? u.displayName.slice(0, 120) : null, vistaEm: hoje, apps: { [APP_ATUAL]: hoje }, versao: 1 };
+  const ref = doc(db, 'contas', u.uid);
+  try {
+    await setDoc(ref, base, { merge: true });
+  } catch (e) {
+    if (!e || e.code !== 'permission-denied') return;
+    try { await setDoc(ref, Object.assign({ criadaEm: serverTimestamp() }, base), { merge: true }); } catch (e2) { return; }
+  }
+  try { localStorage.setItem(VISTA, chave); } catch (e) { }
+}
 
 // Avisa a página sempre que a conta muda: cb({ nome, email }) ou cb(null).
 export function aoMudarConta(cb) { onAuthStateChanged(auth, (u) => cb(dados(u))); }
@@ -116,6 +142,7 @@ async function entrarCom(fazer, padrao) {
     pedindo = false;
     if (ultimoUid === undefined) ultimoUid = null;
     anunciar(r.user);
+    marcarVista(r.user);
     for (const i of instancias) i.ligar();
     return dados(r.user);
   } catch (e) {
@@ -151,6 +178,8 @@ export async function apagarConta(pedirSenha) {
   const apagar = async () => {
     for (const a of APPS) await deleteDoc(doc(db, 'users', u.uid, 'apps', a));
     await deleteDoc(doc(db, 'leitores', u.uid)); // cadastro dos ebooks do rizzygo.com.br, mesma conta
+    await deleteDoc(doc(db, 'contas', u.uid)); // e-mail, nome e dias de uso, para o admin
+    await deleteDoc(doc(db, 'planos', u.uid)); // plano grátis ou Zumi+
     await deleteUser(u);
   };
   try { await apagar(); } catch (e) {
