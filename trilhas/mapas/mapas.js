@@ -9,6 +9,7 @@
   /* A primeira é a Primeiros passos, que traz as áreas. As outras trilhas viram mapas próprios. */
   var TRILHAS = [
     { id: 'primeiros-passos', dados: '../dados/primeiros-passos.json', chave: 'rizzygo-trilhas-v1', q: '' },
+    { id: 'cloud', dados: '../dados/cloud.json', chave: 'rizzygo-trilha-cloud-v1', q: '?trilha=cloud' },
     { id: 'platform-engineering', dados: '../dados/platform-engineering.json', chave: 'rizzygo-trilha-platform-engineering-v1', q: '?trilha=platform-engineering' },
     { id: 'desenvolvimento', dados: '../dados/desenvolvimento.json', chave: 'rizzygo-trilha-desenvolvimento-v1', q: '?trilha=desenvolvimento' },
     { id: 'habilidades-humanas', dados: '../dados/habilidades-humanas.json', chave: 'rizzygo-trilha-habilidades-humanas-v1', q: '?trilha=habilidades-humanas' }

@@ -11,6 +11,7 @@
   <url><loc>https://ako.rizzygo.com.br/favos/proximo-passo/</loc></url>
   <url><loc>https://ako.rizzygo.com.br/privacidade/</loc></url>
   <url><loc>https://ako.rizzygo.com.br/trilhas/</loc></url>
+  <url><loc>https://ako.rizzygo.com.br/trilhas/?trilha=cloud</loc></url>
   <url><loc>https://ako.rizzygo.com.br/trilhas/?trilha=platform-engineering</loc></url>
   <url><loc>https://ako.rizzygo.com.br/trilhas/?trilha=desenvolvimento</loc></url>
   <url><loc>https://ako.rizzygo.com.br/trilhas/?trilha=habilidades-humanas</loc></url>
@@ -34,4 +35,10 @@
   <url><loc>https://ako.rizzygo.com.br/trilhas/materiais/redes-na-pratica.html</loc></url>
   <url><loc>https://ako.rizzygo.com.br/trilhas/materiais/seguranca-digital.html</loc></url>
   <url><loc>https://ako.rizzygo.com.br/trilhas/materiais/slo-e-error-budget.html</loc></url>
+  <url><loc>https://ako.rizzygo.com.br/trilhas/materiais/nuvem-sem-misterio.html</loc></url>
+  <url><loc>https://ako.rizzygo.com.br/trilhas/materiais/conta-na-nuvem-sem-susto.html</loc></url>
+  <url><loc>https://ako.rizzygo.com.br/trilhas/materiais/os-cinco-blocos-da-nuvem.html</loc></url>
+  <url><loc>https://ako.rizzygo.com.br/trilhas/materiais/serverless-na-pratica.html</loc></url>
+  <url><loc>https://ako.rizzygo.com.br/trilhas/materiais/a-nuvem-no-seu-computador.html</loc></url>
+  <url><loc>https://ako.rizzygo.com.br/trilhas/materiais/custo-e-seguranca-na-nuvem.html</loc></url>
 </urlset>

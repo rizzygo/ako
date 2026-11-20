@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Os cinco blocos da nuvem | Rizzygo Ako</title>
+<meta name="description" content="Lição em português sobre IAM, rede, máquinas virtuais, storage de objetos e banco gerenciado: conceito, para que serve, um exemplo e o nome de cada serviço na AWS e no Google Cloud, com comandos para praticar.">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:title" content="Os cinco blocos da nuvem | Rizzygo Ako">
+<meta property="og:description" content="Lição em português sobre IAM, rede, máquinas virtuais, storage de objetos e banco gerenciado: conceito, para que serve, um exemplo e o nome de cada serviço na AWS e no Google Cloud, com comandos para praticar.">
+<meta property="og:url" content="https://ako.rizzygo.com.br/trilhas/materiais/os-cinco-blocos-da-nuvem.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rizzygo Ako">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ako.rizzygo.com.br/icones/og/licoes.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Lições do Ako: lições práticas em português, com a Zumi, abelha da Rizzygo All">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ako.rizzygo.com.br/trilhas/materiais/os-cinco-blocos-da-nuvem.html">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Os cinco blocos da nuvem", "description": "Lição em português sobre IAM, rede, máquinas virtuais, storage de objetos e banco gerenciado: conceito, para que serve, um exemplo e o nome de cada serviço na AWS e no Google Cloud, com comandos para praticar.", "url": "https://ako.rizzygo.com.br/trilhas/materiais/os-cinco-blocos-da-nuvem.html", "inLanguage": "pt-BR", "isAccessibleForFree": true, "learningResourceType": "lição", "license": "https://creativecommons.org/licenses/by/4.0/", "publisher": {"@type": "Organization", "name": "Rizzygo", "url": "https://rizzygo.com.br/"}}</script>
+<meta name="theme-color" content="#0B1B3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="/ds/rizzygo.css?v=2026111403">
+<script src="/ds/tema.js?v=2026111020"></script>
+<link rel="stylesheet" href="../app.css?v=2026111001">
+<link rel="stylesheet" href="materiais.css?v=2026110801">
+<link rel="stylesheet" href="/topo.css?v=2026110914">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<nav class="familia" aria-label="Sites da Rizzygo"><div class="familia-in"><a class="familia-item familia-site" href="https://rizzygo.com.br/" title="Site principal da Rizzygo"><svg viewBox="0 0 64 64" width="16" height="16" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/></svg>Rizzygo</a><a class="familia-item familia-site" href="https://ako.rizzygo.com.br/" aria-current="page"><img src="/zumi/abelha-mini.png" width="18" height="18" alt="">Ako</a><a class="familia-item familia-site" href="https://rotina.rizzygo.com.br/" title="Rotina com a Zumi"><img src="/zumi/abelha-rotina-mini.png" width="18" height="18" alt="">Rotina</a></div></nav>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="/" aria-label="Rizzygo Ako, início"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="var(--azul)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/></svg><span>Rizzygo <b>Ako</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="/trilhas/?trilha=cloud">Trilhas</a><a href="/trilhas/mapas/#/cloud">Mapas</a><a href="/trilhas/materiais/" aria-current="page">Materiais</a><a href="/favos/">Favos</a></nav>
+</div></header>
+
+
+<main id="conteudo" class="licao">
+<div class="licao-cab">
+  <a class="voltar" href="../?trilha=cloud#/t/cloud-iam">Voltar para o tópico Identidade e acesso (IAM)</a>
+  <h1>Os cinco blocos da nuvem</h1>
+  <p class="lead">A AWS e o Google Cloud têm centenas de serviços cada um. A boa notícia é que quase todo projeto usa os mesmos cinco blocos. Aprenda os cinco e o resto vira variação. Para dar exemplo, vamos montar a loja online fictícia Mel da Zumi.</p>
+  <div class="ficha"><span class="etiqueta">Cerca de 1 hora</span><span class="etiqueta">Trilha Cloud</span><span class="etiqueta ambar">Conteúdo Rizzygo, gratuito e em português</span></div>
+</div>
+<nav class="indice" aria-label="Nesta lição">
+  <h2>Nesta lição</h2>
+  <ol>
+    <li><a href="#loja">A Mel da Zumi precisa ir para a nuvem</a></li>
+    <li><a href="#iam">IAM decide quem pode fazer o quê</a></li>
+    <li><a href="#rede">A rede é a muralha, e o firewall abre as portas</a></li>
+    <li><a href="#maquinas">Máquina virtual é o computador alugado</a></li>
+    <li><a href="#storage">Storage é o armário infinito</a></li>
+    <li><a href="#banco">Banco gerenciado é o caderno de pedidos</a></li>
+    <li><a href="#junto">Os cinco juntos</a></li>
+    <li><a href="#missao">Missão final</a></li>
+  </ol>
+</nav>
+<section id="loja">
+  <h2>1. A Mel da Zumi precisa ir para a nuvem</h2>
+<p>A Zumi vende mel pela internet. O site mostra os potes, guarda os pedidos e manda as fotos dos produtos. Hoje roda num notebook embaixo do balcão, que desliga quando alguém tropeça no fio. Vamos levar para a nuvem, bloco por bloco.</p>
+  <p>Cada bloco tem o mesmo formato: o que é, para que serve, onde aparece na loja, o nome nas duas nuvens e um comando para você testar.</p>
+</section>
+
+<section id="iam">
+  <h2>2. IAM decide quem pode fazer o quê</h2>
+<p><strong>O que é.</strong> O porteiro da conta. Ele confere quem está pedindo (identidade) e se pode fazer aquilo naquele recurso (permissão).</p>
+  <p><strong>Para que serve.</strong> Evitar que qualquer pessoa ou programa faça qualquer coisa. A regra é o least privilege: cada um com só o que precisa.</p>
+  <p><strong>Na loja.</strong> A Zumi tem acesso de administrador. O estagiário que sobe fotos só pode gravar no bucket de fotos. O programa do site só lê e grava na tabela de pedidos. Ninguém usa a senha de ninguém.</p>
+  <div class="tabela"><table>
+    <thead><tr><th></th><th>AWS</th><th>Google Cloud</th></tr></thead>
+    <tbody>
+      <tr><td>Pessoa</td><td>Usuário do IAM Identity Center</td><td>Conta Google ou do Workspace</td></tr>
+      <tr><td>Programa</td><td>Role</td><td>Service account</td></tr>
+      <tr><td>Conjunto de permissões</td><td>Policy (JSON)</td><td>Role (predefinida ou personalizada)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="cmd"><pre>aws sts get-caller-identity</pre></div>
+  <div class="cmd"><pre>gcloud auth list</pre></div>
+  <p>Os dois comandos respondem "quem sou eu agora". Rode antes de qualquer coisa que apaga.</p>
+</section>
+
+<section id="rede">
+  <h2>3. A rede é a muralha, e o firewall abre as portas</h2>
+<p><strong>O que é.</strong> Uma rede privada sua dentro da nuvem (VPC), dividida em subnets, com regras de firewall dizendo o que entra.</p>
+  <p><strong>Para que serve.</strong> Deixar público só o que precisa ser público. O resto fica escondido.</p>
+  <p><strong>Na loja.</strong> O site fica numa subnet pública, com as portas 80 e 443 abertas para o mundo. O banco fica numa subnet privada e só aceita conexão do site. O SSH só abre para o IP da Zumi.</p>
+  <ul>
+    <li><strong>AWS:</strong> VPC por região, security groups ligados a cada recurso.</li>
+    <li><strong>Google Cloud:</strong> VPC global, subnets por região, firewall rules na rede.</li>
+  </ul>
+  <div class="cuidado"><strong>0.0.0.0/0 na porta 22 é convite</strong>Robôs varrem a internet o dia inteiro atrás de SSH e banco abertos. Libere só o seu IP, ou use o acesso pelo console da nuvem.</div>
+</section>
+
+<section id="maquinas">
+  <h2>4. Máquina virtual é o computador alugado</h2>
+<p><strong>O que é.</strong> Uma máquina virtual com o sistema que você escolher, quase sempre Linux.</p>
+  <p><strong>Para que serve.</strong> Rodar qualquer coisa que precise de um servidor tradicional: um sistema antigo, um programa que precisa de configuração especial, um jogo multiplayer.</p>
+  <p><strong>Na loja.</strong> A primeira versão do site da Zumi roda numa VM pequena com nginx. Funciona, mas alguém precisa atualizar o Linux, olhar o disco e reiniciar quando trava. Guarde essa dor para a lição de serverless.</p>
+  <ul>
+    <li><strong>AWS:</strong> EC2. Para estudar, as menores instâncias, dentro do crédito do plano gratuito.</li>
+    <li><strong>Google Cloud:</strong> Compute Engine. A e2-micro tem faixa sempre gratuita em algumas regiões.</li>
+  </ul>
+  <div class="cmd"><pre>gcloud compute instances list</pre></div>
+  <div class="cmd"><pre>aws ec2 describe-instances --query "Reservations[].Instances[].[InstanceId,State.Name]"</pre></div>
+</section>
+
+<section id="storage">
+  <h2>5. Storage é o armário infinito</h2>
+<p><strong>O que é.</strong> Um lugar para guardar arquivos de qualquer tamanho, organizados em buckets. Barato, durável e acessível por HTTP.</p>
+  <p><strong>Para que serve.</strong> Fotos, vídeos, backups, logs e sites estáticos.</p>
+  <p><strong>Na loja.</strong> As fotos dos potes de mel vão para um bucket. O site só aponta para elas. Os backups do banco vão para outro bucket, privado, com versionamento ligado, porque alguém sempre apaga o arquivo errado numa sexta-feira.</p>
+  <ul>
+    <li><strong>AWS:</strong> S3.</li>
+    <li><strong>Google Cloud:</strong> Cloud Storage.</li>
+  </ul>
+  <div class="cmd"><pre>aws s3 mb s3://mel-da-zumi-fotos-SEU-NOME</pre></div>
+  <div class="cmd"><pre>gcloud storage buckets create gs://mel-da-zumi-fotos-SEU-NOME --location=southamerica-east1</pre></div>
+  <p>O nome do bucket é único no mundo inteiro. Por isso o <code>SEU-NOME</code> no fim.</p>
+</section>
+
+<section id="banco">
+  <h2>6. Banco gerenciado é o caderno de pedidos</h2>
+<p><strong>O que é.</strong> Um banco de dados que a nuvem instala, atualiza, faz backup e mantém no ar.</p>
+  <p><strong>Para que serve.</strong> Guardar os dados do sistema sem você virar DBA de madrugada.</p>
+  <p><strong>Na loja.</strong> Os pedidos têm cliente, produto e endereço, e a Zumi quer relatório de vendas por mês. Num sistema grande, isso pede um banco relacional (RDS ou Cloud SQL). Para começar barato, um NoSQL como DynamoDB ou Firestore resolve, cobra por uso e tem faixa gratuita.</p>
+  <div class="tabela"><table>
+    <thead><tr><th></th><th>AWS</th><th>Google Cloud</th><th>Cobra como</th></tr></thead>
+    <tbody>
+      <tr><td>Relacional (SQL)</td><td>RDS, Aurora</td><td>Cloud SQL, AlloyDB</td><td>Por hora ligada</td></tr>
+      <tr><td>NoSQL</td><td>DynamoDB</td><td>Firestore</td><td>Por leitura, escrita e espaço</td></tr>
+    </tbody>
+  </table></div>
+  <div class="cuidado"><strong>Banco relacional esquecido é o vilão da fatura do estudante</strong>Ele cobra por hora mesmo sem ninguém usar. Se for testar RDS ou Cloud SQL, crie, teste e apague no mesmo dia.</div>
+</section>
+
+<section id="junto">
+  <h2>7. Os cinco juntos</h2>
+<p>Olhe a loja inteira: a Zumi entra pelo IAM, o site roda numa máquina dentro da rede, as fotos ficam no storage e os pedidos no banco. Cada peça tem nome diferente em cada nuvem, mas o desenho é o mesmo.</p>
+  <div class="saida"><small>O desenho da Mel da Zumi:</small><pre>cliente → internet → [regra de firewall: 80/443]
+        → máquina com o site (subnet pública)
+              ├─ lê fotos do bucket (storage)
+              └─ grava pedidos no banco (subnet privada)
+tudo isso com permissões dadas pelo IAM</pre></div>
+</section>
+
+<section id="missao">
+  <h2>8. Missão final</h2>
+<details class="exercicio"><summary>1. Desenhe a sua loja</summary>
+    <p>Escolha um negócio de alguém que você conhece (uma barbearia, uma loja de bolo, um personal). Desenhe os cinco blocos para ele, com o nome do serviço nas duas nuvens.</p>
+  </details>
+  <details class="exercicio"><summary>2. Monte e desmonte</summary>
+    <p>Numa das nuvens, crie um bucket, envie uma foto, crie uma VM pequena, acesse por SSH e apague tudo. Anote quanto tempo levou.</p>
+  </details>
+  <details class="exercicio"><summary>3. Ache o erro</summary>
+    <p>Um colega abriu a porta 5432 do banco para <code>0.0.0.0/0</code> "só para testar". Escreva a mensagem que você mandaria para ele, com o risco e a correção, sem dar bronca.</p>
+  </details>
+  <div class="faca"><strong>Para fixar</strong>Explique a Mel da Zumi para alguém usando só os cinco blocos. Se a pessoa perguntar "e se o banco ficar público?", você já sabe responder.</div>
+  <div class="proximo"><a class="btn" href="../?trilha=cloud#/t/cloud-iam">Voltar para o tópico e fazer o desafio</a><a class="btn btn-sec" href="serverless-na-pratica.html">Próxima lição: serverless na prática</a></div>
+</section>
+
+<div class="credito">
+  <p>Lição baseada na documentação oficial de <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html">IAM da AWS</a>, <a href="https://docs.cloud.google.com/iam/docs/overview">IAM do Google Cloud</a>, <a href="https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html">Amazon VPC</a>, <a href="https://docs.cloud.google.com/vpc/docs/overview">VPC do Google Cloud</a>, EC2, Compute Engine, S3, Cloud Storage, DynamoDB e Firestore. A Mel da Zumi é uma loja fictícia. O texto e os exemplos são próprios, escritos em português pelo Ako, da Rizzygo All. Preços e ofertas gratuitas conferidos em 20/11/2026: eles mudam, então confira na página de cada nuvem antes de criar recursos.</p>
+  <p>Conteúdo aberto sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR">CC BY 4.0</a>. Viu um erro? <a href="https://github.com/rizzygo/ako/issues">Abra uma issue</a>.</p>
+</div>
+</main>
+<footer class="rodape"><div class="rodape-in"><p><strong>Ako</strong>, da Rizzygo All, a parte aberta e gratuita da <a href="https://rizzygo.com.br/">Rizzygo</a>.</p><p>Estude junto na <a href="https://chat.whatsapp.com/CYpmolVr7a08Gqmj782yFi">comunidade gratuita no WhatsApp</a>.</p><p>Sugestão, dúvida ou problema? Escreva para <a href="mailto:suporte@rizzygo.com.br">suporte@rizzygo.com.br</a>.</p><div class="contribua"><p><strong>Contribuição voluntária.</strong> O Ako é gratuito e vai continuar assim. Você decide se quer contribuir, com qualquer valor, para agradecer, manter e ajudar o Ako a evoluir.</p><p class="contribua-pix"><span class="contribua-dados"><span>Chave Pix (CNPJ): <code>57.778.554/0001-31</code></span><span>Nome: <code>Ru Technology</code></span></span> <button type="button" class="contribua-copiar" data-pix="57778554000131" hidden>Copiar chave Pix</button></p></div><p class="credo"><a href="https://rizzygo.com.br/conceito#o-nome">Sou Zy</a>: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="materiais.js?v=2026103102"></script>
+<script src="../efeitos.js?v=2026110801" defer></script>
+<script src="/contribua.js?v=2026110901" defer></script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "65a6fb651cf942a695482421e9de912b"}'></script><!-- End Cloudflare Web Analytics -->
+<script src="/conta.js?v=2026112001" defer></script>
+</body>
+</html>

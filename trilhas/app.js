@@ -10,6 +10,8 @@
   var TRILHAS = [
     { id: 'primeiros-passos', dados: 'dados/primeiros-passos.json', chave: 'rizzygo-trilhas-v1', titulo: 'Primeiros passos em TI',
       resumo: 'Do como estudar até um primeiro projeto publicado no GitHub. Para quem está começando do zero.' },
+    { id: 'cloud', dados: 'dados/cloud.json', chave: 'rizzygo-trilha-cloud-v1', titulo: 'Cloud com AWS e Google Cloud',
+      resumo: 'As duas maiores nuvens lado a lado: conta sem susto, IAM, rede, serverless, Terraform, custo e um projeto seu no ar nas duas.' },
     { id: 'platform-engineering', dados: 'dados/platform-engineering.json', chave: 'rizzygo-trilha-platform-engineering-v1', titulo: 'Platform Engineering',
       resumo: 'Onde DevOps e SRE se encontram: contêineres, entrega contínua, confiabilidade e uma plataforma que os times usam sem abrir ticket.' },
     { id: 'desenvolvimento', dados: 'dados/desenvolvimento.json', chave: 'rizzygo-trilha-desenvolvimento-v1', titulo: 'Desenvolvimento',
@@ -316,10 +318,17 @@
 
   /* ---------- materiais ---------- */
   function pago(r) { return /^não/.test(r.gratuito || ''); }
+  /* Etiqueta de cada material: conteúdo próprio da Rizzygo, gratuito de outra fonte ou pago. */
+  function proprio(r) { return /^(\.\/materiais\/|\.\.\/favos\/|\.\/\?trilha=)/.test(r.url || '') || /^(Ako|Favos)\b/.test(r.fonte || ''); }
+  function etiquetaRecurso(r) {
+    if (pago(r)) return '<span class="etiqueta pago">Pago</span>';
+    if (proprio(r)) return '<span class="etiqueta ambar">Conteúdo Rizzygo</span>';
+    return '<span class="etiqueta certo">Gratuito</span>';
+  }
   function listaRecursos(lista) {
     return '<ul class="recursos">' + lista.map(function (r) {
       var custo = r.gratuito && r.gratuito !== 'sim' ? ' (' + esc(r.gratuito.replace(/^(sim|não), /, '')) + ')' : '';
-      return '<li><a href="' + urlSegura(r.url) + '"' + (/^https?:/.test(r.url) ? ' target="_blank" rel="noopener"' : '') + '>' + esc(r.titulo) + '</a><p>' + esc(r.fonte) + (r.idioma === 'en' ? ', em inglês' : '') + custo + '. ' + esc(r.nota) + '</p></li>';
+      return '<li><a href="' + urlSegura(r.url) + '"' + (/^https?:/.test(r.url) ? ' target="_blank" rel="noopener"' : '') + '>' + esc(r.titulo) + '</a> ' + etiquetaRecurso(r) + '<p>' + esc(r.fonte) + (r.idioma === 'en' ? ', em inglês' : '') + custo + '. ' + esc(r.nota) + '</p></li>';
     }).join('') + '</ul>';
   }
 

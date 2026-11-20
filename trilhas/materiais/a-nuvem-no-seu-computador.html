@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A nuvem no seu computador | Rizzygo Ako</title>
+<meta name="description" content="Lição em português sobre a AWS CLI e a gcloud CLI, emuladores para treinar sem conta (Moto, LocalStack, DynamoDB local e os emuladores da gcloud) e Terraform para criar e apagar infraestrutura nas duas nuvens.">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:title" content="A nuvem no seu computador | Rizzygo Ako">
+<meta property="og:description" content="Lição em português sobre a AWS CLI e a gcloud CLI, emuladores para treinar sem conta (Moto, LocalStack, DynamoDB local e os emuladores da gcloud) e Terraform para criar e apagar infraestrutura nas duas nuvens.">
+<meta property="og:url" content="https://ako.rizzygo.com.br/trilhas/materiais/a-nuvem-no-seu-computador.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rizzygo Ako">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ako.rizzygo.com.br/icones/og/licoes.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Lições do Ako: lições práticas em português, com a Zumi, abelha da Rizzygo All">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ako.rizzygo.com.br/trilhas/materiais/a-nuvem-no-seu-computador.html">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "A nuvem no seu computador", "description": "Lição em português sobre a AWS CLI e a gcloud CLI, emuladores para treinar sem conta (Moto, LocalStack, DynamoDB local e os emuladores da gcloud) e Terraform para criar e apagar infraestrutura nas duas nuvens.", "url": "https://ako.rizzygo.com.br/trilhas/materiais/a-nuvem-no-seu-computador.html", "inLanguage": "pt-BR", "isAccessibleForFree": true, "learningResourceType": "lição", "license": "https://creativecommons.org/licenses/by/4.0/", "publisher": {"@type": "Organization", "name": "Rizzygo", "url": "https://rizzygo.com.br/"}}</script>
+<meta name="theme-color" content="#0B1B3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="/ds/rizzygo.css?v=2026111403">
+<script src="/ds/tema.js?v=2026111020"></script>
+<link rel="stylesheet" href="../app.css?v=2026111001">
+<link rel="stylesheet" href="materiais.css?v=2026110801">
+<link rel="stylesheet" href="/topo.css?v=2026110914">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<nav class="familia" aria-label="Sites da Rizzygo"><div class="familia-in"><a class="familia-item familia-site" href="https://rizzygo.com.br/" title="Site principal da Rizzygo"><svg viewBox="0 0 64 64" width="16" height="16" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/></svg>Rizzygo</a><a class="familia-item familia-site" href="https://ako.rizzygo.com.br/" aria-current="page"><img src="/zumi/abelha-mini.png" width="18" height="18" alt="">Ako</a><a class="familia-item familia-site" href="https://rotina.rizzygo.com.br/" title="Rotina com a Zumi"><img src="/zumi/abelha-rotina-mini.png" width="18" height="18" alt="">Rotina</a></div></nav>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="/" aria-label="Rizzygo Ako, início"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="var(--azul)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/></svg><span>Rizzygo <b>Ako</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="/trilhas/?trilha=cloud">Trilhas</a><a href="/trilhas/mapas/#/cloud">Mapas</a><a href="/trilhas/materiais/" aria-current="page">Materiais</a><a href="/favos/">Favos</a></nav>
+</div></header>
+
+
+<main id="conteudo" class="licao">
+<div class="licao-cab">
+  <a class="voltar" href="../?trilha=cloud#/t/cloud-cli-emuladores">Voltar para o tópico CLI e emuladores no seu computador</a>
+  <h1>A nuvem no seu computador</h1>
+  <p class="lead">Clicar no painel é ótimo para conhecer. Para repetir sem errar, é o terminal. E para errar à vontade sem pagar nada, existem emuladores que fingem ser a nuvem dentro do seu computador. Igual o kind faz com o Kubernetes.</p>
+  <div class="ficha"><span class="etiqueta">Cerca de 50 minutos</span><span class="etiqueta">Trilha Cloud</span><span class="etiqueta ambar">Conteúdo Rizzygo, gratuito e em português</span></div>
+</div>
+<nav class="indice" aria-label="Nesta lição">
+  <h2>Nesta lição</h2>
+  <ol>
+    <li><a href="#cli">As duas CLIs</a></li>
+    <li><a href="#emuladores">Emuladores são a nuvem de mentirinha</a></li>
+    <li><a href="#terraform">Terraform cria e apaga com um comando</a></li>
+    <li><a href="#ciclo">O ciclo de estudo que não gasta</a></li>
+    <li><a href="#missao">Missão final</a></li>
+  </ol>
+</nav>
+<section id="cli">
+  <h2>1. As duas CLIs</h2>
+<p>Tudo o que o painel faz, a CLI faz, e o comando fica guardado para a próxima vez.</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Tarefa</th><th>AWS</th><th>Google Cloud</th></tr></thead>
+    <tbody>
+      <tr><td>Entrar</td><td><code>aws configure sso</code> e <code>aws sso login</code></td><td><code>gcloud auth login</code></td></tr>
+      <tr><td>Quem sou eu</td><td><code>aws sts get-caller-identity</code></td><td><code>gcloud config list</code></td></tr>
+      <tr><td>Listar buckets</td><td><code>aws s3 ls</code></td><td><code>gcloud storage ls</code></td></tr>
+      <tr><td>Enviar arquivo</td><td><code>aws s3 cp foto.jpg s3://BUCKET/</code></td><td><code>gcloud storage cp foto.jpg gs://BUCKET/</code></td></tr>
+      <tr><td>Trocar de conta ou projeto</td><td><code>--profile estudo</code></td><td><code>gcloud config set project ID</code></td></tr>
+    </tbody>
+  </table></div>
+  <div class="cuidado"><strong>Confira onde você está antes de apagar</strong>Apagar no projeto errado é um clássico que ninguém quer viver. Rode o "quem sou eu" antes de qualquer <code>delete</code>.</div>
+</section>
+
+<section id="emuladores">
+  <h2>2. Emuladores são a nuvem de mentirinha</h2>
+<p>Um emulador é um programa que responde como o serviço da nuvem, mas roda no seu computador. Você aponta a CLI ou o código para um endereço local e treina sem conta, sem cartão e sem medo.</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Emulador</th><th>Imita</th><th>Custo e cadastro</th></tr></thead>
+    <tbody>
+      <tr><td>Moto</td><td>Vários serviços da AWS, como S3, DynamoDB, Lambda, SQS e IAM</td><td>Aberto (Apache-2.0), sem cadastro</td></tr>
+      <tr><td>LocalStack</td><td>Mais de 30 serviços da AWS no plano gratuito</td><td>Plano Hobby gratuito, com conta e só para uso não comercial</td></tr>
+      <tr><td>DynamoDB local</td><td>DynamoDB</td><td>Gratuito, feito pela AWS, em Java ou Docker</td></tr>
+      <tr><td>AWS SAM CLI</td><td>Lambda, rodando num contêiner</td><td>Gratuito</td></tr>
+      <tr><td><code>gcloud beta emulators</code></td><td>Firestore, Datastore, Pub/Sub, Bigtable e Spanner</td><td>Gratuito, vem com a gcloud (em beta)</td></tr>
+    </tbody>
+  </table></div>
+  <p><strong>Teste com o Moto, em Docker:</strong></p>
+  <div class="cmd"><pre>docker run --rm -p 5000:5000 motoserver/moto</pre></div>
+  <div class="cmd"><pre>export AWS_ACCESS_KEY_ID=teste AWS_SECRET_ACCESS_KEY=teste AWS_DEFAULT_REGION=us-east-1</pre></div>
+  <div class="cmd"><pre>aws --endpoint-url http://localhost:5000 s3 mb s3://treino</pre></div>
+  <div class="cmd"><pre>aws --endpoint-url http://localhost:5000 s3 ls</pre></div>
+  <p>As chaves <code>teste</code> são de mentira, de propósito. O emulador aceita qualquer uma, e assim nenhuma chave de verdade sai do lugar.</p>
+  <p><strong>Teste o Firestore do Google:</strong></p>
+  <div class="cmd"><pre>gcloud beta emulators firestore start --host-port=localhost:8080</pre></div>
+  <p>Em outro terminal, faça o seu código usar <code>FIRESTORE_EMULATOR_HOST=localhost:8080</code>. Os dados ficam na memória e somem quando o emulador para.</p>
+  <div class="faca"><strong>Emulador não é a nuvem</strong>Ele não cobre todos os serviços nem todos os detalhes, como permissões e limites. Use para treinar e testar rápido. Antes de confiar, rode pelo menos uma vez na nuvem de verdade.</div>
+</section>
+
+<section id="terraform">
+  <h2>3. Terraform cria e apaga com um comando</h2>
+<p>Com Terraform, a infraestrutura vira arquivo. Você escreve o que quer, o Terraform mostra o plano e aplica. No fim, apaga tudo.</p>
+  <div class="saida"><small>O mesmo bucket nas duas nuvens:</small><pre># AWS
+resource "aws_s3_bucket" "fotos" {
+  bucket = "mel-da-zumi-fotos-seu-nome"
+}
+
+# Google Cloud
+resource "google_storage_bucket" "fotos" {
+  name     = "mel-da-zumi-fotos-seu-nome"
+  location = "SOUTHAMERICA-EAST1"
+}</pre></div>
+  <div class="cmd"><pre>terraform init</pre></div>
+  <div class="cmd"><pre>terraform plan</pre></div>
+  <div class="cmd"><pre>terraform apply</pre></div>
+  <div class="cmd"><pre>terraform destroy</pre></div>
+  <ul>
+    <li><code>plan</code> é a revisão. Leia sempre. Uma linha de <code>destroy</code> que você não esperava é o sinal para parar.</li>
+    <li>O arquivo de state guarda o que foi criado e pode ter segredo. Ponha no <code>.gitignore</code>.</li>
+    <li>Dá até para apontar o provider da AWS para o Moto ou o LocalStack e treinar Terraform sem conta.</li>
+  </ul>
+</section>
+
+<section id="ciclo">
+  <h2>4. O ciclo de estudo que não gasta</h2>
+<ol>
+    <li>Treine o comando ou o código no emulador.</li>
+    <li>Escreva em Terraform.</li>
+    <li>Rode na nuvem de verdade, com o alerta de orçamento ligado.</li>
+    <li>Confira que funciona e tire o print para o portfólio.</li>
+    <li><code>terraform destroy</code>.</li>
+  </ol>
+</section>
+
+<section id="missao">
+  <h2>5. Missão final</h2>
+<details class="exercicio"><summary>1. Um bucket, três lugares</summary>
+    <p>Crie o mesmo bucket no Moto, na AWS e no Google Cloud, só pelo terminal. Apague os três.</p>
+  </details>
+  <details class="exercicio"><summary>2. Firestore sem conta</summary>
+    <p>Suba o emulador do Firestore e grave um documento <code>pedidos/1</code> com um script em Python ou Node.</p>
+  </details>
+  <details class="exercicio"><summary>3. Terraform nas duas</summary>
+    <p>Escreva o bucket da parte 3 em Terraform, aplique nas duas nuvens, mude uma configuração, leia o <code>plan</code> e destrua tudo.</p>
+  </details>
+  <div class="faca"><strong>Para fixar</strong>Mostre para alguém o <code>terraform plan</code> e explique, linha por linha, o que ia acontecer. Se a pessoa entender, você entendeu.</div>
+  <div class="proximo"><a class="btn" href="../?trilha=cloud#/t/cloud-cli-emuladores">Voltar para o tópico e fazer o desafio</a><a class="btn btn-sec" href="custo-e-seguranca-na-nuvem.html">Próxima lição: custo e segurança na nuvem</a></div>
+</section>
+
+<div class="credito">
+  <p>Lição baseada na documentação da <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html">AWS CLI</a>, da <a href="https://docs.cloud.google.com/sdk/docs/install-sdk">gcloud CLI</a>, do <a href="https://docs.getmoto.org/en/latest/docs/server_mode.html">Moto</a>, dos <a href="https://www.localstack.cloud/pricing">planos do LocalStack</a>, do <a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html">DynamoDB local</a>, dos <a href="https://docs.cloud.google.com/sdk/gcloud/reference/beta/emulators">emuladores da gcloud</a> e nos tutoriais de Terraform da HashiCorp para <a href="https://developer.hashicorp.com/terraform/tutorials/aws-get-started">AWS</a> e <a href="https://developer.hashicorp.com/terraform/tutorials/gcp-get-started">Google Cloud</a>. O texto e os exemplos são próprios, escritos em português pelo Ako, da Rizzygo All. Preços e ofertas gratuitas conferidos em 20/11/2026: eles mudam, então confira na página de cada nuvem antes de criar recursos.</p>
+  <p>Conteúdo aberto sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR">CC BY 4.0</a>. Viu um erro? <a href="https://github.com/rizzygo/ako/issues">Abra uma issue</a>.</p>
+</div>
+</main>
+<footer class="rodape"><div class="rodape-in"><p><strong>Ako</strong>, da Rizzygo All, a parte aberta e gratuita da <a href="https://rizzygo.com.br/">Rizzygo</a>.</p><p>Estude junto na <a href="https://chat.whatsapp.com/CYpmolVr7a08Gqmj782yFi">comunidade gratuita no WhatsApp</a>.</p><p>Sugestão, dúvida ou problema? Escreva para <a href="mailto:suporte@rizzygo.com.br">suporte@rizzygo.com.br</a>.</p><div class="contribua"><p><strong>Contribuição voluntária.</strong> O Ako é gratuito e vai continuar assim. Você decide se quer contribuir, com qualquer valor, para agradecer, manter e ajudar o Ako a evoluir.</p><p class="contribua-pix"><span class="contribua-dados"><span>Chave Pix (CNPJ): <code>57.778.554/0001-31</code></span><span>Nome: <code>Ru Technology</code></span></span> <button type="button" class="contribua-copiar" data-pix="57778554000131" hidden>Copiar chave Pix</button></p></div><p class="credo"><a href="https://rizzygo.com.br/conceito#o-nome">Sou Zy</a>: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="materiais.js?v=2026103102"></script>
+<script src="../efeitos.js?v=2026110801" defer></script>
+<script src="/contribua.js?v=2026110901" defer></script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "65a6fb651cf942a695482421e9de912b"}'></script><!-- End Cloudflare Web Analytics -->
+<script src="/conta.js?v=2026112001" defer></script>
+</body>
+</html>

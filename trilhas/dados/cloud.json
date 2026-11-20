@@ -1,0 +1,2265 @@
+{
+ "id": "cloud",
+ "titulo": "Cloud com AWS e Google Cloud",
+ "versao": 1,
+ "descricao": "A nuvem na prática, com AWS e Google Cloud lado a lado: conta segura, IAM, rede, máquinas, storage, serverless, automação, custo e um projeto seu no ar nas duas nuvens.",
+ "cor": "#0E7490",
+ "inicio": {
+  "titulo": "AWS e Google Cloud, lado a lado.",
+  "lead": "AWS e Google Cloud usam as mesmas ideias com nomes diferentes. Aqui você aprende cada conceito uma vez e faz a prática nas duas. A primeira lição protege a conta contra susto. A última põe um projeto seu no ar. Lições próprias em português e materiais gratuitos das próprias nuvens, em inglês.",
+  "mini_mapa": [
+   "Entender",
+   "O essencial",
+   "Sem servidor",
+   "Automatizar",
+   "Operar",
+   "Projeto"
+  ],
+  "mini_mapa_rotulo": "Mapa da trilha Cloud em seis etapas: entender, o essencial, sem servidor, automatizar, operar e projeto",
+  "para_quem": [
+   "Você terminou a Primeiros passos em TI e já se vira com terminal, Linux, redes e Git.",
+   "Você trabalha com suporte, infraestrutura ou desenvolvimento e quer entender a nuvem que a empresa usa.",
+   "Você quer chegar na Platform Engineering com o chão firme.",
+   "Vai precisar de um computador com navegador e terminal. Dá para estudar sem cartão de crédito no AWS Educate e com emuladores no seu computador. Para as contas de verdade, a lição \"Conta na nuvem sem susto\" mostra como não ter cobrança surpresa."
+  ]
+ },
+ "momentos": [
+  {
+   "id": "quero",
+   "titulo": "Estou chegando agora",
+   "detalhe": "Terminei a Primeiros passos ou nunca abri o painel de uma nuvem"
+  },
+  {
+   "id": "comecando",
+   "titulo": "Já uso uma nuvem",
+   "detalhe": "Já criei recursos na AWS ou no Google Cloud e quero fechar as lacunas"
+  }
+ ],
+ "ja_sei": [
+  {
+   "id": "conta",
+   "rotulo": "Já tenho conta com MFA e alerta de orçamento",
+   "topicos": [
+    "conta-sem-susto"
+   ]
+  },
+  {
+   "id": "vm",
+   "rotulo": "Já subi uma VM e acessei por SSH",
+   "topicos": [
+    "cloud-compute"
+   ]
+  },
+  {
+   "id": "bucket",
+   "rotulo": "Já publiquei um site num bucket",
+   "topicos": [
+    "cloud-storage"
+   ]
+  },
+  {
+   "id": "serverless",
+   "rotulo": "Já publiquei uma função ou um contêiner serverless",
+   "topicos": [
+    "cloud-funcoes",
+    "cloud-containers"
+   ]
+  },
+  {
+   "id": "terraform",
+   "rotulo": "Já criei infraestrutura com Terraform",
+   "topicos": [
+    "cloud-terraform"
+   ]
+  }
+ ],
+ "mapa_antes": [
+  {
+   "id": "base-linux",
+   "titulo": "Linux",
+   "topico": "linux",
+   "resumo": "Quase toda máquina na nuvem roda Linux. Você vai entrar nela por SSH e ler log."
+  },
+  {
+   "id": "base-redes",
+   "titulo": "Redes",
+   "topico": "redes",
+   "resumo": "IP, DNS e portas explicam a maior parte dos \"não consigo acessar\" na nuvem."
+  },
+  {
+   "id": "base-terminal",
+   "titulo": "Terminal",
+   "topico": "terminal",
+   "resumo": "As duas CLIs, aws e gcloud, rodam no terminal. O painel ajuda a ver, o terminal ajuda a repetir."
+  },
+  {
+   "id": "base-seguranca",
+   "titulo": "Segurança digital básica",
+   "topico": "seguranca",
+   "resumo": "MFA e senha forte valem em dobro aqui: uma conta de nuvem vazada vira conta para pagar."
+  },
+  {
+   "id": "mapa-humanas",
+   "titulo": "Trilha Habilidades humanas",
+   "resumo": "Explicar custo e risco para quem decide também é trabalho de quem cuida da nuvem.",
+   "mapa": "habilidades-humanas"
+  }
+ ],
+ "mapa_fim": "A trilha termina com o mesmo app no ar nas duas nuvens. O passo seguinte é a Platform Engineering.",
+ "etapas": [
+  {
+   "id": "entender",
+   "titulo": "Entender a nuvem",
+   "conquista": "Conta blindada",
+   "descricao": "O que é nuvem, quem cuida de quê e como abrir as contas sem risco de cobrança surpresa."
+  },
+  {
+   "id": "essencial",
+   "titulo": "O essencial, nas duas",
+   "conquista": "Chão firme",
+   "descricao": "IAM, rede, máquinas, storage e banco: os cinco blocos que aparecem em quase todo projeto."
+  },
+  {
+   "id": "sem-servidor",
+   "titulo": "Rodar sem servidor",
+   "conquista": "Sem servidor para cuidar",
+   "descricao": "Funções e contêineres gerenciados: você entrega o código e a nuvem roda."
+  },
+  {
+   "id": "automatizar",
+   "titulo": "Automatizar",
+   "conquista": "Nada de clique",
+   "descricao": "CLI, emuladores no seu computador e Terraform para criar e apagar tudo com um comando."
+  },
+  {
+   "id": "operar",
+   "titulo": "Operar e pagar o justo",
+   "conquista": "Conta sob controle",
+   "descricao": "Monitorar, receber alerta, saber quanto custa e manter a conta segura."
+  },
+  {
+   "id": "projeto",
+   "titulo": "Projeto",
+   "conquista": "No ar nas duas",
+   "descricao": "Um app seu publicado na AWS e no Google Cloud, com Terraform e README."
+  }
+ ],
+ "areas": [],
+ "topicos": [
+  {
+   "id": "cloud-o-que-e",
+   "etapa": "entender",
+   "titulo": "O que é cloud",
+   "horas": 3,
+   "resumo": "Cloud é usar computador, disco, rede e serviços prontos de outra empresa, pagando pelo que usa. A AWS e o Google Cloud oferecem os mesmos blocos com nomes diferentes. Entender os blocos e quem cuida de cada parte vale mais que decorar o nome de centenas de serviços.",
+   "essencial": [
+    "IaaS: você aluga a máquina e cuida do sistema dela (EC2, Compute Engine). PaaS: você entrega o código e a nuvem roda (Lambda, Cloud Run). SaaS: você usa o programa pronto (Gmail).",
+    "Região é um lugar físico com vários data centers, como São Paulo (`sa-east-1` na AWS, `southamerica-east1` no Google Cloud). Zona é um data center dentro da região. Espalhar entre zonas protege contra a queda de uma.",
+    "Responsabilidade compartilhada: a nuvem protege o prédio, o hardware e a rede dela. Você protege o que configura: quem acessa, o que fica público e os seus dados.",
+    "Na AWS tudo fica dentro de uma conta. No Google Cloud, dentro de um projeto ligado a uma conta de faturamento. É a fronteira de permissão e de custo.",
+    "Quase tudo o que você aprender numa nuvem existe na outra. Aprenda o conceito, depois procure o nome do serviço."
+   ],
+   "checklist": [
+    "Li sobre IaaS, PaaS e SaaS e classifiquei três serviços que uso no dia a dia",
+    "Achei a região de São Paulo na AWS e no Google Cloud e anotei o código de cada uma",
+    "Escrevi, com minhas palavras, o que a nuvem protege e o que fica comigo",
+    "Comecei um curso gratuito do AWS Educate ou do Builder Center"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Você publica um contêiner e a nuvem cuida do servidor, da escala e do sistema operacional. Que modelo é esse?",
+     "opcoes": [
+      "IaaS",
+      "PaaS",
+      "SaaS",
+      "On-premises"
+     ],
+     "correta": 1,
+     "explicacao": "Em PaaS você entrega o código ou a imagem, e a plataforma roda. Cloud Run e Lambda são exemplos."
+    },
+    {
+     "pergunta": "Um bucket ficou público e vazou dados. De quem é a responsabilidade?",
+     "opcoes": [
+      "Da nuvem, porque o bucket é dela",
+      "Do provedor de internet",
+      "De quem configurou o bucket",
+      "De ninguém, foi um bug"
+     ],
+     "correta": 2,
+     "explicacao": "A nuvem garante que o bucket funciona. Quem decide se ele é público é você. Configuração de acesso fica do seu lado."
+    },
+    {
+     "pergunta": "Por que espalhar as máquinas de um sistema em duas zonas da mesma região?",
+     "opcoes": [
+      "Para o sistema continuar no ar se um data center cair",
+      "Para pagar menos",
+      "Porque a nuvem exige",
+      "Para usar menos rede"
+     ],
+     "correta": 0,
+     "explicacao": "Cada zona é um data center independente. Se um tiver problema, o outro segura."
+    },
+    {
+     "pergunta": "Qual é o equivalente do EC2 da AWS no Google Cloud?",
+     "opcoes": [
+      "Cloud Storage",
+      "Cloud Run",
+      "BigQuery",
+      "Compute Engine"
+     ],
+     "correta": 3,
+     "explicacao": "EC2 e Compute Engine são máquinas virtuais. Mesmo conceito, nome diferente."
+    },
+    {
+     "pergunta": "Seus usuários estão no Brasil e a lei pede que os dados fiquem no país. Onde criar os recursos?",
+     "opcoes": [
+      "Na região mais barata",
+      "Na região de São Paulo",
+      "Em qualquer região, tanto faz",
+      "Nos Estados Unidos, que tem mais serviços"
+     ],
+     "correta": 1,
+     "explicacao": "Região define onde os dados ficam e a latência para quem usa. Regra de dados e distância contam antes do preço."
+    },
+    {
+     "pergunta": "Você domina a AWS e entrou numa empresa que usa Google Cloud. O que fazer primeiro?",
+     "opcoes": [
+      "Começar do zero, porque nada se aproveita",
+      "Pedir para trocar de nuvem",
+      "Mapear os conceitos que você já sabe para os nomes do Google Cloud",
+      "Decorar todos os serviços do Google"
+     ],
+     "correta": 2,
+     "explicacao": "IAM, rede, VM, bucket e função existem nas duas. Você já sabe o conceito, falta o nome e os detalhes."
+    }
+   ],
+   "pergunta_ako": "Pense num app que você usa todo dia. Quais partes dele você acha que rodam como IaaS, PaaS ou SaaS?",
+   "recursos": [
+    {
+     "titulo": "Nuvem sem mistério",
+     "fonte": "Ako",
+     "url": "./materiais/nuvem-sem-misterio.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "O que é nuvem com a analogia do almoço, região e zona, quem cuida de quê e um dicionário AWS e Google Cloud lado a lado.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "O que é computação em nuvem?",
+     "fonte": "Google Cloud",
+     "url": "https://cloud.google.com/learn/what-is-cloud-computing?hl=pt-br",
+     "tipo": "artigo",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Explicação curta, em português, dos modelos IaaS, PaaS e SaaS e dos tipos de nuvem.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Shared Responsibility Model",
+     "fonte": "AWS",
+     "url": "https://aws.amazon.com/compliance/shared-responsibility-model/",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "O que a AWS protege e o que fica com você, com exemplos por tipo de serviço.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Shared responsibilities and shared fate on Google Cloud",
+     "fonte": "Google Cloud",
+     "url": "https://docs.cloud.google.com/architecture/framework/security/shared-responsibility-shared-fate",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "A versão do Google para a responsabilidade compartilhada, com a ideia de \"destino compartilhado\".",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "AWS Educate",
+     "fonte": "AWS",
+     "url": "https://aws.amazon.com/education/awseducate/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, sem cartão de crédito",
+     "nota": "Cursos e labs da AWS de graça, só com e-mail, a partir de 13 anos. Os labs rodam num ambiente da própria AWS, sem conta sua e sem risco de cobrança.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "AWS Builder Center: Learn",
+     "fonte": "AWS",
+     "url": "https://builder.aws.com/learn",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, precisa criar um Builder ID",
+     "nota": "A porta de entrada do aprendizado da AWS: Skill Builder, AWS Educate, workshops e tutoriais num lugar só. Os labs guiados e os simulados oficiais do Skill Builder são pagos e ficam de fora.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "AWS Cloud Quest",
+     "fonte": "AWS",
+     "url": "https://aws.amazon.com/training/digital/immersive-learning/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, acesso limitado na conta gratuita",
+     "nota": "Jogo de aprendizagem da AWS: você resolve problemas de uma cidade montando soluções em labs de verdade. A conta gratuita tem acesso limitado. O acesso completo é pela assinatura do Skill Builder, que não é necessária.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Google Skills",
+     "fonte": "Google",
+     "url": "https://www.skills.google/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, precisa criar conta",
+     "nota": "O antigo Google Cloud Skills Boost: cursos e labs do Google Cloud. Antes de começar um lab, confira na página dele se usa créditos.",
+     "verificado_em": "2026-11-20"
+    }
+   ]
+  },
+  {
+   "id": "conta-sem-susto",
+   "etapa": "entender",
+   "titulo": "Conta na nuvem sem susto",
+   "horas": 2,
+   "resumo": "Antes de criar qualquer recurso, proteja a conta. Ligue o MFA, crie um alerta de orçamento e use um usuário do dia a dia em vez do root. Na AWS, o plano gratuito fecha sozinho em 6 meses e não cobra se você não mudar de plano. No Google Cloud, o crédito de US$ 300 para conta nova cobre os exercícios. Alerta de orçamento avisa, mas não bloqueia o gasto: apague o que criou no fim de cada prática.",
+   "essencial": [
+    "O usuário root da AWS e a conta dona do Google Cloud podem tudo, inclusive gastar. Use MFA neles e guarde para emergência. Para o dia a dia, crie um usuário com só o que precisa.",
+    "Crie um alerta de orçamento de valor baixo, como US$ 1, antes do primeiro recurso. Na AWS é o AWS Budgets. No Google Cloud, os orçamentos do Cloud Billing.",
+    "Alerta não é trava. Ele manda e-mail, mas o recurso continua rodando e cobrando. Quem desliga é você.",
+    "Apagar no fim do exercício é parte do exercício. Máquina parada pode ainda cobrar disco e IP.",
+    "Dá para praticar sem conta: o AWS Educate tem labs sem cartão, e os emuladores rodam no seu computador. Use a conta real quando precisar de um endereço público."
+   ],
+   "checklist": [
+    "Li a lição do Ako sobre conta na nuvem sem susto",
+    "Liguei o MFA na conta principal da AWS e do Google Cloud",
+    "Criei um alerta de orçamento de valor baixo nas duas",
+    "Criei um usuário do dia a dia e parei de usar o root"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Você criou o alerta de orçamento de US$ 1 e esqueceu uma máquina ligada. O que acontece?",
+     "opcoes": [
+      "A nuvem desliga a máquina sozinha",
+      "Você recebe o e-mail, e a máquina continua cobrando até você desligar",
+      "Nada é cobrado por causa do alerta",
+      "A conta é apagada"
+     ],
+     "correta": 1,
+     "explicacao": "Budget avisa, não bloqueia. Por isso o hábito de apagar no fim da prática importa tanto quanto o alerta."
+    },
+    {
+     "pergunta": "Por que não usar o usuário root da AWS no dia a dia?",
+     "opcoes": [
+      "Porque ele é mais lento",
+      "Porque ele não acessa o console",
+      "Porque ele pode tudo, e uma senha vazada vira acesso total à conta e à fatura",
+      "Porque ele expira em 30 dias"
+     ],
+     "correta": 2,
+     "explicacao": "Root não tem limite. Use MFA nele e guarde para emergência. No dia a dia, um usuário com menos poder."
+    },
+    {
+     "pergunta": "Qual é a primeira coisa a fazer numa conta nova?",
+     "opcoes": [
+      "Ligar o MFA e criar o alerta de orçamento",
+      "Criar a maior máquina para testar",
+      "Deixar um bucket público para testar o site",
+      "Gerar uma chave de acesso e colar no GitHub"
+     ],
+     "correta": 0,
+     "explicacao": "Proteger a conta vem antes de qualquer recurso. Leva dez minutos e evita o pior susto."
+    },
+    {
+     "pergunta": "Você quer só treinar os comandos do S3, sem cartão de crédito. Qual caminho faz sentido?",
+     "opcoes": [
+      "Criar a conta com o cartão de alguém",
+      "Não dá para treinar sem conta",
+      "Comprar um curso pago",
+      "Usar um lab do AWS Educate ou um emulador no seu computador"
+     ],
+     "correta": 3,
+     "explicacao": "O AWS Educate tem labs sem cartão, e emuladores como o LocalStack imitam os serviços na sua máquina."
+    },
+    {
+     "pergunta": "Você parou uma VM, mas ainda aparece cobrança pequena. O que provavelmente continua cobrando?",
+     "opcoes": [
+      "O nome da VM",
+      "O disco e, às vezes, o IP fixo reservado",
+      "O alerta de orçamento",
+      "O console"
+     ],
+     "correta": 1,
+     "explicacao": "Parar desliga a CPU. O disco e um IP reservado continuam existindo. Para zerar, apague."
+    },
+    {
+     "pergunta": "No Google Cloud, onde fica a ligação entre os recursos e quem paga?",
+     "opcoes": [
+      "No bucket",
+      "Na VM",
+      "No projeto, ligado a uma conta de faturamento",
+      "No usuário"
+     ],
+     "correta": 2,
+     "explicacao": "Todo recurso mora num projeto, e o projeto aponta para uma conta de faturamento. É ali que o orçamento se aplica."
+    }
+   ],
+   "pergunta_ako": "Qual seria o seu maior medo ao abrir uma conta de nuvem? Que hábito desta lição resolve esse medo?",
+   "recursos": [
+    {
+     "titulo": "Conta na nuvem sem susto",
+     "fonte": "Ako",
+     "url": "./materiais/conta-na-nuvem-sem-susto.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Abrir a conta da AWS e a do Google Cloud com MFA, alerta de orçamento e o ritual de apagar tudo no fim do exercício.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "AWS Free Tier",
+     "fonte": "AWS",
+     "url": "https://aws.amazon.com/free/",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Conta nova recebe US$ 100 de crédito e pode ganhar mais US$ 100 em atividades. O plano gratuito fecha sozinho em 6 meses ou quando o crédito acaba, e não cobra se você não mudar para o plano pago.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Google Cloud Free Program",
+     "fonte": "Google Cloud",
+     "url": "https://cloud.google.com/free",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Conta nova recebe US$ 300 de crédito. Alguns produtos têm uma faixa sempre gratuita, como 1 instância e2-micro por mês e 2 milhões de requisições por mês no Cloud Run.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Managing your costs with AWS Budgets",
+     "fonte": "AWS",
+     "url": "https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Como criar um budget e receber e-mail quando o gasto passar do limite.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Create, edit, or delete budgets and budget alerts",
+     "fonte": "Google Cloud",
+     "url": "https://docs.cloud.google.com/billing/docs/how-to/budgets",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Como criar um orçamento com alertas no Google Cloud. O alerta avisa, mas não bloqueia o gasto.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "AWS Educate",
+     "fonte": "AWS",
+     "url": "https://aws.amazon.com/education/awseducate/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, sem cartão de crédito",
+     "nota": "Cursos e labs da AWS de graça, só com e-mail, a partir de 13 anos. Os labs rodam num ambiente da própria AWS, sem conta sua e sem risco de cobrança.",
+     "verificado_em": "2026-11-20"
+    }
+   ]
+  },
+  {
+   "id": "cloud-iam",
+   "etapa": "essencial",
+   "titulo": "Identidade e acesso (IAM)",
+   "horas": 3,
+   "resumo": "IAM decide quem pode fazer o quê em cada recurso. Quem pode ser uma pessoa ou um sistema, como uma função ou uma VM. A regra que guia tudo é o least privilege: cada um recebe só a permissão que precisa, e nada mais. Na AWS, sistemas usam roles. No Google Cloud, service accounts.",
+   "essencial": [
+    "Na AWS: usuário, grupo, role e policy em JSON. No Google Cloud: principal, role e policy, com permissão que herda da organização para a pasta e para o projeto.",
+    "Least privilege: comece com pouco e acrescente quando faltar. Permissão de administrador \"para não dar erro\" é o atalho que vira incidente.",
+    "Sistema não usa senha de pessoa. Na AWS, a VM ou a função assume uma role. No Google Cloud, roda com uma service account.",
+    "Chave de acesso de longa duração é risco. Prefira login por SSO e credenciais temporárias. Se precisar de chave, nunca coloque no Git.",
+    "Antes de dar permissão, pergunte: quem, em qual recurso, para fazer o quê, e por quanto tempo."
+   ],
+   "checklist": [
+    "Criei um usuário ou principal só com permissão de leitura",
+    "Testei e confirmei que ele não consegue apagar nada",
+    "Li uma policy pronta da AWS e uma role pronta do Google Cloud e expliquei o que cada uma permite",
+    "Conferi que não tenho chave de acesso parada sem uso"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Um script só precisa ler arquivos de um bucket. Que permissão ele deve ter?",
+     "opcoes": [
+      "Administrador da conta",
+      "Leitura e escrita em todos os buckets",
+      "Leitura só naquele bucket",
+      "Nenhuma, scripts não precisam"
+     ],
+     "correta": 2,
+     "explicacao": "Least privilege: só a ação que precisa, só no recurso que precisa."
+    },
+    {
+     "pergunta": "Uma função Lambda precisa gravar no DynamoDB. Qual é o jeito certo de dar acesso?",
+     "opcoes": [
+      "Colar a chave do seu usuário no código",
+      "Dar à função uma role com permissão de gravação naquela tabela",
+      "Deixar a tabela pública",
+      "Usar o root"
+     ],
+     "correta": 1,
+     "explicacao": "A função assume uma role, e a nuvem entrega credenciais temporárias. Nenhuma chave fica no código."
+    },
+    {
+     "pergunta": "No Google Cloud, você dá uma role no nível da organização. O que acontece com os projetos?",
+     "opcoes": [
+      "Os projetos herdam a permissão",
+      "Nada, cada projeto é isolado",
+      "A permissão vale só no console",
+      "A role expira"
+     ],
+     "correta": 0,
+     "explicacao": "No Google Cloud a permissão desce: organização, pasta, projeto, recurso. Dê no nível mais baixo que resolve."
+    },
+    {
+     "pergunta": "Alguém pede administrador \"só para não dar erro de permissão\". Qual é a melhor resposta?",
+     "opcoes": [
+      "Dar, e tirar depois",
+      "Negar sem explicar",
+      "Dar o root",
+      "Descobrir qual ação está falhando e dar só essa permissão"
+     ],
+     "correta": 3,
+     "explicacao": "A mensagem de erro diz qual ação faltou. Dar só ela resolve o problema sem abrir a conta inteira."
+    },
+    {
+     "pergunta": "Qual é o equivalente da role de sistema da AWS no Google Cloud?",
+     "opcoes": [
+      "Bucket",
+      "Service account",
+      "VPC",
+      "Billing account"
+     ],
+     "correta": 1,
+     "explicacao": "Role na AWS e service account no Google Cloud são a identidade de um sistema, sem senha de pessoa."
+    },
+    {
+     "pergunta": "Você achou uma chave de acesso criada há um ano e que ninguém sabe para que serve. O que fazer?",
+     "opcoes": [
+      "Deixar, porque pode quebrar algo",
+      "Publicar no README",
+      "Desativar, observar se algo quebra e apagar",
+      "Trocar a senha do root"
+     ],
+     "correta": 2,
+     "explicacao": "Desativar primeiro permite voltar atrás se algo depender dela. Se nada quebrar, apague. Chave esquecida é porta aberta."
+    }
+   ],
+   "pergunta_ako": "Pense no seu trabalho ou no seu estudo. Que acesso você tem hoje e nunca usa? O que aconteceria se alguém usasse no seu lugar?",
+   "recursos": [
+    {
+     "titulo": "Os cinco blocos da nuvem",
+     "fonte": "Ako",
+     "url": "./materiais/os-cinco-blocos-da-nuvem.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "IAM, rede, máquinas, storage e banco, cada um com conceito, finalidade, um exemplo e o nome na AWS e no Google Cloud.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "What is IAM?",
+     "fonte": "AWS",
+     "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Usuários, grupos, roles e políticas na AWS, com o caminho para cada tarefa.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "IAM overview",
+     "fonte": "Google Cloud",
+     "url": "https://docs.cloud.google.com/iam/docs/overview",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Principal, role e policy no Google Cloud, e como a permissão herda de organização para projeto.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "AWS Educate",
+     "fonte": "AWS",
+     "url": "https://aws.amazon.com/education/awseducate/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, sem cartão de crédito",
+     "nota": "Cursos e labs da AWS de graça, só com e-mail, a partir de 13 anos. Os labs rodam num ambiente da própria AWS, sem conta sua e sem risco de cobrança.",
+     "verificado_em": "2026-11-20"
+    }
+   ]
+  },
+  {
+   "id": "cloud-rede",
+   "etapa": "essencial",
+   "titulo": "Rede na nuvem",
+   "horas": 4,
+   "resumo": "Toda máquina na nuvem mora numa rede privada sua, a VPC. Dentro dela você divide o espaço em subnets e decide o que entra e o que sai com regras de firewall. Na AWS a VPC é por região e a regra fica no security group. No Google Cloud a VPC é global, as subnets são por região e a regra é uma firewall rule.",
+   "essencial": [
+    "VPC é a sua rede privada na nuvem, com uma faixa de IP que você escolhe, como `10.0.0.0/16`.",
+    "Subnet pública tem saída para a internet. Subnet privada não aparece para fora. Banco e serviço interno ficam na privada.",
+    "Security group (AWS) e firewall rule (Google Cloud) dizem quais portas e origens podem entrar. Abra só o que precisa: porta 80 ou 443 para o site, SSH só do seu IP.",
+    "`0.0.0.0/0` quer dizer \"qualquer lugar da internet\". Na porta 22 ou na porta do banco, é convite para ataque.",
+    "Quando algo não conecta, confira na ordem: a máquina está ligada, a porta está aberta na regra, a rota existe, o serviço está escutando."
+   ],
+   "checklist": [
+    "Desenhei uma VPC com uma subnet pública e uma privada",
+    "Criei uma regra que libera só a porta 80 para todo mundo e o SSH só para o meu IP",
+    "Testei com `curl` e com `nc` que a porta fechada não responde",
+    "Achei a diferença entre a VPC da AWS e a do Google Cloud e anotei"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Onde deve ficar o banco de dados de um site?",
+     "opcoes": [
+      "Numa subnet privada, acessível só pelo servidor do site",
+      "Numa subnet pública, para ser mais rápido",
+      "Fora da VPC",
+      "Tanto faz"
+     ],
+     "correta": 0,
+     "explicacao": "O banco não precisa falar com a internet. Na subnet privada, só quem está dentro da rede chega nele."
+    },
+    {
+     "pergunta": "Uma regra libera a porta 22 para `0.0.0.0/0`. Qual é o risco?",
+     "opcoes": [
+      "Nenhum, SSH é seguro",
+      "O site fica lento",
+      "Qualquer pessoa da internet pode tentar entrar na máquina por SSH",
+      "A máquina perde o IP"
+     ],
+     "correta": 2,
+     "explicacao": "Robôs varrem a internet atrás de SSH aberto. Libere só o seu IP ou use o acesso pelo console da nuvem."
+    },
+    {
+     "pergunta": "No Google Cloud, a VPC é...",
+     "opcoes": [
+      "regional, como na AWS",
+      "global, com subnets por região",
+      "por zona",
+      "por projeto e região ao mesmo tempo"
+     ],
+     "correta": 1,
+     "explicacao": "Essa é uma diferença real entre as duas. Na AWS a VPC é da região. No Google Cloud ela atravessa regiões."
+    },
+    {
+     "pergunta": "O site não abre. A máquina está ligada e o nginx está rodando. O que conferir em seguida?",
+     "opcoes": [
+      "Trocar de nuvem",
+      "Reinstalar o sistema",
+      "Aumentar a máquina",
+      "Se a regra de firewall libera a porta 80"
+     ],
+     "correta": 3,
+     "explicacao": "Máquina ligada e serviço rodando apontam para a rede. A regra de entrada é a suspeita número um."
+    },
+    {
+     "pergunta": "O que um security group da AWS controla?",
+     "opcoes": [
+      "O tráfego que entra e sai de um recurso, por porta e origem",
+      "O custo da máquina",
+      "Quem pode logar no console",
+      "O tamanho do disco"
+     ],
+     "correta": 0,
+     "explicacao": "Security group é um firewall ligado ao recurso. IAM cuida de quem mexe na conta, e são coisas diferentes."
+    },
+    {
+     "pergunta": "Por que escolher a faixa de IP da VPC com cuidado?",
+     "opcoes": [
+      "Porque muda o preço",
+      "Porque se ela colidir com outra rede que precisa conversar com a sua, a conexão fica difícil",
+      "Porque o Google exige",
+      "Não importa"
+     ],
+     "correta": 1,
+     "explicacao": "Se duas redes usam a mesma faixa, ligar uma na outra vira dor de cabeça. Planejar no começo é barato."
+    }
+   ],
+   "pergunta_ako": "Lembre de um \"não conecta\" que você já viu. Em qual camada estava o problema: máquina, porta, rota ou serviço?",
+   "recursos": [
+    {
+     "titulo": "Os cinco blocos da nuvem",
+     "fonte": "Ako",
+     "url": "./materiais/os-cinco-blocos-da-nuvem.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "IAM, rede, máquinas, storage e banco, cada um com conceito, finalidade, um exemplo e o nome na AWS e no Google Cloud.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "What is Amazon VPC?",
+     "fonte": "AWS",
+     "url": "https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "VPC, subnets, route tables, internet gateway e security groups na AWS.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "VPC networks overview",
+     "fonte": "Google Cloud",
+     "url": "https://docs.cloud.google.com/vpc/docs/overview",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Rede VPC global, subnets por região e firewall rules no Google Cloud.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "AWS Educate",
+     "fonte": "AWS",
+     "url": "https://aws.amazon.com/education/awseducate/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, sem cartão de crédito",
+     "nota": "Cursos e labs da AWS de graça, só com e-mail, a partir de 13 anos. Os labs rodam num ambiente da própria AWS, sem conta sua e sem risco de cobrança.",
+     "verificado_em": "2026-11-20"
+    }
+   ]
+  },
+  {
+   "id": "cloud-compute",
+   "etapa": "essencial",
+   "titulo": "Máquinas virtuais",
+   "horas": 4,
+   "resumo": "Uma máquina virtual é um servidor que você aluga por hora ou por segundo, quase sempre com Linux. Na AWS é o EC2. No Google Cloud, o Compute Engine. É onde você junta tudo o que aprendeu de Linux, SSH e redes. Também é o recurso que mais pesa na conta quando fica esquecido.",
+   "essencial": [
+    "Tipo de máquina define CPU e memória. Para estudar, use as menores: no Google Cloud, a e2-micro tem uma faixa sempre gratuita em algumas regiões.",
+    "A imagem define o sistema, como Ubuntu ou Debian. Na criação, você escolhe disco, rede e a regra de firewall.",
+    "Entre por SSH com chave, ou pelo acesso do próprio console. Nada de senha.",
+    "Parar a VM desliga a CPU, mas o disco continua cobrando. Apagar remove tudo.",
+    "VM é a base, mas nem sempre a melhor escolha. Se você só quer rodar um contêiner ou uma função, os serviços sem servidor costumam dar menos trabalho."
+   ],
+   "checklist": [
+    "Subi a menor VM Linux na AWS ou no Google Cloud",
+    "Entrei por SSH, instalei o nginx e abri a página no navegador",
+    "Apaguei a VM e conferi no painel que não sobrou disco nem IP",
+    "Repeti na outra nuvem e anotei o que mudou"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Você vai treinar um servidor web simples. Que tamanho de máquina escolher?",
+     "opcoes": [
+      "A maior, para não travar",
+      "A menor disponível, de preferência na faixa gratuita",
+      "Uma com GPU",
+      "Tanto faz, o preço é igual"
+     ],
+     "correta": 1,
+     "explicacao": "Para estudo, a menor máquina dá conta. No Google Cloud, a e2-micro tem faixa sempre gratuita em regiões específicas."
+    },
+    {
+     "pergunta": "O que é cobrado de uma VM parada?",
+     "opcoes": [
+      "Nada",
+      "CPU e memória",
+      "O disco e recursos ligados a ela, como IP reservado",
+      "Só a licença do Linux"
+     ],
+     "correta": 2,
+     "explicacao": "Parar não apaga o disco. Se não vai usar mais, apague a VM e confira o que sobrou."
+    },
+    {
+     "pergunta": "Qual é o jeito recomendado de entrar numa VM Linux?",
+     "opcoes": [
+      "SSH com chave, ou o acesso pelo console da nuvem",
+      "Telnet",
+      "Senha simples por SSH",
+      "Área de trabalho remota com senha padrão"
+     ],
+     "correta": 0,
+     "explicacao": "Chave não trafega senha pela rede. O console da nuvem também resolve sem abrir a porta 22 para o mundo."
+    },
+    {
+     "pergunta": "Você só quer publicar uma API pequena num contêiner. Qual opção dá menos trabalho de manutenção?",
+     "opcoes": [
+      "Uma VM com Docker instalado à mão",
+      "Três VMs com balanceador",
+      "Um servidor físico",
+      "Um serviço de contêiner gerenciado, como o Cloud Run"
+     ],
+     "correta": 3,
+     "explicacao": "Na VM você cuida de atualização, disco e reinício. No serviço gerenciado, a nuvem cuida disso."
+    },
+    {
+     "pergunta": "Qual é o nome da máquina virtual na AWS e no Google Cloud?",
+     "opcoes": [
+      "Lambda e Cloud Run",
+      "EC2 e Compute Engine",
+      "S3 e Cloud Storage",
+      "RDS e Cloud SQL"
+     ],
+     "correta": 1,
+     "explicacao": "EC2 na AWS, Compute Engine no Google Cloud."
+    },
+    {
+     "pergunta": "A VM subiu, mas o navegador não abre a página. O nginx está rodando. O que provavelmente falta?",
+     "opcoes": [
+      "Mais memória",
+      "Outro sistema operacional",
+      "Liberar a porta 80 na regra de firewall ou no security group",
+      "Reiniciar o navegador"
+     ],
+     "correta": 2,
+     "explicacao": "Serviço rodando e página que não abre apontam para a regra de entrada. É o mesmo raciocínio do tópico de rede."
+    }
+   ],
+   "pergunta_ako": "Que tarefa do seu dia a dia rodaria bem numa VM? E qual você nem precisaria de servidor para resolver?",
+   "recursos": [
+    {
+     "titulo": "Os cinco blocos da nuvem",
+     "fonte": "Ako",
+     "url": "./materiais/os-cinco-blocos-da-nuvem.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "IAM, rede, máquinas, storage e banco, cada um com conceito, finalidade, um exemplo e o nome na AWS e no Google Cloud.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Get started with Amazon EC2",
+     "fonte": "AWS",
+     "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_GetStarted.html",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Tutorial oficial para subir, acessar e encerrar a primeira instância EC2.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Create a Linux VM instance in Compute Engine",
+     "fonte": "Google Cloud",
+     "url": "https://docs.cloud.google.com/compute/docs/create-linux-vm-instance",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Quickstart oficial para criar uma VM Linux, conectar por SSH e apagar no fim.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Google Cloud Free Program",
+     "fonte": "Google Cloud",
+     "url": "https://cloud.google.com/free",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Conta nova recebe US$ 300 de crédito. Alguns produtos têm uma faixa sempre gratuita, como 1 instância e2-micro por mês e 2 milhões de requisições por mês no Cloud Run.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "AWS Educate",
+     "fonte": "AWS",
+     "url": "https://aws.amazon.com/education/awseducate/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, sem cartão de crédito",
+     "nota": "Cursos e labs da AWS de graça, só com e-mail, a partir de 13 anos. Os labs rodam num ambiente da própria AWS, sem conta sua e sem risco de cobrança.",
+     "verificado_em": "2026-11-20"
+    }
+   ]
+  },
+  {
+   "id": "cloud-storage",
+   "etapa": "essencial",
+   "titulo": "Storage de objetos",
+   "horas": 3,
+   "resumo": "Storage de objetos guarda arquivos de qualquer tamanho, barato e com alta durabilidade. Na AWS é o S3. No Google Cloud, o Cloud Storage. Você cria um bucket, envia arquivos e decide quem pode ler. Serve para backup, imagens de um app, logs e até para hospedar um site estático.",
+   "essencial": [
+    "Bucket é o contêiner dos arquivos. O nome é único no mundo inteiro, então use um prefixo seu.",
+    "Por padrão, bucket novo é privado nas duas nuvens. Deixar público é uma escolha explícita, e deve ser só para conteúdo público de verdade.",
+    "Classes de armazenamento mudam preço e velocidade. Arquivo que quase ninguém lê pode ir para uma classe mais barata.",
+    "Versionamento guarda versões antigas e salva quando alguém apaga sem querer. Regras de ciclo de vida apagam ou movem arquivos velhos sozinhas.",
+    "Site estático num bucket é o jeito mais barato de publicar HTML, CSS e JavaScript na nuvem."
+   ],
+   "checklist": [
+    "Criei um bucket e enviei um arquivo pelo terminal",
+    "Confirmei que o arquivo não abre para quem não tem permissão",
+    "Publiquei um site estático num bucket e abri pelo navegador",
+    "Liguei o versionamento e recuperei um arquivo apagado"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Você criou um bucket para guardar backups do banco. Como ele deve ficar?",
+     "opcoes": [
+      "Privado, com acesso só para quem faz o backup",
+      "Público, para facilitar",
+      "Público só para leitura",
+      "Tanto faz"
+     ],
+     "correta": 0,
+     "explicacao": "Backup tem dado sensível. Privado e com least privilege."
+    },
+    {
+     "pergunta": "Alguém apagou sem querer um arquivo importante do bucket. O que teria salvado?",
+     "opcoes": [
+      "Um bucket maior",
+      "O versionamento ligado",
+      "Uma classe de armazenamento mais cara",
+      "Um nome de bucket diferente"
+     ],
+     "correta": 1,
+     "explicacao": "Com versionamento, apagar cria uma marca e a versão antiga continua lá para recuperar."
+    },
+    {
+     "pergunta": "Por que o nome do bucket costuma dar erro de \"já existe\"?",
+     "opcoes": [
+      "Porque o nome é único no mundo inteiro, entre todas as contas",
+      "Porque você já criou um antes",
+      "Porque tem letra maiúscula",
+      "Porque falta a região"
+     ],
+     "correta": 0,
+     "explicacao": "Nomes de bucket são globais. Use um prefixo seu, como o nome do projeto."
+    },
+    {
+     "pergunta": "Qual é o equivalente do S3 no Google Cloud?",
+     "opcoes": [
+      "Persistent Disk",
+      "Filestore",
+      "BigQuery",
+      "Cloud Storage"
+     ],
+     "correta": 3,
+     "explicacao": "S3 e Cloud Storage são storage de objetos."
+    },
+    {
+     "pergunta": "Logs com mais de 90 dias quase nunca são lidos. Como gastar menos com eles?",
+     "opcoes": [
+      "Apagar todos os logs",
+      "Uma regra de ciclo de vida que move para uma classe mais barata ou apaga depois de um tempo",
+      "Comprimir à mão todo mês",
+      "Guardar numa VM"
+     ],
+     "correta": 1,
+     "explicacao": "Ciclo de vida automatiza a limpeza e a troca de classe. Ninguém precisa lembrar."
+    },
+    {
+     "pergunta": "Você quer publicar um site de HTML, CSS e JavaScript, sem backend. Qual é a opção mais simples e barata?",
+     "opcoes": [
+      "Uma VM com Apache",
+      "Um cluster Kubernetes",
+      "Um bucket configurado como site estático",
+      "Um banco de dados"
+     ],
+     "correta": 2,
+     "explicacao": "Site estático não precisa de servidor. O bucket entrega os arquivos direto."
+    }
+   ],
+   "pergunta_ako": "Que arquivo seu, hoje, só existe num lugar? O que aconteceria se ele sumisse amanhã?",
+   "recursos": [
+    {
+     "titulo": "Os cinco blocos da nuvem",
+     "fonte": "Ako",
+     "url": "./materiais/os-cinco-blocos-da-nuvem.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "IAM, rede, máquinas, storage e banco, cada um com conceito, finalidade, um exemplo e o nome na AWS e no Google Cloud.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Hosting a static website using Amazon S3",
+     "fonte": "AWS",
+     "url": "https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Como publicar um site estático num bucket S3.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Host a static website",
+     "fonte": "Google Cloud",
+     "url": "https://docs.cloud.google.com/storage/docs/hosting-static-website",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Como publicar um site estático num bucket do Cloud Storage. Para HTTPS com domínio próprio, o guia usa um load balancer, que é pago. No estudo, o endereço do próprio bucket basta.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "AWS Educate",
+     "fonte": "AWS",
+     "url": "https://aws.amazon.com/education/awseducate/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, sem cartão de crédito",
+     "nota": "Cursos e labs da AWS de graça, só com e-mail, a partir de 13 anos. Os labs rodam num ambiente da própria AWS, sem conta sua e sem risco de cobrança.",
+     "verificado_em": "2026-11-20"
+    }
+   ]
+  },
+  {
+   "id": "cloud-banco",
+   "etapa": "essencial",
+   "titulo": "Banco de dados gerenciado",
+   "horas": 3,
+   "resumo": "Banco gerenciado é o banco que a nuvem instala, atualiza, faz backup e mantém no ar para você. Existem dois tipos grandes: relacional (SQL), como RDS na AWS e Cloud SQL no Google Cloud, e NoSQL, como DynamoDB e Firestore. Para estudar sem gastar, comece pelo NoSQL: DynamoDB e Firestore têm faixa gratuita.",
+   "essencial": [
+    "Relacional guarda tabelas com relação entre elas e usa SQL. NoSQL de documentos ou chave-valor escala fácil e cobra por uso.",
+    "RDS e Cloud SQL rodam uma instância o tempo todo e cobram por hora. Ótimos no trabalho, caros para esquecer ligados no estudo.",
+    "DynamoDB e Firestore cobram por leitura, escrita e espaço, e têm faixa gratuita. Bons para o primeiro projeto.",
+    "Banco nunca fica público. Acesso só pela rede privada ou com identidade e permissão.",
+    "Backup automático e teste de restauração fazem parte do serviço. Backup que nunca foi restaurado é uma esperança, não um backup."
+   ],
+   "checklist": [
+    "Criei uma tabela no DynamoDB ou uma coleção no Firestore",
+    "Gravei e li três itens por código ou pela CLI",
+    "Escrevi, com minhas palavras, quando escolheria SQL e quando escolheria NoSQL",
+    "Apaguei a tabela ou a coleção no fim"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Para o primeiro projeto de estudo, sem gastar, qual banco faz mais sentido?",
+     "opcoes": [
+      "Um RDS grande ligado o mês todo",
+      "DynamoDB ou Firestore, dentro da faixa gratuita",
+      "Um banco instalado numa VM grande",
+      "Um banco no notebook exposto na internet"
+     ],
+     "correta": 1,
+     "explicacao": "Os dois cobram por uso e têm faixa gratuita. RDS e Cloud SQL cobram por hora mesmo sem uso."
+    },
+    {
+     "pergunta": "O que \"gerenciado\" quer dizer num banco na nuvem?",
+     "opcoes": [
+      "Que é grátis",
+      "Que você não precisa de senha",
+      "Que a nuvem cuida de instalar, atualizar, fazer backup e manter no ar",
+      "Que ninguém consegue acessar"
+     ],
+     "correta": 2,
+     "explicacao": "Você cuida dos dados e do acesso. A nuvem cuida da máquina e da manutenção."
+    },
+    {
+     "pergunta": "Seu sistema tem pedidos, clientes e produtos ligados entre si, com relatórios que cruzam tudo. Que tipo de banco combina?",
+     "opcoes": [
+      "Relacional, com SQL",
+      "Storage de objetos",
+      "Fila de mensagens",
+      "Cache"
+     ],
+     "correta": 0,
+     "explicacao": "Dados com relação e consultas que cruzam tabelas são o caso clássico do SQL."
+    },
+    {
+     "pergunta": "Como saber que o backup do banco funciona?",
+     "opcoes": [
+      "Olhando se o arquivo existe",
+      "Confiando na nuvem",
+      "Pelo tamanho do arquivo",
+      "Restaurando o backup num ambiente de teste"
+     ],
+     "correta": 3,
+     "explicacao": "Só a restauração prova que o backup serve. Faça pelo menos uma vez."
+    },
+    {
+     "pergunta": "Qual dupla tem o mesmo papel nas duas nuvens?",
+     "opcoes": [
+      "DynamoDB e BigQuery",
+      "RDS e Cloud SQL",
+      "S3 e Firestore",
+      "Lambda e Cloud SQL"
+     ],
+     "correta": 1,
+     "explicacao": "RDS e Cloud SQL são bancos relacionais gerenciados."
+    },
+    {
+     "pergunta": "Onde o banco deve estar acessível?",
+     "opcoes": [
+      "Na internet, com senha forte",
+      "Na internet, sem senha, para testar",
+      "Só para quem está na rede privada ou tem a permissão certa",
+      "Em qualquer lugar"
+     ],
+     "correta": 2,
+     "explicacao": "Banco exposto é alvo. Rede privada, IAM e least privilege."
+    }
+   ],
+   "pergunta_ako": "Pense num app que você usa. Os dados dele parecem mais tabelas com relação ou documentos soltos? Por quê?",
+   "recursos": [
+    {
+     "titulo": "Os cinco blocos da nuvem",
+     "fonte": "Ako",
+     "url": "./materiais/os-cinco-blocos-da-nuvem.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "IAM, rede, máquinas, storage e banco, cada um com conceito, finalidade, um exemplo e o nome na AWS e no Google Cloud.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Getting started with DynamoDB",
+     "fonte": "AWS",
+     "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStartedDynamoDB.html",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Criar uma tabela, gravar e consultar itens no DynamoDB.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Create a Firestore database by using a server client library",
+     "fonte": "Google Cloud",
+     "url": "https://docs.cloud.google.com/firestore/native/docs/create-database-server-client-library",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Criar um banco Firestore e gravar os primeiros documentos com código.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Setting up DynamoDB local",
+     "fonte": "AWS",
+     "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html",
+     "tipo": "ferramenta",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Versão do DynamoDB para rodar no seu computador, em Java ou em imagem Docker, feita pela própria AWS.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Use Firestore emulator locally",
+     "fonte": "Google Cloud",
+     "url": "https://docs.cloud.google.com/firestore/native/docs/emulator",
+     "tipo": "ferramenta",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Firestore rodando na memória do seu computador, para testar o código sem conta. Os dados somem quando o emulador para.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "AWS Educate",
+     "fonte": "AWS",
+     "url": "https://aws.amazon.com/education/awseducate/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, sem cartão de crédito",
+     "nota": "Cursos e labs da AWS de graça, só com e-mail, a partir de 13 anos. Os labs rodam num ambiente da própria AWS, sem conta sua e sem risco de cobrança.",
+     "verificado_em": "2026-11-20"
+    }
+   ]
+  },
+  {
+   "id": "cloud-funcoes",
+   "etapa": "sem-servidor",
+   "titulo": "Funções serverless",
+   "horas": 4,
+   "resumo": "Função serverless é um pedaço de código que roda quando algo acontece: uma requisição HTTP, um arquivo novo no bucket, uma mensagem numa fila. Você não cuida de servidor e paga só pelo tempo em que a função roda. Na AWS é o Lambda. No Google Cloud, as funções do Cloud Run, antes chamadas de Cloud Functions.",
+   "essencial": [
+    "A função acorda com um evento, faz o trabalho e termina. Se chegam mil requisições, a nuvem roda várias cópias.",
+    "Sem uso, custo perto de zero. As duas nuvens têm faixa gratuita generosa para funções.",
+    "Cold start: a primeira chamada depois de um tempo parada demora mais, porque a nuvem precisa preparar o ambiente.",
+    "Função boa é pequena e faz uma coisa. Configuração e segredo entram por variável de ambiente ou gerenciador de segredos.",
+    "Os logs vão sozinhos para o CloudWatch ou para o Cloud Logging. É lá que você descobre por que deu erro 500."
+   ],
+   "checklist": [
+    "Publiquei uma função que responde a uma requisição HTTP com um JSON",
+    "Chamei a função com `curl` e achei a chamada nos logs",
+    "Provoquei um erro de propósito e achei a mensagem no log",
+    "Fiz a mesma função na outra nuvem e comparei o que mudou"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Quando uma função serverless cobra?",
+     "opcoes": [
+      "O mês inteiro, ligada ou não",
+      "Só enquanto roda, por chamada e tempo",
+      "Só no primeiro deploy",
+      "Nunca"
+     ],
+     "correta": 1,
+     "explicacao": "Esse é o atrativo: sem chamada, quase sem custo. Por isso é ótima para estudo e para tarefas esporádicas."
+    },
+    {
+     "pergunta": "A primeira chamada do dia demora 2 segundos e as seguintes, 100 milissegundos. O que é isso?",
+     "opcoes": [
+      "Bug no código",
+      "Rede lenta",
+      "Cold start",
+      "Falta de memória"
+     ],
+     "correta": 2,
+     "explicacao": "Depois de um tempo parada, a nuvem prepara o ambiente de novo. Funções pequenas e com poucas dependências sofrem menos."
+    },
+    {
+     "pergunta": "A função retornou erro 500. Onde olhar primeiro?",
+     "opcoes": [
+      "Nos logs da função, no CloudWatch ou no Cloud Logging",
+      "No código-fonte do navegador",
+      "No DNS",
+      "Na fatura"
+     ],
+     "correta": 0,
+     "explicacao": "O log mostra a exceção e a linha. Comece sempre por ele."
+    },
+    {
+     "pergunta": "Onde guardar a chave de uma API externa que a função usa?",
+     "opcoes": [
+      "No código, numa constante",
+      "No README",
+      "No nome da função",
+      "Numa variável de ambiente ou num gerenciador de segredos"
+     ],
+     "correta": 3,
+     "explicacao": "Segredo fora do código e fora do Git. A função lê na hora de rodar."
+    },
+    {
+     "pergunta": "Qual tarefa combina bem com uma função serverless?",
+     "opcoes": [
+      "Gerar uma miniatura quando chega uma imagem nova no bucket",
+      "Um banco de dados ligado 24 horas",
+      "Um jogo online com conexão aberta o tempo todo",
+      "Treinar um modelo de IA por 10 horas"
+     ],
+     "correta": 0,
+     "explicacao": "Evento curto e esporádico é o caso ideal. Processos longos ou sempre ligados combinam com outros serviços."
+    },
+    {
+     "pergunta": "Qual é o nome do serviço de funções na AWS?",
+     "opcoes": [
+      "EC2",
+      "Lambda",
+      "S3",
+      "Fargate"
+     ],
+     "correta": 1,
+     "explicacao": "Lambda na AWS. No Google Cloud, as funções agora fazem parte do Cloud Run."
+    }
+   ],
+   "pergunta_ako": "Que tarefa repetitiva sua poderia virar uma função que roda sozinha quando algo acontece?",
+   "recursos": [
+    {
+     "titulo": "Serverless na prática",
+     "fonte": "Ako",
+     "url": "./materiais/serverless-na-pratica.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Funções e contêineres gerenciados, quando usar cada um e exemplos nas duas nuvens.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Getting started with Lambda",
+     "fonte": "AWS",
+     "url": "https://docs.aws.amazon.com/lambda/latest/dg/getting-started.html",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Criar a primeira função Lambda pelo console, testar e ver os logs.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Cloud Run quickstarts",
+     "fonte": "Google Cloud",
+     "url": "https://docs.cloud.google.com/run/docs/quickstarts",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Os quickstarts oficiais do Cloud Run: publicar um serviço a partir do código ou de uma imagem, e funções.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Introduction to testing with sam local invoke",
+     "fonte": "AWS",
+     "url": "https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/using-sam-cli-local-invoke.html",
+     "tipo": "ferramenta",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Com a AWS SAM CLI, a sua função Lambda roda num contêiner Docker no seu computador.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "AWS Workshops",
+     "fonte": "AWS",
+     "url": "https://builder.aws.com/build/workshops",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim, precisa criar um Builder ID",
+     "nota": "Workshops guiados e gratuitos da AWS, passo a passo. Os que rodam na sua conta usam recursos que podem ser cobrados: leia a seção de custo e de limpeza antes.",
+     "verificado_em": "2026-11-20"
+    }
+   ]
+  },
+  {
+   "id": "cloud-containers",
+   "etapa": "sem-servidor",
+   "titulo": "Contêineres gerenciados",
+   "horas": 4,
+   "resumo": "Se você já tem uma imagem Docker, dá para publicar sem cuidar de servidor nem de Kubernetes. No Google Cloud, o Cloud Run recebe a imagem e entrega um endereço HTTPS, escalando até zero quando ninguém usa. Na AWS, o caminho comum é o ECS com Fargate. É o passo mais curto entre o Dockerfile e o mundo.",
+   "essencial": [
+    "Você envia a imagem para um registry (Artifact Registry no Google Cloud, ECR na AWS) e o serviço baixa e roda.",
+    "O Cloud Run escala até zero e cobra por requisição, com faixa gratuita. O Fargate cobra por tempo ligado e não tem faixa gratuita: apague no fim.",
+    "O contêiner precisa escutar na porta que o serviço informa, normalmente na variável `PORT`.",
+    "Cada deploy cria uma revisão. Se a nova der problema, você volta para a anterior.",
+    "Quando o sistema crescer para dezenas de serviços, Kubernetes gerenciado (EKS, GKE) entra na conversa. Esse é assunto da Platform Engineering."
+   ],
+   "checklist": [
+    "Fiz o build de uma imagem e enviei para um registry",
+    "Publiquei a imagem no Cloud Run e abri o endereço HTTPS",
+    "Publiquei uma versão nova e voltei para a anterior",
+    "Apaguei o serviço e a imagem no fim"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Você tem uma imagem Docker de uma API e quer um endereço público sem cuidar de servidor. Qual caminho é o mais curto?",
+     "opcoes": [
+      "Montar um cluster Kubernetes",
+      "Comprar um servidor",
+      "Publicar no Cloud Run",
+      "Copiar o código para um bucket"
+     ],
+     "correta": 2,
+     "explicacao": "O Cloud Run recebe a imagem e devolve um endereço HTTPS. Sem VM e sem cluster."
+    },
+    {
+     "pergunta": "O deploy no Cloud Run falha dizendo que o contêiner não respondeu. O que conferir primeiro?",
+     "opcoes": [
+      "Se a app escuta na porta da variável `PORT`",
+      "O tamanho do logo",
+      "O nome do bucket",
+      "O fuso horário"
+     ],
+     "correta": 0,
+     "explicacao": "O serviço manda a requisição para uma porta específica. Se a app escuta em outra, ninguém responde."
+    },
+    {
+     "pergunta": "A versão nova quebrou o login. Qual é a saída mais rápida?",
+     "opcoes": [
+      "Corrigir em produção, na pressa",
+      "Apagar o serviço",
+      "Avisar só amanhã",
+      "Voltar o tráfego para a revisão anterior"
+     ],
+     "correta": 3,
+     "explicacao": "Cada deploy guarda uma revisão. Voltar é rápido, e você corrige com calma."
+    },
+    {
+     "pergunta": "Qual diferença de custo importa entre Cloud Run e Fargate no estudo?",
+     "opcoes": [
+      "Nenhuma",
+      "O Cloud Run escala até zero e tem faixa gratuita. O Fargate cobra enquanto a tarefa estiver ligada",
+      "O Fargate é sempre grátis",
+      "Os dois cobram por mês fechado"
+     ],
+     "correta": 1,
+     "explicacao": "Por isso, no estudo, o Fargate pede atenção dobrada para apagar no fim."
+    },
+    {
+     "pergunta": "Para que serve um registry de contêiner, como o Artifact Registry ou o ECR?",
+     "opcoes": [
+      "Para guardar as imagens com versão, de onde o serviço baixa",
+      "Para guardar logs",
+      "Para criar a VPC",
+      "Para mandar e-mail"
+     ],
+     "correta": 0,
+     "explicacao": "O registry é o repositório das imagens. Pipeline publica, serviço baixa."
+    },
+    {
+     "pergunta": "Quando vale pensar em Kubernetes gerenciado em vez de Cloud Run ou Fargate?",
+     "opcoes": [
+      "No primeiro projeto de estudo",
+      "Para um site estático",
+      "Quando há muitos serviços e o time precisa de controle fino sobre rede, deploy e escala",
+      "Nunca"
+     ],
+     "correta": 2,
+     "explicacao": "Kubernetes resolve problemas de escala e de muitos serviços, e cobra em complexidade. Para começar, o gerenciado simples basta."
+    }
+   ],
+   "pergunta_ako": "O que muda no seu jeito de pensar quando o servidor deixa de existir para você e só sobra a imagem?",
+   "recursos": [
+    {
+     "titulo": "Serverless na prática",
+     "fonte": "Ako",
+     "url": "./materiais/serverless-na-pratica.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Funções e contêineres gerenciados, quando usar cada um e exemplos nas duas nuvens.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Contêineres com Docker",
+     "fonte": "Ako, trilha Platform Engineering",
+     "url": "./?trilha=platform-engineering#/t/containers",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Se ainda não montou uma imagem com Dockerfile, faça este tópico antes. A trilha Cloud usa a imagem que você criar lá.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Deploy and run a container with Cloud Run on Node.js",
+     "fonte": "Google Codelabs",
+     "url": "https://codelabs.developers.google.com/codelabs/cloud-run-hello",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim, pede faturamento ligado",
+     "nota": "Codelab passo a passo: uma app Node.js em contêiner publicada no Cloud Run. Pede conta de faturamento, mas cabe na faixa gratuita.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Cloud Run quickstarts",
+     "fonte": "Google Cloud",
+     "url": "https://docs.cloud.google.com/run/docs/quickstarts",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Os quickstarts oficiais do Cloud Run: publicar um serviço a partir do código ou de uma imagem, e funções.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Learn how to create an Amazon ECS Linux task for the Fargate launch type",
+     "fonte": "AWS",
+     "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/getting-started-fargate.html",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Rodar um contêiner no ECS com Fargate, sem cuidar de servidor. Fargate não tem faixa gratuita: apague no fim.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Get started",
+     "fonte": "Docker Docs",
+     "url": "https://docs.docker.com/get-started/",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "O ponto de partida oficial do Docker: imagem, contêiner e como conteinerizar uma aplicação.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Introduction to Kubernetes (LFS158)",
+     "fonte": "Linux Foundation",
+     "url": "https://training.linuxfoundation.org/training/introduction-to-kubernetes/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "sim, precisa criar conta",
+     "nota": "Curso gratuito de 15 a 20 horas, no seu ritmo, com badge digital no fim. Arquitetura, Minikube e os blocos do Kubernetes.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "kind: Quick Start",
+     "fonte": "Kubernetes SIGs",
+     "url": "https://kind.sigs.k8s.io/docs/user/quick-start/",
+     "tipo": "ferramenta",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Um cluster Kubernetes inteiro dentro do Docker, no seu computador, com um comando só.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Killercoda",
+     "fonte": "Killercoda",
+     "url": "https://killercoda.com/",
+     "tipo": "exercício",
+     "idioma": "en",
+     "gratuito": "sim, com plano pago opcional",
+     "nota": "Cenários interativos no navegador para Kubernetes, Docker e Linux, sem instalar nada. Tem prática para as provas CKA e CKAD.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Kubernetes Tutorial for Beginners",
+     "fonte": "TechWorld with Nana, no YouTube",
+     "url": "https://www.youtube.com/watch?v=X48VuDVv0do",
+     "tipo": "vídeo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Curso completo de Kubernetes em vídeo, com cerca de 4 horas, muito usado por quem está começando.",
+     "verificado_em": "2026-11-20"
+    }
+   ]
+  },
+  {
+   "id": "cloud-cli-emuladores",
+   "etapa": "automatizar",
+   "titulo": "CLI e emuladores no seu computador",
+   "horas": 4,
+   "resumo": "Clicar no painel serve para aprender e conferir. Para repetir sem errar, use o terminal: `aws` na AWS e `gcloud` no Google Cloud. E para treinar os comandos sem conta e sem custo, existem emuladores que imitam os serviços no seu computador, como o LocalStack e o Moto para a AWS e os emuladores da própria gcloud para Firestore e Pub/Sub. O mesmo papel do kind no Kubernetes.",
+   "essencial": [
+    "A CLI faz tudo o que o painel faz, e cada comando vira um passo que você guarda num script ou num README.",
+    "Faça login por SSO ou credenciais temporárias (`aws configure sso`, `gcloud auth login`). Evite chave fixa no computador.",
+    "Profile na AWS e configuração na gcloud separam contas e projetos. Confira em qual você está antes de apagar algo: `aws sts get-caller-identity` e `gcloud config list`.",
+    "Emulador roda num contêiner ou num processo local e responde como o serviço de verdade. Você aponta a CLI ou o código para ele com um endpoint local.",
+    "Emulador é para treinar e testar. Ele não cobre todos os serviços nem todos os detalhes. Antes de confiar, rode pelo menos uma vez na nuvem de verdade."
+   ],
+   "checklist": [
+    "Instalei a AWS CLI e a gcloud CLI e fiz login sem chave fixa",
+    "Criei e apaguei um bucket só pelo terminal, nas duas nuvens",
+    "Subi um emulador da AWS no Docker e criei um bucket nele com a AWS CLI",
+    "Subi o emulador do Firestore ou do Pub/Sub da gcloud e gravei um dado nele"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Por que preferir a CLI ao painel para tarefas que se repetem?",
+     "opcoes": [
+      "Porque o painel é pago",
+      "Porque cada comando pode ser guardado, revisado e repetido igual",
+      "Porque a CLI é mais bonita",
+      "Porque o painel não mostra os recursos"
+     ],
+     "correta": 1,
+     "explicacao": "O comando vira documentação e automação. O clique some da memória."
+    },
+    {
+     "pergunta": "Antes de rodar um comando que apaga recursos, o que conferir?",
+     "opcoes": [
+      "Em qual conta ou projeto a CLI está apontando",
+      "A cor do terminal",
+      "Se o Wi-Fi está bom",
+      "Nada, a CLI pede confirmação sempre"
+     ],
+     "correta": 0,
+     "explicacao": "Apagar no projeto errado é um clássico. `aws sts get-caller-identity` e `gcloud config list` mostram onde você está."
+    },
+    {
+     "pergunta": "Você quer treinar comandos do S3 e do DynamoDB sem conta da AWS. Qual é uma opção?",
+     "opcoes": [
+      "Não existe",
+      "Usar a conta de outra pessoa",
+      "Um emulador local, como o LocalStack ou o Moto, rodando no seu computador",
+      "Comprar um curso"
+     ],
+     "correta": 2,
+     "explicacao": "O emulador responde como a AWS, e a CLI aponta para ele com um endpoint local."
+    },
+    {
+     "pergunta": "Seu teste passou no emulador. Pode mandar para produção sem testar na nuvem?",
+     "opcoes": [
+      "Pode, emulador é igual à nuvem",
+      "Pode, se o teste for rápido",
+      "Não precisa testar em lugar nenhum",
+      "Não. Emulador não cobre todos os detalhes, então rode pelo menos uma vez na nuvem"
+     ],
+     "correta": 3,
+     "explicacao": "Permissão, limites e comportamentos finos podem mudar. O emulador encurta o ciclo, mas não substitui a nuvem."
+    },
+    {
+     "pergunta": "Qual é o papel do kind no Kubernetes, comparado aos emuladores de nuvem?",
+     "opcoes": [
+      "O mesmo: praticar no seu computador sem pagar nuvem",
+      "Nenhum, são coisas diferentes",
+      "O kind é pago",
+      "O kind só roda na AWS"
+     ],
+     "correta": 0,
+     "explicacao": "kind cria um cluster local. LocalStack e os emuladores da gcloud fazem o mesmo para serviços de nuvem."
+    },
+    {
+     "pergunta": "Qual comando mostra quem você é na AWS?",
+     "opcoes": [
+      "`aws whoami`",
+      "`aws sts get-caller-identity`",
+      "`aws me`",
+      "`aws login --show`"
+     ],
+     "correta": 1,
+     "explicacao": "O STS responde com a conta e a identidade em uso. É o primeiro comando de diagnóstico."
+    }
+   ],
+   "pergunta_ako": "Que comando você já rodou sem ter certeza de onde estava rodando? O que teria evitado o susto?",
+   "recursos": [
+    {
+     "titulo": "A nuvem no seu computador",
+     "fonte": "Ako",
+     "url": "./materiais/a-nuvem-no-seu-computador.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "CLI das duas nuvens, emuladores para treinar sem conta e Terraform para criar e apagar tudo com um comando.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Getting started with the AWS CLI",
+     "fonte": "AWS",
+     "url": "https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Instalar e configurar a AWS CLI, com login por SSO ou credenciais temporárias.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Install the gcloud CLI",
+     "fonte": "Google Cloud",
+     "url": "https://docs.cloud.google.com/sdk/docs/install-sdk",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Instalar a gcloud CLI, fazer login e escolher o projeto padrão.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Moto",
+     "fonte": "Projeto aberto no GitHub",
+     "url": "https://github.com/getmoto/moto",
+     "tipo": "ferramenta",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Emulador aberto (licença Apache-2.0) de serviços da AWS como S3, DynamoDB, Lambda e IAM. Roda no seu computador, sem conta e sem cadastro.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Server mode",
+     "fonte": "Moto Docs",
+     "url": "https://docs.getmoto.org/en/latest/docs/server_mode.html",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Como rodar o Moto como servidor, inclusive em Docker (imagem motoserver/moto), e apontar a CLI ou o SDK para ele.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "LocalStack: planos",
+     "fonte": "LocalStack",
+     "url": "https://www.localstack.cloud/pricing",
+     "tipo": "ferramenta",
+     "idioma": "en",
+     "gratuito": "sim, plano Hobby com cadastro",
+     "nota": "O emulador de AWS mais conhecido. O plano gratuito Hobby pede conta, é só para uso não comercial e cobre mais de 30 serviços. Os planos para empresas são pagos.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Setting up DynamoDB local",
+     "fonte": "AWS",
+     "url": "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.html",
+     "tipo": "ferramenta",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Versão do DynamoDB para rodar no seu computador, em Java ou em imagem Docker, feita pela própria AWS.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "gcloud beta emulators",
+     "fonte": "Google Cloud",
+     "url": "https://docs.cloud.google.com/sdk/gcloud/reference/beta/emulators",
+     "tipo": "ferramenta",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Os emuladores que vêm com a gcloud CLI: Firestore, Datastore, Pub/Sub, Bigtable e Spanner. Ainda em beta.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Use Firestore emulator locally",
+     "fonte": "Google Cloud",
+     "url": "https://docs.cloud.google.com/firestore/native/docs/emulator",
+     "tipo": "ferramenta",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Firestore rodando na memória do seu computador, para testar o código sem conta. Os dados somem quando o emulador para.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Testing apps locally with the emulator",
+     "fonte": "Google Cloud",
+     "url": "https://docs.cloud.google.com/pubsub/docs/emulator",
+     "tipo": "ferramenta",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Emulador do Pub/Sub, o serviço de filas e mensagens do Google Cloud, instalado pela própria gcloud CLI.",
+     "verificado_em": "2026-11-20"
+    }
+   ]
+  },
+  {
+   "id": "cloud-terraform",
+   "etapa": "automatizar",
+   "titulo": "Terraform nas duas nuvens",
+   "horas": 5,
+   "resumo": "Com Terraform você descreve a infraestrutura em arquivos e cria tudo com um comando. O `plan` mostra o que vai mudar antes de mudar, e o `destroy` apaga tudo o que foi criado. No estudo, o Terraform resolve dois problemas: repetir o exercício igual e não esquecer nada ligado. O mesmo Terraform fala com a AWS e com o Google Cloud, cada uma com o seu provider.",
+   "essencial": [
+    "`terraform init` baixa o provider, `plan` mostra a diferença, `apply` cria e `destroy` apaga.",
+    "Provider é o plugin de cada nuvem: `hashicorp/aws` e `hashicorp/google`. A linguagem é a mesma, os recursos mudam de nome.",
+    "O state guarda o que o Terraform criou. Não apague o arquivo à toa e nunca coloque no Git se tiver segredo. Em time, ele vai para um bucket.",
+    "Leia o `plan` antes do `apply`. Uma linha `destroy` inesperada é o aviso para parar.",
+    "Variáveis deixam o mesmo código servir para duas regiões ou dois projetos. Comece simples e só depois pense em módulos."
+   ],
+   "checklist": [
+    "Criei um bucket com Terraform na AWS e outro no Google Cloud",
+    "Mudei uma configuração, li o `plan` e só depois apliquei",
+    "Rodei `terraform destroy` e conferi no painel que nada ficou",
+    "Coloquei o código num repositório com `.gitignore` para o state"
+   ],
+   "quiz": [
+    {
+     "pergunta": "O que o `terraform plan` faz?",
+     "opcoes": [
+      "Aplica as mudanças",
+      "Mostra o que vai ser criado, mudado ou apagado, sem mexer em nada",
+      "Apaga tudo",
+      "Instala o Terraform"
+     ],
+     "correta": 1,
+     "explicacao": "O plan é a revisão antes da mudança. Leia sempre."
+    },
+    {
+     "pergunta": "No `plan`, aparece que o banco vai ser destruído e recriado. Você só queria mudar uma tag. O que fazer?",
+     "opcoes": [
+      "Aplicar e ver no que dá",
+      "Apagar o state",
+      "Parar e entender qual mudança força a recriação",
+      "Rodar duas vezes"
+     ],
+     "correta": 2,
+     "explicacao": "Algumas mudanças obrigam a recriar o recurso. No banco, isso pode significar perder dados. Pare e investigue."
+    },
+    {
+     "pergunta": "Terminou o exercício. Qual é o jeito mais seguro de não deixar nada cobrando?",
+     "opcoes": [
+      "`terraform destroy`",
+      "Fechar o terminal",
+      "Apagar a pasta do projeto",
+      "Esperar o crédito acabar"
+     ],
+     "correta": 0,
+     "explicacao": "O destroy apaga exatamente o que o Terraform criou. Apagar a pasta só faz você perder o controle."
+    },
+    {
+     "pergunta": "Por que não colocar o arquivo de state no Git?",
+     "opcoes": [
+      "Porque ele é grande demais",
+      "Porque o Git não aceita JSON",
+      "Porque fica lento",
+      "Porque ele pode guardar segredos em texto puro"
+     ],
+     "correta": 3,
+     "explicacao": "O state guarda atributos dos recursos, às vezes senha e chave. Em time, ele vai para um backend remoto com acesso controlado."
+    },
+    {
+     "pergunta": "O que muda entre o Terraform da AWS e o do Google Cloud?",
+     "opcoes": [
+      "A linguagem inteira",
+      "O provider e o nome dos recursos, como `aws_s3_bucket` e `google_storage_bucket`",
+      "Nada",
+      "Só a cor do terminal"
+     ],
+     "correta": 1,
+     "explicacao": "A linguagem e o fluxo são os mesmos. Muda o provider e os recursos."
+    },
+    {
+     "pergunta": "Qual é a vantagem do Terraform para quem estuda?",
+     "opcoes": [
+      "Repetir o exercício igual e apagar tudo com um comando",
+      "Deixar a nuvem grátis",
+      "Dispensar o alerta de orçamento",
+      "Não precisar de conta"
+     ],
+     "correta": 0,
+     "explicacao": "Infra em código não esquece passo nem recurso ligado. O alerta de orçamento continua valendo."
+    }
+   ],
+   "pergunta_ako": "Qual recurso você já criou à mão e não lembraria como refazer? Como ele ficaria escrito em Terraform?",
+   "recursos": [
+    {
+     "titulo": "A nuvem no seu computador",
+     "fonte": "Ako",
+     "url": "./materiais/a-nuvem-no-seu-computador.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "CLI das duas nuvens, emuladores para treinar sem conta e Terraform para criar e apagar tudo com um comando.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Get started: AWS",
+     "fonte": "HashiCorp",
+     "url": "https://developer.hashicorp.com/terraform/tutorials/aws-get-started",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Tutorial oficial do Terraform na AWS: instalar, criar, mudar e destruir infraestrutura.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Get started: Google Cloud",
+     "fonte": "HashiCorp",
+     "url": "https://developer.hashicorp.com/terraform/tutorials/gcp-get-started",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "O mesmo tutorial, no Google Cloud.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Infraestrutura como código",
+     "fonte": "Ako, trilha Platform Engineering",
+     "url": "./?trilha=platform-engineering#/t/iac",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "O tópico da Platform Engineering aprofunda state, módulos e revisão de plano.",
+     "verificado_em": "2026-11-20"
+    }
+   ]
+  },
+  {
+   "id": "cloud-monitorar",
+   "etapa": "operar",
+   "titulo": "Monitorar e receber alerta",
+   "horas": 3,
+   "resumo": "Com o sistema no ar, falta saber se ele funciona. A nuvem coleta métricas e logs dos serviços sozinha. Na AWS, tudo passa pelo CloudWatch. No Google Cloud, pelo Cloud Monitoring e pelo Cloud Logging. O trabalho é escolher o que importa para quem usa e criar alerta só para o que pede ação.",
+   "essencial": [
+    "Métrica é número ao longo do tempo: CPU, requisições, erros, latência. Log é o texto do que aconteceu.",
+    "Comece pelo que a pessoa sente: taxa de erro e tempo de resposta. CPU alta sem erro nem lentidão raramente é problema.",
+    "Alerta bom pede uma ação clara. Alerta que toca toda hora vira ruído e acaba ignorado.",
+    "Logs estruturados, em JSON, são fáceis de filtrar e contar.",
+    "Os dois serviços têm faixa gratuita, mas guardar log demais por muito tempo custa. Defina a retenção."
+   ],
+   "checklist": [
+    "Achei as métricas da minha função ou do meu serviço no CloudWatch ou no Cloud Monitoring",
+    "Filtrei os logs por erro e achei uma chamada específica",
+    "Criei um alerta de taxa de erro e provoquei um erro para ver o alerta chegar",
+    "Defini a retenção dos logs do projeto"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Qual métrica mostra melhor que os usuários estão com problema?",
+     "opcoes": [
+      "Uso de CPU",
+      "Espaço em disco do servidor de log",
+      "Taxa de erro e tempo de resposta",
+      "Número de VMs"
+     ],
+     "correta": 2,
+     "explicacao": "Erro e lentidão são o que a pessoa sente. Comece por eles."
+    },
+    {
+     "pergunta": "Um alerta de CPU acima de 70% toca dez vezes por dia, e nada acontece com o sistema. O que fazer?",
+     "opcoes": [
+      "Ajustar ou remover o alerta, porque ele não pede ação",
+      "Deixar como está",
+      "Aumentar a máquina toda vez",
+      "Desligar todos os alertas"
+     ],
+     "correta": 0,
+     "explicacao": "Alerta sem ação ensina o time a ignorar alertas. Troque por um que indique dor real."
+    },
+    {
+     "pergunta": "Onde ficam as métricas e os logs na AWS?",
+     "opcoes": [
+      "No S3",
+      "No IAM",
+      "No Route 53",
+      "No CloudWatch"
+     ],
+     "correta": 3,
+     "explicacao": "O CloudWatch junta métricas, logs e alarmes."
+    },
+    {
+     "pergunta": "Por que preferir logs em JSON?",
+     "opcoes": [
+      "Porque ocupam menos espaço sempre",
+      "Porque dá para filtrar e contar por campo, como status ou usuário",
+      "Porque são obrigatórios",
+      "Porque ficam coloridos"
+     ],
+     "correta": 1,
+     "explicacao": "Com campos, você pergunta \"quantos erros 500 na última hora\" e tem a resposta na hora."
+    },
+    {
+     "pergunta": "A conta de logs cresceu muito. Qual é a primeira ação?",
+     "opcoes": [
+      "Apagar o serviço",
+      "Parar de logar",
+      "Definir a retenção e baixar o nível de log de debug em produção",
+      "Trocar de nuvem"
+     ],
+     "correta": 2,
+     "explicacao": "Retenção certa e menos ruído resolvem a maior parte do custo de log."
+    },
+    {
+     "pergunta": "Qual é o par do CloudWatch no Google Cloud?",
+     "opcoes": [
+      "Cloud Monitoring e Cloud Logging",
+      "Cloud Storage",
+      "Cloud Run",
+      "BigQuery"
+     ],
+     "correta": 0,
+     "explicacao": "No Google Cloud, métricas e logs ficam no Cloud Monitoring e no Cloud Logging."
+    }
+   ],
+   "pergunta_ako": "Se você tivesse um único alerta para o seu projeto, qual seria? Que ação ele pediria?",
+   "recursos": [
+    {
+     "titulo": "Custo e segurança na nuvem",
+     "fonte": "Ako",
+     "url": "./materiais/custo-e-seguranca-na-nuvem.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Monitorar o que importa, os vilões da fatura, o que fazer quando uma chave vaza e um checklist de 15 minutos por mês.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "What is Amazon CloudWatch?",
+     "fonte": "AWS",
+     "url": "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Métricas, logs e alarmes na AWS.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Cloud Monitoring overview",
+     "fonte": "Google Cloud",
+     "url": "https://docs.cloud.google.com/monitoring/docs/monitoring-overview",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Métricas, dashboards e alertas no Google Cloud.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Observabilidade: logs, métricas e traces",
+     "fonte": "Ako, trilha Platform Engineering",
+     "url": "./?trilha=platform-engineering#/t/observabilidade",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Para ir fundo em observabilidade, sem depender de uma nuvem.",
+     "verificado_em": "2026-11-20"
+    }
+   ]
+  },
+  {
+   "id": "cloud-custo-seguranca",
+   "etapa": "operar",
+   "titulo": "Custo e segurança básica",
+   "horas": 3,
+   "resumo": "Na nuvem, tudo o que fica ligado vira conta no fim do mês, e toda configuração aberta vira risco. As duas coisas andam juntas: quem cuida da nuvem precisa saber quanto cada recurso custa e quem tem acesso a ele. Tag, budget, revisão mensal e chave fora do Git resolvem a maior parte dos sustos.",
+   "essencial": [
+    "Tag (AWS) e label (Google Cloud) dizem de quem é e para que serve cada recurso. Sem tag, ninguém sabe se pode apagar.",
+    "Os vilões comuns da conta: VM esquecida, disco solto, IP reservado sem uso, NAT gateway, banco ligado o mês todo e tráfego de saída para a internet.",
+    "A calculadora de preço de cada nuvem estima o custo antes de criar. Use no projeto final.",
+    "Segurança mínima: MFA, least privilege, nada público sem querer e nenhuma chave no Git. Se uma chave vazar, desative na hora e depois investigue.",
+    "Uma revisão de 15 minutos por mês evita quase todo susto: fatura, recursos sem tag, acessos e chaves."
+   ],
+   "checklist": [
+    "Li a lição do Ako sobre custo e segurança na nuvem",
+    "Coloquei tag ou label em todos os recursos do meu projeto",
+    "Estimei o custo do projeto final na calculadora de uma das nuvens",
+    "Fiz a revisão mensal do checklist da lição e anotei o que achei"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Você achou um disco de 100 GB sem nenhuma VM ligada. O que ele custa?",
+     "opcoes": [
+      "Nada, porque está solto",
+      "Só se alguém ler",
+      "Continua cobrando pelo espaço até ser apagado",
+      "Só no primeiro mês"
+     ],
+     "correta": 2,
+     "explicacao": "Disco cobra por espaço reservado, ligado ou não. Disco solto é vilão clássico da fatura."
+    },
+    {
+     "pergunta": "Uma chave de acesso da AWS foi para um repositório público por engano. Qual é a primeira ação?",
+     "opcoes": [
+      "Desativar a chave na hora",
+      "Apagar o commit e seguir",
+      "Esperar para ver se alguém usa",
+      "Tornar o repositório privado"
+     ],
+     "correta": 0,
+     "explicacao": "Robôs acham chave vazada em minutos. Desative primeiro, depois limpe o histórico e investigue o que foi usado."
+    },
+    {
+     "pergunta": "Para que servem tags e labels?",
+     "opcoes": [
+      "Para deixar o recurso mais rápido",
+      "Para saber de quem é, para que serve e quanto custa cada recurso",
+      "Para liberar portas",
+      "Para fazer backup"
+     ],
+     "correta": 1,
+     "explicacao": "Com tag, a fatura mostra o custo por projeto e ninguém tem medo de apagar o que é lixo."
+    },
+    {
+     "pergunta": "Antes de subir o projeto final, como saber quanto ele vai custar por mês?",
+     "opcoes": [
+      "Subir e esperar a fatura",
+      "Perguntar num grupo",
+      "Não dá para saber",
+      "Usar a calculadora de preço da nuvem com a estimativa de uso"
+     ],
+     "correta": 3,
+     "explicacao": "A calculadora dá uma ordem de grandeza antes de gastar."
+    },
+    {
+     "pergunta": "Qual destes costuma gerar custo escondido em projetos pequenos?",
+     "opcoes": [
+      "Um bucket privado vazio",
+      "Uma role do IAM",
+      "Um NAT gateway ou um banco ligado o mês todo",
+      "Um alerta de orçamento"
+     ],
+     "correta": 2,
+     "explicacao": "NAT gateway e banco por hora cobram mesmo sem uso. Para estudo, evite ou apague no fim."
+    },
+    {
+     "pergunta": "Quanto tempo por mês uma revisão básica da conta pede?",
+     "opcoes": [
+      "Uns 15 minutos, com um checklist",
+      "Um dia inteiro",
+      "Nenhum, a nuvem faz sozinha",
+      "Só quando der problema"
+     ],
+     "correta": 0,
+     "explicacao": "Fatura, recursos sem tag, acessos e chaves. Quinze minutos por mês evitam o susto grande."
+    }
+   ],
+   "pergunta_ako": "Se a sua conta de nuvem fosse a conta de luz da sua casa, que recurso seria a luz esquecida acesa?",
+   "recursos": [
+    {
+     "titulo": "Custo e segurança na nuvem",
+     "fonte": "Ako",
+     "url": "./materiais/custo-e-seguranca-na-nuvem.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Monitorar o que importa, os vilões da fatura, o que fazer quando uma chave vaza e um checklist de 15 minutos por mês.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Managing your costs with AWS Budgets",
+     "fonte": "AWS",
+     "url": "https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Como criar um budget e receber e-mail quando o gasto passar do limite.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Create, edit, or delete budgets and budget alerts",
+     "fonte": "Google Cloud",
+     "url": "https://docs.cloud.google.com/billing/docs/how-to/budgets",
+     "tipo": "documentação",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Como criar um orçamento com alertas no Google Cloud. O alerta avisa, mas não bloqueia o gasto.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Shared Responsibility Model",
+     "fonte": "AWS",
+     "url": "https://aws.amazon.com/compliance/shared-responsibility-model/",
+     "tipo": "artigo",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "O que a AWS protege e o que fica com você, com exemplos por tipo de serviço.",
+     "verificado_em": "2026-11-20"
+    }
+   ]
+  },
+  {
+   "id": "cloud-projeto",
+   "etapa": "projeto",
+   "titulo": "Seu app no ar nas duas nuvens",
+   "horas": 8,
+   "resumo": "Hora de juntar tudo num projeto seu. O mesmo app sobe na AWS e no Google Cloud: um site estático num bucket e uma API serverless com um contador de visitas guardado num banco NoSQL. Tudo criado com Terraform, com alerta de orçamento e um README que explica as escolhas e compara as duas nuvens. É a ideia do Cloud Resume Challenge, um desafio aberto e conhecido no mercado.",
+   "essencial": [
+    "Escopo pequeno: uma página, uma rota de API, uma tabela. Faça funcionar numa nuvem, depois repita na outra.",
+    "Na AWS: S3 para o site, Lambda para a API, DynamoDB para o contador. No Google Cloud: Cloud Storage, Cloud Run e Firestore.",
+    "Tudo em Terraform, com `destroy` testado. O README diz como subir e como apagar.",
+    "O README compara as duas: o que foi mais fácil, o que custou mais, o que você escolheria e por quê.",
+    "Esse repositório vira portfólio: mostra IAM, rede, serverless, banco, Terraform, custo e sua capacidade de explicar escolhas."
+   ],
+   "checklist": [
+    "Publiquei o site e a API numa nuvem, com Terraform",
+    "Repeti na outra nuvem e anotei as diferenças",
+    "Escrevi o README com como subir, como apagar, custo estimado e comparação",
+    "Rodei `terraform destroy` nas duas e conferi que não sobrou nada cobrando",
+    "Mostrei o projeto para alguém e expliquei uma escolha que fiz"
+   ],
+   "quiz": [
+    {
+     "pergunta": "Por onde começar o projeto?",
+     "opcoes": [
+      "Pelas duas nuvens ao mesmo tempo",
+      "Por uma nuvem, com tudo funcionando, e depois repetir na outra",
+      "Pelo design do site",
+      "Pela certificação"
+     ],
+     "correta": 1,
+     "explicacao": "Um caminho funcionando ensina mais que dois pela metade. A segunda nuvem fica bem mais rápida."
+    },
+    {
+     "pergunta": "Qual combinação faz o projeto na AWS?",
+     "opcoes": [
+      "S3, Lambda e DynamoDB",
+      "EC2, RDS e NAT gateway",
+      "Kubernetes, Kafka e Redis",
+      "Uma VM com tudo dentro"
+     ],
+     "correta": 0,
+     "explicacao": "Os três têm faixa gratuita ou custo muito baixo e escalam sozinhos."
+    },
+    {
+     "pergunta": "O que o README do projeto precisa ter, além de como subir?",
+     "opcoes": [
+      "A história da AWS",
+      "Só o print do site",
+      "A lista de todos os serviços da nuvem",
+      "Como apagar, o custo estimado e a comparação entre as nuvens"
+     ],
+     "correta": 3,
+     "explicacao": "Quem lê quer saber se consegue repetir, quanto custa e o que você aprendeu. A comparação mostra seu raciocínio."
+    },
+    {
+     "pergunta": "A API funciona, mas o site no bucket recebe erro de CORS ao chamar a API. O que é isso?",
+     "opcoes": [
+      "A API precisa permitir chamadas vindas do endereço do site",
+      "O bucket está cheio",
+      "Falta memória na função",
+      "O Terraform está desatualizado"
+     ],
+     "correta": 0,
+     "explicacao": "O navegador bloqueia chamada para outro domínio se a API não liberar. Configure o CORS na API."
+    },
+    {
+     "pergunta": "Terminou de apresentar o projeto. E agora?",
+     "opcoes": [
+      "Deixar tudo ligado para sempre",
+      "Apagar o repositório",
+      "Rodar `destroy`, manter o código no GitHub e subir de novo quando precisar mostrar",
+      "Esquecer"
+     ],
+     "correta": 2,
+     "explicacao": "Com Terraform, subir de novo leva minutos. O código é o portfólio, o ambiente ligado é só custo."
+    },
+    {
+     "pergunta": "Qual é o próximo passo natural depois desta trilha?",
+     "opcoes": [
+      "Parar de estudar nuvem",
+      "A trilha Platform Engineering, que usa essa base para construir plataforma interna",
+      "Estudar uma terceira nuvem igual",
+      "Fazer o mesmo projeto de novo"
+     ],
+     "correta": 1,
+     "explicacao": "Com a base de nuvem pronta, a Platform Engineering junta contêineres, Kubernetes, CI/CD e confiabilidade."
+    }
+   ],
+   "pergunta_ako": "Depois de fazer nas duas nuvens, qual você escolheria para o seu próximo projeto, e o que pesou na escolha?",
+   "recursos": [
+    {
+     "titulo": "Os cinco blocos da nuvem",
+     "fonte": "Ako",
+     "url": "./materiais/os-cinco-blocos-da-nuvem.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "IAM, rede, máquinas, storage e banco, cada um com conceito, finalidade, um exemplo e o nome na AWS e no Google Cloud.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Serverless na prática",
+     "fonte": "Ako",
+     "url": "./materiais/serverless-na-pratica.html",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "Funções e contêineres gerenciados, quando usar cada um e exemplos nas duas nuvens.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "The Cloud Resume Challenge: AWS",
+     "fonte": "Cloud Resume Challenge",
+     "url": "https://cloudresumechallenge.dev/docs/the-challenge/aws/",
+     "tipo": "exercício",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Desafio aberto e conhecido no mercado: currículo como site estático, contador de visitas com API serverless, Terraform e CI. O guia em livro é pago e não é necessário.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "The Cloud Resume Challenge: Google Cloud",
+     "fonte": "Cloud Resume Challenge",
+     "url": "https://cloudresumechallenge.dev/docs/the-challenge/googlecloud/",
+     "tipo": "exercício",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "O mesmo desafio, com os serviços do Google Cloud.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Get started: AWS",
+     "fonte": "HashiCorp",
+     "url": "https://developer.hashicorp.com/terraform/tutorials/aws-get-started",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "Tutorial oficial do Terraform na AWS: instalar, criar, mudar e destruir infraestrutura.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Get started: Google Cloud",
+     "fonte": "HashiCorp",
+     "url": "https://developer.hashicorp.com/terraform/tutorials/gcp-get-started",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim",
+     "nota": "O mesmo tutorial, no Google Cloud.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "AWS Workshops",
+     "fonte": "AWS",
+     "url": "https://builder.aws.com/build/workshops",
+     "tipo": "tutorial",
+     "idioma": "en",
+     "gratuito": "sim, precisa criar um Builder ID",
+     "nota": "Workshops guiados e gratuitos da AWS, passo a passo. Os que rodam na sua conta usam recursos que podem ser cobrados: leia a seção de custo e de limpeza antes.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Trilha Platform Engineering",
+     "fonte": "Ako",
+     "url": "./?trilha=platform-engineering#/",
+     "tipo": "lição",
+     "idioma": "pt-BR",
+     "gratuito": "sim",
+     "nota": "O próximo passo: contêineres, Kubernetes, CI/CD, confiabilidade e uma plataforma interna, em cima da base de nuvem desta trilha.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "AWS Certified Cloud Practitioner",
+     "fonte": "AWS",
+     "url": "https://aws.amazon.com/certification/certified-cloud-practitioner/",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "não, prova paga",
+     "nota": "Certificação de entrada da AWS. A prova custa US$ 100 e é opcional: o estudo pode ser todo gratuito.",
+     "verificado_em": "2026-11-20"
+    },
+    {
+     "titulo": "Cloud Digital Leader",
+     "fonte": "Google Cloud",
+     "url": "https://cloud.google.com/learn/certification/cloud-digital-leader",
+     "tipo": "curso",
+     "idioma": "en",
+     "gratuito": "não, prova paga",
+     "nota": "Certificação de entrada do Google Cloud. A prova custa US$ 99 mais impostos e é opcional: o estudo pode ser todo gratuito.",
+     "verificado_em": "2026-11-20"
+    }
+   ]
+  }
+ ]
+}

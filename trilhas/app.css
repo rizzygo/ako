@@ -106,6 +106,7 @@ legend{font-family:var(--f-titulo);font-weight:700;font-size:1.25rem;margin-bott
 .etiqueta{display:inline-block;font-size:.8rem;font-weight:700;border-radius:99px;padding:.05rem .55rem;background:var(--azul-claro);color:var(--azul)}
 .etiqueta.ambar{background:var(--ambar-claro);color:var(--tinta)}
 .etiqueta.certo{background:var(--certo-claro);color:var(--certo)}
+.etiqueta.pago{background:var(--superficie);color:var(--tinta);border:1px solid var(--linha)}
 
 /* ramificação final */
 .ramos{position:relative;margin-left:-52px;padding-left:var(--ramos-esq,108px);padding-top:.5rem}
