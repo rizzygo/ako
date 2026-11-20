@@ -66,8 +66,10 @@ service cloud.firestore {
     match /contas/{uid} {
       function conta() {
         let d = request.resource.data;
-        return d.keys().hasOnly(['email', 'nome', 'criadaEm', 'vistaEm', 'apps', 'versao'])
+        return d.keys().hasOnly(['email', 'emailVerificado', 'nome', 'criadaEm', 'vistaEm', 'apps', 'versao'])
           && (d.email == request.auth.token.email || (d.email == null && request.auth.token.email == null))
+          // Quem cria conta com e-mail e senha pode digitar o e-mail de outra pessoa: o admin vê se foi conferido.
+          && d.emailVerificado == (request.auth.token.email_verified == true)
           && (d.nome == null || (d.nome is string && d.nome.size() <= 120))
           && dia(d.vistaEm)
           && d.apps is map && d.apps.keys().hasOnly(['ako', 'rotina'])

@@ -102,7 +102,7 @@ function hojeLocal() {
 async function marcarVista(u) {
   const hoje = hojeLocal(), chave = u.uid + '|' + APP_ATUAL + '|' + hoje;
   try { if (localStorage.getItem(VISTA) === chave) return; } catch (e) { }
-  const base = { email: u.email || null, nome: u.displayName ? u.displayName.slice(0, 120) : null, vistaEm: hoje, apps: { [APP_ATUAL]: hoje }, versao: 1 };
+  const base = { email: u.email || null, emailVerificado: !!u.emailVerified, nome: u.displayName ? u.displayName.slice(0, 120) : null, vistaEm: hoje, apps: { [APP_ATUAL]: hoje }, versao: 1 };
   const ref = doc(db, 'contas', u.uid);
   try {
     await setDoc(ref, base, { merge: true });

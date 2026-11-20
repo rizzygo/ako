@@ -1,4 +1,4 @@
-// Testa as regras do Firestore no emulador (32 casos). Numa pasta fora do repositório:
+// Testa as regras do Firestore no emulador (34 casos). Numa pasta fora do repositório:
 //   npm i -D firebase-tools@13 @firebase/rules-unit-testing@3 firebase@10
 //   copie firestore.rules e este arquivo para lá, crie firebase.json com {"firestore":{"rules":"firestore.rules"}}
 //   npx firebase emulators:exec --only firestore --project demo-rz "node teste-regras.mjs"
@@ -13,7 +13,7 @@ const ana = env.authenticatedContext('ana', { email: 'ana@x.com', email_verified
 const bia = env.authenticatedContext('bia', { email: 'bia@x.com', email_verified: true }).firestore();
 const anon = env.unauthenticatedContext().firestore();
 let ok = 0; const t = async (n, p) => { try { await p; ok++; } catch (e) { console.log('FALHOU', n, e.message); process.exitCode = 1; } };
-const base = (email) => ({ email, nome: 'Ana', vistaEm: '2026-11-20', apps: { ako: '2026-11-20' }, versao: 1 });
+const base = (email) => ({ email, emailVerificado: true, nome: 'Ana', vistaEm: '2026-11-20', apps: { ako: '2026-11-20' }, versao: 1 });
 // contas
 await t('conta sem criadaEm falha', assertFails(setDoc(doc(ana, 'contas/ana'), base('ana@x.com'), { merge: true })));
 await t('conta cria', assertSucceeds(setDoc(doc(ana, 'contas/ana'), { criadaEm: serverTimestamp(), ...base('ana@x.com') }, { merge: true })));
@@ -22,6 +22,8 @@ await t('conta mudar criadaEm falha', assertFails(setDoc(doc(ana, 'contas/ana'),
 await t('conta email de outro falha', assertFails(setDoc(doc(bia, 'contas/bia'), { criadaEm: serverTimestamp(), ...base('ana@x.com') })));
 await t('conta de outro uid falha', assertFails(setDoc(doc(bia, 'contas/ana'), { criadaEm: serverTimestamp(), ...base('bia@x.com') })));
 await t('conta campo extra falha', assertFails(setDoc(doc(bia, 'contas/bia'), { criadaEm: serverTimestamp(), ...base('bia@x.com'), ip: '1' })));
+await t('conta mentindo verificado falha', assertFails(setDoc(doc(env.authenticatedContext('caio', { email: 'ana@x.com', email_verified: false }).firestore(), 'contas/caio'), { criadaEm: serverTimestamp(), ...base('ana@x.com') })));
+await t('conta nao verificada marcada', assertSucceeds(setDoc(doc(env.authenticatedContext('caio', { email: 'ana@x.com', email_verified: false }).firestore(), 'contas/caio'), { criadaEm: serverTimestamp(), ...base('ana@x.com'), emailVerificado: false })));
 await t('conta app estranho falha', assertFails(setDoc(doc(bia, 'contas/bia'), { criadaEm: serverTimestamp(), ...base('bia@x.com'), apps: { x: '2026-11-20' } })));
 await t('pessoa nao le conta', assertFails(getDoc(doc(ana, 'contas/ana'))));
 await t('admin le conta', assertSucceeds(getDoc(doc(adm, 'contas/ana'))));
