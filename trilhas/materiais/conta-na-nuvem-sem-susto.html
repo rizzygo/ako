@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conta na nuvem sem susto | Rizzygo Ako</title>
+<meta name="description" content="Lição em português para abrir a conta da AWS e a do Google Cloud com segurança: plano gratuito, crédito para conta nova, MFA, usuário do dia a dia, alerta de orçamento e o hábito de apagar tudo no fim do exercício.">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:title" content="Conta na nuvem sem susto | Rizzygo Ako">
+<meta property="og:description" content="Lição em português para abrir a conta da AWS e a do Google Cloud com segurança: plano gratuito, crédito para conta nova, MFA, usuário do dia a dia, alerta de orçamento e o hábito de apagar tudo no fim do exercício.">
+<meta property="og:url" content="https://ako.rizzygo.com.br/trilhas/materiais/conta-na-nuvem-sem-susto.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rizzygo Ako">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ako.rizzygo.com.br/icones/og/licoes.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Lições do Ako: lições práticas em português, com a Zumi, abelha da Rizzygo All">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ako.rizzygo.com.br/trilhas/materiais/conta-na-nuvem-sem-susto.html">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Conta na nuvem sem susto", "description": "Lição em português para abrir a conta da AWS e a do Google Cloud com segurança: plano gratuito, crédito para conta nova, MFA, usuário do dia a dia, alerta de orçamento e o hábito de apagar tudo no fim do exercício.", "url": "https://ako.rizzygo.com.br/trilhas/materiais/conta-na-nuvem-sem-susto.html", "inLanguage": "pt-BR", "isAccessibleForFree": true, "learningResourceType": "lição", "license": "https://creativecommons.org/licenses/by/4.0/", "publisher": {"@type": "Organization", "name": "Rizzygo", "url": "https://rizzygo.com.br/"}}</script>
+<meta name="theme-color" content="#0B1B3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="/ds/rizzygo.css?v=2026111403">
+<script src="/ds/tema.js?v=2026111020"></script>
+<link rel="stylesheet" href="../app.css?v=2026111001">
+<link rel="stylesheet" href="materiais.css?v=2026110801">
+<link rel="stylesheet" href="/topo.css?v=2026110914">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<nav class="familia" aria-label="Sites da Rizzygo"><div class="familia-in"><a class="familia-item familia-site" href="https://rizzygo.com.br/" title="Site principal da Rizzygo"><svg viewBox="0 0 64 64" width="16" height="16" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/></svg>Rizzygo</a><a class="familia-item familia-site" href="https://ako.rizzygo.com.br/" aria-current="page"><img src="/zumi/abelha-mini.png" width="18" height="18" alt="">Ako</a><a class="familia-item familia-site" href="https://rotina.rizzygo.com.br/" title="Rotina com a Zumi"><img src="/zumi/abelha-rotina-mini.png" width="18" height="18" alt="">Rotina</a></div></nav>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="/" aria-label="Rizzygo Ako, início"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="var(--azul)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/></svg><span>Rizzygo <b>Ako</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="/trilhas/?trilha=cloud">Trilhas</a><a href="/trilhas/mapas/#/cloud">Mapas</a><a href="/trilhas/materiais/" aria-current="page">Materiais</a><a href="/favos/">Favos</a></nav>
+</div></header>
+
+
+<main id="conteudo" class="licao">
+<div class="licao-cab">
+  <a class="voltar" href="../?trilha=cloud#/t/conta-sem-susto">Voltar para o tópico Conta na nuvem sem susto</a>
+  <h1>Conta na nuvem sem susto</h1>
+  <p class="lead">Todo mundo conhece alguém que conhece alguém que esqueceu uma máquina ligada e recebeu uma fatura em dólar. Esta lição existe para essa pessoa não ser você. São dez minutos de configuração e um hábito.</p>
+  <div class="ficha"><span class="etiqueta">Cerca de 35 minutos</span><span class="etiqueta">Trilha Cloud</span><span class="etiqueta ambar">Conteúdo Rizzygo, gratuito e em português</span></div>
+</div>
+<nav class="indice" aria-label="Nesta lição">
+  <h2>Nesta lição</h2>
+  <ol>
+    <li><a href="#susto">O susto clássico, e por que ele acontece</a></li>
+    <li><a href="#aws">Na AWS</a></li>
+    <li><a href="#google">No Google Cloud</a></li>
+    <li><a href="#sem-conta">Dá para estudar sem conta?</a></li>
+    <li><a href="#ritual">O ritual de apagar</a></li>
+    <li><a href="#missao">Missão final</a></li>
+  </ol>
+</nav>
+<section id="susto">
+  <h2>1. O susto clássico, e por que ele acontece</h2>
+<p>O roteiro quase sempre é o mesmo: a pessoa segue um tutorial, cria uma máquina ou um banco, termina, fecha o navegador e esquece. A nuvem não esquece. Ela cobra por hora, todo dia, até alguém apagar.</p>
+  <p>Outro roteiro, mais feio: a chave de acesso vai parar num repositório público, um robô acha em minutos e sobe máquinas para minerar criptomoeda na sua conta.</p>
+  <p>Os dois têm remédio barato: MFA, alerta de orçamento, chave fora do Git e o ritual de apagar no fim.</p>
+</section>
+
+<section id="aws">
+  <h2>2. Na AWS</h2>
+<p>Desde julho de 2025, conta nova na AWS escolhe entre o plano gratuito e o pago. No plano gratuito você recebe US$ 100 de crédito e pode ganhar mais US$ 100 fazendo atividades guiadas. A conta gratuita fecha sozinha em 6 meses ou quando o crédito acaba, e não cobra se você não mudar para o plano pago. Para estudar, escolha o gratuito.</p>
+  <ol>
+    <li><strong>Crie a conta</strong> em <a href="https://aws.amazon.com/free/">aws.amazon.com/free</a> e escolha o plano gratuito.</li>
+    <li><strong>Ligue o MFA no root.</strong> O root é o e-mail da conta e pode tudo. Use um app autenticador ou uma passkey.</li>
+    <li><strong>Crie um usuário do dia a dia</strong> no IAM Identity Center e entre com ele. O root fica guardado para emergência.</li>
+    <li><strong>Crie um budget</strong> no AWS Budgets com valor baixo, como US$ 1, e seu e-mail no alerta.</li>
+    <li><strong>Escolha a região</strong> no canto do console e use sempre a mesma no estudo. Recurso "sumido" quase sempre está em outra região.</li>
+  </ol>
+</section>
+
+<section id="google">
+  <h2>3. No Google Cloud</h2>
+<p>Conta nova no Google Cloud recebe US$ 300 de crédito, e você não é cobrado até mudar para uma conta paga. Alguns produtos têm uma faixa sempre gratuita, como uma VM e2-micro por mês em regiões específicas e 2 milhões de requisições por mês no Cloud Run.</p>
+  <ol>
+    <li><strong>Ligue a verificação em duas etapas</strong> na conta Google que você vai usar.</li>
+    <li><strong>Ative a avaliação</strong> em <a href="https://cloud.google.com/free">cloud.google.com/free</a>.</li>
+    <li><strong>Crie um projeto só para estudo</strong>, como <code>estudo-cloud</code>. Projeto é a caixa onde moram os recursos e a fatura.</li>
+    <li><strong>Crie um orçamento</strong> em Faturamento, com valor baixo e alertas em 50%, 90% e 100%.</li>
+    <li><strong>No fim da trilha</strong>, se não for usar mais, encerre o projeto inteiro. Some tudo de uma vez.</li>
+  </ol>
+  <div class="cuidado"><strong>Alerta não é trava</strong>Nas duas nuvens, o alerta de orçamento manda e-mail, mas não desliga nada. Ele é o detector de fumaça, não o extintor. Quem apaga o recurso é você.</div>
+</section>
+
+<section id="sem-conta">
+  <h2>4. Dá para estudar sem conta?</h2>
+<p>Dá, e é um bom começo:</p>
+  <ul>
+    <li><strong>AWS Educate:</strong> cursos e labs gratuitos, só com e-mail, sem cartão, a partir de 13 anos. Os labs rodam numa conta da própria AWS.</li>
+    <li><strong>Emuladores no seu computador:</strong> o Moto e o LocalStack imitam serviços da AWS, e a gcloud traz emuladores de Firestore e Pub/Sub. A lição <a href="a-nuvem-no-seu-computador.html">A nuvem no seu computador</a> mostra como usar.</li>
+  </ul>
+  <p>A conta de verdade entra quando você quer um endereço público funcionando, como no projeto final.</p>
+</section>
+
+<section id="ritual">
+  <h2>5. O ritual de apagar</h2>
+<p>Todo exercício termina com três perguntas:</p>
+  <ol>
+    <li>O que eu criei hoje? (anote enquanto cria)</li>
+    <li>Apaguei cada item? Máquina, disco, IP, banco, bucket, função.</li>
+    <li>Conferi na tela de faturamento ou na lista de recursos que não sobrou nada?</li>
+  </ol>
+  <p>Quando chegar no Terraform, o ritual vira um comando só: <code>terraform destroy</code>.</p>
+  <div class="faca"><strong>Truque da Zumi</strong>Ponha um lembrete no celular para o fim de cada sessão de estudo: "apagou o que criou?". Parece bobo, mas funciona.</div>
+</section>
+
+<section id="missao">
+  <h2>6. Missão final</h2>
+<details class="exercicio"><summary>1. Blinde as duas contas</summary>
+    <p>MFA ligado, usuário do dia a dia criado na AWS e alerta de orçamento nas duas nuvens. Tire um print das telas de alerta e guarde no seu caderno de estudo.</p>
+  </details>
+  <details class="exercicio"><summary>2. Confira o alerta</summary>
+    <p>Abra o budget nas duas nuvens e confira três coisas: o valor, os percentuais de alerta e o e-mail que recebe o aviso. Use um e-mail que você lê todo dia.</p>
+  </details>
+  <details class="exercicio"><summary>3. Escreva o seu ritual</summary>
+    <p>Escreva, em cinco linhas, o checklist de fim de sessão que você vai seguir na trilha.</p>
+  </details>
+  <div class="faca"><strong>Para fixar</strong>Conte para alguém que vai começar a estudar nuvem qual é a diferença entre alerta de orçamento e limite de gasto. Você pode salvar a fatura de uma pessoa.</div>
+  <div class="proximo"><a class="btn" href="../?trilha=cloud#/t/conta-sem-susto">Voltar para o tópico e fazer o desafio</a><a class="btn btn-sec" href="os-cinco-blocos-da-nuvem.html">Próxima lição: os cinco blocos da nuvem</a></div>
+</section>
+
+<div class="credito">
+  <p>Lição baseada nas páginas <a href="https://aws.amazon.com/free/">AWS Free Tier</a>, <a href="https://cloud.google.com/free">Google Cloud Free Program</a>, <a href="https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html">AWS Budgets</a>, <a href="https://docs.cloud.google.com/billing/docs/how-to/budgets">budgets do Cloud Billing</a> e <a href="https://aws.amazon.com/education/awseducate/">AWS Educate</a>. O texto e os exemplos são próprios, escritos em português pelo Ako, da Rizzygo All. Preços e ofertas gratuitas conferidos em 20/11/2026: eles mudam, então confira na página de cada nuvem antes de criar recursos.</p>
+  <p>Conteúdo aberto sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR">CC BY 4.0</a>. Viu um erro? <a href="https://github.com/rizzygo/ako/issues">Abra uma issue</a>.</p>
+</div>
+</main>
+<footer class="rodape"><div class="rodape-in"><p><strong>Ako</strong>, da Rizzygo All, a parte aberta e gratuita da <a href="https://rizzygo.com.br/">Rizzygo</a>.</p><p>Estude junto na <a href="https://chat.whatsapp.com/CYpmolVr7a08Gqmj782yFi">comunidade gratuita no WhatsApp</a>.</p><p>Sugestão, dúvida ou problema? Escreva para <a href="mailto:suporte@rizzygo.com.br">suporte@rizzygo.com.br</a>.</p><div class="contribua"><p><strong>Contribuição voluntária.</strong> O Ako é gratuito e vai continuar assim. Você decide se quer contribuir, com qualquer valor, para agradecer, manter e ajudar o Ako a evoluir.</p><p class="contribua-pix"><span class="contribua-dados"><span>Chave Pix (CNPJ): <code>57.778.554/0001-31</code></span><span>Nome: <code>Ru Technology</code></span></span> <button type="button" class="contribua-copiar" data-pix="57778554000131" hidden>Copiar chave Pix</button></p></div><p class="credo"><a href="https://rizzygo.com.br/conceito#o-nome">Sou Zy</a>: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="materiais.js?v=2026103102"></script>
+<script src="../efeitos.js?v=2026110801" defer></script>
+<script src="/contribua.js?v=2026110901" defer></script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "65a6fb651cf942a695482421e9de912b"}'></script><!-- End Cloudflare Web Analytics -->
+<script src="/conta.js?v=2026112001" defer></script>
+</body>
+</html>

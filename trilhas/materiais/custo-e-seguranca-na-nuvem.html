@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Custo e segurança na nuvem | Rizzygo Ako</title>
+<meta name="description" content="Lição em português sobre monitorar e proteger uma conta de nuvem: métricas e alertas que importam, os vilões da fatura, tags e budgets, o que fazer quando uma chave vaza e um checklist de 15 minutos por mês para AWS e Google Cloud.">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta property="og:title" content="Custo e segurança na nuvem | Rizzygo Ako">
+<meta property="og:description" content="Lição em português sobre monitorar e proteger uma conta de nuvem: métricas e alertas que importam, os vilões da fatura, tags e budgets, o que fazer quando uma chave vaza e um checklist de 15 minutos por mês para AWS e Google Cloud.">
+<meta property="og:url" content="https://ako.rizzygo.com.br/trilhas/materiais/custo-e-seguranca-na-nuvem.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rizzygo Ako">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:image" content="https://ako.rizzygo.com.br/icones/og/licoes.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Lições do Ako: lições práticas em português, com a Zumi, abelha da Rizzygo All">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://ako.rizzygo.com.br/trilhas/materiais/custo-e-seguranca-na-nuvem.html">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "LearningResource", "name": "Custo e segurança na nuvem", "description": "Lição em português sobre monitorar e proteger uma conta de nuvem: métricas e alertas que importam, os vilões da fatura, tags e budgets, o que fazer quando uma chave vaza e um checklist de 15 minutos por mês para AWS e Google Cloud.", "url": "https://ako.rizzygo.com.br/trilhas/materiais/custo-e-seguranca-na-nuvem.html", "inLanguage": "pt-BR", "isAccessibleForFree": true, "learningResourceType": "lição", "license": "https://creativecommons.org/licenses/by/4.0/", "publisher": {"@type": "Organization", "name": "Rizzygo", "url": "https://rizzygo.com.br/"}}</script>
+<meta name="theme-color" content="#0B1B3A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap">
+<link rel="stylesheet" href="/ds/rizzygo.css?v=2026111403">
+<script src="/ds/tema.js?v=2026111020"></script>
+<link rel="stylesheet" href="../app.css?v=2026111001">
+<link rel="stylesheet" href="materiais.css?v=2026110801">
+<link rel="stylesheet" href="/topo.css?v=2026110914">
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<nav class="familia" aria-label="Sites da Rizzygo"><div class="familia-in"><a class="familia-item familia-site" href="https://rizzygo.com.br/" title="Site principal da Rizzygo"><svg viewBox="0 0 64 64" width="16" height="16" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="#F5A524" stroke-width="8" stroke-linecap="round"/></svg>Rizzygo</a><a class="familia-item familia-site" href="https://ako.rizzygo.com.br/" aria-current="page"><img src="/zumi/abelha-mini.png" width="18" height="18" alt="">Ako</a><a class="familia-item familia-site" href="https://rotina.rizzygo.com.br/" title="Rotina com a Zumi"><img src="/zumi/abelha-rotina-mini.png" width="18" height="18" alt="">Rotina</a></div></nav>
+<header class="topo"><div class="topo-in">
+  <a class="marca" href="/" aria-label="Rizzygo Ako, início"><svg viewBox="0 0 64 64" width="28" height="28" aria-hidden="true"><path d="M13 14L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/><path d="M13 14H51L13 50H51" fill="none" stroke="var(--azul)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 27L32 32" fill="none" stroke="var(--ambar)" stroke-width="8" stroke-linecap="round"/></svg><span>Rizzygo <b>Ako</b></span></a>
+  <nav class="menu" aria-label="Principal"><a href="/trilhas/?trilha=cloud">Trilhas</a><a href="/trilhas/mapas/#/cloud">Mapas</a><a href="/trilhas/materiais/" aria-current="page">Materiais</a><a href="/favos/">Favos</a></nav>
+</div></header>
+
+
+<main id="conteudo" class="licao">
+<div class="licao-cab">
+  <a class="voltar" href="../?trilha=cloud#/t/cloud-custo-seguranca">Voltar para o tópico Custo e segurança básica</a>
+  <h1>Custo e segurança na nuvem</h1>
+  <p class="lead">A fatura da nuvem é como a conta de luz: chega todo mês, e só dói quando alguém deixou alguma coisa ligada. Esta lição mostra onde procurar a luz acesa, o alarme que vale a pena e o que fazer se uma chave escapar.</p>
+  <div class="ficha"><span class="etiqueta">Cerca de 40 minutos</span><span class="etiqueta">Trilha Cloud</span><span class="etiqueta ambar">Conteúdo Rizzygo, gratuito e em português</span></div>
+</div>
+<nav class="indice" aria-label="Nesta lição">
+  <h2>Nesta lição</h2>
+  <ol>
+    <li><a href="#monitorar">Monitorar o que a pessoa sente</a></li>
+    <li><a href="#viloes">Os vilões da fatura</a></li>
+    <li><a href="#tags">Tag, budget e calculadora</a></li>
+    <li><a href="#chave">O que fazer quando uma chave vaza</a></li>
+    <li><a href="#checklist">O checklist de 15 minutos por mês</a></li>
+    <li><a href="#missao">Missão final</a></li>
+  </ol>
+</nav>
+<section id="monitorar">
+  <h2>1. Monitorar o que a pessoa sente</h2>
+<p>As duas nuvens coletam métricas e logs sozinhas: CloudWatch na AWS, Cloud Monitoring e Cloud Logging no Google Cloud. O difícil é escolher o que olhar.</p>
+  <ul>
+    <li><strong>Comece pelo que dói em quem usa:</strong> taxa de erro e tempo de resposta.</li>
+    <li><strong>CPU alta sozinha</strong>, sem erro nem lentidão, raramente é problema.</li>
+    <li><strong>Alerta bom pede uma ação.</strong> Se ele toca e ninguém precisa fazer nada, ele é ruído e o time aprende a ignorar.</li>
+  </ul>
+  <p><strong>Na Mel da Zumi:</strong> um único alerta já resolve muito. "Mais de 5% de erro na API de pedidos por 5 minutos". Quando toca, alguém abre o log.</p>
+</section>
+
+<section id="viloes">
+  <h2>2. Os vilões da fatura</h2>
+<p>Cada vilão, por que ele cobra e como evitar:</p>
+  <div class="tabela"><table>
+    <thead><tr><th>Vilão</th><th>Por que cobra</th><th>Como evitar</th></tr></thead>
+    <tbody>
+      <tr><td>VM esquecida</td><td>Cobra por hora ligada</td><td>Apague no fim, ou use serverless</td></tr>
+      <tr><td>Disco solto</td><td>Cobra por espaço, mesmo sem VM</td><td>Confira a lista de discos ao apagar a VM</td></tr>
+      <tr><td>IP público reservado</td><td>Cobra mesmo sem uso</td><td>Libere ao terminar</td></tr>
+      <tr><td>NAT gateway</td><td>Cobra por hora e por tráfego</td><td>Evite no estudo</td></tr>
+      <tr><td>Banco relacional ligado</td><td>Cobra por hora, com ou sem acesso</td><td>Crie, teste e apague no mesmo dia</td></tr>
+      <tr><td>Tráfego de saída</td><td>Enviar dados para a internet custa</td><td>Cuidado com arquivos grandes públicos</td></tr>
+      <tr><td>Log guardado para sempre</td><td>Cobra por volume e tempo</td><td>Defina a retenção</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="tags">
+  <h2>3. Tag, budget e calculadora</h2>
+<ul>
+    <li><strong>Tag (AWS) e label (Google Cloud)</strong> dizem de quem é e para que serve cada recurso: <code>projeto=mel-da-zumi</code>, <code>dono=zumi</code>. Com tag, a fatura mostra o custo por projeto e ninguém tem medo de apagar o que é lixo.</li>
+    <li><strong>Budget</strong> você já criou na lição <a href="conta-na-nuvem-sem-susto.html">Conta na nuvem sem susto</a>. Ele avisa, não trava.</li>
+    <li><strong>Calculadora:</strong> antes do projeto final, estime o custo na calculadora de preço da AWS ou do Google Cloud. Ela dá a ordem de grandeza antes de gastar.</li>
+  </ul>
+</section>
+
+<section id="chave">
+  <h2>4. O que fazer quando uma chave vaza</h2>
+<p>Acontece com gente experiente. O que separa o susto do desastre é a velocidade.</p>
+  <ol>
+    <li><strong>Desative a chave na hora</strong>, no IAM da AWS ou na service account do Google Cloud. Antes de qualquer outra coisa.</li>
+    <li><strong>Veja o que foi feito com ela:</strong> CloudTrail na AWS, Cloud Audit Logs no Google Cloud.</li>
+    <li><strong>Apague o que o invasor criou</strong> e confira a fatura.</li>
+    <li><strong>Limpe o histórico do Git</strong> e troque o jeito de autenticar: login por SSO e credenciais temporárias no lugar de chave fixa.</li>
+    <li><strong>Avise o suporte da nuvem</strong> se houver cobrança que não é sua.</li>
+  </ol>
+  <div class="cuidado"><strong>Apagar o commit não basta</strong>Robôs leem repositórios públicos em minutos. Se a chave apareceu num commit, considere que já foi copiada.</div>
+</section>
+
+<section id="checklist">
+  <h2>5. O checklist de 15 minutos por mês</h2>
+<ol>
+    <li>Abri a fatura e entendi as três maiores linhas.</li>
+    <li>Procurei recursos sem tag e decidi: tagueio ou apago.</li>
+    <li>Conferi se tem VM, disco, IP ou banco que ninguém usa.</li>
+    <li>Revisei quem tem acesso de administrador.</li>
+    <li>Procurei chaves de acesso antigas e desativei as que não uso.</li>
+    <li>Confirmei que o MFA continua ligado na conta principal.</li>
+  </ol>
+  <div class="faca"><strong>Truque da Zumi</strong>Ponha esse checklist como lembrete mensal, na Rotina com a Zumi ou no seu calendário, todo dia 1. Quinze minutos por mês valem mais que uma madrugada de susto.</div>
+</section>
+
+<section id="missao">
+  <h2>6. Missão final</h2>
+<details class="exercicio"><summary>1. Um alarme que importa</summary>
+    <p>Crie um alerta de taxa de erro para a sua função ou serviço, provoque um erro de propósito e veja o alerta chegar.</p>
+  </details>
+  <details class="exercicio"><summary>2. Caça aos vilões</summary>
+    <p>Rode o checklist da parte 5 na sua conta de estudo. Anote o que achou, mesmo que seja "nada".</p>
+  </details>
+  <details class="exercicio"><summary>3. Ensaie o vazamento</summary>
+    <p>Escreva, em seis linhas, o que você faria nos primeiros dez minutos se uma chave sua aparecesse num repositório público.</p>
+  </details>
+  <div class="faca"><strong>Para fixar</strong>Conte para alguém quais são os três vilões da fatura que mais te surpreenderam. Depois marque no tópico que você ensinou alguém.</div>
+  <div class="proximo"><a class="btn" href="../?trilha=cloud#/t/cloud-custo-seguranca">Voltar para o tópico e fazer o desafio</a></div>
+</section>
+
+<div class="credito">
+  <p>Lição baseada na documentação do <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/WhatIsCloudWatch.html">Amazon CloudWatch</a>, do <a href="https://docs.cloud.google.com/monitoring/docs/monitoring-overview">Cloud Monitoring</a>, do <a href="https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html">Amazon VPC</a> (custos de NAT e IP público), do <a href="https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html">AWS Budgets</a> e dos <a href="https://docs.cloud.google.com/billing/docs/how-to/budgets">budgets do Cloud Billing</a>. O texto e os exemplos são próprios, escritos em português pelo Ako, da Rizzygo All. Preços e ofertas gratuitas conferidos em 20/11/2026: eles mudam, então confira na página de cada nuvem antes de criar recursos.</p>
+  <p>Conteúdo aberto sob a licença <a href="https://creativecommons.org/licenses/by/4.0/deed.pt_BR">CC BY 4.0</a>. Viu um erro? <a href="https://github.com/rizzygo/ako/issues">Abra uma issue</a>.</p>
+</div>
+</main>
+<footer class="rodape"><div class="rodape-in"><p><strong>Ako</strong>, da Rizzygo All, a parte aberta e gratuita da <a href="https://rizzygo.com.br/">Rizzygo</a>.</p><p>Estude junto na <a href="https://chat.whatsapp.com/CYpmolVr7a08Gqmj782yFi">comunidade gratuita no WhatsApp</a>.</p><p>Sugestão, dúvida ou problema? Escreva para <a href="mailto:suporte@rizzygo.com.br">suporte@rizzygo.com.br</a>.</p><div class="contribua"><p><strong>Contribuição voluntária.</strong> O Ako é gratuito e vai continuar assim. Você decide se quer contribuir, com qualquer valor, para agradecer, manter e ajudar o Ako a evoluir.</p><p class="contribua-pix"><span class="contribua-dados"><span>Chave Pix (CNPJ): <code>57.778.554/0001-31</code></span><span>Nome: <code>Ru Technology</code></span></span> <button type="button" class="contribua-copiar" data-pix="57778554000131" hidden>Copiar chave Pix</button></p></div><p class="credo"><a href="https://rizzygo.com.br/conceito#o-nome">Sou Zy</a>: domino o ofício, questiono o jeito, caminho junto.</p></div></footer>
+<script src="materiais.js?v=2026103102"></script>
+<script src="../efeitos.js?v=2026110801" defer></script>
+<script src="/contribua.js?v=2026110901" defer></script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "65a6fb651cf942a695482421e9de912b"}'></script><!-- End Cloudflare Web Analytics -->
+<script src="/conta.js?v=2026112001" defer></script>
+</body>
+</html>

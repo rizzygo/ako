@@ -2027,10 +2027,10 @@
    "id": "infra",
    "nome": "Infraestrutura e cloud",
    "cor": "#1F4FD8",
-   "descricao": "Servidores, redes, Linux, nuvem (com foco em GCP na Rizzygo), automação e observabilidade.",
+   "descricao": "Servidores, redes, Linux, nuvem (AWS e Google Cloud, lado a lado), automação e observabilidade.",
    "mapa": "mapas/#/infra",
-   "trilha": "platform-engineering",
-   "trilha_nome": "Platform Engineering"
+   "trilha": "cloud",
+   "trilha_nome": "Cloud com AWS e Google Cloud"
   },
   {
    "id": "dev",

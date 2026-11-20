@@ -17,7 +17,7 @@
   ],
   "mini_mapa_rotulo": "Mapa da trilha Platform Engineering: seis etapas, de entender o papel até medir e evoluir a plataforma",
   "para_quem": [
-   "Para quem terminou a trilha Primeiros passos em TI e já se sente bem com terminal, Linux, redes e Git.",
+   "Para quem terminou a trilha Primeiros passos em TI e já se sente bem com terminal, Linux, redes e Git. Se ainda não usou nenhuma nuvem, a trilha Cloud vem antes.",
    "Para quem trabalha com infraestrutura, DevOps, SRE ou suporte e quer dar o próximo passo.",
    "Para quem desenvolve e quer entender a plataforma que usa, ou ajudar a melhorá-la.",
    "Vai precisar de um computador com Docker. Os exercícios rodam no seu computador ou em serviços gratuitos, como o GitHub, sem gastar com nuvem."
@@ -90,6 +90,12 @@
    "titulo": "Git e GitHub",
    "topico": "git",
    "resumo": "Na plataforma, tudo passa pelo Git: código, infraestrutura, políticas e deploy."
+  },
+  {
+   "id": "base-cloud",
+   "titulo": "Trilha Cloud com AWS e Google Cloud",
+   "resumo": "IAM, rede, serverless e Terraform nas duas maiores nuvens. Se você nunca criou nada numa nuvem, faça a trilha Cloud antes desta.",
+   "mapa": "cloud"
   },
   {
    "id": "mapa-infra",

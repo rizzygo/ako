@@ -6,7 +6,7 @@ import sys
 DADOS = pathlib.Path(__file__).parent / "dados"
 ARQ = DADOS / "primeiros-passos.json"
 # A primeira trilha traz as áreas. As outras ganham um mapa próprio, montado a partir delas.
-OUTRAS_TRILHAS = ["platform-engineering", "desenvolvimento", "habilidades-humanas"]
+OUTRAS_TRILHAS = ["cloud", "platform-engineering", "desenvolvimento", "habilidades-humanas"]
 # Campo opcional "alturas": uma pergunta por cargo, nesta ordem.
 CARGOS = ["Júnior", "Pleno", "Sênior", "Especialista", "Tech lead", "Gestão"]
 AREAS = {"infra", "dev", "dados", "qa", "seguranca", "produto"}

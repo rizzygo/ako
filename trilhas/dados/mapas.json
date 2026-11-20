@@ -6,7 +6,7 @@
    "id": "infra",
    "area": "infra",
    "titulo": "Infraestrutura e cloud",
-   "resumo": "Quem trabalha com infraestrutura cuida para que os sistemas tenham onde rodar, fiquem no ar e custem o justo. Na Rizzygo, a nuvem de referência é o Google Cloud (GCP).",
+   "resumo": "Quem trabalha com infraestrutura cuida para que os sistemas tenham onde rodar, fiquem no ar e custem o justo. No Ako, você estuda AWS e Google Cloud lado a lado, na trilha Cloud.",
    "secoes": [
     {
      "titulo": "A base que você já tem",
@@ -71,12 +71,18 @@
      ]
     },
     {
-     "titulo": "Nuvem, começando pelo GCP",
+     "titulo": "Nuvem com AWS e Google Cloud",
      "nos": [
+      {
+       "id": "trilha-cloud",
+       "titulo": "Trilha Cloud com AWS e Google Cloud",
+       "resumo": "A trilha que aprofunda esta seção: conta sem susto, IAM, rede, serverless, emuladores, Terraform, custo e um projeto seu no ar nas duas nuvens.",
+       "mapa": "cloud"
+      },
       {
        "id": "o-que-e-nuvem",
        "titulo": "O que é computação em nuvem",
-       "resumo": "Nuvem é alugar computador, disco e rede de outra empresa, pagando pelo uso. Antes de abrir o painel do GCP, entenda a diferença entre IaaS (você aluga a máquina), PaaS (você só publica o seu código) e SaaS (você usa o programa pronto).",
+       "resumo": "Nuvem é alugar computador, disco e rede de outra empresa, pagando pelo uso. Antes de abrir o painel, entenda a diferença entre IaaS (você aluga a máquina), PaaS (você só publica o seu código) e SaaS (você usa o programa pronto).",
        "pratica": "Classifique como IaaS, PaaS ou SaaS: alugar uma máquina virtual, usar o Gmail e publicar um contêiner no Cloud Run.",
        "recursos": [
         {
@@ -85,12 +91,14 @@
          "url": "https://cloud.google.com/learn/what-is-cloud-computing?hl=pt-br",
          "idioma": "pt-BR"
         }
-       ]
+       ],
+       "trilha": "cloud",
+       "topico": "cloud-o-que-e"
       },
       {
        "id": "projeto-e-orcamento",
-       "titulo": "Projeto, faturamento e orçamento",
-       "resumo": "No GCP, todo recurso pertence a um projeto, e para usar serviços pagos o projeto precisa estar ligado a uma conta de faturamento. Configure um alerta de orçamento antes de criar qualquer coisa. O alerta avisa, mas não bloqueia o gasto.",
+       "titulo": "Conta, faturamento e orçamento",
+       "resumo": "Na AWS, todo recurso mora numa conta. No Google Cloud, num projeto ligado a uma conta de faturamento. Configure um alerta de orçamento antes de criar qualquer coisa. O alerta avisa, mas não bloqueia o gasto.",
        "pratica": "Crie um projeto de estudos e um alerta de orçamento de valor baixo. Só depois crie o primeiro recurso.",
        "recursos": [
         {
@@ -99,31 +107,39 @@
          "url": "https://cloud.google.com/docs/get-started?hl=pt-br",
          "idioma": "pt-BR"
         }
-       ]
+       ],
+       "trilha": "cloud",
+       "topico": "conta-sem-susto"
       },
       {
        "id": "iam",
        "titulo": "IAM: quem pode fazer o quê",
        "resumo": "IAM define quem acessa cada recurso e com qual permissão. A regra de ouro é o menor privilégio: cada pessoa ou sistema recebe só o que precisa.",
-       "pratica": "Dê a outra conta sua só permissão de leitura num bucket, a pasta de arquivos do Cloud Storage, e confira que ela não consegue apagar nada."
+       "pratica": "Dê a outra conta sua só permissão de leitura num bucket, a pasta de arquivos do Cloud Storage, e confira que ela não consegue apagar nada.",
+       "trilha": "cloud",
+       "topico": "cloud-iam"
       },
       {
        "id": "maquinas-virtuais",
        "titulo": "Máquinas virtuais",
-       "resumo": "Uma máquina virtual é um servidor alugado, quase sempre com Linux. No GCP o serviço se chama Compute Engine. É onde você junta Linux, SSH e redes.",
-       "pratica": "Suba a menor máquina disponível com tráfego HTTP liberado, acesse por SSH, instale o nginx, um servidor web, abra a página no navegador e apague a máquina no fim."
+       "resumo": "Uma máquina virtual é um servidor alugado, quase sempre com Linux. Na AWS se chama EC2, no Google Cloud, Compute Engine. É onde você junta Linux, SSH e redes.",
+       "pratica": "Suba a menor máquina disponível com tráfego HTTP liberado, acesse por SSH, instale o nginx, um servidor web, abra a página no navegador e apague a máquina no fim.",
+       "trilha": "cloud",
+       "topico": "cloud-compute"
       },
       {
        "id": "armazenamento",
        "titulo": "Armazenamento de arquivos",
-       "resumo": "Para guardar arquivos, a nuvem oferece armazenamento de objetos, como o Cloud Storage. É barato, durável e serve até para hospedar site estático.",
-       "pratica": "Crie um bucket, envie um arquivo pelo terminal com `gcloud storage cp` e confira quem tem acesso a ele."
+       "resumo": "Para guardar arquivos, a nuvem oferece armazenamento de objetos: S3 na AWS, Cloud Storage no Google Cloud. É barato, durável e serve até para hospedar site estático.",
+       "pratica": "Crie um bucket, envie um arquivo pelo terminal com `gcloud storage cp` e confira quem tem acesso a ele.",
+       "trilha": "cloud",
+       "topico": "cloud-storage"
       },
       {
        "id": "outras-nuvens",
-       "titulo": "AWS e Azure",
+       "titulo": "Azure e outras nuvens",
        "nivel": "opcional",
-       "resumo": "Os conceitos se repetem entre as nuvens: projeto ou conta, IAM, máquina virtual, bucket. Muda o nome do serviço. Aprenda bem uma e compare com as outras depois."
+       "resumo": "Os conceitos se repetem entre as nuvens: conta ou projeto, IAM, máquina virtual, bucket. Muda o nome do serviço. A trilha Cloud cobre AWS e Google Cloud. Com as duas firmes, a Azure fica fácil de comparar."
       }
      ]
     },
@@ -156,7 +172,9 @@
        "id": "cloud-run",
        "titulo": "Publicar um contêiner na nuvem",
        "resumo": "Serviços como o Cloud Run rodam sua imagem sem você cuidar de servidor e cobram só quando há acesso. É o caminho mais curto do Dockerfile até um endereço público.",
-       "pratica": "Publique no Cloud Run a imagem do exercício do Dockerfile e confira nos logs a primeira requisição."
+       "pratica": "Publique no Cloud Run a imagem do exercício do Dockerfile e confira nos logs a primeira requisição.",
+       "trilha": "cloud",
+       "topico": "cloud-containers"
       },
       {
        "id": "kubernetes",
@@ -260,7 +278,9 @@
        "id": "custos",
        "titulo": "Custos na nuvem",
        "nivel": "opcional",
-       "resumo": "Na nuvem, todo recurso esquecido vira conta no fim do mês. Etiquetar recursos, desligar o que não usa e ler a fatura também é trabalho de infraestrutura."
+       "resumo": "Na nuvem, todo recurso esquecido vira conta no fim do mês. Etiquetar recursos, desligar o que não usa e ler a fatura também é trabalho de infraestrutura.",
+       "trilha": "cloud",
+       "topico": "cloud-custo-seguranca"
       }
      ]
     },
